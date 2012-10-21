@@ -2,6 +2,8 @@ project(SchiffbruchEngine)
 
 cmake_minimum_required(VERSION 2.8)
 
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/SFGUI/extlibs/SFML/cmake/Modules" ${CMAKE_MODULE_PATH})
+
 option(USE_CUSTOM_BOOST "" OFF)
 set(CUSTOM_BOOST_ROOT "" CACHE STRING "custom boost build root dir")
 option(USE_CUSTOM_SFML "" ON)
