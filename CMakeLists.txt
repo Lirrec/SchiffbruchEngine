@@ -2,9 +2,18 @@ project(SchiffbruchEngine)
 
 cmake_minimum_required(VERSION 2.8)
 
-option(USE_SHIPPED_SFML2 OFF)
+#option(USE_SHIPPED_SFML2 OFF)
+option(USE_CUSTOM_BOOST OFF)
+option(CUSTOM_BOOST_ROOT "")
 
 SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+
+if(USE_CUSTOM_BOOST)
+	message("-- Using custom boost...")
+	set(BOOST_ROOT "${CUSTOM_BOOST_ROOT}")
+	set(BOOST_LIBRARYDIR "${BOOST_ROOT}/stage/lib")
+	set(BOOST_INCLUDEDIR "${BOOST_ROOT}/boost")
+endif()
 
 find_package(Boost 1.46 COMPONENTS thread system)# regex)
 #find_package(Boost 1.46 COMPONENTS thread_win32 system)# W32
@@ -61,4 +70,5 @@ add_definitions(-Wall -DCOUNT_EVENTS -fPIC)
 
 include_directories(${PROJECT_SOURCE_DIR}/include) # needed?
 
+add_subdirectory(SFGUI)
 add_subdirectory(src)
