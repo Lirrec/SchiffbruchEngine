@@ -19,6 +19,7 @@ if(USE_CUSTOM_BOOST)
 endif()
 
 if(USE_CUSTOM_SFML)
+	message("-- Using custom SFML...")
 	set(SFML_ROOT "${CUSTOM_SFML_ROOT}")
 	set(SFML_INCLUDE_DIR "${SFML_ROOT}/include")
 endif(USE_CUSTOM_SFML)
