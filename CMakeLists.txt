@@ -7,7 +7,7 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/SFGUI/extlibs/SFML/cmake/Modules" $
 option(USE_CUSTOM_BOOST "" OFF)
 option(USE_CUSTOM_SFML "" ON)
 set(CUSTOM_BOOST_ROOT "" CACHE STRING "custom boost build root dir")
-set(CUSTOM_SFML_ROOT "${CMAKE_SOURCE_DIR}/libsbe/SFGUI/extlibs/SFML" CACHE STRING "custom SFML build root dir")
+set(CUSTOM_SFML_ROOT "${CMAKE_SOURCE_DIR}/SFGUI/extlibs/SFML" CACHE STRING "custom SFML build root dir")
 
 SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
