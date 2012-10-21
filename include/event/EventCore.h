@@ -13,8 +13,6 @@
 #include "HashManager.h"
 #include "Module.h"
 
-#include "modules/Core.h"
-
 #include <forward_list>
 #include <map>
 #include <string>

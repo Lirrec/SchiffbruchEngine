@@ -1,4 +1,4 @@
-#include "Event.h"
+#include "event/Event.h"
 
 #include "boost/lexical_cast.hpp"
 
@@ -7,7 +7,9 @@
 #include "event/EventHelper.h"
 
 #include "event/EventCore.h"
-#include "modules/Core.h"
+
+// internal include
+#include "../src/modules/Core.h"
 
 #include <algorithm>
 #include <utility>

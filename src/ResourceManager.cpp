@@ -82,7 +82,7 @@ bool ResourceManager::AddImageSet ( const ImageSet& I )
 
 	if (txt_ptr)
 	{
-		ImageSets.AddItem(I.Name, &I);
+		ImageSets.AddItem(I.Name, I);
 		return true;
 	}
 	else

@@ -1,12 +1,12 @@
-#include "EventQueue.h"
+#include "event/EventQueue.h"
 
 #include <boost/lexical_cast.hpp>
 
-#include "EventCore.h"
-#include "EventHelper.h"
+#include "event/EventCore.h"
+#include "event/EventHelper.h"
 
 
-#include "modules/Core.h"
+#include "../modules/Core.h"
 
 #include <list>
 

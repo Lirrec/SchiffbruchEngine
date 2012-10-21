@@ -12,8 +12,6 @@ class Graphics;
 class AssetManager;
 class SFMLEventConverter;
 
-namespace UI { class Screen; }
-
 //class Logger;
 
 #include <memory>
