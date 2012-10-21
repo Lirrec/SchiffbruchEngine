@@ -8,8 +8,6 @@
 #include "event/Event.h"
 #include "event/SFMLEvent.h"
 
-#include "UI/Screen.h"
-
 #include <memory>
 #include <iostream>
 
@@ -29,7 +27,7 @@ Engine::~Engine()
 
 void Engine::CreateSubSystems()
 {
-		// Logging
+	// Logging
 	std::cout << "Console Logger." << std::endl;
 	Log.reset( new Logger );
 

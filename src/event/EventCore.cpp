@@ -1,8 +1,8 @@
-#include "EventCore.h"
+#include "event/EventCore.h"
 
 #include <boost/lexical_cast.hpp>
 
-#include "EventHelper.h"
+#include "event/EventHelper.h"
 
 #include <memory>
 

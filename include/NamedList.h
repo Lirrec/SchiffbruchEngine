@@ -43,6 +43,12 @@ public:
 		Items.insert(std::make_pair( name, ptr_type(t) ) );
 	}
 
+	/// add an item by reference
+	void AddItem(std::string name, stored_type& t)
+	{
+		Items.insert(std::make_pair( name, ptr_type(t) ) );
+	}
+
 	/// add an item by copy
 	void AddItem(std::string name, stored_type t)
 	{

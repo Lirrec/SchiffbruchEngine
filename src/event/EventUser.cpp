@@ -1,7 +1,9 @@
-#include "EventUser.h"
+#include "event/EventUser.h"
 
 #include "Engine.h"
-#include "EventCore.h"
+#include "event/EventCore.h"
+
+#include "../modules/Core.h"
 
 // EventUser
 EventUser::EventUser() : ID(Module::NewUUID())
