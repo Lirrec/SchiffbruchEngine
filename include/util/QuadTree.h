@@ -6,7 +6,7 @@
 #include <forward_list>
 
 /**
-	A simple quadtree for culling the Items.
+	A simple quadtree intended for culling.
 */
 template< class Item >
 class QuadTreeNode

@@ -4,9 +4,9 @@
 
 #include <boost/thread.hpp>
 
-#include "Event.h"
+#include "event/Event.h"
 
-#include "EventQueue.h"
+#include "event/EventQueue.h"
 
 #include "ConcurrentQueue.h"
 #include "HashedString.h"
