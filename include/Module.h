@@ -9,19 +9,34 @@
 
 class TickControl;
 
-//contains necessary Information to start a module
+/**
+	This class contains configuration parameters for the behaviour and default settings of a module.
+	This struct provides a clear way to set all required parameters to run a module
+	@see GameBase::RegisterModule()
+*/
 struct ModuleStartInfo
 {
 
+	/** Default Constructor.
+		The configuration will be as following:
+		Name: "_NameNotSet"
+		TicksPerSecond: 100
+		TickEvent: none
+		delay: 0
+		useEventQueue: false
+	*/
 	ModuleStartInfo()
 	 : Name("_NameNotSet"),
 		desiredTicksPerSecond(100),
 		delay(0),
-		useEventQueue(false)
+		useEventQueue(true)
 	{
 		TickEvt = std::shared_ptr<Event>();
 	}
 
+	/** Verbose Constructor.
+		provides all parameters in the constructor with default-values
+	*/
 	ModuleStartInfo(std::string name,
 				int tps = 100,
 				std::shared_ptr<Event> Evt = std::shared_ptr<Event>(),
@@ -36,22 +51,30 @@ struct ModuleStartInfo
 
 	/// The name of the module to create
 	std::string Name;
-	/// How many times per second should this module receive its
-	/// tickevent. 0 means no Tickevents will be sent.
+	/** @see Module::SetTPS()
+	 */
 	int desiredTicksPerSecond;
-	/// Which event should be sent every tick to the module
+	/// @see Module::SetTickEvent()
 	std::shared_ptr<Event> TickEvt;
 
-	/// Wether this modules need some time to initialize
-	/// 0 means no delay, everything else delay milliseconds
+	/** Specify a delay to wait after this modules thread was started.
+		0 means no delay
+	*/
 	int delay;
 
-	/// Does the Modules require an event queue
+	/** Does the Modules require an event queue.
+		All user created modules need to use an eventqueue to be able to process events.
+	*/
 	bool useEventQueue;
 };
 
-/** A Game Module which runs in its own Thread.
-Has its own eventqueue an registers on run with the global EventCore
+/**
+A Game Module which runs in its own Thread.
+This is the basic building block of which user applications should consist.
+Modules provide an easy way to separate application code into threads without any extra code required by the user.
+Events will be sent and synchronized between threads if requested.
+
+Modules have their own local eventqueue and register on start with the global EventCore.
 */
 class Module : sf::NonCopyable
 {
@@ -59,13 +82,10 @@ class Module : sf::NonCopyable
 		Module();
 		virtual ~Module();
 
+		/// Static module getter. Use this in your code to access the current module.
 		static Module* Get() { return Module::Instance.get(); }
 
-		static boost::uuids::uuid NewUUID()
-		{
-			boost::lock_guard<boost::mutex> lock(UUIDsMutex);
-			return  boost::uuids::random_generator()();
-		}
+
 
 		virtual void StartModule( const ModuleStartInfo& m );
 
@@ -95,7 +115,12 @@ class Module : sf::NonCopyable
 			EvtQ->QueueEvent( EvtName, global );
 		}
 
-		///  add a key/value pair to the debug view
+		/**
+			Send a key/value pair as debugging information.
+			This function is intendet to send per frame information to be displayed somewhere.
+			E.g. Frames per Second, Events per second or some game related information
+			Sends a DbgStringEvent
+		*/
 		void DebugString( const std::string& name, const std::string& value);
 
 		/// access this modules boost::thread instance
@@ -107,48 +132,92 @@ class Module : sf::NonCopyable
 		/// returns the time this module is already running
 		sf::Time GetModuleTime() { return ModuleTime.getElapsedTime(); }
 
+
+		/// Thread-safe way to generate a new UUID ( used in the event system and some other places).
+		static boost::uuids::uuid NewUUID()
+		{
+			boost::lock_guard<boost::mutex> lock(UUIDsMutex);
+			return  boost::uuids::random_generator()();
+		}
+
 	protected:
 
+		/**
+			Set the Event used to send debug messages.
+			Those messages contain per Frame information. A module send per default log messegas about the EventQueue (events per second) and the TickControl.
+			Defaults to VIEW_DBG_STRING.
+			@see  TickControl::LogModuleStats()
+			@see DebugString()
+		*/
+		void SetDbgStringEvent( std::shared_ptr<Event>() );
 
 
-		std::shared_ptr<Event> DbgStringEvent;
-
-		/// change the target TicksPerSecond at runtime
+		/**
+			Change the target TicksPerSecond at runtime.
+			@see TickControl::SetTargetTicksPerSecond
+		*/
 		void SetTPS( int TPS );
-		/// change the TickEvent at runtime
+
+		/**
+			Change the TickEvent at runtime.
+			@see TickControl::SetTickEvent
+		*/
 		void SetTickEvent( std::shared_ptr<Event> TickEvt );
 
-		// Init Thread-local Data
-		void ThreadLocalInit();
-
-		/// child classes may override this method with their Thread logic
-		/// the default implementation runs the eventqueue at the set fps
-		/// and reports status once a second
+		/** child classes may override this method with their Thread logic.
+			The default implementation uses a TickControl to send the TickEvent once a second. It also logs fps.
+		*/
 		virtual void Execute();
 
+		/**
+			Called once the module is started, use for module-specific initialisation code.
+		*/
 		virtual void Init() {};
+		/**
+			Called after Execute() returns.
+			The default implementation will send Tick-events until the quit member is set to true.
+		*/
 		virtual void DeInit() {};
+
+		/// Thread-entry point (internal)
+		void ThreadLocalInit();
 
 	private:
 
+		/// Module internal timer
 		sf::Clock ModuleTime;
 
+		/// Event sent with key/value debbuging information
+		std::shared_ptr<Event> DbgStringEvent;
+
+		/// ptr to module instance
 		static boost::thread_specific_ptr<Module> Instance;
+		/// mutex for module access
 		static boost::mutex ModulesMutex;
+		/// mutex for UUID generation
 		static boost::mutex UUIDsMutex;
+
+		/// List of existing Modules
 		static std::list< Module* > RunningModules;
 
+		/// True if the Modules needs an EventQueue
 		bool useEventQueue;
 
+
 		friend class TickControl;
+		/// this modules TickControl
 		std::shared_ptr<TickControl> TC;
+		/// Eventloop termination condition
 		bool quit;
 
-		// those will be registered and set by Run()
+		/// those will be registered and set by Run()
 		size_t QueueID;
+		/// this modules EventQueue
 		std::shared_ptr<EventQueue> EvtQ;
 
+		/// Module name
 		std::string Name;
+		/// Lokal thread pointer
 		boost::thread* MyThread;
 };
 

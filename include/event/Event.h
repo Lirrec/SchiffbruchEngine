@@ -20,39 +20,27 @@
 
 /**
 	Event System overview:
-	Schiffbruchagain uses 2 kinds of Events.
-	The first one is the eventsystem supplied by SFML for receiving hardwareevents about input.
-	The second one is a very small custom Eventsystem for sending game specific events.
+	SchiffbruchEngine uses 2 kinds of Events.
+	The first one is the eventsystem supplied by SFML for receiving mostly hardware events about input.
+	The second one is a custom Eventsystem for sending game specific events.
+
+	For an overview of the SFML Eventsystem see the according <a href="http://sfml-dev.org/">documentation</a>.
+
+	The EventSystem consists of the following Classes:
+	- Event: An individual event, Events are defined by their name and contain eventdata
 
 
-	TODO/PLANNED:
-
-	Make it possible to use events in multiple Threads.
-	This would need a seperate Eventmanger for each thread,
-	synchronized with the other eventmanagers or the main evtmgr
-
-	Some Event Types and their usage:
+	The use of Modules (@see Module) makes it possible to use events in multiple Threads.
+	Events can either be sent locally, meaning they are only received in the current Module/Thread, or global,
+	which will sent them to all Modules.
+	This allows modules to use "internal" events which are not visible to other modules.
 
 
-	EVT_TICK
-	EVT_FRAME
-	EVT_ANIM_END
-	EVT_GUY_FINISH_MOVE
-	EVT_GAME_ABORT
+	All event names should start with "EVT_" and contain uppercase letters, underscores and numbers (although the implementation allows arbitrary strings)
 
-Debug:
-	The Debugwindow screen element listens on VIEW_DBG_STRING(string, string) events
-	where the first string is the name of the property and the last string the value
-	(which can be updated as desired)
+	Some Event Types and their usage (incomplete):
 
-
-LOGIC -> View Connection
-
-Grep ( Graphical Re
-
-
-
-
+	VIEW_DBG_STRING(string, string) - intended for sending some data each frame to display on screen, eg. fps, events per seconds etc.
 
 
 */
