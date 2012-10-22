@@ -5,7 +5,13 @@
 
 #include "Module.h"
 
-/** An Event user may send and receive Events
+/** Base class for all classes which receive events.
+	An Event user may receive Events (and send) Events.
+	A unique EventUser-id is generated for each Eventuser.
+
+	To receive Events call RegisterForEvent() with the desired Event
+	and implement the virtual HandleEvent() function.
+
 */
 class EventUser
 {

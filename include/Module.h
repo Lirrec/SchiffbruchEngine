@@ -69,12 +69,15 @@ struct ModuleStartInfo
 };
 
 /**
-A Game Module which runs in its own Thread.
-This is the basic building block of which user applications should consist.
-Modules provide an easy way to separate application code into threads without any extra code required by the user.
-Events will be sent and synchronized between threads if requested.
+	A Game Module which runs in its own Thread.
+	This is the basic building block of which user applications should consist.
+	Modules provide an easy way to separate application code into threads without any extra code required by the user.
+	Events will be sent and synchronized between threads if requested.
 
-Modules have their own local eventqueue and register on start with the global EventCore.
+
+
+
+	Modules have their own local eventqueue and register on start with the global EventCore.
 */
 class Module : sf::NonCopyable
 {
