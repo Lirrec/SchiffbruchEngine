@@ -1,23 +1,25 @@
 
-set(sbe_HDRS ../include/Animation.h          ../include/ConcurrentQueue.h
+set(sbe_HDRS ../include/Animation.h          ../include/util/ConcurrentQueue.h
               ../include/Engine.h            ../include/GameBase.h
               ../include/Geom.h              ../include/Graphic.h
-              ../include/QuadTree.h          ../include/HashManager.h
-              ../include/HashedString.h      ../include/ImageSet.h
+              ../include/util/QuadTree.h     ../include/util/HashManager.h
+              ../include/util/HashedString.h ../include/ImageSet.h
               ../include/Logger.h            ../include/Module.h
-              ../include/NamedList.h         ../include/event/Event.h
-              ../include/event/EventCore.h   ../include/ResourceManager.h
-              ../include/event/EventHelper.h ../include/Sound.h
-              ../include/event/EventQueue.h  ../include/TickControl.h
-              ../include/event/EventUser.h
-              ../include/event/SFMLEvent.h   modules/Core.h )
-set(sbe_SRCS Animation.cpp         Engine.cpp
+              ../include/util/NamedList.h    ../include/event/Event.h
+              ../include/ResourceManager.h   ../include/Sound.h
+              ../include/event/EventHelper.h ../include/event/EventUser.h
+			  ../include/event/SFMLEvent.h
+
+              util/TickControl.h		modules/Core.h
+              event/EventQueue.h		event/EventCore.h)
+set(sbe_SRCS  Animation.cpp         Engine.cpp
               GameBase.cpp         Graphic.cpp
-              HashManager.cpp      HashedString.cpp
               ImageSet.cpp         Module.cpp
               Logger.cpp           ResourceManager.cpp
-              Sound.cpp            event/Event.cpp
-              TickControl.cpp      event/EventCore.cpp
+              Sound.cpp
+              util/HashManager.cpp      util/HashedString.cpp
+              util/TickControl.cpp
+              event/EventCore.cpp  event/Event.cpp
               event/EventQueue.cpp event/EventHelper.cpp
               event/EventUser.cpp  event/SFMLEvent.cpp
               logic/Action.cpp     modules/Core.cpp )
