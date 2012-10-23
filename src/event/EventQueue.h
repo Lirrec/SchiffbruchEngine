@@ -1,7 +1,7 @@
 #ifndef EVENT_QUEUE_H
 #define EVENT_QUEUE_H
 
-#include "ConcurrentQueue.h"
+#include "util/ConcurrentQueue.h"
 #include "event/Event.h"
 
 class EventUser;

@@ -8,7 +8,7 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/any.hpp>
 
-#include "HashedString.h"
+#include "../util/HashedString.h"
 #include "Geom.h"
 
 #include "Engine.h"

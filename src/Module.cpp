@@ -3,7 +3,7 @@
 #include "event/EventCore.h"
 #include "modules/Core.h"
 
-#include "TickControl.h"
+#include "util/TickControl.h"
 
 boost::thread_specific_ptr<Module> Module::Instance;
 std::list< Module* > Module::RunningModules;

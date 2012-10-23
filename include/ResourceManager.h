@@ -11,7 +11,7 @@
 
 #include "Animation.h"
 
-#include "NamedList.h"
+#include "util/NamedList.h"
 
 /** This struct is returned when parsing files with lists of resources.
 This applies to images, fonts and audio, which only need a path to be loaded.

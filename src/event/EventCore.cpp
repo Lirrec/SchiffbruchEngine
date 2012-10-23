@@ -1,4 +1,4 @@
-#include "event/EventCore.h"
+#include "EventCore.h"
 
 #include <boost/lexical_cast.hpp>
 

@@ -1,6 +1,6 @@
 #include "Core.h"
 
-#include "event/EventCore.h"
+#include "../event/EventCore.h"
 
 EventCore* Core::EvtCore;
 

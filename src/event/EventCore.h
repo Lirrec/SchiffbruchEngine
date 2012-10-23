@@ -6,11 +6,11 @@
 
 #include "event/Event.h"
 
-#include "event/EventQueue.h"
+#include "EventQueue.h"
 
-#include "ConcurrentQueue.h"
-#include "HashedString.h"
-#include "HashManager.h"
+#include "util/ConcurrentQueue.h"
+#include "util/HashedString.h"
+#include "util/HashManager.h"
 #include "Module.h"
 
 #include <forward_list>

@@ -6,7 +6,7 @@
 
 #include "event/EventHelper.h"
 
-#include "event/EventCore.h"
+#include "EventCore.h"
 
 // internal include
 #include "../src/modules/Core.h"

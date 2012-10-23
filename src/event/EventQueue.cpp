@@ -1,8 +1,8 @@
-#include "event/EventQueue.h"
+#include "EventQueue.h"
 
 #include <boost/lexical_cast.hpp>
 
-#include "event/EventCore.h"
+#include "EventCore.h"
 #include "event/EventHelper.h"
 
 
