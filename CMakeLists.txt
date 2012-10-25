@@ -3,11 +3,16 @@ project(SchiffbruchEngine)
 cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/SFGUI/extlibs/SFML/cmake/Modules" ${CMAKE_MODULE_PATH})
+set(GENERIC_LIBS pthread jpeg GLEW Xrandr freetype rt)
 
 option(USE_CUSTOM_BOOST "" OFF)
 option(USE_CUSTOM_SFML "" ON)
 set(CUSTOM_BOOST_ROOT "" CACHE PATH "custom boost build root dir")
 set(CUSTOM_SFML_ROOT "${PROJECT_SOURCE_DIR}/SFGUI/extlibs/SFML" CACHE PATH "custom SFML build root dir")
+
+set(SFGUI_BUILD_EXAMPLES false CACHE BOOL "Do or dont build examples)")
+set( BUILD_SHARED_LIBS false CACHE BOOL "Build dynamic library." )
+set( SFML_STATIC_LIBRARIES true CACHE BOOL "Was SFML built as a static library?" )
 
 SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
@@ -27,6 +32,11 @@ endif(USE_CUSTOM_SFML)
 find_package(Boost 1.46 COMPONENTS thread system)# regex)
 #find_package(Boost 1.46 COMPONENTS thread_win32 system)# W32
 find_package(SFML 2 COMPONENTS system window graphics audio)
+
+foreach(LIB ${GENERIC_LIBS})
+	find_library(FOUND_${LIB} ${LIB} )
+endforeach()
+
 
 if(NOT Boost_FOUND)
 	set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
@@ -64,4 +74,5 @@ link_directories(${SFML_ROOT})
 #link_directories("/usr/lib")
 
 add_subdirectory(SFGUI)
+
 add_subdirectory(src)

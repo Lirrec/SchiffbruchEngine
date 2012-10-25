@@ -33,4 +33,4 @@ else()
 	add_library(sbe STATIC ${sbe_HDRS} ${sbe_SRCS})
 endif()
 
-target_link_libraries(sbe ${Boost_LIBRARIES} ${SFML_LIBRARIES})
+target_link_libraries(sbe ${Boost_LIBRARIES} ${SFML_LIBRARIES} ${GENERIC_LIBS})
