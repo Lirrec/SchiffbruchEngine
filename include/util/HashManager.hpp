@@ -5,7 +5,7 @@
 This is required for the eventsystem, as internal stringcompares are costly.
 */
 
-#include "HashedString.h"
+#include "HashedString.hpp"
 
 #include <map>
 #include <string>

@@ -2,7 +2,7 @@
 #define MODULE_H
 
 #include <boost/thread.hpp>
-#include "../src/event/EventQueue.h"
+#include "../src/event/EventQueue.hpp"
 
 #include <string>
 #include <forward_list>

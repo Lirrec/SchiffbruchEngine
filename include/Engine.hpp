@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <boost/thread.hpp>
-#include "Logger.h"
+#include "Logger.hpp"
 
 class SoundSystem;
 class ResourceManager;

@@ -1,9 +1,9 @@
-#include "Module.h"
+#include "Module.hpp"
 
-#include "event/EventCore.h"
-#include "modules/Core.h"
+#include "event/EventCore.hpp"
+#include "modules/Core.hpp"
 
-#include "util/TickControl.h"
+#include "util/TickControl.hpp"
 
 boost::thread_specific_ptr<Module> Module::Instance;
 std::list< Module* > Module::RunningModules;

@@ -1,6 +1,6 @@
-#include "util/HashManager.h"
+#include "util/HashManager.hpp"
 
-#include "Engine.h"
+#include "Engine.hpp"
 
 /** @brief ElementExists
   *

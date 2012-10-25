@@ -4,14 +4,14 @@
 
 #include <boost/thread.hpp>
 
-#include "event/Event.h"
+#include "event/Event.hpp"
 
-#include "EventQueue.h"
+#include "EventQueue.hpp"
 
-#include "util/ConcurrentQueue.h"
-#include "util/HashedString.h"
-#include "util/HashManager.h"
-#include "Module.h"
+#include "util/ConcurrentQueue.hpp"
+#include "util/HashedString.hpp"
+#include "util/HashManager.hpp"
+#include "Module.hpp"
 
 #include <forward_list>
 #include <map>

@@ -1,7 +1,7 @@
 #ifndef QUADTREE_H
 #define QUADTREE_H
 
-#include "Geom.h"
+#include "Geom.hpp"
 
 #include <forward_list>
 

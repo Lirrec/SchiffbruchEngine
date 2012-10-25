@@ -1,4 +1,4 @@
-#include "util/HashedString.h"
+#include "util/HashedString.hpp"
 
 #include <cstring>
 

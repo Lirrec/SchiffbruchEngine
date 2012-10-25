@@ -1,10 +1,10 @@
-#include "TickControl.h"
+#include "TickControl.hpp"
 
 #include <boost/lexical_cast.hpp>
 
-#include "Module.h"
-#include "../modules/Core.h"
-#include "../event/EventCore.h"
+#include "Module.hpp"
+#include "../modules/Core.hpp"
+#include "../event/EventCore.hpp"
 
 void TickControl::Init( int TPS, std::shared_ptr<Event> TickEvt )
 {

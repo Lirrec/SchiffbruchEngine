@@ -4,9 +4,9 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Geom.h"
+#include "Geom.hpp"
 
-#include "Engine.h"
+#include "Engine.hpp"
 
 #include <memory>
 

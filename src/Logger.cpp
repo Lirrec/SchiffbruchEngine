@@ -1,4 +1,4 @@
 #include <boost/thread/mutex.hpp>
-#include "Logger.h"
+#include "Logger.hpp"
 
 boost::mutex Logger::io_mutex;

@@ -3,9 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Geom.h"
-#include "event/EventUser.h"
-#include "ImageSet.h"
+#include "Geom.hpp"
+#include "event/EventUser.hpp"
+#include "ImageSet.hpp"
 
 #include <string>
 #include <memory>

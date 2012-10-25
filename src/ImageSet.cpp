@@ -1,6 +1,6 @@
-#include "ImageSet.h"
+#include "ImageSet.hpp"
 
-#include "ResourceManager.h"
+#include "ResourceManager.hpp"
 
 ImageSet::ImageSet()
  : 	Name(),

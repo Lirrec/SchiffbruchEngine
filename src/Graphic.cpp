@@ -1,6 +1,6 @@
-#include "Graphic.h"
+#include "Graphic.hpp"
 
-#include "Module.h"
+#include "Module.hpp"
 
 #include <boost/uuid/uuid_generators.hpp>
 
