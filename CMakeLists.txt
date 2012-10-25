@@ -69,10 +69,11 @@ endif()
 
 add_definitions(-Wall -DCOUNT_EVENTS -fPIC)
 
-include_directories(${PROJECT_SOURCE_DIR}/include) # needed?
+include_directories(${PROJECT_SOURCE_DIR}/include)
 link_directories(${SFML_ROOT})
 #link_directories("/usr/lib")
 
 add_subdirectory(SFGUI)
+
 
 add_subdirectory(src)
