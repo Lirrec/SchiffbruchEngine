@@ -24,10 +24,14 @@
           #    event/EventUser.cpp  event/SFMLEvent.cpp
           #    logic/Action.cpp     modules/Core.cpp )
 
-file( GLOB_RECURSE sbe_SRCS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/src/*.cpp" )
-file( GLOB_RECURSE sbe_SRCHDRS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/src/*.hpp" )
+file( GLOB_RECURSE sbe_SRCS RELATIVE "${PROJECT_SOURCE_DIR}/src" "${PROJECT_SOURCE_DIR}/src/*.cpp" )
+file( GLOB_RECURSE sbe_SRCHDRS RELATIVE "${PROJECT_SOURCE_DIR}/src" "${PROJECT_SOURCE_DIR}/src/*.hpp" )
 
-file( GLOB_RECURSE sbe_HDRS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/include/*.hpp" )
+file( GLOB_RECURSE sbe_HDRS RELATIVE "${PROJECT_SOURCE_DIR}/src" "${PROJECT_SOURCE_DIR}/include/*.hpp" )
+
+message( "-- Found the following SRCS:\n ${sbe_SRCS}" )
+message( "-- Found the following HDRS:\n ${sbe_HDRS}" )
+message( "-- Found the following SRCHDRS:\n ${sbe_SRCHDRS}" )
 
 add_definitions(-fomit-frame-pointer -fexpensive-optimizations -O3 -DBOOST_THREAD_USE_LIB)
 include_directories(${PROJECT_SOURCE_DIR}/include)
