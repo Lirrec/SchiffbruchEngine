@@ -59,7 +59,7 @@ class QuadTreeNode
 
 };
 
-#include "QuadTree.cpp"
+#include "QuadTree.ipp"
 
 #endif // QUADTREE_H
 
