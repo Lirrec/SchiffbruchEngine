@@ -1,9 +1,9 @@
 #ifndef EVTLISTENER_H
 #define EVTLISTENER_H
 
-#include "Event.hpp"
+#include "sbe/event/Event.hpp"
 
-#include "Module.hpp"
+#include "sbe/Module.hpp"
 
 /** Base class for all classes which receive events.
 	An Event user may receive Events (and send) Events.

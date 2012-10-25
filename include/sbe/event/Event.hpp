@@ -8,10 +8,10 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/any.hpp>
 
-#include "../util/HashedString.hpp"
-#include "Geom.hpp"
+#include "sbe/util/HashedString.hpp"
+#include "sbe/Geom.hpp"
 
-#include "Engine.hpp"
+#include "sbe/Engine.hpp"
 
 #include <map>
 #include <vector>
