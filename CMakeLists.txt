@@ -69,7 +69,7 @@ endif()
 
 add_definitions(-Wall -DCOUNT_EVENTS -fPIC)
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/include/sbe)
 link_directories(${SFML_ROOT})
 #link_directories("/usr/lib")
 
