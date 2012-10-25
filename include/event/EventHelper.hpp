@@ -1,8 +1,8 @@
 #ifndef EVTHELPER_H
 #define EVTHELPER_H
 
-#include "Event.h"
-#include "EventUser.h"
+#include "Event.hpp"
+#include "EventUser.hpp"
 
 #include <string>
 

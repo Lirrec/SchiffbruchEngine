@@ -1,7 +1,7 @@
-#include "QuadTree.h"
+#include "QuadTree.hpp"
 
-#include "Engine.h"
-#include "Graphic.h"
+#include "Engine.hpp"
+#include "Graphic.hpp"
 
 template<class Type> int QuadTreeNode<Type>::MinNodeSize(128);
 

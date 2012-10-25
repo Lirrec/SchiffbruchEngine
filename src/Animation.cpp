@@ -1,12 +1,12 @@
-#include "Animation.h"
+#include "Animation.hpp"
 
 #include <SFML/Graphics.hpp>
 
-#include "Engine.h"
+#include "Engine.hpp"
 
-#include "ResourceManager.h"
-#include "event/EventQueue.h"
-#include "Geom.h"
+#include "ResourceManager.hpp"
+#include "event/EventQueue.hpp"
+#include "Geom.hpp"
 
 #include <cmath>
 #include <iostream>

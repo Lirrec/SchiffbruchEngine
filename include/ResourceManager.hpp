@@ -9,9 +9,9 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 
-#include "Animation.h"
+#include "Animation.hpp"
 
-#include "util/NamedList.h"
+#include "util/NamedList.hpp"
 
 /** This struct is returned when parsing files with lists of resources.
 This applies to images, fonts and audio, which only need a path to be loaded.

@@ -5,7 +5,7 @@
 #include <SFML/Window/Event.hpp>
 #include <boost/any.hpp>
 
-#include "event/EventUser.h"
+#include "event/EventUser.hpp"
 
 #include <tuple>
 #include <map>

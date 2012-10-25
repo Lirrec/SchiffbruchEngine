@@ -1,13 +1,13 @@
-#include "GameBase.h"
+#include "GameBase.hpp"
 
 #include <SFML/Graphics.hpp>
 
 #include <boost/thread.hpp>
 
-#include "Module.h"
-#include "Engine.h"
+#include "Module.hpp"
+#include "Engine.hpp"
 
-#include "modules/Core.h"
+#include "modules/Core.hpp"
 
 #include <memory>
 #include <iostream>

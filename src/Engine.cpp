@@ -1,12 +1,12 @@
-#include "Engine.h"
-#include "Logger.h"
+#include "Engine.hpp"
+#include "Logger.hpp"
 
-#include "ResourceManager.h"
-#include "Sound.h"
-#include "Graphic.h"
+#include "ResourceManager.hpp"
+#include "Sound.hpp"
+#include "Graphic.hpp"
 
-#include "event/Event.h"
-#include "event/SFMLEvent.h"
+#include "event/Event.hpp"
+#include "event/SFMLEvent.hpp"
 
 #include <memory>
 #include <iostream>

@@ -4,7 +4,7 @@
 #include <cstddef>
 #include <SFML/Audio.hpp>
 
-#include "util/NamedList.h"
+#include "util/NamedList.hpp"
 
 #include <utility>
 #include <memory>

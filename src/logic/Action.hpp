@@ -58,7 +58,7 @@ Rewards:
 
 #include <string>
 
-#include "event/EventUser.h"
+#include "event/EventUser.hpp"
 
 typedef std::function< void(std::string laststate) > StateFunction;
 

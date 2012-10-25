@@ -1,15 +1,15 @@
-#include "event/Event.h"
+#include "event/Event.hpp"
 
 #include "boost/lexical_cast.hpp"
 
-#include "Engine.h"
+#include "Engine.hpp"
 
-#include "event/EventHelper.h"
+#include "event/EventHelper.hpp"
 
-#include "EventCore.h"
+#include "EventCore.hpp"
 
 // internal include
-#include "../src/modules/Core.h"
+#include "../src/modules/Core.hpp"
 
 #include <algorithm>
 #include <utility>

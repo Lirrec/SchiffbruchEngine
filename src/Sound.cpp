@@ -1,7 +1,7 @@
-#include "Sound.h"
+#include "Sound.hpp"
 
-#include "Engine.h"
-#include "ResourceManager.h"
+#include "Engine.hpp"
+#include "ResourceManager.hpp"
 
 #include <utility>
 
