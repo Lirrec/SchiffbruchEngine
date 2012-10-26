@@ -76,7 +76,7 @@ add_subdirectory(SFGUI)
 file( GLOB_RECURSE sbe_SRCS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/src/*.cpp" )
 file( GLOB_RECURSE sbe_SRCHDRS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/src/*.hpp" )
 
-file( GLOB_RECURSE sbe_HDRS RELATIVE "${PROJECT_SOURCE_DIR}/src" "${PROJECT_SOURCE_DIR}/include/*.hpp" )
+file( GLOB_RECURSE sbe_HDRS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/include/*.hpp" )
 
 message( "-- Found the following SRCS:\n ${sbe_SRCS}" )
 message( "-- Found the following HDRS:\n ${sbe_HDRS}" )
