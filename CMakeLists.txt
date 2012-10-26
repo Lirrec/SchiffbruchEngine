@@ -3,9 +3,11 @@ project(SchiffbruchEngine)
 cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/SFGUI/extlibs/SFML/cmake/Modules" ${CMAKE_MODULE_PATH})
-if(WIN32)
-  set(GENERIC_LIBS pthread jpeg GLEW freetype openal sndfile)
-  link_directories( ${CUSTOM_SFML_ROOT}/extlibs/libs-mingw/ )
+
+if(CMAKE_SYSTEM_NAME MATCHES Windows)
+  set(GENERIC_LIBS pthread jpeg GLEW freetype openal32 sndfile)
+  #useless wont be known in a project that uses sbe
+  #link_directories( ${CUSTOM_SFML_ROOT}/extlibs/libs-mingw/ )
 else()
   set(GENERIC_LIBS pthread jpeg GLEW Xrandr freetype rt openal sndfile)
 endif()
@@ -61,14 +63,8 @@ endif()
 
 #option(SHARED OFF)
 
-# fix mingw + boost
-if(CMAKE_SYSTEM_NAME MATCHES Windows)
-	add_definitions(-std=gnu++0x)
-else()
-	add_definitions(-std=c++0x)
-endif()
-
 add_definitions(-Wall -DCOUNT_EVENTS -fPIC)
+add_definitions(-std=c++11)
 
 link_directories(${SFML_ROOT})
 #link_directories("/usr/lib")
