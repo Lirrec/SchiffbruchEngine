@@ -4,9 +4,10 @@ cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/SFGUI/extlibs/SFML/cmake/Modules" ${CMAKE_MODULE_PATH})
 if(WIN32)
-  set(GENERIC_LIBS pthread jpeg GLEW freetype)
+  set(GENERIC_LIBS pthread jpeg GLEW freetype openal sndfile)
+  link_directories( ${CUSTOM_SFML_ROOT}/extlibs/libs-mingw/ )
 else()
-  set(GENERIC_LIBS pthread jpeg GLEW Xrandr freetype rt)
+  set(GENERIC_LIBS pthread jpeg GLEW Xrandr freetype rt openal sndfile)
 endif()
 
 option(USE_CUSTOM_BOOST "" OFF)
@@ -34,7 +35,9 @@ if(USE_CUSTOM_SFML)
 endif(USE_CUSTOM_SFML)
 
 find_package(Boost 1.46 COMPONENTS thread system)# regex)
-find_package(SFML 2 COMPONENTS graphics window system audio)
+#only audio required, the others are pulled in by sfgui
+find_package(SFML 2 COMPONENTS audio)
+#find_package(SFML 2 COMPONENTS graphics window system audio)
 
 foreach(LIB ${GENERIC_LIBS})
 	find_library(FOUND_${LIB} ${LIB} )
@@ -98,5 +101,7 @@ set_property(GLOBAL PROPERTY SBE_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include;${B
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
-target_link_libraries(sbe ${Boost_LIBRARIES} ${SFML_LIBRARIES} ${GENERIC_LIBS})
-message("LINK: ${Boost_LIBRARIES} ${SFML_LIBRARIES} ${GENERIC_LIBS}")
+target_link_libraries(sbe sfgui)
+target_link_libraries(sbe ${SFML_LIBRARIES})
+target_link_libraries(sbe ${Boost_LIBRARIES} ${GENERIC_LIBS})
+#message("LINK: ${Boost_LIBRARIES} ${SFML_LIBRARIES} ${GENERIC_LIBS}")
