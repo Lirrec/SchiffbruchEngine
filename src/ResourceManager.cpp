@@ -1,4 +1,4 @@
-#include "ResourceManager.hpp"
+#include "sbe/ResourceManager.hpp"
 
 ResourceManager::ResourceManager()
  : usedmemory(0)

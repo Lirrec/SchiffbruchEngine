@@ -2,7 +2,9 @@
 
 #include <boost/lexical_cast.hpp>
 
-#include "Module.hpp"
+#include "sbe/Module.hpp"
+
+//internal includes
 #include "../modules/Core.hpp"
 #include "../event/EventCore.hpp"
 

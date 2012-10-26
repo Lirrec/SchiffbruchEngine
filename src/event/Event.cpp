@@ -1,15 +1,14 @@
-#include "event/Event.hpp"
+#include "sbe/event/Event.hpp"
 
-#include "boost/lexical_cast.hpp"
+#include <boost/lexical_cast.hpp>
 
-#include "Engine.hpp"
+#include "sbe/Engine.hpp"
 
-#include "event/EventHelper.hpp"
+#include "sbe/event/EventHelper.hpp"
 
+// local includes
 #include "EventCore.hpp"
-
-// internal include
-#include "../src/modules/Core.hpp"
+#include "../modules/Core.hpp"
 
 #include <algorithm>
 #include <utility>

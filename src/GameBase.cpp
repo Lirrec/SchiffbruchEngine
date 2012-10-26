@@ -1,11 +1,11 @@
-#include "GameBase.hpp"
+#include "sbe/GameBase.hpp"
 
 #include <SFML/Graphics.hpp>
 
 #include <boost/thread.hpp>
 
-#include "Module.hpp"
-#include "Engine.hpp"
+#include "sbe/Module.hpp"
+#include "sbe/Engine.hpp"
 
 #include "modules/Core.hpp"
 

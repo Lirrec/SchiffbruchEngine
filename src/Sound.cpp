@@ -1,7 +1,7 @@
-#include "Sound.hpp"
+#include "sbe/Sound.hpp"
 
-#include "Engine.hpp"
-#include "ResourceManager.hpp"
+#include "sbe/Engine.hpp"
+#include "sbe/ResourceManager.hpp"
 
 #include <utility>
 

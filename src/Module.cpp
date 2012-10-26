@@ -1,8 +1,8 @@
-#include "Module.hpp"
+#include "sbe/Module.hpp"
 
+// local includes
 #include "event/EventCore.hpp"
 #include "modules/Core.hpp"
-
 #include "util/TickControl.hpp"
 
 boost::thread_specific_ptr<Module> Module::Instance;

@@ -3,7 +3,7 @@
 #include <boost/lexical_cast.hpp>
 
 #include "EventCore.hpp"
-#include "event/EventHelper.hpp"
+#include "sbe/event/EventHelper.hpp"
 
 
 #include "../modules/Core.hpp"

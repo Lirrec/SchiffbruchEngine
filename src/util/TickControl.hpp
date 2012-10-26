@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "event/Event.hpp"
+#include "sbe/event/Event.hpp"
 
 /**
 	This class provides simple functionality for running a tick-based eventloop.
