@@ -67,7 +67,6 @@ endif()
 
 add_definitions(-Wall -DCOUNT_EVENTS -fPIC)
 
-include_directories(${PROJECT_SOURCE_DIR}/include/sbe)
 link_directories(${SFML_ROOT})
 #link_directories("/usr/lib")
 
@@ -86,8 +85,6 @@ if(DEBUG)
   add_definitions(-fomit-frame-pointer -fexpensive-optimizations -O3 -DBOOST_THREAD_USE_LIB)
 endif()
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
-
 if(SHARED)
     add_library(sbe SHARED ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS})
 else()
@@ -96,5 +93,10 @@ else()
 endif()
 
 set_property(GLOBAL PROPERTY SBE_LINK_LIBS "${Boost_LIBRARIES};${SFML_LIBRARIES};${GENERIC_LIBS}")
+set_property(GLOBAL PROPERTY SBE_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include;${Boost_INCLUDE_DIR};${SFML_INCLUDE_DIR}")
+
+include_directories(${PROJECT_SOURCE_DIR}/include/sbe)
+include_directories(${PROJECT_SOURCE_DIR}/src)
+
 target_link_libraries(sbe ${Boost_LIBRARIES} ${SFML_LIBRARIES} ${GENERIC_LIBS})
 message("LINK: ${Boost_LIBRARIES} ${SFML_LIBRARIES} ${GENERIC_LIBS}")
