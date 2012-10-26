@@ -3,7 +3,11 @@ project(SchiffbruchEngine)
 cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/SFGUI/extlibs/SFML/cmake/Modules" ${CMAKE_MODULE_PATH})
-set(GENERIC_LIBS pthread jpeg GLEW Xrandr freetype rt)
+if(WIN32)
+  set(GENERIC_LIBS pthread jpeg GLEW freetype)
+else()
+  set(GENERIC_LIBS pthread jpeg GLEW Xrandr freetype rt)
+endif()
 
 option(USE_CUSTOM_BOOST "" OFF)
 option(USE_CUSTOM_SFML "" ON)
@@ -30,13 +34,11 @@ if(USE_CUSTOM_SFML)
 endif(USE_CUSTOM_SFML)
 
 find_package(Boost 1.46 COMPONENTS thread system)# regex)
-#find_package(Boost 1.46 COMPONENTS thread_win32 system)# W32
-find_package(SFML 2 COMPONENTS system window graphics audio)
+find_package(SFML 2 COMPONENTS graphics window system audio)
 
 foreach(LIB ${GENERIC_LIBS})
 	find_library(FOUND_${LIB} ${LIB} )
 endforeach()
-
 
 if(NOT Boost_FOUND)
 	set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
@@ -44,11 +46,7 @@ if(NOT Boost_FOUND)
 endif()
 
 if(NOT SFML_FOUND)
-	set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
-	find_package(SFML 2 COMPONENTS system window graphics audio)
-	if(NOT SFML_FOUND)
-		message( FATAL_ERROR "Please build SFML in '${CUSTOM_SFML_ROOT}/build' first!")
-	endif()
+	message( FATAL_ERROR "Please build SFML in '${CUSTOM_SFML_ROOT}/build' first!")
 endif()
 
 if(Boost_FOUND)
@@ -75,5 +73,27 @@ link_directories(${SFML_ROOT})
 
 add_subdirectory(SFGUI)
 
+file( GLOB_RECURSE sbe_SRCS RELATIVE "${PROJECT_SOURCE_DIR}/src" "${PROJECT_SOURCE_DIR}/src/*.cpp" )
+file( GLOB_RECURSE sbe_SRCHDRS RELATIVE "${PROJECT_SOURCE_DIR}/src" "${PROJECT_SOURCE_DIR}/src/*.hpp" )
 
-add_subdirectory(src)
+file( GLOB_RECURSE sbe_HDRS RELATIVE "${PROJECT_SOURCE_DIR}/src" "${PROJECT_SOURCE_DIR}/include/*.hpp" )
+
+message( "-- Found the following SRCS:\n ${sbe_SRCS}" )
+message( "-- Found the following HDRS:\n ${sbe_HDRS}" )
+message( "-- Found the following SRCHDRS:\n ${sbe_SRCHDRS}" )
+
+if(DEBUG)
+  add_definitions(-fomit-frame-pointer -fexpensive-optimizations -O3 -DBOOST_THREAD_USE_LIB)
+endif()
+
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
+if(SHARED)
+    add_library(sbe SHARED ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS})
+else()
+    add_library(sbe STATIC ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS})
+    add_definitions(-DSFML_STATIC)
+endif()
+
+set_property(GLOBAL PROPERTY SBE_LINK_LIBS "${Boost_LIBRARIES};${SFML_LIBRARIES};${GENERIC_LIBS}")
+target_link_libraries(sbe ${Boost_LIBRARIES} ${SFML_LIBRARIES} ${GENERIC_LIBS})
