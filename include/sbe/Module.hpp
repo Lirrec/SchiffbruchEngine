@@ -4,6 +4,7 @@
 #include <boost/thread.hpp>
 #include "../src/event/EventQueue.hpp"
 
+#include <memory>
 #include <string>
 #include <forward_list>
 
