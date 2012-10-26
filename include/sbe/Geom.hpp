@@ -418,7 +418,7 @@ namespace Geom
 	}
 
 
-};	// namespace Geom
+}	// namespace Geom
 
 #endif // GEOM_H
 

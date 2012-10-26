@@ -26,6 +26,7 @@ public:
          */
         boost::mutex::scoped_lock io_mutex_lock(io_mutex);
         oss << data;
+        std::cout << data;
         return *this;
     }
 
@@ -34,6 +35,7 @@ public:
         // for stream manipulators
         boost::mutex::scoped_lock io_mutex_lock(io_mutex);
         oss << pf;
+        std::cout << pf;
         return *this;
     }
 

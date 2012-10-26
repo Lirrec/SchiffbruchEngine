@@ -47,7 +47,9 @@
 		@code
 		Event d("EVT_MY_EVT");
 		float mydata = 5;
-		e.SetData( mydata ;)
+		e.SetData( mydata );
+
+		Module::Get()->QueueEvent(e, true); // set to false to only send to own module
 		@endcode
 
 		The use of Modules (@see Module) makes it possible to use events in multiple Threads.

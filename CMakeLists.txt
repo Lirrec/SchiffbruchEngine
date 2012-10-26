@@ -63,7 +63,7 @@ endif()
 
 #option(SHARED OFF)
 
-add_definitions(-Wall -DCOUNT_EVENTS -fPIC)
+add_definitions(-DCOUNT_EVENTS)
 add_definitions(-std=c++11)
 
 link_directories(${SFML_ROOT})
@@ -88,7 +88,7 @@ if(SHARED)
     add_library(sbe SHARED ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS})
 else()
     add_library(sbe STATIC ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS})
-    add_definitions(-DSFML_STATIC)
+    add_definitions(-DSFML_STATIC -DSFGUI_STATIC)
 endif()
 
 set_property(GLOBAL PROPERTY SBE_LINK_LIBS "${Boost_LIBRARIES};${SFML_LIBRARIES};${GENERIC_LIBS}")
