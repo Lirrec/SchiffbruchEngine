@@ -1,12 +1,12 @@
-#include "Engine.hpp"
-#include "Logger.hpp"
+#include "sbe/Engine.hpp"
+#include "sbe/Logger.hpp"
 
-#include "ResourceManager.hpp"
-#include "Sound.hpp"
-#include "Graphic.hpp"
+#include "sbe/ResourceManager.hpp"
+#include "sbe/Sound.hpp"
+#include "sbe/Graphic.hpp"
 
-#include "event/Event.hpp"
-#include "event/SFMLEvent.hpp"
+#include "sbe/event/Event.hpp"
+#include "sbe/event/SFMLEvent.hpp"
 
 #include <memory>
 #include <iostream>

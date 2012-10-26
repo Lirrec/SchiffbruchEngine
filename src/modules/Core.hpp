@@ -1,8 +1,8 @@
 #ifndef CORE_H
 #define CORE_H
 
-#include "Module.hpp"
-#include "event/EventUser.hpp"
+#include "sbe/Module.hpp"
+#include "sbe/event/EventUser.hpp"
 
 #include <memory>
 

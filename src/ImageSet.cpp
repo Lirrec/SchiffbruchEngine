@@ -1,6 +1,6 @@
-#include "ImageSet.hpp"
+#include "sbe/ImageSet.hpp"
 
-#include "ResourceManager.hpp"
+#include "sbe/ResourceManager.hpp"
 
 ImageSet::ImageSet()
  : 	Name(),
