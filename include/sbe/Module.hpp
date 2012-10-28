@@ -75,8 +75,11 @@ struct ModuleStartInfo
 	Modules provide an easy way to separate application code into threads without any extra code required by the user.
 	Events will be sent and synchronized between threads if requested.
 
-
-
+	!!!!!!!!!!!!!!!!!!!!!!!!!!! WARNING:   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	Any code using references to Module::Get() ( e.g. in the EventUser class on destruct ) will segfault when called
+	in the modules destructor.
+	MAKE SURE YOU DESTROY ANYTHING INSIDE A MODULE USING EVENTUSER OR Module::Get() IN THE DeInit() METHOD!
+	!!!!!!!!!!!!!!!!!!!!!!!!!!! WARNING END   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	Modules have their own local eventqueue and register on start with the global EventCore.
 */
@@ -179,7 +182,14 @@ class Module : sf::NonCopyable
 		virtual void Init() {};
 		/**
 			Called after Execute() returns.
-			The default implementation will send Tick-events until the quit member is set to true.
+			!!!!!!!!!!!!!!!!!!!!!!!!!!! NOTICE:   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			Any code using references to Module::Get() ( e.g. in the EventUser class on destruct ) will segfault when called
+			in the modules destructor.
+			MAKE SURE YOU DESTROY ANYTHING INSIDE A MODULE USING EVENTUSER OR Module::Get() IN THE DeInit() METHOD!
+			THIS ALSO MEANS THAT YOU CANT HAVE A NON-POINTER MEMBER IN YOUR MODULE CLASS WHICH USES ONE OF THOSE.
+			Pointers or std::shared_ptr have to be deleted here in DeInit().
+
+			!!!!!!!!!!!!!!!!!!!!!!!!!!! NOTICE   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		*/
 		virtual void DeInit() {};
 
