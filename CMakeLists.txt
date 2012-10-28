@@ -9,7 +9,7 @@ if(CMAKE_SYSTEM_NAME MATCHES Windows)
   #useless wont be known in a project that uses sbe
   #link_directories( ${CUSTOM_SFML_ROOT}/extlibs/libs-mingw/ )
 else()
-  set(GENERIC_LIBS pthread jpeg GLEW Xrandr freetype rt openal sndfile)
+  set(GENERIC_LIBS pthread jpeg GLEW X11 Xrandr freetype rt openal sndfile)
 endif()
 
 option(USE_CUSTOM_BOOST "" OFF)
