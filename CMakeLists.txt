@@ -64,7 +64,11 @@ endif()
 #option(SHARED OFF)
 
 add_definitions(-DCOUNT_EVENTS)
-add_definitions(-std=c++11)
+if (GCC_VERSION VERSION_GREATER 4.6)
+    add_definitions ( -std=c++11 )
+elseif()
+    add_definitions ( -std=c++0x )
+endif()
 
 link_directories(${SFML_ROOT})
 #link_directories("/usr/lib")
