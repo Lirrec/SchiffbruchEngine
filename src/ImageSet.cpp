@@ -11,7 +11,7 @@ ImageSet::ImageSet()
 	FrameCount(),
 	FramesPerSecond(0),
 	NumFrames(0)
-{};
+{}
 
 ImageSet::ImageSet(const  std::string& _name,
 				 const std::string& _imgname,

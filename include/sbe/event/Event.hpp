@@ -112,9 +112,9 @@ class Event
 
 		/// Sets an arbitrary Type as data
 		template < class T >
-		void SetData( const T& Data )
+		void SetData( const T& _Data )
 		{
-			EvtData = Data;
+			EvtData = _Data;
 		}
 
 		/// returns the data stored within the event

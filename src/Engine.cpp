@@ -48,6 +48,6 @@ void Engine::UnloadSubSystems()
 
 Logger& Engine::out() { return *(Instance->Log); }
 
-std::shared_ptr<SoundSystem> 		Engine::GetSndSys() 		{ return Instance->SndSys; };
-std::shared_ptr<ResourceManager>	Engine::GetResMgr() 		{ return Instance->ResMgr; };
-sf::RenderWindow&					Engine::GetApp() 		{ return Instance->App; };
+std::shared_ptr<SoundSystem> 		Engine::GetSndSys() 		{ return Instance->SndSys; }
+std::shared_ptr<ResourceManager>	Engine::GetResMgr() 		{ return Instance->ResMgr; }
+sf::RenderWindow&					Engine::GetApp() 		{ return Instance->App; }
