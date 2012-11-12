@@ -33,6 +33,18 @@ class IO
 
     private:
 
+        /**
+        Register IOPlugins for all the Classes supported by default by the engine.
+        This includes:
+            sf::Texture
+            sf::Soundbuffer
+            sf::Music
+            sf::Font
+            ImageSet
+
+        */
+        void loadDefaultPlugins();
+
         std::map<std::type_index, iBinaryIOPlugin> BinaryPlugins;
         std::map<std::type_index, iTreeIOPlugin> TreePlugins;
 }

@@ -11,7 +11,7 @@ class ResourceManager;
 class Graphics;
 class AssetManager;
 class SFMLEventConverter;
-
+class IO;
 //class Logger;
 
 #include <memory>
@@ -49,6 +49,7 @@ class Engine
 
 		std::shared_ptr<SoundSystem> 	SndSys;
 		std::shared_ptr<ResourceManager>	ResMgr;
+		std::shared_ptr<IO>	IO;
 };
 
 
