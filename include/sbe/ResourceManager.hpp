@@ -4,30 +4,23 @@
 #include <string>
 #include <memory>
 
+#include <typeinfo>
+#include <typeindex>
+
+
+
 // fixes some ptrdiff_t not defined errors
 #include <cstddef>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 
+#include <boost/any.hpp>
+#include <boost/ptree.hpp>
+
 #include "Animation.hpp"
 
 #include "util/NamedList.hpp"
 
-/** This struct is returned when parsing files with lists of resources.
-This applies to images, fonts and audio, which only need a path to be loaded.
-More complex Resources ( atm only the animations) are parsed seperately
-*/
-
-struct Resource
-{
-	enum {
-		RES_IMAGE = 0,
-		RES_FONT,
-		RES_SOUND
-	} ResType;
-
-	std::string Path;
-};
 
 class ResourceManager
 {
@@ -36,64 +29,87 @@ class ResourceManager
 		ResourceManager();
 		~ResourceManager();
 
-
-		// - Loading -
-
-		/// try to load the given font
-		bool LoadFont ( const std::string& path, const std::string& name );
-
-		/// try to load the given image
-		bool LoadTexture ( const std::string& path, const std::string& name );
-
-		/// try to load the given audio file ( stored in an audiobuffer
-		bool LoadAudio( const std::string& path, const std::string& name );
+        template < typename T >
+        std::shared_ptr<T> get( const std::string& name)
+        {
+            auto ti = std::type_index(typeid(T));
+            auto r = boost:.any_cast<NamedList<T>> ( Resources[ti] );
+            return r[name];
+        }
 
 
-		// - Creation -
+        bool add(T& res, const std::string& name)
+        {
+            add(std::shared_ptr<T>(res), name);
+        }
 
-		/// loads the data required for an animation (ImageSet class)
-		bool CreateImageSet ( const std::string& name, const std::string& from_image, const Geom::Vec2 StartPos, const Geom::Vec2 TileSize, const Geom::Vec2 TileCounts, const int fps );
+        bool add( T* res, const std::string& name)
+        {
+            add(std::shared_ptr<T>(res), name);
+        }
 
-		/// Adds an ImageSet to the list of Animations, loading the Image if required
-		bool AddImageSet ( const ImageSet& I );
+        bool add(std::shared_ptr<T> res, const std::string& name)
+        {
+            auto ti = std::type_index(typeid(T)),
 
-		/// creates a new instance of an animation based on the given name of the ImageSet
-		std::shared_ptr<Animation> 	CreateAnimation ( const std::string& from_name ) const;
-		/// creates a new instance of a Sound based on the given name of the SoundBuffer
-		std::shared_ptr<sf::Sound> 	CreateSound(const std::string& from_name) const;
-		/// creates a new Music based on the given name of the SoundBuffer
-		std::shared_ptr<sf::Music> 	CreateMusic(const std::string& from_name) const;
+            if ( Resources.find(ti) == Resources.end() )
+            {
+                Engine::out() << "[ResourceManager] Class " << ti.name() << " not registered as Resource!" << std::endl;
+                return false;
+            }
 
-		// - Requesting -
+            auto r = boost:.any_cast<NamedList<T>> ( Resources[ti] );
+            r[name] = res;
 
-		/// returns a loaded Font or an invalid shared_ptr
-		std::shared_ptr<sf::Font> 	GetFont(const std::string& name) const;
+            return true;
+        }
 
-		/// returns a loaded Image or an invalid shared_ptr
-		std::shared_ptr<sf::Texture> 	GetTexture(const std::string& name) const;
 
-		/// returns a loaded ImageSet or an invalid shared_ptr
-		std::shared_ptr<ImageSet> 	GetImageSet ( const std::string& name ) const;
+        template< typename T>
+        bool remove(  std::type_info ti , std::string& name )
+        {
+            auto r = boost:.any_cast<NamedList<T>> ( Resources[ std::type_index(ti) ] );
+            r.erase(name);
+        }
 
-		/// returns a loaded SoundBuffer or an invalid shared_ptr
-		std::shared_ptr<sf::SoundBuffer> 	GetAudio(const std::string& name) const;
 
-		static const sf::Font& getDefaultFont();
+        // - Plugin and Class Management -
+        template < typename T>
+        void RegisterClass()
+        {
+            auto ti = std::type_index(typeid(T));
+
+            if (Resources.find(ti) == Resources.end())
+            {
+                Resources[ti] = boost::any( NamedList<T>() );
+                Engine::out() << "[ResourceManager] Registered class " << ti.name() << " as Resource." << std::endl;
+            }
+            else
+            {
+                Engine::out() << "[ResourceManager] Cant register class " << ti.name() << " as Resource, already registered!" << std::endl;
+            }
+
+        }
+
+        // - Settings/Registry -
+        // ebenfalls über Events erreichbar
+        boost::ptree::node& getSettings() { return Settings; };
+
 
 	private:
+
+        void init();
 
 		/// dumps all internal namedlists
 		void DumpDebugInfo();
 
-		//resources
-		NamedList<sf::Texture> 		Textures;
-		NamedList<sf::Font>			Fonts;
-		NamedList<ImageSet>			ImageSets;
-		NamedList<sf::SoundBuffer> 	Sounds;
-		NamedList<sf::Music> 		Tracks;
+        // map from std::type_index to NamedList<T>
+        typedef std::map<std::type_index, boost::any> ResourceMap;
 
-		/// used memory in mebibytes (rough estimation)
-		double usedmemory;
+        ResourceMap Resources;
+
+        /// stores settings
+        boost::ptree Settings;
 };
 
 #endif // RESMGR_H

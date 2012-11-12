@@ -81,7 +81,7 @@ sf::Sprite ImageSet::CreateSprite(const Geom::Vec2 FramePos) const
 {
 	//Engine::out() << "CreateSprite: " << FramePos << std::endl;
 	sf::Sprite re;
-	std::shared_ptr<sf::Texture> txt = Engine::GetResMgr()->GetTexture(ImageName);
+	std::shared_ptr<sf::Texture> txt = Engine::GetResMgr()->get<sf::Texture>(ImageName);
 
 	if (txt)
 	{
@@ -100,7 +100,7 @@ std::shared_ptr<sf::Sprite> ImageSet::CreateSpritePtr(const Geom::Vec2 FramePos)
 {
 	//Engine::out() << "CreateSprite: " << FramePos << std::endl;
 	std::shared_ptr<sf::Sprite> re( new sf::Sprite );
-	std::shared_ptr<sf::Texture> txt = Engine::GetResMgr()->GetTexture(ImageName);
+	std::shared_ptr<sf::Texture> txt = Engine::GetResMgr()->get<sf::Texture>(ImageName);
 
 	if (txt)
 	{

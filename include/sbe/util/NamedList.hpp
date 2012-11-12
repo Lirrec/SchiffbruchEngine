@@ -73,7 +73,7 @@ public:
 	{
 		for ( auto it = Items.begin(); it != Items.end(); ++it)
 		{
-			Engine::out() << "Item: " << it->first << std::endl;
+			Engine::out() << "- " << it->first << std::endl;
 		}
 	}
 

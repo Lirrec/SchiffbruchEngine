@@ -19,12 +19,15 @@ std::shared_ptr<sf::Sound> SoundSystem::GetSound(const std::string& name)
 	}
 	else
 	{
-		s = Engine::GetResMgr()->CreateSound(name);
+        std::shared_ptr<sf::Sound> s;
+	    std::shared_ptr<sf::SoundBuffer> sb = Engine::GetResMgr()->get<sf::SoundBuffer>(from_name);
 
-		if (s)
-		{
-			return s;
-		}
+	    if (!sb) return s;
+
+	    s.reset(new sf::Sound());
+        s->setBuffer(*sb);
+
+        return s;
 	}
 
 	Engine::out() << "SoundSYS: Unable to play or load sound: " << name << std::endl;

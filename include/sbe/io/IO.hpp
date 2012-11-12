@@ -1,35 +1,40 @@
 #ifndef IO_H
 #define IO_H
 
+#include <memory>
+#include <typeindex>
+#include <typeinfo>
+
+#include <map>
+
+
 class IO
 {
 
 	public:
-	void addBinaryPlugin(std::shared_ptr<iBinaryLoaderPlugin> LP);
-	void addTreePlugin(std::shared_ptr<iTreeLoaderPlugin> LP);
 
-	template<class T>
-	std::shared_ptr<T> loadObjectFile<T>( const std::string& filename );
+        template< typename T>
+        void addBinaryPlugin(std::shared_ptr<iBinaryIOPlugin<T>> LP);
 
-	template<class T>
-	bool saveObject<T>( std::shared_ptr<T> pObj, const std::string& path );
+        template< typename T>
+        void addTreePlugin(std::shared_ptr<iTreeIOPlugin<T>> LP);
 
-}
+        template<class T>
+        std::shared_ptr<T> loadObjectFile<T>( const std::string& filename );
 
-///TODO: move into ResourceManager
-class ResMgr
-{
+        template<class T>
+        bool saveObject<T>( std::shared_ptr<T> pObj, const std::string& path );
 
-	plugin:
-	// ebenfalls über Events erreichbar
-	boost::ptree::node getSetting()
-	void setSetting()
+        void loadDirectory( const std::string& path );
 
-	void addPath( const std::string& path );
+        bool loadFile( const std::string& path );
 
-	void loadDirectory( const std::string& path );
+        void addPath( const std::string& path );
 
-	bool loadFile( const std::string& path );
+    private:
+
+        std::map<std::type_index, iBinaryIOPlugin> BinaryPlugins;
+        std::map<std::type_index, iTreeIOPlugin> TreePlugins;
 }
 
 #endif IO_H

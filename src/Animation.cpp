@@ -20,7 +20,7 @@
 
 Animation::Animation( ImageSet& _A) : AnimData(_A)
 {
-	std::shared_ptr<sf::Texture> txt = Engine::GetResMgr()->GetTexture(AnimData.ImageName);
+	std::shared_ptr<sf::Texture> txt = Engine::GetResMgr()->get<sf::Texture>(AnimData.ImageName);
 	if (txt) {
 		Sprite.setTexture(*txt);
 	}
