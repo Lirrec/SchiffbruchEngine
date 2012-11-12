@@ -52,7 +52,7 @@ class Animation : public EventUser
 		void RAdvance();
 
 		/// For listening to ticks
-		virtual void HandleEvent( Event& e );
+		virtual void HandleEvent( Event& );
 
 		void Update( sf::Time GameTime );
 		sf::Sprite& GetSprite();

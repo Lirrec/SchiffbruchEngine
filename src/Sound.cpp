@@ -61,6 +61,7 @@ void SoundSystem::StopSound(const std::string& name)
 void SoundSystem::SetVolume(const float v)
 {
 	//TODO: find a way to add a main/all volume bar
+
 }
 
 float SoundSystem::GetVolume()

@@ -3,17 +3,8 @@
 ResourceManager::ResourceManager()
  : usedmemory(0)
 {
-	// load default font
-	// sadly, the built-in default Font of sfml got deleted,
-	// so we've got to build-in it ourselves...
-	const signed char data[] = { // 'stole' the Arial.hpp from earlier sfml
-		#include "Arial.hpp"
-	};
-
 	sf::Font* f = new sf::Font(getDefaultFont());
-
 	Fonts.AddItem("default", f );
-
 }
 
 ResourceManager::~ResourceManager()
@@ -170,7 +161,7 @@ bool ResourceManager::LoadAudio( const std::string& path, const std::string& nam
 		Sounds.AddItem(name, sb);
 
 		// assume 3 byte samples
-		usedmemory += (long)( sb->getChannelCount() * ( sb->getSampleRate() ) * ( (sb->getDuration().asSeconds()) * 3));
+		usedmemory += (long)( (float)sb->getChannelCount() * ( (float)sb->getSampleRate() ) * ( (sb->getDuration().asSeconds()) * 3));
 
 		return true;
 	}

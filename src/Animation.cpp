@@ -27,7 +27,7 @@ Animation::Animation( ImageSet& _A) : AnimData(_A)
 
 	Reset();
 //	Engine::out() << "Animation(" << this << ")" << std::endl;
-};
+}
 
 void Animation::Reset()
 {
@@ -46,7 +46,7 @@ void Animation::Reset()
 void Animation::SetScreenPosition( Geom::Point p )
 {
 	Screen_Position = p;
-	Sprite.setPosition( Screen_Position.x(), Screen_Position.y() );
+	Sprite.setPosition( (float)Screen_Position.x(), (float)Screen_Position.y() );
 }
 
 void Animation::SetFrame(int index)
@@ -81,7 +81,7 @@ void Animation::PlayRandomized()
 	Play( from, 0);
 	// this should give an random offest off maximum 1.f ( 1 second )
 	// maxes updates look much more naturally
-	LastUpdate = Module::Get()->GetModuleTime() - sf::seconds(std::rand() / static_cast<double>(RAND_MAX));
+	LastUpdate = Module::Get()->GetModuleTime() - sf::seconds((float)std::rand() / static_cast<float>(RAND_MAX));
 }
 
 
@@ -117,9 +117,9 @@ void Animation::SetLooping(bool loop)
 	looping = loop;
 }
 
-void Animation::SetReverse(bool reverse)
+void Animation::SetReverse(bool _reverse)
 {
-	this->reverse = true;
+	this->reverse = _reverse;
 }
 
 void Animation::Advance()
@@ -186,7 +186,7 @@ void Animation::updateSprite()
 void Animation::Update( sf::Time GameTime )
 {
 	sf::Time diff = GameTime - LastUpdate;
-	sf::Time FrameTime = sf::seconds(1.0f/AnimData.FramesPerSecond);
+	sf::Time FrameTime = sf::seconds(1.0f/(float)AnimData.FramesPerSecond);
 
 	if (diff > FrameTime)
 	{
@@ -214,7 +214,7 @@ sf::Sprite& Animation::GetSprite()
 	return Sprite;
 }
 
-void Animation::HandleEvent( Event& e )
+void Animation::HandleEvent( Event& )
 {
 //	if ( e.Is("EVT_TICK") && playing)
 //	{
