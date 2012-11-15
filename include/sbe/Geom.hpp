@@ -112,9 +112,12 @@ namespace Geom
 
 	typedef point<int> Point;
 	typedef Point Vec2;
+	typedef point<float> Pointf;
+	typedef Point Vec2f;
 
 	/// a Rect consists of 2 points, top-left and bottom-right position of the rect
 	typedef point<Point> Rect;
+	typedef point<Pointf> Rectf;
 
 	template <typename T>
 	std::ostream &operator<<(std::ostream &stream, point<T> ob)
