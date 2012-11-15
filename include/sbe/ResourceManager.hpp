@@ -15,7 +15,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <boost/any.hpp>
-#include <boost/ptree.hpp>
+#include <boost/property_tree/ptree.hpp>
 
 #include "Animation.hpp"
 

@@ -25,13 +25,13 @@ ResourceManager::~ResourceManager()
 void ResourceManager::DumpDebugInfo()
 {
 
-	Engine::out() << "# Resources Overview #" << std::endl;
+	Engine::out() << "[ResourceManager] Resources Overview:" << std::endl;
     for (auto it : Resources)
     {
         Engine::out() << "Class: " << it->first.name() << std::endl;
         it->DebugDump();
     }
 
-	Engine::out() << "# ------------------ #" << std::endl;
+	Engine::out() << "[ResourceManager] done." << std::endl;
 }
 
