@@ -7,7 +7,7 @@
 #include <string>
 
 template<class T>
-class iBinaryIOPlugin<T> : IOPlugin
+class iBinaryIOPlugin : IOPlugin
 {
 
 	public:
@@ -30,7 +30,7 @@ class iBinaryIOPlugin<T> : IOPlugin
 }
 
 template<class T>
-class iTreeIOPlugin<T> : IOPlugin
+class iTreeIOPlugin : IOPlugin
 {
 
 	public:
