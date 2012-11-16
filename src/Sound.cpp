@@ -20,7 +20,7 @@ std::shared_ptr<sf::Sound> SoundSystem::GetSound(const std::string& name)
 	else
 	{
         std::shared_ptr<sf::Sound> s;
-	    std::shared_ptr<sf::SoundBuffer> sb = Engine::GetResMgr()->get<sf::SoundBuffer>(from_name);
+	    std::shared_ptr<sf::SoundBuffer> sb = Engine::GetResMgr()->get<sf::SoundBuffer>(name);
 
 	    if (!sb) return s;
 
