@@ -33,24 +33,26 @@ class ResourceManager
         std::shared_ptr<T> get( const std::string& name)
         {
             auto ti = std::type_index(typeid(T));
-            auto r = boost:.any_cast<NamedList<T>> ( Resources[ti] );
+            auto r = boost::any_cast<NamedList<T>> ( Resources[ti] );
             return r[name];
         }
 
-
+				template < typename T >
         bool add(T& res, const std::string& name)
         {
             add(std::shared_ptr<T>(res), name);
         }
 
+				template < typename T >
         bool add( T* res, const std::string& name)
         {
             add(std::shared_ptr<T>(res), name);
         }
 
+				template < typename T >
         bool add(std::shared_ptr<T> res, const std::string& name)
         {
-            auto ti = std::type_index(typeid(T)),
+            auto ti = std::type_index(typeid(T));
 
             if ( Resources.find(ti) == Resources.end() )
             {
@@ -58,7 +60,7 @@ class ResourceManager
                 return false;
             }
 
-            auto r = boost:.any_cast<NamedList<T>> ( Resources[ti] );
+            auto r = boost::any_cast<NamedList<T>> ( Resources[ti] );
             r[name] = res;
 
             return true;
@@ -68,7 +70,7 @@ class ResourceManager
         template< typename T>
         bool remove(  std::type_info ti , std::string& name )
         {
-            auto r = boost:.any_cast<NamedList<T>> ( Resources[ std::type_index(ti) ] );
+            auto r = boost::any_cast<NamedList<T>> ( Resources[ std::type_index(ti) ] );
             r.erase(name);
         }
 
@@ -93,7 +95,7 @@ class ResourceManager
 
         // - Settings/Registry -
         // ebenfalls über Events erreichbar
-        boost::ptree::node& getSettings() { return Settings; };
+        boost::property_tree::ptree::node& getSettings() { return Settings; }
 
 
 	private:
@@ -109,7 +111,7 @@ class ResourceManager
         ResourceMap Resources;
 
         /// stores settings
-        boost::ptree Settings;
+        boost::property_tree::ptree Settings;
 };
 
 #endif // RESMGR_H

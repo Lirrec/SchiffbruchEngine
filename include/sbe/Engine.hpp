@@ -49,7 +49,7 @@ class Engine
 
 		std::shared_ptr<SoundSystem> 	SndSys;
 		std::shared_ptr<ResourceManager>	ResMgr;
-		std::shared_ptr<IO>	IO;
+		std::shared_ptr<IO>	Io;
 };
 
 
