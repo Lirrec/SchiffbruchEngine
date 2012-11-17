@@ -34,12 +34,12 @@ class IO
 			The used plugin will be determined by the supported file extensions of the registered plugins
 		*/
         template<class T>
-        std::vector<std::shared_ptr<T>> loadObjectFile<T>( const std::string& filename );
+        std::vector<std::shared_ptr<T>> loadObjectFile( const std::string& filename );
 
         template<class T>
-        bool saveObject<T>( std::shared_ptr<T> pObj, const std::string& path );
+        bool saveObject( std::shared_ptr<T> pObj, const std::string& path );
 
-	    void loadPath(  )
+	    void loadPath(  const std::string& path );
 
         void addPath( const std::string& path );
 
@@ -57,10 +57,10 @@ class IO
         */
         void loadDefaultPlugins();
 
-        std::map<std::type_index, iBinaryIOPlugin> BinaryPlugins;
-        std::map<std::type_index, iTreeIOPlugin> TreePlugins;
-}
+        std::map<std::type_index, boost::any> BinaryPlugins; // boost::any contains iBinaryIOPlugin<T>
+        std::map<std::type_index, boost::any> TreePlugins;   // boost::any contains iTreeIOPlugin<T>
+};
 
 #include "IO.ipp"
 
-#endif IO_H
+#endif // IO_H

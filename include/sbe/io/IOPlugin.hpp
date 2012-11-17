@@ -7,7 +7,7 @@
 #include <string>
 
 template<class T>
-class iBinaryIOPlugin : IOPlugin
+class iBinaryIOPlugin // : IOPlugin
 {
 
 	public:
@@ -27,23 +27,23 @@ class iBinaryIOPlugin : IOPlugin
 		*/
 		virtual std::vector<std::string> getSupportedFileExtensions() = 0;
 
-}
+};
 
 template<class T>
-class iTreeIOPlugin : IOPlugin
+class iTreeIOPlugin // : IOPlugin
 {
 
 	public:
         typedef std::vector<std::shared_ptr<T>> ObjectList;
 
-        virtual ObjectList loadObjects(boost::ptree::node& root) = 0;
+        virtual ObjectList loadObjects(boost::property_tree::ptree& root) = 0;
 
         /**
         * @return true on successfull encoding
         */
-        virtual bool saveObject( const T& object, boost::ptree::node& root) = 0;
+        virtual bool saveObject( const T& object, boost::property_tree::ptree& root) = 0;
 
         std::vector<std::string> getSupportedFileExtensions() { return { "info" }; }
-}
+};
 
 #endif

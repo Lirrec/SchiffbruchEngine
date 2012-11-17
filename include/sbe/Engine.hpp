@@ -34,8 +34,9 @@ class Engine
 		static Logger& out();
 
 		static std::shared_ptr<SoundSystem> 		GetSndSys ();
-		static std::shared_ptr<ResourceManager>		GetResMgr ();
-		static sf::RenderWindow&					GetApp    ();
+		static std::shared_ptr<ResourceManager> GetResMgr ();
+		static sf::RenderWindow&                GetApp    ();
+		static std::shared_ptr<IO>              GetIO();
 
 
 	private:

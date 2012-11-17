@@ -2,7 +2,7 @@
 
 Int64 sfistream::read(void* data, Int64 size)
 {
-	stream.read( data, size );
+	stream.read( (char*)data, (std::streamsize)size );
 }
 
 Int64 sfistream::seek(Int64 position)

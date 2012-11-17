@@ -34,7 +34,7 @@ class ResourceManager
         {
             auto ti = std::type_index(typeid(T));
             auto r = boost::any_cast<NamedList<T>> ( Resources[ti] );
-            return r[name];
+            return r.GetItem(name);
         }
 
 				template < typename T >
@@ -61,7 +61,7 @@ class ResourceManager
             }
 
             auto r = boost::any_cast<NamedList<T>> ( Resources[ti] );
-            r[name] = res;
+            r.AddItem(name, res);
 
             return true;
         }
@@ -95,8 +95,8 @@ class ResourceManager
 
         // - Settings/Registry -
         // ebenfalls über Events erreichbar
-        boost::property_tree::ptree::node& getSettings() { return Settings; }
-
+        boost::property_tree::ptree& getSettings() { return Settings; }
+				const sf::Font& getDefaultFont();
 
 	private:
 
