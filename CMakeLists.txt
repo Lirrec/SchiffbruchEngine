@@ -26,7 +26,7 @@ SET( CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
 # set external windows and linux libs
 if( CMAKE_SYSTEM_NAME MATCHES Windows )
-  set( GENERIC_LIBS pthread jpeg GLEW freetype openal32 sndfile)
+  set( GENERIC_LIBS pthread jpeg GLEW freetype openal32 sndfile winmm)
 else()
   set( GENERIC_LIBS pthread jpeg GLEW X11 Xrandr freetype rt openal sndfile)
 endif()
