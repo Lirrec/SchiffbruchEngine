@@ -76,6 +76,9 @@ set( SFML_STATIC_LIBRARIES true CACHE BOOL "Was SFML built as a static library?"
 
 add_subdirectory(SFGUI)
 
+
+
+
 #############################################################
 #################### File inclusion #########################
 #############################################################
@@ -100,8 +103,14 @@ add_definitions( -DBOOST_THREAD_USE_LIB )
 
 if (SBE_DEBUG)
 	add_definitions(-DCOUNT_EVENTS -DDEBUG -DSBE_DEBUG)
+	#override those, usually not set but SFGUI adds a bunch of additional warnings we dont want
+	set( CMAKE_CXX_FLAGS "-Wall -g -O0" CACHE STRING "C++ compiler flags" FORCE )
+	set( CMAKE_C_FLAGS   "-Wall -g -O0" CACHE STRING "C compiler flags" FORCE )
 else()
 	add_definitions(-fomit-frame-pointer -fexpensive-optimizations -O3 )
+	#override those, usually not set but SFGUI adds a bunch of additional warnings we dont want
+	set( CMAKE_CXX_FLAGS "-O3" CACHE STRING "C++ compiler flags" FORCE )
+	set( CMAKE_C_FLAGS "-O3" CACHE STRING "C compiler flags" FORCE )
 endif()
 
 if (GCC_VERSION VERSION_GREATER 4.6)
