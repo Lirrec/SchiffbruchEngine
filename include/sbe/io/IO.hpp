@@ -8,6 +8,8 @@
 #include <map>
 #include "sbe/io/IOPlugin.hpp"
 
+using namespace std;
+
 class IO
 {
 
