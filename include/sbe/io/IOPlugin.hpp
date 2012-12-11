@@ -27,6 +27,12 @@ class iBinaryIOPlugin // : IOPlugin
 		*/
 		virtual std::vector<std::string> getSupportedFileExtensions() = 0;
 
+		/**
+			Defines the relative path which is used to store all Resources of this type.
+			Example: the "textures" subdirectory for all textures
+		*/
+		std::string path;
+
 };
 
 template<class T>
@@ -44,6 +50,12 @@ class iTreeIOPlugin // : IOPlugin
         virtual bool saveObject( const T& object, boost::property_tree::ptree& root) = 0;
 
         std::vector<std::string> getSupportedFileExtensions() { return { "info" }; }
+
+		/**
+			Defines the relative file which is used to store all Resources of this type.
+			Example: the "Creatures.info" file for all creatures
+		*/
+		std::string file;
 };
 
 #endif
