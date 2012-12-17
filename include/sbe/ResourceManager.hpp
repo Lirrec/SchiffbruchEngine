@@ -20,6 +20,8 @@
 #include "Animation.hpp"
 
 #include "util/NamedList.hpp"
+#include "io/IOPlugin.hpp"
+#include "io/IO.hpp"
 
 /**
 	Holds information about a resource
@@ -29,7 +31,7 @@ class iResource
 	std::string name;	/// string name of the resource for debugging purposes
 	bool savetosave;	/// should this resource be included in savegames?
 	bool preload;		/// should all available resources of this type be autoloaded from a savegame?
-}
+};
 
 class ResourceManager
 {
@@ -100,14 +102,15 @@ class ResourceManager
 			@param IOPlugin the plugin responsible for loading/saving this resource
         */
         template < typename T>
-        void registerResource( iResource& iR, iBinaryIOPlugin& IOPlugin);
+        void registerResource( iResource& iR, iBinaryIOPlugin<T>& IOPlugin);
 
         /**
 			Register a new Resource with a TreeIOPlugin
 			@param iR the Resource information
 			@param IOPlugin the plugin responsible for loading/saving this resource
         */
-        void registerResource( iResource& iR, iTreeIOPlugin& IOPlugin);
+        template < typename T>
+        void registerResource( iResource& iR, iTreeIOPlugin<T>& IOPlugin);
 
         // - Settings/Registry -
         // ebenfalls über Events erreichbar
@@ -125,15 +128,15 @@ class ResourceManager
 		/// creates a new savegame by adding the given path to IO's path-stack and
 		/// then saving all Resources marked with "save" to that savegame
 		/// Also saves the "user." part of the Settings
-		createSave(name);
+		void createSave( const std::string& name);
 
 		/// opens a savegame by adding its path to IO's path-stack and then loading
 		/// all resources with marked with "preload"
 		/// also loads the "user." part of the settings and OVERWRITES any existing keys
-		loadSave(name);
+		void loadSave( const std::string& name);
 
 		/// Removes the current Savegame from IO's path-stack
-		popSave();
+		void popSave();
 
 	private:
 
@@ -156,7 +159,7 @@ class ResourceManager
         */
         void loadDefaultPlugins();
 		/// dumps all internal namedlists
-		void dumpDebugInfo();
+		void DumpDebugInfo();
 
         // map from std::type_index to NamedList<T>
         typedef std::map < std::type_index, boost::any > ResourceMap;
@@ -164,6 +167,7 @@ class ResourceManager
 
 
         ResourceMap Resources;
+        ResourceInfos ResInfos;
 
         /// stores settings
         boost::property_tree::ptree Settings;

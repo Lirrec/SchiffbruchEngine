@@ -14,8 +14,8 @@ class ImageSetIOPlugin : iTreeIOPlugin<ImageSet>
 
 	virtual ~ImageSetIOPlugin();
 
-	virtual ObjectList loadObjects(boost::property_tree::ptree& root) override;
-	virtual bool saveObject( const ImageSet& object, boost::property_tree::ptree& root) override;
+	virtual ObjPtr loadObject(const boost::property_tree::ptree::value_type& node);
+	virtual bool saveObject( const ImageSet& object, boost::property_tree::ptree& root);
 };
 
 #endif // IMAGESETIOPLUGIN_HPP

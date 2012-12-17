@@ -21,10 +21,7 @@ ResourceManager::~ResourceManager()
 
 void ResourceManager::loadDefaultPlugins()
 {
-    RegisterClass<sf::Font>();
-    RegisterClass<sf::Texture>();
-    RegisterClass<sf::SoundBuffer>();
-    RegisterClass<ImageSet>();
+
 }
 
 
@@ -43,13 +40,14 @@ std::shared_ptr<T> ResourceManager::get( const std::string& name)
 template < typename T >
 bool ResourceManager::add(T& res, const std::string& name)
 {
-    add(std::shared_ptr<T>(res), name);
+    return add(std::shared_ptr<T>(res), name);
 }
 
 template < typename T >
 bool ResourceManager::add( T* res, const std::string& name)
 {
-    add(std::shared_ptr<T>(res), name);
+    return add(std::shared_ptr<T>(res), name);
+
 }
 
 
@@ -76,34 +74,37 @@ bool ResourceManager::remove(  std::type_info ti , std::string& name )
 {
     auto r = boost::any_cast<NamedList<T>> ( Resources[ std::type_index(ti) ] );
     r.erase(name);
+    return true;
 }
 
 
 template<class T>
 bool ResourceManager::saveObject( std::shared_ptr<T> pObj, const std::string& path )
 {
+	const std::type_index ti = type_index( typeid(T) );
 
+	return false;
 }
 
 
 template<class T>
 bool ResourceManager::saveAllObjects()
 {
-
+	return false;
 }
 
 // - Plugin and Class Management -
 
 
 template < typename T>
-void ResourceManager::registerResource( iResource& iR, iBinaryIOPlugin& IOPlugin)
+void ResourceManager::registerResource( iResource& iR, iBinaryIOPlugin<T>& IOPlugin)
 {
     auto ti = std::type_index(typeid(T));
 
     if (Resources.find(ti) == Resources.end())
     {
         Resources[ti] = boost::any( NamedList<T>() );
-        ResourceInfos[ti] =
+        ResInfos[ti] = iR;
         Engine::out() << "[ResourceManager] Registered class " << ti.name() << " as Resource." << std::endl;
     }
     else
@@ -113,7 +114,8 @@ void ResourceManager::registerResource( iResource& iR, iBinaryIOPlugin& IOPlugin
 
 }
 
-void ResourceManager::registerResource( iResource& iR, iTreeIOPlugin& IOPlugin)
+template < typename T>
+void ResourceManager::registerResource( iResource& iR, iTreeIOPlugin<T>& IOPlugin)
 {
     auto ti = std::type_index(typeid(T));
 
@@ -137,7 +139,8 @@ void ResourceManager::DumpDebugInfo()
     for (auto &it : Resources)
     {
         Engine::out() << "Class: " << it.first.name() << std::endl;
-        boost::any_cast<NamedList<boost::any>>(it).DebugDump();
+
+        boost::any_cast < NamedList<boost::any> > (it).DebugDump();
     }
 
     Engine::out() << "[ResourceManager] done." << std::endl;

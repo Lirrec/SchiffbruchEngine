@@ -6,6 +6,20 @@
 #include <typeinfo>
 
 #include <map>
+#include <vector>
+#include <deque>
+
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
+
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/info_parser.hpp>
+
+#include <fstream>
+
+namespace fs = boost::filesystem;
+namespace pt = boost::property_tree;
+
 #include "sbe/io/IOPlugin.hpp"
 
 using namespace std;
@@ -14,6 +28,9 @@ class IO
 {
 
 	public:
+		IO();
+		~IO();
+
 
 		/**
 			Registers an IOPlugin for a given Type.
@@ -55,7 +72,13 @@ class IO
 
     private:
 
-		std::stack<std::string,std::deque> Paths;
+		template<class T>
+		std::vector<std::shared_ptr<T>> loadFileBinary( const iBinaryIOPlugin<T>& IOP, const fs::path& p );
+
+		template<class T>
+		std::vector<std::shared_ptr<T>> loadFileTree( const iTreeIOPlugin<T>& IOP, const fs::path& p );
+
+		std::deque<std::string> Paths;
 
         std::map<std::type_index, boost::any> BinaryPlugins; // boost::any contains iBinaryIOPlugin<T>
         std::map<std::type_index, boost::any> TreePlugins;   // boost::any contains iTreeIOPlugin<T>

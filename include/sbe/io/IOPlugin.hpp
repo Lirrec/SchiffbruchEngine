@@ -6,24 +6,24 @@
 #include <vector>
 #include <string>
 
-//#include <istream>
-//#include <ostream>
+#include <istream>
+#include <ostream>
 
-namespace std
-{
-	class istream;
-	class ostream;
-}
+//namespace std
+//{
+//	class istream;
+//	class ostream;
+//}
 
-//#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/ptree.hpp>
 
-namespace boost
-{
-	namespace property_tree
-	{
-		class ptree;
-	}
-}
+//namespace boost
+//{
+//	namespace property_tree
+//	{
+//		class ptree;
+//	}
+//}
 
 
 template<class T>
@@ -58,9 +58,9 @@ class iTreeIOPlugin // : IOPlugin
 {
 
 	public:
-        typedef std::vector<std::shared_ptr<T>> ObjectList;
+        typedef std::shared_ptr<T> ObjPtr;
 
-        virtual ObjectList loadObjects(boost::property_tree::ptree& root) = 0;
+        virtual ObjPtr loadObject(const boost::property_tree::ptree::value_type& node) = 0;
 
         /**
         * @return true on successfull encoding
