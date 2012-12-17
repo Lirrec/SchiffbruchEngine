@@ -18,12 +18,12 @@ Int64 sfIStream::tell()
 Int64 sfIStream::getSize()
 {
 	// get old pos
-	auto pos = stream->tellg();
+	auto pos = stream.tellg();
 	// seek to the end and remember pos
-	stream->seekg(0, ios::end);
-	auto uiLength = stream->tellg();
+	stream.seekg(0, std::ios::end);
+	auto uiLength = stream.tellg();
 	// set old pos
-	stream->seekg(pos);
+	stream.seekg(pos);
 
 	return uiLength;
 }

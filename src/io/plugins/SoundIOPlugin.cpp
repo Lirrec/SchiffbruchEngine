@@ -22,13 +22,13 @@ ObjectList SoundIOPlugin::decodeStream(std::istream& in)
     return re;
 }
 
-bool SoundIOPlugin::encodeStream(const SoundBuffer& o, std::ostream& out)
+bool SoundIOPlugin::encodeStream(const sf::SoundBuffer& o, std::ostream& out)
 {
 	Engine::out() << "[SoundIOPlugin] Sorry, saving not implemented!" << std::endl;
 	return false;
 }
 
-std::vector SoundIOPlugin::getSupportedFileExtensions()
+std::vector<std::string> SoundIOPlugin::getSupportedFileExtensions()
 {
     static std::vector<std::string> fileexts { "ogg", "wav", "flac", "aiff", "au" };
     return fileexts;

@@ -2,17 +2,18 @@
 #define SOUNDIOPLUGIN_HPP
 
 #include "sbe/ImageSet.hpp"
+#include "sbe/io/IOPlugin.hpp"
 
-#include <sf::SoundBuffer>
+#include <SFML/Audio/SoundBuffer.hpp>
 
 #include <istream>
 #include <ostream>
 
-class SoundIOPlugin : iBinaryIOPlugin<sf::SoundBuffer> {
+class SoundIOPlugin : public iBinaryIOPlugin<sf::SoundBuffer> {
 
 	SoundIOPlugin();
 
-	virtual ~ISoundIOPlugin();
+	virtual ~SoundIOPlugin();
 
 	virtual ObjectList decodeStream(std::istream &in) override;
 	virtual bool encodeStream( const sf::SoundBuffer &o, std::ostream &out) override;
