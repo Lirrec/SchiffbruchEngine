@@ -1,10 +1,30 @@
 #ifndef IOPLUGIN_H
 #define IOPLUGIN_H
 
-#include <boost/property_tree/ptree.hpp>
+
 
 #include <vector>
 #include <string>
+
+//#include <istream>
+//#include <ostream>
+
+namespace std
+{
+	class istream;
+	class ostream;
+}
+
+//#include <boost/property_tree/ptree.hpp>
+
+namespace boost
+{
+	namespace property_tree
+	{
+		class ptree;
+	}
+}
+
 
 template<class T>
 class iBinaryIOPlugin // : IOPlugin
@@ -13,9 +33,7 @@ class iBinaryIOPlugin // : IOPlugin
 	public:
         typedef std::vector<std::shared_ptr<T>> ObjectList;
 
-
         virtual ObjectList decodeStream(std::istream& in) = 0;
-
 
         /**
         * @return true on successfull encoding

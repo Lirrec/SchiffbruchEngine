@@ -8,18 +8,29 @@
 
 using sf::Int64; // or better use int64_t?
 
-class sfistream : public sf::InputStream
+
+/**
+	This class is an implementation of sf::Inputstream on std::istreams.
+	Warning: the getSize() method requires seeking to the end of the stream, which can be very inefficient or time consuming in some cases
+*/
+class sfIStream : public sf::InputStream
 {
 public :
 
-    sfistream(std::istream& i)
+	/// constructor, takes a reference to a std::istream object
+    sfIStream(std::istream& i)
 		: stream(i)
 	{}
 
+
+	/// @see sf::InputStream Documentation
     virtual Int64 read(void* data, Int64 size);
+    /// @see sf::InputStream Documentation
     virtual Int64 seek(Int64 position);
+    /// @see sf::InputStream Documentation
     virtual Int64 tell();
-    virtual Int64 getSize() {}
+    /// @see sf::InputStream Documentation
+    virtual Int64 getSize();
 
 private :
 	std::istream& stream;

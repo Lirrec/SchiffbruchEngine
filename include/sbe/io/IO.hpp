@@ -31,11 +31,6 @@ class IO
 
 
 		/**
-			Load all resources found in a given path
-		*/
-	    void loadPath(  const std::string& path );
-
-		/**
 			Add a path on top of the search path stack
 			Missing resources are searched for in all paths starting from the top
 		*/
@@ -47,10 +42,9 @@ class IO
 		std::string popPath( );
 
 
-
 		/**
 			Tries to load a given path.
-			The used plugin will be determined by the supported file extensions of the registered plugins.
+			The used plugin will be determined by the template parameter.
 			If the given path is a directory all files in the directory of the given type will be loaded.
 			This function is used by the Resourcemanager to retrieve loaded resources.
 			@param filename ( for ptrees or single resources (e.g. textures) ) or path ( for binary resources ) to load. It is searched for in all paths registered via addPath()
@@ -67,6 +61,6 @@ class IO
         std::map<std::type_index, boost::any> TreePlugins;   // boost::any contains iTreeIOPlugin<T>
 };
 
-#include "IO.ipp"
+#include "../../../src/io/IO.ipp"
 
 #endif // IO_H

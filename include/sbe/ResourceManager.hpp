@@ -26,9 +26,9 @@
 */
 class iResource
 {
-	std::string name; /// string name of the resource for debugging purposes
-	bool savetosave; /// should this resource be included in savegames?
-	bool preload;	  /// should all available resources of this type be autoloaded from a savegame?
+	std::string name;	/// string name of the resource for debugging purposes
+	bool savetosave;	/// should this resource be included in savegames?
+	bool preload;		/// should all available resources of this type be autoloaded from a savegame?
 }
 
 class ResourceManager
@@ -44,30 +44,19 @@ class ResourceManager
 			@return a shared_ptr to the object or null if the object or type was not found
 		*/
         template < typename T >
-        std::shared_ptr<T> get( const std::string& name)
-        {
-            auto ti = std::type_index(typeid(T));
-            auto r = boost::any_cast<NamedList<T>> ( Resources[ti] );
-            return r.GetItem(name);
-        }
+        std::shared_ptr<T> get( const std::string& name);
 
 		/**
 			@see add(std::shared_ptr<T> res, const std::string& name)
 		*/
 		template < typename T >
-        bool add(T& res, const std::string& name)
-        {
-            add(std::shared_ptr<T>(res), name);
-        }
+        bool add(T& res, const std::string& name);
 
 		/**
 			@see add(std::shared_ptr<T> res, const std::string& name)
 		*/
 		template < typename T >
-        bool add( T* res, const std::string& name)
-        {
-            add(std::shared_ptr<T>(res), name);
-        }
+        bool add( T* res, const std::string& name);
 
 		/**
 			Adds a new Object to the Resourcemanager
@@ -76,21 +65,7 @@ class ResourceManager
 			@return true on success, false on error, invalid pointer or if the type of the given object is not registered as a resource
 		*/
 		template < typename T >
-        bool add(std::shared_ptr<T> res, const std::string& name)
-        {
-            auto ti = std::type_index(typeid(T));
-
-            if ( Resources.find(ti) == Resources.end() )
-            {
-                Engine::out() << "[ResourceManager] Class " << ti.name() << " not registered as Resource!" << std::endl;
-                return false;
-            }
-
-            auto r = boost::any_cast<NamedList<T>> ( Resources[ti] );
-            r.AddItem(name, res);
-
-            return true;
-        }
+        bool add(std::shared_ptr<T> res, const std::string& name);
 
 
 		/**
@@ -100,12 +75,7 @@ class ResourceManager
 			@return true on succes, false on error or if the objects was not found
 		*/
         template< typename T>
-        bool remove(  std::type_info ti , std::string& name )
-        {
-            auto r = boost::any_cast<NamedList<T>> ( Resources[ std::type_index(ti) ] );
-            r.erase(name);
-        }
-
+        bool remove(  std::type_info ti , std::string& name );
 
 		/**
 			Save a single object.
@@ -125,52 +95,29 @@ class ResourceManager
 
         // - Plugin and Class Management -
         /**
-        Register a new Resource with a BinaryIOPlugin
-        @param iR the Resource information
-        @param IOPlugin the plugin responsible for loading/saving this resource
+			Register a new Resource with a BinaryIOPlugin
+			@param iR the Resource information
+			@param IOPlugin the plugin responsible for loading/saving this resource
         */
         template < typename T>
-        void registerResource( iResource& iR, iBinaryIOPlugin& IOPlugin)
-        {
-            auto ti = std::type_index(typeid(T));
-
-            if (Resources.find(ti) == Resources.end())
-            {
-                Resources[ti] = boost::any( NamedList<T>() );
-                Engine::out() << "[ResourceManager] Registered class " << ti.name() << " as Resource." << std::endl;
-            }
-            else
-            {
-                Engine::out() << "[ResourceManager] Cant register class " << ti.name() << " as Resource, already registered!" << std::endl;
-            }
-
-        }
+        void registerResource( iResource& iR, iBinaryIOPlugin& IOPlugin);
 
         /**
-        Register a new Resource with a TreeIOPlugin
-        @param iR the Resource information
-        @param IOPlugin the plugin responsible for loading/saving this resource
+			Register a new Resource with a TreeIOPlugin
+			@param iR the Resource information
+			@param IOPlugin the plugin responsible for loading/saving this resource
         */
-        void registerResource( iResource& iR, iTreeIOPlugin& IOPlugin)
-        {
-            auto ti = std::type_index(typeid(T));
-
-            if (Resources.find(ti) == Resources.end())
-            {
-                Resources[ti] = boost::any( NamedList<T>() );
-                Engine::out() << "[ResourceManager] Registered class " << ti.name() << " as Resource." << std::endl;
-            }
-            else
-            {
-                Engine::out() << "[ResourceManager] Cant register class " << ti.name() << " as Resource, already registered!" << std::endl;
-            }
-
-        }
+        void registerResource( iResource& iR, iTreeIOPlugin& IOPlugin);
 
         // - Settings/Registry -
         // ebenfalls über Events erreichbar
+        /**
+			Returns a property tree used for storing various settings.
+			There is a "system" subtree which stores various engine settings.
+			Users may user the "user" subtree to store their own settings
+        */
         boost::property_tree::ptree& getSettings() { return Settings; }
-				const sf::Font& getDefaultFont();
+		const sf::Font& getDefaultFont();
 
 
 		// - SAVEGAME MANAGEMENT -
@@ -198,13 +145,13 @@ class ResourceManager
         void init();
 
         /**
-        Register IOPlugins/iResources for all the Classes supported by default by the engine.
-        This includes:
-            sf::Texture
-            sf::Soundbuffer
-            sf::Music
-            sf::Font
-            ImageSet
+			Register IOPlugins/iResources for all the Classes supported by default by the engine.
+			This includes:
+				sf::Texture
+				sf::Soundbuffer
+				sf::Music
+				sf::Font
+				ImageSet
 
         */
         void loadDefaultPlugins();
@@ -212,8 +159,8 @@ class ResourceManager
 		void dumpDebugInfo();
 
         // map from std::type_index to NamedList<T>
-        typedef std::map<std::type_index, boost::any> ResourceMap;
-        typedef std::map<std::type_index, iResource> ResourceInfos;
+        typedef std::map < std::type_index, boost::any > ResourceMap;
+        typedef std::map < std::type_index, iResource  > ResourceInfos;
 
 
         ResourceMap Resources;
@@ -221,6 +168,11 @@ class ResourceManager
         /// stores settings
         boost::property_tree::ptree Settings;
 };
+
+
+// Include Implementation
+#include "../../src/ResourceManager.ipp"
+
 
 #endif // RESMGR_H
 

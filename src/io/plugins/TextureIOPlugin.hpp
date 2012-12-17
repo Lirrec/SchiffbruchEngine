@@ -3,6 +3,9 @@
 
 #include <SFML/Graphics/Texture.hpp>
 
+#include <istream>
+#include <ostream>
+
 #include "sbe/io/IOPlugin.hpp"
 
 class TextureIOPlugin : iBinaryIOPlugin<sf::Texture> {
@@ -11,9 +14,9 @@ class TextureIOPlugin : iBinaryIOPlugin<sf::Texture> {
 
 	virtual ~TextureIOPlugin();
 
-	ObjectList decodeStream(std::istream &in) override;
-	bool encodeStream( const Texture &o, std::ostream &out) override;
-	std::vector<std::string> getSupportedFileExtensions() override;
+	virtual ObjectList decodeStream(std::istream &in) override;
+	virtual bool encodeStream( const Texture &o, std::ostream &out) override;
+	virtual std::vector<std::string> getSupportedFileExtensions() override;
 };
 
 #endif // TERRAINIOPLUGIN_HPP
