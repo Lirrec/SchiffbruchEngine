@@ -37,14 +37,8 @@ class IO
 			If there was already an IOPlugin registerd the new one is used from now on.
 		*/
         template< typename T>
-        void addBinaryPlugin(std::shared_ptr<iBinaryIOPlugin<T>> IOP);
+        void addPlugin(std::shared_ptr<IOPlugin> IOP);
 
-		/**
-			Registers an IOPlugin for a given Type.
-			If there was already an IOPlugin registered the new one is used from now on.
-		*/
-        template< typename T>
-        void addTreePlugin(std::shared_ptr<iTreeIOPlugin<T>> IOP);
 
 
 		/**
@@ -73,15 +67,10 @@ class IO
     private:
 
 		template<class T>
-		std::vector<std::shared_ptr<T>> loadFileBinary( const iBinaryIOPlugin<T>& IOP, const fs::path& p );
-
-		template<class T>
-		std::vector<std::shared_ptr<T>> loadFileTree( const iTreeIOPlugin<T>& IOP, const fs::path& p );
+		std::vector<std::shared_ptr<T>> loadFile( std::shared_ptr<IOPlugin>& IOP, const fs::path& p );
 
 		std::deque<std::string> Paths;
-
-        std::map<std::type_index, boost::any> BinaryPlugins; // boost::any contains iBinaryIOPlugin<T>
-        std::map<std::type_index, boost::any> TreePlugins;   // boost::any contains iTreeIOPlugin<T>
+        std::map<std::type_index, std::shared_ptr<IOPlugin>> Plugins;
 };
 
 #include "../../../src/io/IO.ipp"

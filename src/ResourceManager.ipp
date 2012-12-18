@@ -67,9 +67,8 @@ bool ResourceManager::saveAllObjects()
 
 // - Plugin and Class Management -
 
-
 template < typename T>
-void ResourceManager::registerResource( const iResource& iR, std::shared_ptr<iBinaryIOPlugin<T>> IOPlugin)
+void ResourceManager::registerResource( const iResource& iR, std::shared_ptr<IOPlugin> IOP)
 {
     auto ti = std::type_index(typeid(T));
 
@@ -78,7 +77,7 @@ void ResourceManager::registerResource( const iResource& iR, std::shared_ptr<iBi
         Resources[ti] = std::shared_ptr<BaseList> ( new NamedList<T>() );
         ResInfos[ti] = iR;
 
-        mIO->addBinaryPlugin<T>( IOPlugin );
+        Engine::GetIO()->addPlugin<T>( IOP );
 
         Engine::out() << "[ResourceManager] Registered class " << ti.name() << " as Resource." << std::endl;
     }
@@ -86,28 +85,6 @@ void ResourceManager::registerResource( const iResource& iR, std::shared_ptr<iBi
     {
         Engine::out() << "[ResourceManager] Cant register class " << ti.name() << " as Resource, already registered!" << std::endl;
     }
-
-}
-
-template < typename T>
-void ResourceManager::registerResource( const iResource& iR, std::shared_ptr<iTreeIOPlugin<T>> IOPlugin)
-{
-    auto ti = std::type_index(typeid(T));
-
-    if (Resources.find(ti) == Resources.end())
-    {
-        Resources[ti] = std::shared_ptr<BaseList> ( new NamedList<T>() );
-        ResInfos[ti] = iR;
-
-		mIO->addTreePlugin<T>( IOPlugin );
-
-        Engine::out() << "[ResourceManager] Registered class " << ti.name() << " as Resource." << std::endl;
-    }
-    else
-    {
-        Engine::out() << "[ResourceManager] Cant register class " << ti.name() << " as Resource, already registered!" << std::endl;
-    }
-
 }
 
 template < typename T>

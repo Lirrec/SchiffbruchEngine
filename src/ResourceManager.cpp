@@ -35,13 +35,13 @@ void ResourceManager::loadDefaultPlugins()
 {
 	Engine::out() << "[ResourceManager] Loading IO plugins:" << std::endl;
 
-	std::shared_ptr<iBinaryIOPlugin<sf::SoundBuffer>> SoundIOP ( new SoundIOPlugin() );
+	std::shared_ptr<IOPlugin> SoundIOP ( new SoundIOPlugin() );
 	registerResource<sf::SoundBuffer>( iResource::createResInfo("SoundBuffer", false, false), SoundIOP);
 
-	std::shared_ptr<iBinaryIOPlugin<sf::Image>> ImgIOP ( new ImageIOPlugin() );
+	std::shared_ptr<IOPlugin> ImgIOP ( new ImageIOPlugin() );
 	registerResource<sf::Image>( iResource::createResInfo("Image", false, false), ImgIOP);
 
-	std::shared_ptr<iTreeIOPlugin<ImageSet>> ImageSetIOP ( new ImageSetIOPlugin() );
+	std::shared_ptr<IOPlugin> ImageSetIOP ( new ImageSetIOPlugin() );
 	registerResource<ImageSet>( iResource::createResInfo("ImageSet", false, false), ImageSetIOP);
 
 	registerResource<sf::Font>( "Font" );

@@ -5,9 +5,8 @@
 #include "sbe/Engine.hpp"
 
 ImageIOPlugin::ImageIOPlugin()
-{
-    path = "textures";
-}
+: iBinaryIOPlugin( "textures" )
+{}
 
 ImageIOPlugin::~ImageIOPlugin()
 {

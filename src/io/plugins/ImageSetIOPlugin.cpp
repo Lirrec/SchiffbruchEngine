@@ -3,9 +3,8 @@
 using boost::property_tree::ptree;
 
 ImageSetIOPlugin::ImageSetIOPlugin()
-{
-	file = "ImageSets.info";
-}
+: iTreeIOPlugin( "ImageSets.info" )
+{}
 
 ImageSetIOPlugin::~ImageSetIOPlugin()
 {

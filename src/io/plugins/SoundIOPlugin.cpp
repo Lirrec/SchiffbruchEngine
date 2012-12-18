@@ -3,9 +3,8 @@
 #include "sbe/io/SFistream.hpp"
 
 SoundIOPlugin::SoundIOPlugin()
-{
-    path = "sounds";
-}
+ : iBinaryIOPlugin( "sounds" )
+{}
 
 SoundIOPlugin::~SoundIOPlugin()
 {

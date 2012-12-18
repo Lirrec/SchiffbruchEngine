@@ -106,6 +106,8 @@ class ResourceManager
         template<class T>
         bool saveAllObjects();
 
+
+
         // - Plugin and Class Management -
 
 
@@ -116,7 +118,7 @@ class ResourceManager
 			@param IOPlugin the plugin responsible for loading/saving this resource
         */
         template < typename T>
-        void registerResource( const iResource& iR, std::shared_ptr<iBinaryIOPlugin<T>> IOPlugin);
+        void registerResource( const iResource& iR, std::shared_ptr<IOPlugin> IOP);
 
         /**
 			Register a new Resource with a TreeIOPlugin
