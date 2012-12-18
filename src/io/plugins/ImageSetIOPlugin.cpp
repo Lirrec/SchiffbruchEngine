@@ -71,7 +71,7 @@ bool ImageSetIOPlugin::saveObject( const ImageSet& object, boost::property_tree:
 		pt.put("FramesPerSecond", object.FramesPerSecond);
 		pt.put("NumFrames", object.NumFrames);
 
-		root.add("ImageSet", pt);
+		root.add_child("ImageSet", pt);
 		return true;
 	}
 	catch ( boost::property_tree::ptree_error )

@@ -22,6 +22,7 @@ public :
 		: stream(i)
 	{}
 
+	virtual ~sfIStream() {}
 
 	/// @see sf::InputStream Documentation
     virtual Int64 read(void* data, Int64 size);

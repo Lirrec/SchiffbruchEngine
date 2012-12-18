@@ -3,11 +3,13 @@
 Int64 sfIStream::read(void* data, Int64 size)
 {
 	stream.read( (char*)data, (std::streamsize)size );
+	return stream.gcount();
 }
 
 Int64 sfIStream::seek(Int64 position)
 {
 	stream.seekg( position );
+	return stream.tellg();
 }
 
 Int64 sfIStream::tell()

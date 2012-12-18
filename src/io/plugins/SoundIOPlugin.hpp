@@ -15,9 +15,9 @@ class SoundIOPlugin : public iBinaryIOPlugin<sf::SoundBuffer> {
 
 	virtual ~SoundIOPlugin();
 
-	virtual ObjectList decodeStream(std::istream &in) override;
-	virtual bool encodeStream( const sf::SoundBuffer &o, std::ostream &out) override;
-	virtual std::vector<std::string> getSupportedFileExtensions() override;
+	virtual ObjectList decodeStream(std::istream &in);
+	virtual bool encodeStream( const sf::SoundBuffer &o, std::ostream &out);
+	virtual std::vector<std::string> getSupportedFileExtensions();
 };
 
 #endif // SOUNDIOPLUGIN_HPP

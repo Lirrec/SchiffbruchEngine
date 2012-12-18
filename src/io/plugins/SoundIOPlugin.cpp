@@ -1,5 +1,7 @@
 #include "SoundIOPlugin.hpp"
 
+#include "sbe/io/SFistream.hpp"
+
 SoundIOPlugin::SoundIOPlugin()
 {
     path = "sounds";
@@ -10,11 +12,12 @@ SoundIOPlugin::~SoundIOPlugin()
 
 }
 
-ObjectList SoundIOPlugin::decodeStream(std::istream& in)
+SoundIOPlugin::ObjectList SoundIOPlugin::decodeStream(std::istream& in)
 {
 	ObjectList re;
-    sf::SoundBuffer SB;
-    if ( SB.loadFromStream( sfIStream( in ) ) )
+    std::shared_ptr<sf::SoundBuffer> SB( new sf::SoundBuffer());
+    sfIStream stream( in );
+    if ( SB->loadFromStream( stream ) )
     {
 		re.push_back( SB );
     }

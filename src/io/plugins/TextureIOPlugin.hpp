@@ -14,9 +14,9 @@ class TextureIOPlugin : iBinaryIOPlugin<sf::Texture> {
 
 	virtual ~TextureIOPlugin();
 
-	virtual ObjectList decodeStream(std::istream &in) override;
-	virtual bool encodeStream( const Texture &o, std::ostream &out) override;
-	virtual std::vector<std::string> getSupportedFileExtensions() override;
+	virtual ObjectList decodeStream(std::istream &in);
+	virtual bool encodeStream( const sf::Texture &o, std::ostream &out);
+	virtual std::vector<std::string> getSupportedFileExtensions();
 };
 
 #endif // TERRAINIOPLUGIN_HPP

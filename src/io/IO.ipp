@@ -3,16 +3,7 @@
 */
 
 
-IO::IO()
-{
-	Paths.push_back(fs::current_path().generic_string());
-}
-
-IO::~IO()
-{
-
-}
-
+#include "sbe/Engine.hpp"
 
 
 
@@ -138,19 +129,6 @@ std::vector<std::shared_ptr<T>> IO::loadFileTree( const iTreeIOPlugin<T>& IOP, c
 		Engine::out() << "[IO] Unsupported file extension '" << p.extension() << "' for '" << typeid(T).name() << "'!" << std::endl;
 	}
 
-	return re;
-}
-
-void IO::addPath( const std::string& path )
-{
-	Paths.push_front( path );
-}
-
-
-std::string IO::popPath( )
-{
-	std::string re = Paths.front();
-	Paths.pop_front();
 	return re;
 }
 
