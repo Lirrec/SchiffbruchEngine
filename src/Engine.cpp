@@ -29,16 +29,13 @@ Engine::~Engine()
 void Engine::CreateSubSystems()
 {
 	// Logging
-	std::cout << "Console Logger." << std::endl;
+	std::cout << "[Engine] Logger." << std::endl;
 	Log.reset( new Logger );
 
-	Engine::out() << "ResourceManager..." << std::endl;
+	Engine::out() << "[Engine] ResourceManager..." << std::endl;
 	ResMgr.reset 	( new ResourceManager );
-
-    Engine::out() << "IO Manager..." << std::endl;
-    Io.reset( new IO );
-
-	Engine::out() << "SoundSys..." << std::endl;
+	ResMgr->init();
+	Engine::out() << "[Engine] SoundSys..." << std::endl;
 	SndSys.reset 	( new SoundSystem );
 }
 

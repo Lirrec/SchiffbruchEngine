@@ -9,15 +9,17 @@
 #include <istream>
 #include <ostream>
 
-class SoundIOPlugin : public iBinaryIOPlugin<sf::SoundBuffer> {
+class SoundIOPlugin : public iBinaryIOPlugin<sf::SoundBuffer>
+{
+public:
 
-	SoundIOPlugin();
+    SoundIOPlugin();
 
-	virtual ~SoundIOPlugin();
+    virtual ~SoundIOPlugin();
 
-	virtual ObjectList decodeStream(std::istream &in);
-	virtual bool encodeStream( const sf::SoundBuffer &o, std::ostream &out);
-	virtual std::vector<std::string> getSupportedFileExtensions();
+    virtual ObjectList decodeStream(std::istream &in);
+    virtual bool encodeStream( const sf::SoundBuffer &o, std::ostream &out);
+    virtual std::vector<std::string> getSupportedFileExtensions();
 };
 
 #endif // SOUNDIOPLUGIN_HPP

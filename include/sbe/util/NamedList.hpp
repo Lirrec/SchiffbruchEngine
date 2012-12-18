@@ -8,12 +8,17 @@
 #include <map>
 #include <iostream>
 
+class BaseList
+{
+	public:
+	virtual void DebugDump() = 0;
+};
 
 /**
   * This is a simple templated list for stored named objects/resources in a map
   */
 template< class stored_type >
-class NamedList
+class NamedList : public BaseList
 {
 	typedef std::shared_ptr<stored_type> ptr_type;
 	typedef std::map<std::string, ptr_type > map_type;
@@ -69,7 +74,7 @@ public:
 	}
 
 	/// Debug function that writes the names of the loaded items to stdout
-	void DebugDump()
+	virtual void DebugDump()
 	{
 		for ( auto it = Items.begin(); it != Items.end(); ++it)
 		{

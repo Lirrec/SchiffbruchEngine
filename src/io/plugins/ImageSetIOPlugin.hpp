@@ -7,9 +7,11 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-class ImageSetIOPlugin : iTreeIOPlugin<ImageSet>
-{
 
+
+class ImageSetIOPlugin : public iTreeIOPlugin<ImageSet>
+{
+public:
 	ImageSetIOPlugin();
 
 	virtual ~ImageSetIOPlugin();

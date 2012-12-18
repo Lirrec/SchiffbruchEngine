@@ -10,14 +10,16 @@
 template< typename T>
 void IO::addBinaryPlugin(std::shared_ptr<iBinaryIOPlugin<T>> IOP)
 {
-	if (BinaryPlugins.find( IOP ) == BinaryPlugins.end())
+	auto ti = std::type_index( typeid(T) );
+
+	if (BinaryPlugins.find( ti ) == BinaryPlugins.end())
 	{
-		Engine::out() << "[IO] Registering BinaryPlugin for '" << typeid( T ).name() << "'" << std::endl;
-		BinaryPlugins[ std::type_index( typeid( T ) )] = IOP;
+		Engine::out() << "[IO] Registering BinaryPlugin for '" << ti.name() << "'" << std::endl;
+		BinaryPlugins[ ti ] = IOP;
 	}
 	else
 	{
-		Engine::out() << "[IO] BinaryPlugin for '" << typeid( T ).name() << "' already registered!" << std::endl;
+		Engine::out() << "[IO] BinaryPlugin for '" << ti.name() << "' already registered!" << std::endl;
 	}
 }
 
@@ -25,14 +27,16 @@ void IO::addBinaryPlugin(std::shared_ptr<iBinaryIOPlugin<T>> IOP)
 template< typename T>
 void IO::addTreePlugin(std::shared_ptr<iTreeIOPlugin<T>> IOP)
 {
-	if (TreePlugins.find( IOP ) == TreePlugins.end())
+	auto ti = std::type_index( typeid(T) );
+
+	if (TreePlugins.find( ti ) == TreePlugins.end())
 	{
-		Engine::out() << "[IO] Registering TreePlugin for '" << typeid( T ).name() << "'" << std::endl;
-		TreePlugins[ std::type_index( typeid( T ) )] = IOP;
+		Engine::out() << "[IO] Registering TreePlugin for '" << ti.name() << "'" << std::endl;
+		TreePlugins[ ti ] = IOP;
 	}
 	else
 	{
-		Engine::out() << "[IO] TreePlugin for '" << typeid( T ).name() << "' already registered!" << std::endl;
+		Engine::out() << "[IO] TreePlugin for '" << ti.name() << "' already registered!" << std::endl;
 	}
 }
 
@@ -48,7 +52,8 @@ std::vector<std::shared_ptr<T>> IO::loadPath( const std::string& filename )
 
 		for ( std::string current_path : Paths )
 		{
-			fs::path cp(current_path + "/" + filename);
+			fs::path cp(current_path);
+			cp /= filename;
 
 			if ( fs::exists(cp ) )
 			{
@@ -91,14 +96,16 @@ std::vector<std::shared_ptr<T>> IO::loadPath( const std::string& filename )
 template<class T>
 std::vector<std::shared_ptr<T>> IO::loadFileBinary( const iBinaryIOPlugin<T>& IOP, const fs::path& p )
 {
+	auto ti = std::type_index( typeid(T) );
+
 	if (IOP.getSupportedFileExtensions().find( p.extension() ) != IOP.getSupportedFileExtensions().end())
 	{
 		return IOP.decodeStream ( fs::ifstream(p) );
-		Engine::out() << "[IO] Loaded " << p << " ( " << typeid(T).name() << ")" << std::endl;
+		Engine::out() << "[IO] Loaded " << p << " ( " << ti.name() << ")" << std::endl;
 	}
 	else
 	{
-		Engine::out() << "[IO] Unsupported file extension '" << p.extension() << "' for '" << typeid(T).name() << "'!" << std::endl;
+		Engine::out() << "[IO] Unsupported file extension '" << p.extension() << "' for '" << ti.name() << "'!" << std::endl;
 		return std::vector<std::shared_ptr<T>>();
 	}
 }
@@ -106,6 +113,8 @@ std::vector<std::shared_ptr<T>> IO::loadFileBinary( const iBinaryIOPlugin<T>& IO
 template<class T>
 std::vector<std::shared_ptr<T>> IO::loadFileTree( const iTreeIOPlugin<T>& IOP, const fs::path& p )
 {
+	auto ti = std::type_index( typeid(T) );
+
 	std::vector<std::shared_ptr<T>> re;
 
 	if (IOP.getSupportedFileExtensions().find( p.extension() ) != IOP.getSupportedFileExtensions().end())
@@ -121,12 +130,12 @@ std::vector<std::shared_ptr<T>> IO::loadFileTree( const iTreeIOPlugin<T>& IOP, c
 			if (ptr) re.push_back(ptr);
 		}
 
-		Engine::out() << "[IO] Loaded " << p << " ( " << re.size() << " " << typeid(T).name() << "s)" << std::endl;
+		Engine::out() << "[IO] Loaded " << p << " ( " << re.size() << " " << ti.name() << "s)" << std::endl;
 
 	}
 	else
 	{
-		Engine::out() << "[IO] Unsupported file extension '" << p.extension() << "' for '" << typeid(T).name() << "'!" << std::endl;
+		Engine::out() << "[IO] Unsupported file extension '" << p.extension() << "' for '" << ti.name() << "'!" << std::endl;
 	}
 
 	return re;

@@ -75,11 +75,9 @@ struct ModuleStartInfo
 	Modules provide an easy way to separate application code into threads without any extra code required by the user.
 	Events will be sent and synchronized between threads if requested.
 
-	!!!!!!!!!!!!!!!!!!!!!!!!!!! WARNING:   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	Any code using references to Module::Get() ( e.g. in the EventUser class on destruct ) will segfault when called
-	in the modules destructor.
-	MAKE SURE YOU DESTROY ANYTHING INSIDE A MODULE USING EVENTUSER OR Module::Get() IN THE DeInit() METHOD!
-	!!!!!!!!!!!!!!!!!!!!!!!!!!! WARNING END   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	@warning 	Any code using references to Module::Get() ( e.g. in the EventUser class on destruct ) will segfault when called
+				in the modules destructor.
+				MAKE SURE YOU DESTROY ANYTHING INSIDE A MODULE USING EVENTUSER OR Module::Get() IN THE DeInit() METHOD!
 
 	Modules have their own local eventqueue and register on start with the global EventCore.
 */

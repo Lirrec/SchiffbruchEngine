@@ -2,7 +2,8 @@
 
 IO::IO()
 {
-	Paths.push_back(fs::current_path().generic_string());
+	// add default resources directory ( "res" subdirectory in executable dir )
+	Paths.push_back( (fs::current_path() / "res").generic_string() );
 }
 
 IO::~IO()

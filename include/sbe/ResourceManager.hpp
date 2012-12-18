@@ -28,6 +28,17 @@
 */
 class iResource
 {
+	public:
+
+	static iResource createResInfo(const std::string& name, bool savetosave, bool preload)
+	{
+		iResource re;
+		re.name = name;
+		re.savetosave = savetosave;
+		re.preload = preload;
+		return re;
+	}
+
 	std::string name;	/// string name of the resource for debugging purposes
 	bool savetosave;	/// should this resource be included in savegames?
 	bool preload;		/// should all available resources of this type be autoloaded from a savegame?
@@ -96,13 +107,16 @@ class ResourceManager
         bool saveAllObjects();
 
         // - Plugin and Class Management -
+
+
+
         /**
 			Register a new Resource with a BinaryIOPlugin
 			@param iR the Resource information
 			@param IOPlugin the plugin responsible for loading/saving this resource
         */
         template < typename T>
-        void registerResource( iResource& iR, iBinaryIOPlugin<T>& IOPlugin);
+        void registerResource( const iResource& iR, std::shared_ptr<iBinaryIOPlugin<T>> IOPlugin);
 
         /**
 			Register a new Resource with a TreeIOPlugin
@@ -110,7 +124,14 @@ class ResourceManager
 			@param IOPlugin the plugin responsible for loading/saving this resource
         */
         template < typename T>
-        void registerResource( iResource& iR, iTreeIOPlugin<T>& IOPlugin);
+        void registerResource( const iResource& iR, std::shared_ptr<iTreeIOPlugin<T>> IOPlugin);
+
+        /**
+			Register a new Resource without an IOPlugin. The Engine won't be able to save/load the given resource
+			@param name the Name of the Resource
+        */
+        template < typename T>
+        void registerResource( const std::string& name);
 
         // - Settings/Registry -
         // ebenfalls über Events erreichbar
@@ -138,6 +159,9 @@ class ResourceManager
 		/// Removes the current Savegame from IO's path-stack
 		void popSave();
 
+		/// initialises all default Resources and loads the IO System
+		void init();
+
 	private:
 
 		/// stores the name of the current save if saving/loading is in progres.
@@ -145,7 +169,7 @@ class ResourceManager
 		/// with PopSave()
 		std::string currentsave;
 
-        void init();
+
 
         /**
 			Register IOPlugins/iResources for all the Classes supported by default by the engine.
@@ -161,8 +185,7 @@ class ResourceManager
 		/// dumps all internal namedlists
 		void DumpDebugInfo();
 
-        // map from std::type_index to NamedList<T>
-        typedef std::map < std::type_index, boost::any > ResourceMap;
+        typedef std::map < std::type_index, std::shared_ptr<BaseList> > ResourceMap;
         typedef std::map < std::type_index, iResource  > ResourceInfos;
 
 
@@ -171,6 +194,8 @@ class ResourceManager
 
         /// stores settings
         boost::property_tree::ptree Settings;
+
+        std::shared_ptr<IO> mIO;
 };
 
 

@@ -4,8 +4,8 @@ template < typename T >
 std::shared_ptr<T> ResourceManager::get( const std::string& name)
 {
     auto ti = std::type_index(typeid(T));
-    auto r = boost::any_cast<NamedList<T>> ( Resources[ti] );
-    return r.GetItem(name);
+    auto r = dynamic_pointer_cast<NamedList<T>> ( Resources[ti] );
+    return r->GetItem(name);
 }
 
 
@@ -34,8 +34,8 @@ bool ResourceManager::add(std::shared_ptr<T> res, const std::string& name)
         return false;
     }
 
-    auto r = boost::any_cast<NamedList<T>> ( Resources[ti] );
-    r.AddItem(name, res);
+    auto r = dynamic_pointer_cast<NamedList<T>> ( Resources[ti] );
+    r->AddItem(name, res);
 
     return true;
 }
@@ -44,8 +44,8 @@ bool ResourceManager::add(std::shared_ptr<T> res, const std::string& name)
 template< typename T>
 bool ResourceManager::remove(  std::type_info ti , std::string& name )
 {
-    auto r = boost::any_cast<NamedList<T>> ( Resources[ std::type_index(ti) ] );
-    r.erase(name);
+    auto r = dynamic_pointer_cast<NamedList<T>>( Resources[ std::type_index(ti) ] );
+    r->erase(name);
     return true;
 }
 
@@ -53,30 +53,33 @@ bool ResourceManager::remove(  std::type_info ti , std::string& name )
 template<class T>
 bool ResourceManager::saveObject( std::shared_ptr<T> pObj, const std::string& path )
 {
-	const std::type_index ti = type_index( typeid(T) );
+    //const std::type_index ti = type_index( typeid(T) );
 
-	return false;
+    return false;
 }
 
 
 template<class T>
 bool ResourceManager::saveAllObjects()
 {
-	return false;
+    return false;
 }
 
 // - Plugin and Class Management -
 
 
 template < typename T>
-void ResourceManager::registerResource( iResource& iR, iBinaryIOPlugin<T>& IOPlugin)
+void ResourceManager::registerResource( const iResource& iR, std::shared_ptr<iBinaryIOPlugin<T>> IOPlugin)
 {
     auto ti = std::type_index(typeid(T));
 
     if (Resources.find(ti) == Resources.end())
     {
-        Resources[ti] = boost::any( NamedList<T>() );
+        Resources[ti] = std::shared_ptr<BaseList> ( new NamedList<T>() );
         ResInfos[ti] = iR;
+
+        mIO->addBinaryPlugin<T>( IOPlugin );
+
         Engine::out() << "[ResourceManager] Registered class " << ti.name() << " as Resource." << std::endl;
     }
     else
@@ -87,13 +90,17 @@ void ResourceManager::registerResource( iResource& iR, iBinaryIOPlugin<T>& IOPlu
 }
 
 template < typename T>
-void ResourceManager::registerResource( iResource& iR, iTreeIOPlugin<T>& IOPlugin)
+void ResourceManager::registerResource( const iResource& iR, std::shared_ptr<iTreeIOPlugin<T>> IOPlugin)
 {
     auto ti = std::type_index(typeid(T));
 
     if (Resources.find(ti) == Resources.end())
     {
-        Resources[ti] = boost::any( NamedList<T>() );
+        Resources[ti] = std::shared_ptr<BaseList> ( new NamedList<T>() );
+        ResInfos[ti] = iR;
+
+		mIO->addTreePlugin<T>( IOPlugin );
+
         Engine::out() << "[ResourceManager] Registered class " << ti.name() << " as Resource." << std::endl;
     }
     else
@@ -101,4 +108,22 @@ void ResourceManager::registerResource( iResource& iR, iTreeIOPlugin<T>& IOPlugi
         Engine::out() << "[ResourceManager] Cant register class " << ti.name() << " as Resource, already registered!" << std::endl;
     }
 
+}
+
+template < typename T>
+void ResourceManager::registerResource( const std::string& name)
+{
+    auto ti = std::type_index(typeid(T));
+
+    if (Resources.find(ti) == Resources.end())
+    {
+        Resources[ti] = std::shared_ptr<BaseList> ( new NamedList<T>() );
+        ResInfos[ti] = iResource::createResInfo( name, false, false);
+
+        Engine::out() << "[ResourceManager] Registered class " << ti.name() << " as Resource." << std::endl;
+    }
+    else
+    {
+        Engine::out() << "[ResourceManager] Cant register class " << ti.name() << " as Resource, already registered!" << std::endl;
+    }
 }
