@@ -46,6 +46,28 @@ class ImageSet
 		sf::Sprite CreateSprite(const Geom::Vec2 FramePos) const;
 		std::shared_ptr<sf::Sprite> CreateSpritePtr(const Geom::Vec2 FramePos) const;
 
+		/**
+			Add a given Image from the ImageSet to a VertexArray.
+			@param index index of the image to add to the vertexarray
+			@param vA the VertexArray which is modified
+			@param ArrayIndex the position in the vertexarray which sould be used ( -1/default will append to the array, other values will overwrite existing vertices from the given position on)
+		*/
+		void CreateQuad( const int index , sf::VertexArray& vA, sf::FloatRect& Pos, const int ArrayIndex = -1) const;
+
+		/**
+			Add a given Image from the ImageSet to a VertexArray.
+			@param FramePos The position of the image/frame on the ImageSet to add to the vertexarray
+			@param vA the VertexArray which is modified
+			@param ArrayIndex the position in the vertexarray which sould be used ( -1/default will append to the array, other values will overwrite existing vertices from the given position on)
+		*/
+		void CreateQuad( const Geom::Vec2 FramePos, sf::VertexArray& vA, sf::FloatRect& Pos, const int ArrayIndex = -1) const;
+
+		/**
+			Updates the internal pointer to sf::Texture, call to update sprites after the image was changed
+			@param force set true to force an update ( default behaviour is to just load the texture once )
+			@return false on error
+		*/
+		bool updateTexture( bool force=false );
 
 		//## DATA members ##
 
@@ -76,6 +98,10 @@ class ImageSet
 		unsigned int FramesPerSecond;
 
 		unsigned int NumFrames;
+
+	private:
+
+		std::shared_ptr<sf::Texture> Tex;
 };
 
 

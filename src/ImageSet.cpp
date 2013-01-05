@@ -81,11 +81,11 @@ sf::Sprite ImageSet::CreateSprite(const Geom::Vec2 FramePos) const
 {
 	//Engine::out() << "CreateSprite: " << FramePos << std::endl;
 	sf::Sprite re;
-	std::shared_ptr<sf::Texture> txt = Engine::GetResMgr()->get<sf::Texture>(ImageName);
+	std::shared_ptr<sf::Image> img = Engine::GetResMgr()->get<sf::Image>(ImageName);
 
-	if (txt)
+	if ( updateTexture() )
 	{
-		re.setTexture(*txt);
+		re.setTexture(*Tex);
 		re.setTextureRect( Geom::toSFRect( FramePosToPixels(FramePos) ) );
 	}
 	else
@@ -100,11 +100,10 @@ std::shared_ptr<sf::Sprite> ImageSet::CreateSpritePtr(const Geom::Vec2 FramePos)
 {
 	//Engine::out() << "CreateSprite: " << FramePos << std::endl;
 	std::shared_ptr<sf::Sprite> re( new sf::Sprite );
-	std::shared_ptr<sf::Texture> txt = Engine::GetResMgr()->get<sf::Texture>(ImageName);
 
-	if (txt)
+	if ( updateTexture() )
 	{
-		re->setTexture(*txt);
+		re->setTexture(*Tex);
 		re->setTextureRect( Geom::toSFRect( FramePosToPixels(FramePos) ) );
 	}
 	else
@@ -114,3 +113,60 @@ std::shared_ptr<sf::Sprite> ImageSet::CreateSpritePtr(const Geom::Vec2 FramePos)
 
 	return re;
 }
+
+bool ImageSet::updateTexture( bool force )
+{
+	if (!Tex || force)
+	{
+		std::shared_ptr<sf::Image> img = Engine::GetResMgr()->get<sf::Image>(ImageName);
+
+		if (!img)
+		{
+			Engine::out() << "[ImageSet] Unable to update internal texture, Image with name " << ImageName << " doesn't exist anymore!" << std::endl;
+			return false;
+		}
+
+		if (!Tex) Tex.reset ( new sf::Texture() );
+
+		Tex->loadFromImage( *img );
+	}
+
+	return true;
+}
+
+void ImageSet::CreateQuad( const Geom::Vec2 FramePos, sf::VertexArray& vA, sf::FloatRect& Pos, const int ArrayIndex)
+{
+	CreateQuad( index, CalcFramePos(index), Pos, ArrayIndex);
+}
+
+void ImageSet::CreateQuad( const int index , sf::VertexArray& vA, sf::FloatRect& Pos, const int ArrayIndex)
+{
+	Geom::Rect coords = FramePosToPixels(FramePos);
+
+	sf::Vertex vs[4];
+	vs[0]->position = sf::Vector2f( Pos.left, Pos.top  );		// top-left
+	vs[1]->position = sf::Vector2f( Pos.left+Pos.width, Pos.top ); // top-right
+	vs[2]->position = sf::Vector2f( Pos.left+Pos.width, Pos.top+Pos.height ); // bottom-right
+	vs[3]->position = sf::Vector2f( Pos.left, Pos.top+Pos.height );			  // bottom-left
+
+	vs[0]->texCoords = sf::Vector2f( coords.x().x(), coords.x().y() )	// top-left
+	vs[1]->texCoords = sf::Vector2f( coords.y().x(), coords.x().y() ) // top-right
+	vs[2]->texCoords = sf::Vector2f( coords.y().x(), coords.y().y() ) // bottom-right
+	vs[3]->texCoords = sf::Vector2f( coords.x().x(), coords.y().y() ) // bottom-left
+
+	if ( ArrayIndex = -1 )
+	{
+		vA.append( vs[0] );
+		vA.append( vs[1] );
+		vA.append( vs[2] );
+		vA.append( vs[3] );
+	}
+	else
+	{
+		vA[ ArrayIndex ] = vs[0];
+		vA[ ArrayIndex + 1 ] = vs[1];
+		vA[ ArrayIndex + 2 ] = vs[2];
+		vA[ ArrayIndex + 3 ] = vs[3];
+	}
+}
+
