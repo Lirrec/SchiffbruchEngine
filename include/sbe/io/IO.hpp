@@ -78,7 +78,6 @@ class IO
     private:
 
 		/// returns a plugin for the given type_index or an empty shared_ptr
-		std::shared_ptr<IOPlugin> getPlugin( const std::type_info& ti );
 		std::shared_ptr<IOPlugin> getPlugin( const std::type_index& ti );
 
 		/// returns an ofstream for a given plugin, name+path

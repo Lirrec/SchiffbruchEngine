@@ -17,10 +17,11 @@
 #include <boost/any.hpp>
 #include <boost/property_tree/ptree.hpp>
 
+class BaseList;
+class IOPlugin;
+class IO;
 
-#include "util/NamedList.hpp"
-#include "io/IOPlugin.hpp"
-#include "io/IO.hpp"
+
 
 /**
 	Holds information about a resource
@@ -95,7 +96,7 @@ class ResourceManager
 			@return false on errors
 		*/
         template<class T>
-        bool saveObject( const std::string& name, std::shared_ptr<T> pObj, const std::string& path );
+        bool saveObject( const std::string& name, std::shared_ptr<T> pObj);
 
 		/**
 			Save all Objects of a resource.
@@ -118,14 +119,6 @@ class ResourceManager
         */
         template < typename T>
         void registerResource( const iResource& iR, std::shared_ptr<IOPlugin> IOP);
-
-        /**
-			Register a new Resource with a TreeIOPlugin
-			@param iR the Resource information
-			@param IOPlugin the plugin responsible for loading/saving this resource
-        */
-        template < typename T>
-        void registerResource( const iResource& iR, std::shared_ptr<iTreeIOPlugin<T>> IOPlugin);
 
         /**
 			Register a new Resource without an IOPlugin. The Engine won't be able to save/load the given resource
@@ -171,7 +164,6 @@ class ResourceManager
 		std::string currentsave;
 
 		/// returns true if the class is a valid resource, outputs an error otherwise
-		bool isResource( const std::type_info& ti );
 		bool isResource( const std::type_index& ti );
 
         /**

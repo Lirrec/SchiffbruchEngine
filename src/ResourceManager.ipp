@@ -1,5 +1,10 @@
 #include "sbe/ResourceManager.hpp"
 
+
+#include "sbe/util/NamedList.hpp"
+#include "sbe/io/IOPlugin.hpp"
+#include "sbe/io/IO.hpp"
+
 // ############################################
 // 				ADD / GET / REMOVE
 // ############################################
@@ -58,10 +63,10 @@ bool ResourceManager::remove( std::string& name )
 
 
 template<class T>
-bool ResourceManager::saveObject( const std::string& name, std::shared_ptr<T> pObj, const std::string& path )
+bool ResourceManager::saveObject( const std::string& name, std::shared_ptr<T> pObj)
 {
 	if ( ! isResource( typeid(T) ) ) return false;
-    return IO::saveObject( name, *pObj, false);
+    return mIO->saveObject( name, *pObj, false);
 }
 
 

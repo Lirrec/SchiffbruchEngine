@@ -1,5 +1,9 @@
 #include "sbe/ResourceManager.hpp"
 
+
+#include "sbe/util/NamedList.hpp"
+#include "sbe/io/IO.hpp"
+
 #include "sbe/io/IOPlugin.hpp"
 #include "io/plugins/ImageSetIOPlugin.hpp"
 #include "io/plugins/SoundIOPlugin.hpp"
@@ -7,7 +11,6 @@
 
 ResourceManager::ResourceManager()
 {
-
 }
 
 ResourceManager::~ResourceManager()
@@ -18,19 +21,13 @@ ResourceManager::~ResourceManager()
 
 void ResourceManager::init()
 {
-	Engine::out() << "[ResourceManager] Creating IO" << std::endl;
-	mIO.reset( new IO() );
+	mIO = Engine::GetIO();
 
 	loadDefaultPlugins();
 
 	Engine::out() << "[ResourceManager] Adding default font" << std::endl;
     sf::Font* f = new sf::Font(getDefaultFont());
     add( f, "default");
-}
-
-bool ResourceManager::isResource( const std::type_info& ti )
-{
-    return isResource( std::type_index( ti ));
 }
 
 bool ResourceManager::isResource( const std::type_index& ti )

@@ -24,13 +24,10 @@ std::string IO::popPath( )
 	return re;
 }
 
-std::shared_ptr<IOPlugin> IO::getPlugin( const std::type_info& ti )
-{
-	return getPlugin( std::type_index(ti));
-}
-
 std::shared_ptr<IOPlugin> IO::getPlugin( const std::type_index& ti )
 {
+	//Engine::out() << "[IO:getPlugin] IOPlugin count '" << Plugins.size() << "'" << std::endl;
+
 	if ( Plugins.find( ti ) == Plugins.end() )
 	{
 		Engine::out() << "[IO] No IOPlugin found for type '" << ti.name() << "'!" << std::endl;

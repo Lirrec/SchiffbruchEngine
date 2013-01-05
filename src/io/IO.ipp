@@ -13,6 +13,7 @@ void IO::addPlugin(std::shared_ptr<IOPlugin> IOP)
 	if (Plugins.find( ti ) == Plugins.end())
 	{
 		Engine::out() << "[IO] Registering Plugin for '" << ti.name() << "'" << std::endl;
+		Engine::out() << "[IO] IOPlugin count '" << Plugins.size() << "'" << std::endl;
 		Plugins[ ti ] = IOP;
 	}
 	else
@@ -26,7 +27,7 @@ std::vector<std::shared_ptr<T>> IO::loadPath( const std::string& filename )
 {
 	try {
 
-		std::shared_ptr<IOPlugin> IOP = getPlugin( typeid(T) );
+		std::shared_ptr<IOPlugin> IOP = getPlugin( std::type_index(typeid(T)) );
 		if ( !IOP ) return std::vector<std::shared_ptr<T>>();
 
 		for ( const std::string& current_path : Paths )
@@ -147,14 +148,15 @@ bool IO::saveObject( const std::string& name, const T& object, bool overwrite )
 	auto ti = std::type_index( typeid(T) );
 
 	std::shared_ptr<IOPlugin> IOP = getPlugin( ti );
-	if ( !IOP ) return;
+	if ( !IOP ) return false;
 
 	try {
 		auto tmp = getOfstream( IOP, name, Paths.front(), overwrite );
 
-		if (saveFile(IOP, object, name, *(tmp.first)))
+		if ( saveFile(IOP, object, name, *(tmp.first)) )
+		{
 			Engine::out() << "[IO] Saved " << name << " ( " << tmp.second  << " -- " << ti.name() << ")" << std::endl;
-
+		}
 	}
 	catch (fs::filesystem_error& e)
 	{
