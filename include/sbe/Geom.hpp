@@ -342,9 +342,18 @@ namespace Geom
 	inline double distance(const Point& lhs, const Point& rhs)
 	{
 		return sqrt(
-					pow(static_cast<int>(abs(lhs.x())) + abs(rhs.x()), 2)
+					pow(static_cast<int>(abs(lhs.x())) - abs(rhs.x()), 2)
 					+
-					pow(static_cast<int>(abs(lhs.x())) + abs(rhs.x()), 2)
+					pow(static_cast<int>(abs(lhs.y())) - abs(rhs.y()), 2)
+					);
+	}
+
+	inline double distance(const Pointf& lhs, const Pointf& rhs)
+	{
+		return sqrt(
+					pow(lhs.x() - rhs.x(), 2)
+					+
+					pow(lhs.y() - rhs.y(), 2)
 					);
 	}
 
