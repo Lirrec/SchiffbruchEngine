@@ -83,7 +83,7 @@ public:
 		}
 	}
 
-	map_type& GetMap() { return Items };
+	map_type& GetMap() { return Items; }
 
 	private:
 

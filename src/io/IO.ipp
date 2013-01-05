@@ -24,74 +24,71 @@ void IO::addPlugin(std::shared_ptr<IOPlugin> IOP)
 template<class T>
 std::vector<std::shared_ptr<T>> IO::loadPath( const std::string& filename )
 {
-	auto ti = std::type_index(typeid(T));
-
-	// decompose path
-
 	try {
 
-		//determine plugin
-		if ( Plugins.find( ti ) == Plugins.end() )
+		std::shared_ptr<IOPlugin> IOP = getPlugin( typeid(T) );
+		if ( !IOP ) return std::vector<std::shared_ptr<T>>();
+
+		for ( const std::string& current_path : Paths )
 		{
-			Engine::out() << "[IO] No IOPlugin found for type '" << ti.name() << "'!" << std::endl;
-			return std::vector<std::shared_ptr<T>>();
-		}
-
-		std::shared_ptr<IOPlugin> IOP = Plugins[ti];
-
-		for ( std::string current_path : Paths )
-		{
-			fs::path cp(current_path);
-
-			if ( !fs::exists(cp ) )
-			{
-				Engine::out() << "[IO] Unable to load path! '" << cp.generic_string() << "' not found!" << std::endl;
-				return std::vector<std::shared_ptr<T>>();
-			}
-
-
-			// check if we got a valid file
-			if ( fs::is_regular_file(cp / filename)  ) return loadFile<T>( IOP , cp / filename );
-
-			cp /= IOP->relative_path;
-			cp /= filename;
-
-			if ( fs::is_regular_file(cp)  ) return loadFile<T>( IOP , cp );
-
-			if ( fs::is_directory(cp) )
-			{
-				if (IOP->loader_type == IOPlugin::loader::PTREE )
-				{
-					Engine::out() << "[IO] Unable to load directory '" << cp.generic_string() << "' into a ptree!" << std::endl;
-					return std::vector<std::shared_ptr<T>>();
-				}
-				else
-				{
-					std::vector<std::shared_ptr<T>> re;
-
-					for ( auto it = fs::directory_iterator(cp); it != fs::directory_iterator(); ++it  )
-					{
-						if ( fs::is_regular_file( *it ) )
-						{
-							auto tmp = loadFile<T>( IOP , cp );
-							re.insert( re.end(), tmp.begin(), tmp.end() );
-						}
-					}
-
-					return re;
-				}
-			}
-			else
-			{
-				Engine::out() << "[IO] Unable to load path! '" << cp.generic_string() << "' not a directory nor a file!" << std::endl;
-			}
-
+			return loadPath<T>( IOP, current_path, filename);
 		}
 
 	}
 	catch (fs::filesystem_error& e)
 	{
 		Engine::out() << "[IO] boost::fs exception! '" << e.what() << "'" << std::endl;
+	}
+
+	return std::vector<std::shared_ptr<T>>();
+}
+
+template<class T>
+std::vector<std::shared_ptr<T>> IO::loadPath(  std::shared_ptr<IOPlugin>& IOP, const std::string& current_path, const std::string& filename)
+{
+	fs::path cp(current_path);
+
+	if ( !fs::exists( cp ) )
+	{
+		Engine::out() << "[IO] Unable to load path! '" << cp.generic_string() << "' not found!" << std::endl;
+		return std::vector<std::shared_ptr<T>>();
+	}
+
+
+	// check if we got a valid file
+	if ( fs::is_regular_file(cp / filename)  ) return loadFile<T>( IOP , cp / filename );
+
+	cp /= IOP->relative_path;
+	cp /= filename;
+
+	if ( fs::is_regular_file(cp)  ) return loadFile<T>( IOP , cp );
+
+	if ( fs::is_directory(cp) )
+	{
+		if (IOP->loader_type == IOPlugin::loader::PTREE )
+		{
+			Engine::out() << "[IO] Unable to load directory '" << cp.generic_string() << "' into a ptree!" << std::endl;
+			return std::vector<std::shared_ptr<T>>();
+		}
+		else
+		{
+			std::vector<std::shared_ptr<T>> re;
+
+			for ( auto it = fs::directory_iterator(cp); it != fs::directory_iterator(); ++it  )
+			{
+				if ( fs::is_regular_file( *it ) )
+				{
+					auto tmp = loadFile<T>( IOP , cp );
+					re.insert( re.end(), tmp.begin(), tmp.end() );
+				}
+			}
+
+			return re;
+		}
+	}
+	else
+	{
+		Engine::out() << "[IO] Unable to load path! '" << cp.generic_string() << "' not a directory nor a file!" << std::endl;
 	}
 
 	return std::vector<std::shared_ptr<T>>();
@@ -107,7 +104,6 @@ std::vector<std::shared_ptr<T>> IO::loadFile( std::shared_ptr<IOPlugin>& IOP, co
 		Engine::out() << "[IO] Unsupported file extension '" << p.extension() << "' for '" << ti.name() << "'!" << std::endl;
 		return std::vector<std::shared_ptr<T>>();
 	}
-
 
 	fs::ifstream in(p);
 
@@ -139,47 +135,39 @@ std::vector<std::shared_ptr<T>> IO::loadFile( std::shared_ptr<IOPlugin>& IOP, co
 	}
 }
 
+
+
+// #################################################
+//						SAVING
+// #################################################
+
 template<class T>
 bool IO::saveObject( const std::string& name, const T& object, bool overwrite )
 {
 	auto ti = std::type_index( typeid(T) );
 
+	std::shared_ptr<IOPlugin> IOP = getPlugin( ti );
+	if ( !IOP ) return;
 
-	std::shared_ptr<IOPlugin> IOP;
-	//determine plugin
-	auto pIT = Plugins.find( ti );
+	try {
+		auto tmp = getOfstream( IOP, name, Paths.front(), overwrite );
 
-	if ( pIT == Plugins.end() )
-	{
-		Engine::out() << "[IO] No IOPlugin found for type '" << ti.name() << "'!" << std::endl;
-		return false;
+		if (saveFile(IOP, object, name, *(tmp.first)))
+			Engine::out() << "[IO] Saved " << name << " ( " << tmp.second  << " -- " << ti.name() << ")" << std::endl;
+
 	}
-
-	IOP = *pIT;
-
-	fs::path p = Paths.front();
-
-	// determine filename
-	std::string filename = name;
-	if ( name.find('.') == std::string::npos )
-		filename += '.' + IOP->getSupportedFileExtensions()[0];
-
-	p /= filename;
-	if ( p.status() == fs::file_type::file_not_found || p.is_regular_file() && overwrite )
+	catch (fs::filesystem_error& e)
 	{
-		fs::ofstream out(filename);
+		Engine::out() << "[IO] boost::fs exception! '" << e.what() << "'" << std::endl;
 	}
-	else
-	{
-		Engine::out() << "[IO] Saving " << name << " ( " p << " -- " << ti.name() << ") would overwrite existing file!" << std::endl;
-		return false;
-	}
+}
 
+template <class T>
+bool IO::saveFile( std::shared_ptr<IOPlugin>& IOP, const T& object, const std::string& name, fs::ofstream& out)
+{
 	if (IOP->loader_type == IOPlugin::loader::BINARY )
 	{
-			Engine::out() << "[IO] Saved " << name << " ( " p << " -- " << ti.name() << ")" << std::endl;
 			auto BinIO = dynamic_pointer_cast<iBinaryIOPlugin<T>>(IOP);
-
 			return BinIO->encodeStream ( object, out );
 	}
 	else
@@ -188,77 +176,74 @@ bool IO::saveObject( const std::string& name, const T& object, bool overwrite )
 
 		pt::ptree tree;
 
-		TreeIO->saveObject( name, object, tree);
+		if (TreeIO->saveObject( name, object, tree))
+		{
+			pt::info_parser::write_info( out, tree );
+			return true;
+		}
 
-		pt::info_parser::write_info( out, tree );
+		Engine::out() << "[IO] Error creating ptree for: " << name << " ( " << typeid(T).name() << ")" << std::endl;
 
-		Engine::out() << "[IO] Saved " << name << " ( " p << " -- " << ti.name() << ")" << std::endl;
-
-		return re;
+		return false;
 	}
 }
 
 template<class T>
-bool IO::saveAllObjects( std::map<std::string,T>::iterator& begin, std::map<std::string,T>::iterator& end )
+bool IO::saveObjects( std::map<std::string,std::shared_ptr<T>>& Objects, bool overwrite )
 {
-	for ( auto it = begin ; it != end; ++it )
-	{
-
-	}
-
-
 	auto ti = std::type_index( typeid(T) );
+	std::shared_ptr<IOPlugin> IOP = getPlugin( ti );
+	if ( !IOP ) return false;
 
 
-	std::shared_ptr<IOPlugin> IOP;
-	//determine plugin
-	auto pIT = Plugins.find( ti );
-
-	if ( pIT == Plugins.end() )
+	if ( IOP->loader_type == IOPlugin::loader::BINARY)
 	{
-		Engine::out() << "[IO] No IOPlugin found for type '" << ti.name() << "'!" << std::endl;
-		return false;
-	}
+		bool re = true;
+		for ( auto it = Objects.begin() ; it != Objects.end(); ++it )
+		{
+			std::string& name = it->first;
+			T& object = it->second;
 
-	IOP = *pIT;
-
-	fs::path p = Paths.front();
-
-	// determine filename
-	std::string filename = name;
-	if ( name.find('.') == std::string::npos )
-		filename += '.' + IOP->getSupportedFileExtensions()[0];
-
-	p /= filename;
-	if ( p.status() == fs::file_type::file_not_found || p.is_regular_file() && overwrite )
-	{
-		fs::ofstream out(filename);
-	}
-	else
-	{
-		Engine::out() << "[IO] Saving " << name << " ( " p << " -- " << ti.name() << ") would overwrite existing file!" << std::endl;
-		return false;
-	}
-
-	if (IOP->loader_type == IOPlugin::loader::BINARY )
-	{
-			Engine::out() << "[IO] Saved " << name << " ( " p << " -- " << ti.name() << ")" << std::endl;
-			auto BinIO = dynamic_pointer_cast<iBinaryIOPlugin<T>>(IOP);
-
-			return BinIO->encodeStream ( object, out );
-	}
-	else
-	{
-		auto TreeIO = dynamic_pointer_cast<iTreeIOPlugin<T>>(IOP);
-
-		pt::ptree tree;
-
-		TreeIO->saveObject( name, object, tree);
-
-		pt::info_parser::write_info( out, tree );
-
-		Engine::out() << "[IO] Saved " << name << " ( " p << " -- " << ti.name() << ")" << std::endl;
+			if ( !saveObject( name, object, overwrite) ) re = false;
+		}
 
 		return re;
 	}
+	else
+	{
+
+
+		auto TreeIO = dynamic_pointer_cast<iTreeIOPlugin<T>>(IOP);
+		pt::ptree tree;
+
+		for ( auto it = begin ; it != end; ++it )
+		{
+			std::string& name = it->first;
+			T& object = it->second;
+
+			if ( TreeIO->saveObject( name, object, tree))
+			{
+				Engine::out() << "[IO] Saved " << name << " ( " << ti.name() << " )" << std::endl;
+			}
+			else
+			{
+				Engine::out() << "[IO] Error creating ptree for: " << name << " ( " << ti.name() << " )" << std::endl;
+				return false;
+			}
+		}
+
+		try {
+
+			auto tmp = getOfstream( IOP, IOP->relative_path, Paths.front(), overwrite );
+			// write the complete ptree
+			pt::info_parser::write_info( *(tmp.first), tree );
+		}
+		catch (fs::filesystem_error& e)
+		{
+			Engine::out() << "[IO] boost::fs exception! '" << e.what() << "'" << std::endl;
+		}
+
+		return true;
+	}
+
 }

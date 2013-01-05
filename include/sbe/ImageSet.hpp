@@ -38,13 +38,13 @@ class ImageSet
 
 		/// Creates a sprite showing a specific image of the imageset
 		/// @param index the index of the frame the sprite should display
-		sf::Sprite CreateSprite(const int index) const;
-		std::shared_ptr<sf::Sprite> CreateSpritePtr(const int index) const;
+		sf::Sprite CreateSprite(const int index);
+		std::shared_ptr<sf::Sprite> CreateSpritePtr(const int index);
 
 		/// Creates a sprite showing a specific image of the imageset
 		/// @param FramePos the Position of the frame the sprite should display
-		sf::Sprite CreateSprite(const Geom::Vec2 FramePos) const;
-		std::shared_ptr<sf::Sprite> CreateSpritePtr(const Geom::Vec2 FramePos) const;
+		sf::Sprite CreateSprite(const Geom::Vec2 FramePos);
+		std::shared_ptr<sf::Sprite> CreateSpritePtr(const Geom::Vec2 FramePos);
 
 		/**
 			Add a given Image from the ImageSet to a VertexArray.
@@ -52,7 +52,7 @@ class ImageSet
 			@param vA the VertexArray which is modified
 			@param ArrayIndex the position in the vertexarray which sould be used ( -1/default will append to the array, other values will overwrite existing vertices from the given position on)
 		*/
-		void CreateQuad( const int index , sf::VertexArray& vA, sf::FloatRect& Pos, const int ArrayIndex = -1) const;
+		void CreateQuad( const int index , sf::VertexArray& vA, sf::FloatRect& Pos, const int ArrayIndex = -1);
 
 		/**
 			Add a given Image from the ImageSet to a VertexArray.
@@ -60,7 +60,7 @@ class ImageSet
 			@param vA the VertexArray which is modified
 			@param ArrayIndex the position in the vertexarray which sould be used ( -1/default will append to the array, other values will overwrite existing vertices from the given position on)
 		*/
-		void CreateQuad( const Geom::Vec2 FramePos, sf::VertexArray& vA, sf::FloatRect& Pos, const int ArrayIndex = -1) const;
+		void CreateQuad( const Geom::Vec2 FramePos, sf::VertexArray& vA, sf::FloatRect& Pos, const int ArrayIndex = -1);
 
 		/**
 			Updates the internal pointer to sf::Texture, call to update sprites after the image was changed

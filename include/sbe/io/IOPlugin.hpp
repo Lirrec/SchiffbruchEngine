@@ -110,7 +110,7 @@ class iTreeIOPlugin : public IOPlugin
         /**
         * @return true on successfull encoding
         */
-        virtual bool saveObject( const T& object, boost::property_tree::ptree& root) = 0;
+        virtual bool saveObject( const std::string& name, const T& object, boost::property_tree::ptree& root) = 0;
 
         virtual std::vector<std::string> getSupportedFileExtensions() { return { "info" }; }
 

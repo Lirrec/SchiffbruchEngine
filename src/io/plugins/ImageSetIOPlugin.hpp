@@ -17,7 +17,7 @@ public:
 	virtual ~ImageSetIOPlugin();
 
 	virtual ObjPtr loadObject(const boost::property_tree::ptree::value_type& node);
-	virtual bool saveObject( const ImageSet& object, boost::property_tree::ptree& root);
+	virtual bool saveObject( const std::string& name, const ImageSet& object, boost::property_tree::ptree& root);
 };
 
 #endif // IMAGESETIOPLUGIN_HPP

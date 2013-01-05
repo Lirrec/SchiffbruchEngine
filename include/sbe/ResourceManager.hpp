@@ -87,7 +87,7 @@ class ResourceManager
 			@return true on succes, false on error or if the objects was not found
 		*/
         template< typename T>
-        bool remove(  std::type_info ti , std::string& name );
+        bool remove( std::string& name );
 
 		/**
 			Save a single object.
@@ -95,7 +95,7 @@ class ResourceManager
 			@return false on errors
 		*/
         template<class T>
-        bool saveObject( std::shared_ptr<T> pObj, const std::string& path );
+        bool saveObject( const std::string& name, std::shared_ptr<T> pObj, const std::string& path );
 
 		/**
 			Save all Objects of a resource.
@@ -170,7 +170,9 @@ class ResourceManager
 		/// with PopSave()
 		std::string currentsave;
 
-
+		/// returns true if the class is a valid resource, outputs an error otherwise
+		bool isResource( const std::type_info& ti );
+		bool isResource( const std::type_index& ti );
 
         /**
 			Register IOPlugins/iResources for all the Classes supported by default by the engine.

@@ -68,17 +68,33 @@ class IO
 		/**
 		*/
 		template<class T>
-		bool saveObject( const std::string& name, const T& object, bool overwrite );
+		bool saveObject( const std::string& name, const T& object, bool overwrite = false );
 		/**
 			Save all Objects of a kind
 		*/
 		template<class T>
-		bool saveAllObjects( std::map<std::string,T>::iterator& begin, std::map<std::string,T>::iterator& end );
+		bool saveObjects( std::map<std::string,std::shared_ptr<T>>& Objects, bool overwrite = false );
 
     private:
 
+		/// returns a plugin for the given type_index or an empty shared_ptr
+		std::shared_ptr<IOPlugin> getPlugin( const std::type_info& ti );
+		std::shared_ptr<IOPlugin> getPlugin( const std::type_index& ti );
+
+		/// returns an ofstream for a given plugin, name+path
+		std::pair<std::shared_ptr<fs::ofstream>, std::string> getOfstream( std::shared_ptr<IOPlugin>& IOP, const std::string& name, const std::string& path, bool overwrite );
+
+		/// loads a path, IOP and basepath are already given
+		template<class T>
+		std::vector<std::shared_ptr<T>> loadPath(  std::shared_ptr<IOPlugin>& IOP, const std::string& current_path, const std::string& filename);
+
+		/// loads a single file
 		template<class T>
 		std::vector<std::shared_ptr<T>> loadFile( std::shared_ptr<IOPlugin>& IOP, const fs::path& p );
+
+		/// save a single object
+		template <class T>
+		bool saveFile( std::shared_ptr<IOPlugin>& IOP, const T& object, const std::string& name, fs::ofstream& out);
 
 		std::deque<std::string> Paths;
         std::map<std::type_index, std::shared_ptr<IOPlugin>> Plugins;

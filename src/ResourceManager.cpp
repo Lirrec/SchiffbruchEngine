@@ -28,8 +28,21 @@ void ResourceManager::init()
     add( f, "default");
 }
 
+bool ResourceManager::isResource( const std::type_info& ti )
+{
+    return isResource( std::type_index( ti ));
+}
 
+bool ResourceManager::isResource( const std::type_index& ti )
+{
+    if ( Resources.find(ti) == Resources.end() )
+    {
+        Engine::out() << "[ResourceManager] Class " << ti.name() << " not registered as Resource!" << std::endl;
+        return false;
+    }
 
+    return true;
+}
 
 void ResourceManager::loadDefaultPlugins()
 {
