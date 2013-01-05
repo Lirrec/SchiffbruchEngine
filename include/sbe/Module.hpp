@@ -180,14 +180,13 @@ class Module : sf::NonCopyable
 		virtual void Init() {};
 		/**
 			Called after Execute() returns.
-			!!!!!!!!!!!!!!!!!!!!!!!!!!! NOTICE:   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+			@warning
 			Any code using references to Module::Get() ( e.g. in the EventUser class on destruct ) will segfault when called
 			in the modules destructor.
 			MAKE SURE YOU DESTROY ANYTHING INSIDE A MODULE USING EVENTUSER OR Module::Get() IN THE DeInit() METHOD!
 			THIS ALSO MEANS THAT YOU CANT HAVE A NON-POINTER MEMBER IN YOUR MODULE CLASS WHICH USES ONE OF THOSE.
 			Pointers or std::shared_ptr have to be deleted here in DeInit().
-
-			!!!!!!!!!!!!!!!!!!!!!!!!!!! NOTICE   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		*/
 		virtual void DeInit() {};
 
