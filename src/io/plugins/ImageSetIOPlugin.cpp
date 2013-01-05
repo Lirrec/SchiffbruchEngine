@@ -48,12 +48,12 @@ ImageSetIOPlugin::ObjPtr ImageSetIOPlugin::loadObject(const boost::property_tree
 }
 
 
-bool ImageSetIOPlugin::saveObject( const ImageSet& object, boost::property_tree::ptree& root)
+bool ImageSetIOPlugin::saveObject( const std::string& name, const ImageSet& object, boost::property_tree::ptree& root)
 {
 	try {
 		ptree pt;
 
-		pt.put("Name", object.Name);
+		pt.put("Name", name);
 		pt.put("ImageName", object.ImageName);
 		pt.put("StartPos.x", object.StartPos.x());
 		pt.put("StartPos.y", object.StartPos.y());

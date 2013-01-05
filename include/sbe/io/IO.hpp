@@ -16,6 +16,7 @@
 #include <boost/property_tree/info_parser.hpp>
 
 #include <fstream>
+#include <iterator>
 
 namespace fs = boost::filesystem;
 namespace pt = boost::property_tree;
@@ -63,6 +64,16 @@ class IO
 		*/
         template<class T>
         std::vector<std::shared_ptr<T>> loadPath( const std::string& filename );
+
+		/**
+		*/
+		template<class T>
+		bool saveObject( const std::string& name, const T& object, bool overwrite );
+		/**
+			Save all Objects of a kind
+		*/
+		template<class T>
+		bool saveAllObjects( std::map<std::string,T>::iterator& begin, std::map<std::string,T>::iterator& end );
 
     private:
 

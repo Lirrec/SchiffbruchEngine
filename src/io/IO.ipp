@@ -108,6 +108,7 @@ std::vector<std::shared_ptr<T>> IO::loadFile( std::shared_ptr<IOPlugin>& IOP, co
 		return std::vector<std::shared_ptr<T>>();
 	}
 
+
 	fs::ifstream in(p);
 
 	if (IOP->loader_type == IOPlugin::loader::BINARY )
@@ -133,6 +134,130 @@ std::vector<std::shared_ptr<T>> IO::loadFile( std::shared_ptr<IOPlugin>& IOP, co
 		}
 
 		Engine::out() << "[IO] Loaded " << p << " ( " << re.size() << " " << ti.name() << "s)" << std::endl;
+
+		return re;
+	}
+}
+
+template<class T>
+bool IO::saveObject( const std::string& name, const T& object, bool overwrite )
+{
+	auto ti = std::type_index( typeid(T) );
+
+
+	std::shared_ptr<IOPlugin> IOP;
+	//determine plugin
+	auto pIT = Plugins.find( ti );
+
+	if ( pIT == Plugins.end() )
+	{
+		Engine::out() << "[IO] No IOPlugin found for type '" << ti.name() << "'!" << std::endl;
+		return false;
+	}
+
+	IOP = *pIT;
+
+	fs::path p = Paths.front();
+
+	// determine filename
+	std::string filename = name;
+	if ( name.find('.') == std::string::npos )
+		filename += '.' + IOP->getSupportedFileExtensions()[0];
+
+	p /= filename;
+	if ( p.status() == fs::file_type::file_not_found || p.is_regular_file() && overwrite )
+	{
+		fs::ofstream out(filename);
+	}
+	else
+	{
+		Engine::out() << "[IO] Saving " << name << " ( " p << " -- " << ti.name() << ") would overwrite existing file!" << std::endl;
+		return false;
+	}
+
+	if (IOP->loader_type == IOPlugin::loader::BINARY )
+	{
+			Engine::out() << "[IO] Saved " << name << " ( " p << " -- " << ti.name() << ")" << std::endl;
+			auto BinIO = dynamic_pointer_cast<iBinaryIOPlugin<T>>(IOP);
+
+			return BinIO->encodeStream ( object, out );
+	}
+	else
+	{
+		auto TreeIO = dynamic_pointer_cast<iTreeIOPlugin<T>>(IOP);
+
+		pt::ptree tree;
+
+		TreeIO->saveObject( name, object, tree);
+
+		pt::info_parser::write_info( out, tree );
+
+		Engine::out() << "[IO] Saved " << name << " ( " p << " -- " << ti.name() << ")" << std::endl;
+
+		return re;
+	}
+}
+
+template<class T>
+bool IO::saveAllObjects( std::map<std::string,T>::iterator& begin, std::map<std::string,T>::iterator& end )
+{
+	for ( auto it = begin ; it != end; ++it )
+	{
+
+	}
+
+
+	auto ti = std::type_index( typeid(T) );
+
+
+	std::shared_ptr<IOPlugin> IOP;
+	//determine plugin
+	auto pIT = Plugins.find( ti );
+
+	if ( pIT == Plugins.end() )
+	{
+		Engine::out() << "[IO] No IOPlugin found for type '" << ti.name() << "'!" << std::endl;
+		return false;
+	}
+
+	IOP = *pIT;
+
+	fs::path p = Paths.front();
+
+	// determine filename
+	std::string filename = name;
+	if ( name.find('.') == std::string::npos )
+		filename += '.' + IOP->getSupportedFileExtensions()[0];
+
+	p /= filename;
+	if ( p.status() == fs::file_type::file_not_found || p.is_regular_file() && overwrite )
+	{
+		fs::ofstream out(filename);
+	}
+	else
+	{
+		Engine::out() << "[IO] Saving " << name << " ( " p << " -- " << ti.name() << ") would overwrite existing file!" << std::endl;
+		return false;
+	}
+
+	if (IOP->loader_type == IOPlugin::loader::BINARY )
+	{
+			Engine::out() << "[IO] Saved " << name << " ( " p << " -- " << ti.name() << ")" << std::endl;
+			auto BinIO = dynamic_pointer_cast<iBinaryIOPlugin<T>>(IOP);
+
+			return BinIO->encodeStream ( object, out );
+	}
+	else
+	{
+		auto TreeIO = dynamic_pointer_cast<iTreeIOPlugin<T>>(IOP);
+
+		pt::ptree tree;
+
+		TreeIO->saveObject( name, object, tree);
+
+		pt::info_parser::write_info( out, tree );
+
+		Engine::out() << "[IO] Saved " << name << " ( " p << " -- " << ti.name() << ")" << std::endl;
 
 		return re;
 	}
