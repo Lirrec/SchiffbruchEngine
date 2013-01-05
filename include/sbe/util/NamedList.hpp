@@ -11,6 +11,7 @@
 class BaseList
 {
 	public:
+	virtual ~BaseList() {};
 	virtual void DebugDump() = 0;
 };
 
@@ -81,6 +82,8 @@ public:
 			Engine::out() << "- " << it->first << std::endl;
 		}
 	}
+
+	map_type& GetMap() { return Items };
 
 	private:
 

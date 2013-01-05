@@ -17,7 +17,6 @@
 #include <boost/any.hpp>
 #include <boost/property_tree/ptree.hpp>
 
-#include "Animation.hpp"
 
 #include "util/NamedList.hpp"
 #include "io/IOPlugin.hpp"
