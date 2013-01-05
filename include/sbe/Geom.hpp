@@ -218,7 +218,7 @@ namespace Geom
 	// returns the top right point of a rect, computed from TL-point + width
 	inline Point rcTRPoint(const Rect& rc)
 	{
-		return Geom::Point(rc.y().x(), rc.x().y());
+		return Geom::Point(rc.y().x() , rc.x().y() );
 	}
 
 
@@ -354,6 +354,14 @@ namespace Geom
 							static_cast<int>(abs(p1.x() + p2.x())/2),
 							static_cast<int>(abs(p1.y() + p2.y())/2)
 							);
+	}
+
+	inline sf::FloatRect toSFFloatRect ( const Rect& r)
+	{
+		return sf::FloatRect( r.x().x(), // left
+							r.x().y(), // top
+							r.y().x()-r.x().x(), // width
+							r.y().y()-r.x().y() ); // height
 	}
 
 	inline sf::IntRect toSFRect(const Rect& r)
