@@ -3,7 +3,7 @@
 IO::IO()
 {
 	// add default resources directory ( "res" subdirectory in executable dir )
-	Paths.push_back( (fs::current_path() / "res").generic_string() );
+	Paths.push_back( (fs::current_path() / "res").string() );
 }
 
 IO::~IO()
@@ -13,7 +13,16 @@ IO::~IO()
 
 void IO::addPath( const std::string& path )
 {
-	Paths.push_front( path );
+	fs::path p ( path );
+
+	if ( fs::is_directory( p ))
+	{
+		Paths.push_front( p.string() );
+	}
+	else
+	{
+		Engine::out() << "[IO::addPath] Error: '" << path << "' is not a valid path!" << std::endl;
+	}
 }
 
 
