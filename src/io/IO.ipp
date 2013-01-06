@@ -106,14 +106,17 @@ std::vector<std::shared_ptr<T>> IO::loadFile( std::shared_ptr<IOPlugin>& IOP, co
 		return std::vector<std::shared_ptr<T>>();
 	}
 
+	Engine::out() << "[IO] Loading " << p << " (" << ti.name() << ") ... " ;
+
 	fs::ifstream in(p);
 
 	if (IOP->loader_type == IOPlugin::loader::BINARY )
 	{
-			Engine::out() << "[IO] Loaded " << p << " ( " << ti.name() << ")" << std::endl;
-			auto BinIO = dynamic_pointer_cast<iBinaryIOPlugin<T>>(IOP);
 
-			return BinIO->decodeStream ( in );
+			auto BinIO = dynamic_pointer_cast<iBinaryIOPlugin<T>>(IOP);
+			auto re = BinIO->decodeStream ( in );
+			Engine::out() << "done!" << std::endl;
+			return re;
 	}
 	else
 	{
@@ -124,13 +127,14 @@ std::vector<std::shared_ptr<T>> IO::loadFile( std::shared_ptr<IOPlugin>& IOP, co
 		pt::ptree tree;
 		pt::info_parser::read_info( in, tree );
 
+
 		for (pt::ptree::value_type& e : tree)
 		{
 			std::shared_ptr<T> ptr = TreeIO->loadObject( e );
 			if (ptr) re.push_back(ptr);
 		}
 
-		Engine::out() << "[IO] Loaded " << p << " ( " << re.size() << " " << ti.name() << "s)" << std::endl;
+		Engine::out() << " done! ( got " << re.size() << " objs )" << std::endl;
 
 		return re;
 	}
