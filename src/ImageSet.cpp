@@ -134,12 +134,17 @@ bool ImageSet::updateTexture( bool force )
 	return true;
 }
 
-void ImageSet::CreateQuad( const int index, sf::VertexArray& vA, sf::FloatRect& Pos, const int ArrayIndex)
+std::shared_ptr<sf::Texture> ImageSet::getTexture()
+{
+	return Tex;
+}
+
+void ImageSet::CreateQuad( const int index, sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex)
 {
 	CreateQuad( CalcFramePos(index), vA, Pos, ArrayIndex);
 }
 
-void ImageSet::CreateQuad( const Geom::Vec2 FramePos , sf::VertexArray& vA, sf::FloatRect& Pos, const int ArrayIndex)
+void ImageSet::CreateQuad( const Geom::Vec2 FramePos , sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex)
 {
 	Geom::Rect coords = FramePosToPixels(FramePos);
 

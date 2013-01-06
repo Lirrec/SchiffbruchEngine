@@ -22,6 +22,10 @@ ImageIOPlugin::ObjectList ImageIOPlugin::decodeStream(std::istream& in)
     {
 		re.push_back( txt );
     }
+    else
+	{
+		Engine::out() << "[ImageIOPlugin] Error while loading stream!" << std::endl;
+	}
 
     return re;
 }

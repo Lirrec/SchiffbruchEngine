@@ -52,7 +52,7 @@ class ImageSet
 			@param vA the VertexArray which is modified
 			@param ArrayIndex the position in the vertexarray which sould be used ( -1/default will append to the array, other values will overwrite existing vertices from the given position on)
 		*/
-		void CreateQuad( const int index , sf::VertexArray& vA, sf::FloatRect& Pos, const int ArrayIndex = -1);
+		void CreateQuad( const int index , sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex = -1);
 
 		/**
 			Add a given Image from the ImageSet to a VertexArray.
@@ -60,7 +60,7 @@ class ImageSet
 			@param vA the VertexArray which is modified
 			@param ArrayIndex the position in the vertexarray which sould be used ( -1/default will append to the array, other values will overwrite existing vertices from the given position on)
 		*/
-		void CreateQuad( const Geom::Vec2 FramePos, sf::VertexArray& vA, sf::FloatRect& Pos, const int ArrayIndex = -1);
+		void CreateQuad( const Geom::Vec2 FramePos, sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex = -1);
 
 		/**
 			Updates the internal pointer to sf::Texture, call to update sprites after the image was changed
@@ -68,6 +68,8 @@ class ImageSet
 			@return false on error
 		*/
 		bool updateTexture( bool force=false );
+
+		std::shared_ptr<sf::Texture> getTexture();
 
 		//## DATA members ##
 
