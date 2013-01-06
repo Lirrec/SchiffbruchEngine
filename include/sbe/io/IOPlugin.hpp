@@ -100,7 +100,7 @@ class iTreeIOPlugin : public IOPlugin
 	public:
 
 		iTreeIOPlugin( const std::string& relpath )
-		: IOPlugin ( loader::BINARY, relpath )
+		: IOPlugin ( loader::PTREE, relpath )
 		{}
 
         typedef std::shared_ptr<T> ObjPtr;
