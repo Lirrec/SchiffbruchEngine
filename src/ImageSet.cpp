@@ -136,8 +136,6 @@ bool ImageSet::updateTexture( bool force )
 		{
 			Engine::out() << "[ImageSet] ERROR creating texture for ImageSet " << Name << ", from Image with name " << ImageName << std::endl;
 		}
-
-
 	}
 
 	return true;
@@ -160,10 +158,11 @@ void ImageSet::CreateQuad( const Geom::Vec2 FramePos , sf::VertexArray& vA, cons
 
 
 	sf::Vertex vs[4];
+	// Orders seems to be important here ( vertices are added counterclockwise
 	vs[0].position = sf::Vector2f( Pos.left, Pos.top  );		// top-left
+	vs[1].position = sf::Vector2f( Pos.left, Pos.top+Pos.height );			  // bottom-left
+	vs[2].position = sf::Vector2f( Pos.left+Pos.width, Pos.top+Pos.height ); // bottom-right
 	vs[3].position = sf::Vector2f( Pos.left+Pos.width, Pos.top ); // top-right
-	vs[2].position = sf::Vector2f( Pos.left+Pos.width, Pos.top-Pos.height ); // bottom-right
-	vs[1].position = sf::Vector2f( Pos.left, Pos.top-Pos.height );			  // bottom-left
 
 
 //	Engine::out() << "vs[0] " << Pos.left << " - " << Pos.top << std::endl;
@@ -174,9 +173,9 @@ void ImageSet::CreateQuad( const Geom::Vec2 FramePos , sf::VertexArray& vA, cons
 	Geom::Rect coords = FramePosToPixels(FramePos);
 
 	vs[0].texCoords = sf::Vector2f( coords.x().x(), coords.x().y() );	// top-left
-	vs[3].texCoords = sf::Vector2f( coords.y().x(), coords.x().y() ); // top-right
-	vs[2].texCoords = sf::Vector2f( coords.y().x(), coords.y().y() ); // bottom-right
 	vs[1].texCoords = sf::Vector2f( coords.x().x(), coords.y().y() ); // bottom-left
+	vs[2].texCoords = sf::Vector2f( coords.y().x(), coords.y().y() ); // bottom-right
+	vs[3].texCoords = sf::Vector2f( coords.y().x(), coords.x().y() ); // top-right
 
 //	Engine::out() << "vs[0]tex " << coords.x().x() << " - " << coords.x().y() << std::endl;
 //	Engine::out() << "vs[1]tex " << coords.y().x() << " - " << coords.x().y() << std::endl;
