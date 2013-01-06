@@ -78,7 +78,7 @@ bool ResourceManager::saveAllObjects( bool overwrite )
 
 	std::shared_ptr<NamedList<T>> NL = dynamic_pointer_cast<NamedList<T>>( Resources[ std::type_index(ti) ] );
 
-    IO::saveObjects( NL.GetMap().begin(), NL.GetMap().end(), overwrite);
+    return mIO->saveObjects( NL->GetMap(), overwrite);
 }
 
 // - Plugin and Class Management -

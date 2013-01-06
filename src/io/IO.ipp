@@ -206,10 +206,8 @@ bool IO::saveObjects( std::map<std::string,std::shared_ptr<T>>& Objects, bool ov
 		bool re = true;
 		for ( auto it = Objects.begin() ; it != Objects.end(); ++it )
 		{
-			std::string& name = it->first;
-			T& object = it->second;
 
-			if ( !saveObject( name, object, overwrite) ) re = false;
+			if ( !saveObject( it->first, *(it->second), overwrite) ) re = false;
 		}
 
 		return re;
@@ -221,12 +219,11 @@ bool IO::saveObjects( std::map<std::string,std::shared_ptr<T>>& Objects, bool ov
 		auto TreeIO = dynamic_pointer_cast<iTreeIOPlugin<T>>(IOP);
 		pt::ptree tree;
 
-		for ( auto it = begin ; it != end; ++it )
+		for ( auto it = Objects.begin() ; it != Objects.end(); ++it )
 		{
-			std::string& name = it->first;
-			T& object = it->second;
+			const std::string& name = it->first;
 
-			if ( TreeIO->saveObject( name, object, tree))
+			if ( TreeIO->saveObject( name, *it->second, tree))
 			{
 				Engine::out() << "[IO] Saved " << name << " ( " << ti.name() << " )" << std::endl;
 			}

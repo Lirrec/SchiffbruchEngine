@@ -128,7 +128,16 @@ bool ImageSet::updateTexture( bool force )
 
 		if (!Tex) Tex.reset ( new sf::Texture() );
 
-		Tex->loadFromImage( *img );
+		if (Tex->loadFromImage( *img ))
+		{
+			Engine::out() << "[ImageSet] Created texture for ImageSet " << Name << ", from Image with name " << ImageName << std::endl;
+		}
+		else
+		{
+			Engine::out() << "[ImageSet] ERROR creating texture for ImageSet " << Name << ", from Image with name " << ImageName << std::endl;
+		}
+
+
 	}
 
 	return true;
@@ -146,21 +155,37 @@ void ImageSet::CreateQuad( const int index, sf::VertexArray& vA, const sf::Float
 
 void ImageSet::CreateQuad( const Geom::Vec2 FramePos , sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex)
 {
-	Geom::Rect coords = FramePosToPixels(FramePos);
+	updateTexture();
+
+
 
 	sf::Vertex vs[4];
 	vs[0].position = sf::Vector2f( Pos.left, Pos.top  );		// top-left
-	vs[1].position = sf::Vector2f( Pos.left+Pos.width, Pos.top ); // top-right
-	vs[2].position = sf::Vector2f( Pos.left+Pos.width, Pos.top+Pos.height ); // bottom-right
-	vs[3].position = sf::Vector2f( Pos.left, Pos.top+Pos.height );			  // bottom-left
+	vs[3].position = sf::Vector2f( Pos.left+Pos.width, Pos.top ); // top-right
+	vs[2].position = sf::Vector2f( Pos.left+Pos.width, Pos.top-Pos.height ); // bottom-right
+	vs[1].position = sf::Vector2f( Pos.left, Pos.top-Pos.height );			  // bottom-left
+
+
+//	Engine::out() << "vs[0] " << Pos.left << " - " << Pos.top << std::endl;
+//	Engine::out() << "vs[1] " << Pos.left+Pos.width << " - " << Pos.top << std::endl;
+//	Engine::out() << "vs[2] " << Pos.left+Pos.width << " - " <<  Pos.top+Pos.height << std::endl;
+//	Engine::out() << "vs[3] " << Pos.left << " - " <<  Pos.top+Pos.height << std::endl;
+
+	Geom::Rect coords = FramePosToPixels(FramePos);
 
 	vs[0].texCoords = sf::Vector2f( coords.x().x(), coords.x().y() );	// top-left
-	vs[1].texCoords = sf::Vector2f( coords.y().x(), coords.x().y() ); // top-right
+	vs[3].texCoords = sf::Vector2f( coords.y().x(), coords.x().y() ); // top-right
 	vs[2].texCoords = sf::Vector2f( coords.y().x(), coords.y().y() ); // bottom-right
-	vs[3].texCoords = sf::Vector2f( coords.x().x(), coords.y().y() ); // bottom-left
+	vs[1].texCoords = sf::Vector2f( coords.x().x(), coords.y().y() ); // bottom-left
+
+//	Engine::out() << "vs[0]tex " << coords.x().x() << " - " << coords.x().y() << std::endl;
+//	Engine::out() << "vs[1]tex " << coords.y().x() << " - " << coords.x().y() << std::endl;
+//	Engine::out() << "vs[2]tex " << coords.y().x() << " - " <<  coords.y().y() << std::endl;
+//	Engine::out() << "vs[3]tex " << coords.x().x() << " - " <<  coords.y().y() << std::endl;
 
 	if ( ArrayIndex == -1 )
 	{
+//		Engine::out() << " append. " << std::endl;
 		vA.append( vs[0] );
 		vA.append( vs[1] );
 		vA.append( vs[2] );
@@ -168,6 +193,7 @@ void ImageSet::CreateQuad( const Geom::Vec2 FramePos , sf::VertexArray& vA, cons
 	}
 	else
 	{
+//		Engine::out() << " insert at " << ArrayIndex << std::endl;
 		vA[ ArrayIndex ] = vs[0];
 		vA[ ArrayIndex + 1 ] = vs[1];
 		vA[ ArrayIndex + 2 ] = vs[2];
