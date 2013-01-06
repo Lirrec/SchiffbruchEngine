@@ -135,6 +135,7 @@ bool ImageSet::updateTexture( bool force )
 		else
 		{
 			Engine::out() << "[ImageSet] ERROR creating texture for ImageSet " << Name << ", from Image with name " << ImageName << std::endl;
+			Tex.reset();
 		}
 	}
 
