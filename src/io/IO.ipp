@@ -158,6 +158,8 @@ bool IO::saveObject( const std::string& name, const T& object, bool overwrite )
 		{
 			Engine::out() << "[IO] Saved " << name << " ( " << tmp.second  << " -- " << ti.name() << ")" << std::endl;
 		}
+
+		tmp.first->close();
 	}
 	catch (fs::filesystem_error& e)
 	{
@@ -241,6 +243,8 @@ bool IO::saveObjects( std::map<std::string,std::shared_ptr<T>>& Objects, bool ov
 			if (!tmp.first->is_open()) return false;
 			// write the complete ptree
 			pt::info_parser::write_info( *(tmp.first), tree );
+
+			tmp.first->close();
 		}
 		catch (fs::filesystem_error& e)
 		{
