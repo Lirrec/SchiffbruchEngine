@@ -96,7 +96,7 @@ class ResourceManager
 			@return false on errors
 		*/
         template<class T>
-        bool saveObject( const std::string& name, std::shared_ptr<T> pObj);
+        bool saveObject( const std::string& name, std::shared_ptr<T> pObj, bool overwrite = false);
 
 		/**
 			Save all Objects of a resource.
@@ -104,7 +104,7 @@ class ResourceManager
 			@return false on errors
 		*/
         template<class T>
-        bool saveAllObjects();
+        bool saveAllObjects( bool overwrite = false );
 
 
 

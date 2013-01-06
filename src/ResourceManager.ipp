@@ -63,22 +63,22 @@ bool ResourceManager::remove( std::string& name )
 
 
 template<class T>
-bool ResourceManager::saveObject( const std::string& name, std::shared_ptr<T> pObj)
+bool ResourceManager::saveObject( const std::string& name, std::shared_ptr<T> pObj, bool overwrite)
 {
 	if ( ! isResource( typeid(T) ) ) return false;
-    return mIO->saveObject( name, *pObj, false);
+    return mIO->saveObject( name, *pObj, overwrite);
 }
 
 
 template<class T>
-bool ResourceManager::saveAllObjects()
+bool ResourceManager::saveAllObjects( bool overwrite )
 {
 	auto ti = std::type_index(typeid(T));
 	if ( ! isResource( ti ) ) return false;
 
 	std::shared_ptr<NamedList<T>> NL = dynamic_pointer_cast<NamedList<T>>( Resources[ std::type_index(ti) ] );
 
-    IO::saveObjects( NL.GetMap().begin(), NL.GetMap().end());
+    IO::saveObjects( NL.GetMap().begin(), NL.GetMap().end(), overwrite);
 }
 
 // - Plugin and Class Management -
