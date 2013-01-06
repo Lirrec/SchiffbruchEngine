@@ -30,7 +30,7 @@ bool SoundIOPlugin::encodeStream(const sf::SoundBuffer& o, std::ostream& out)
 	return false;
 }
 
-std::vector<std::string> SoundIOPlugin::getSupportedFileExtensions()
+const std::vector<std::string>& SoundIOPlugin::getSupportedFileExtensions()
 {
     static std::vector<std::string> fileexts { "ogg", "wav", "flac", "aiff", "au" };
     return fileexts;

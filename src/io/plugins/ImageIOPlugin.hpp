@@ -17,7 +17,7 @@ public:
 
 	virtual ObjectList decodeStream(std::istream &in);
 	virtual bool encodeStream( const sf::Image &o, std::ostream &out);
-	virtual std::vector<std::string> getSupportedFileExtensions();
+	virtual const std::vector<std::string>& getSupportedFileExtensions();
 };
 
 #endif // TERRAINIOPLUGIN_HPP

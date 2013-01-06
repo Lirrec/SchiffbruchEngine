@@ -100,9 +100,12 @@ std::vector<std::shared_ptr<T>> IO::loadFile( std::shared_ptr<IOPlugin>& IOP, co
 {
 	auto ti = std::type_index( typeid(T) );
 
-	if (std::find(IOP->getSupportedFileExtensions().begin(), IOP->getSupportedFileExtensions().end(), p.extension()) == IOP->getSupportedFileExtensions().end() )
+	auto vec = IOP->getSupportedFileExtensions();
+	// get extension and remove the . from .ext
+	std::string ext = p.extension().string().substr(1);
+	if (std::find(vec.begin(), vec.end(), ext) == vec.end() )
 	{
-		Engine::out() << "[IO] Unsupported file extension '" << p.extension() << "' for '" << ti.name() << "'!" << std::endl;
+		Engine::out() << "[IO] Unsupported file extension '" << ext << "' for '" << ti.name() << "'!" << std::endl;
 		return std::vector<std::shared_ptr<T>>();
 	}
 

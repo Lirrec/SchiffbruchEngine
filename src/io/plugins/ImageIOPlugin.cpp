@@ -36,9 +36,9 @@ bool ImageIOPlugin::encodeStream(const sf::Image& o, std::ostream& out)
 	return false;
 }
 
-std::vector<std::string> ImageIOPlugin::getSupportedFileExtensions()
+const std::vector<std::string>& ImageIOPlugin::getSupportedFileExtensions()
 {
-    static std::vector<std::string> fileexts { "png", "jpeg", "jpg", "bmp"  };
+    static std::vector<std::string> fileexts { "png", "jpeg", "jpg", "bmp", "tga"  };
     return fileexts;
 }
 

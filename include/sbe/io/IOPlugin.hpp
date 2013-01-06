@@ -51,7 +51,7 @@ public:
 	/**
 		@return a vector of string containing the supported file endinges (e.g. "png", "jpg", "jpeg")
 	*/
-	virtual std::vector<std::string> getSupportedFileExtensions() = 0;
+	virtual const std::vector<std::string>& getSupportedFileExtensions() = 0;
 
 	/**
 			Defines the relative path (binary loader) or file(ptree loader) which is used to store all Resources of this type.
@@ -89,7 +89,7 @@ class iBinaryIOPlugin : public IOPlugin
 		/**
 			@return a vector of string containing the supported file endinges (e.g. "png", "jpg", "jpeg")
 		*/
-		virtual std::vector<std::string> getSupportedFileExtensions() = 0;
+		virtual const std::vector<std::string>& getSupportedFileExtensions() = 0;
 
 };
 
@@ -112,7 +112,10 @@ class iTreeIOPlugin : public IOPlugin
         */
         virtual bool saveObject( const std::string& name, const T& object, boost::property_tree::ptree& root) = 0;
 
-        virtual std::vector<std::string> getSupportedFileExtensions() { return { "info" }; }
+        virtual const std::vector<std::string>& getSupportedFileExtensions() {
+        	 static std::vector<std::string> fileexts { "info" };
+        	 return fileexts;
+        	 }
 
 };
 
