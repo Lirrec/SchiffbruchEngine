@@ -152,6 +152,7 @@ bool IO::saveObject( const std::string& name, const T& object, bool overwrite )
 
 	try {
 		auto tmp = getOfstream( IOP, name, Paths.front(), overwrite );
+		if (!tmp.first->is_open()) return false;
 
 		if ( saveFile(IOP, object, name, *(tmp.first)) )
 		{
@@ -237,6 +238,7 @@ bool IO::saveObjects( std::map<std::string,std::shared_ptr<T>>& Objects, bool ov
 		try {
 
 			auto tmp = getOfstream( IOP, IOP->relative_path, Paths.front(), overwrite );
+			if (!tmp.first->is_open()) return false;
 			// write the complete ptree
 			pt::info_parser::write_info( *(tmp.first), tree );
 		}
