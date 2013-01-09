@@ -20,12 +20,13 @@ class IO;
 
 class Engine
 {
+
+	public:
+
 	enum LogLevel
 	{
 		SPAM,INFO,WARNING,ERROR
 	};
-
-	public:
 
 		Engine();
 		~Engine();
@@ -56,7 +57,7 @@ class Engine
 		}
 		// returns a reference to the currently valid output and logging stream
 		// (could be to stdout or some class )
-		static Logger& out(LogLevel level = LogLevel::SPAM);
+		static Logger& out(LogLevel level = LogLevel::INFO);
 
 		static std::shared_ptr<SoundSystem> 	GetSndSys ();
 		static std::shared_ptr<ResourceManager> GetResMgr ();

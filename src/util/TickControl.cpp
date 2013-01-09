@@ -71,7 +71,7 @@ void TickControl::YieldTickRest()
 	}
 	else
 	{
-		if (LastTickDuration > MaxTickDuration*2 ) Engine::out() << "[" << Module::Get()->GetName() << "] !!Very long Tick!! [ " << LastTickDuration << "/" << MaxTickDuration << "ms ]" << std::endl;
+		if (LastTickDuration > MaxTickDuration*2 ) Engine::out(Engine::SPAM) << "[" << Module::Get()->GetName() << "] !!Very long Tick!! [ " << LastTickDuration << "/" << MaxTickDuration << "ms ]" << std::endl;
 	}
 }
 
