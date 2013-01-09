@@ -30,7 +30,10 @@ void Engine::CreateSubSystems()
 {
 	// Logging
 	std::cout << "[Engine] Logger." << std::endl;
-	Log.reset( new Logger );
+	SpamLogger.reset( new Logger );
+	InfoLogger.reset( new Logger );
+	WarningLogger.reset( new Logger );
+	ErrorLogger.reset( new Logger );
 
 	Engine::out() << "[Engine] ResourceManager..." << std::endl;
 	ResMgr.reset 	( new ResourceManager );
@@ -50,10 +53,33 @@ void Engine::UnloadSubSystems()
 	SndSys  .reset();
 	ResMgr  .reset();
 
-	Log.reset();
+	SpamLogger.reset();
+	InfoLogger.reset();
+	WarningLogger.reset();
+	ErrorLogger.reset();
 }
 
-Logger& Engine::out() { return *(Instance->Log); }
+Logger& Engine::out(LogLevel level)
+{
+	switch ( level )
+	{
+		case LogLevel::SPAM:
+		return *(Instance->SpamLogger);
+		break;
+
+		case LogLevel::INFO:
+		return *(Instance->InfoLogger);
+		break;
+
+		case LogLevel::WARNING:
+		return *(Instance->WarningLogger);
+		break;
+
+		case LogLevel::ERROR:
+		return *(Instance->ErrorLogger);
+		break;
+	} 
+}
 
 std::shared_ptr<SoundSystem> 		Engine::GetSndSys() 		{ return Instance->SndSys; }
 std::shared_ptr<ResourceManager>	Engine::GetResMgr() 		{ return Instance->ResMgr; }

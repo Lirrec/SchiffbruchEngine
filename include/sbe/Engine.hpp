@@ -20,6 +20,11 @@ class IO;
 
 class Engine
 {
+	enum LogLevel
+	{
+		SPAM,INFO,WARNING,ERROR
+	};
+
 	public:
 
 		Engine();
@@ -28,12 +33,32 @@ class Engine
 		void CreateSubSystems();
 		void UnloadSubSystems();
 
-		static std::shared_ptr<Logger> GetLogger() { return Instance->Log; }
+		static std::shared_ptr<Logger> GetLogger(LogLevel level = LogLevel::SPAM)
+		{ 
+			switch ( level )
+			{	
+				case LogLevel::SPAM:
+				return Instance->SpamLogger;
+				break;
+
+				case LogLevel::INFO:
+				return Instance->InfoLogger;
+				break;
+
+				case LogLevel::WARNING:
+				return Instance->WarningLogger;
+				break;
+
+				case LogLevel::ERROR:
+				return Instance->ErrorLogger;
+				break;
+			}  
+		}
 		// returns a reference to the currently valid output and logging stream
 		// (could be to stdout or some class )
-		static Logger& out();
+		static Logger& out(LogLevel level = LogLevel::SPAM);
 
-		static std::shared_ptr<SoundSystem> 		GetSndSys ();
+		static std::shared_ptr<SoundSystem> 	GetSndSys ();
 		static std::shared_ptr<ResourceManager> GetResMgr ();
 		static sf::RenderWindow&                GetApp    ();
 		static std::shared_ptr<IO>              GetIO();
@@ -46,7 +71,10 @@ class Engine
 		sf::RenderWindow App;
 
 		static Engine* Instance;
-		std::shared_ptr<Logger>			Log;
+		std::shared_ptr<Logger>			SpamLogger;
+		std::shared_ptr<Logger>			InfoLogger;
+		std::shared_ptr<Logger>			WarningLogger;
+		std::shared_ptr<Logger>			ErrorLogger;
 
 		std::shared_ptr<SoundSystem> 	SndSys;
 		std::shared_ptr<ResourceManager>	ResMgr;
