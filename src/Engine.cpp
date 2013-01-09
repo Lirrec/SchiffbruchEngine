@@ -64,18 +64,22 @@ Logger& Engine::out(LogLevel level)
 	switch ( level )
 	{
 		case LogLevel::SPAM:
+		*(Instance->SpamLogger) << Clock::now().time_since_epoch().count() << "[S]";
 		return *(Instance->SpamLogger);
 		break;
 
 		case LogLevel::INFO:
+		*(Instance->SpamLogger) << Clock::now().time_since_epoch().count() << "[I]";
 		return *(Instance->InfoLogger);
 		break;
 
 		case LogLevel::WARNING:
+		*(Instance->SpamLogger) << Clock::now().time_since_epoch().count() << "[W]";
 		return *(Instance->WarningLogger);
 		break;
 
 		case LogLevel::ERROR:
+		*(Instance->SpamLogger) << Clock::now().time_since_epoch().count() << "[E]";
 		return *(Instance->ErrorLogger);
 		break;
 	} 

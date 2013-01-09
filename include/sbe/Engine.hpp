@@ -2,8 +2,8 @@
 #define ENGINE_H
 
 #include <SFML/Graphics.hpp>
-
 #include <boost/thread.hpp>
+
 #include "Logger.hpp"
 
 class SoundSystem;
@@ -15,6 +15,7 @@ class IO;
 //class Logger;
 
 #include <memory>
+#include <chrono>
 
 
 
@@ -22,6 +23,8 @@ class Engine
 {
 
 	public:
+
+	typedef std::chrono::high_resolution_clock Clock;
 
 	enum LogLevel
 	{
