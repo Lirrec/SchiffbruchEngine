@@ -50,16 +50,25 @@ public:
 		return oss.str();
 	}
 
-	void ClearCache()
+	void ClearCache( int chars = -1 )
 	{
-		oss.str("");
+		if ( chars = -1 ) 
+		{
+			// clear everything
+			oss.str("");
+		}
+		else
+		{
+			oss.ignore( chars );
+		}
+
 		oss.clear();
 	}
 
 private:
 
     static boost::mutex io_mutex;
-    std::ostringstream oss;
+    std::stringstream oss;
 
 };
 
