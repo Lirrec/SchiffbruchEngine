@@ -1,7 +1,7 @@
 #ifndef QUADTREE_H
 #define QUADTREE_H
 
-#include "Geom.hpp"
+#include "sbe/Geom.hpp"
 
 #include <forward_list>
 
@@ -59,7 +59,7 @@ class QuadTreeNode
 
 };
 
-#include "QuadTree.ipp"
+#include "../../../src/util/QuadTree.ipp"
 
 #endif // QUADTREE_H
 
