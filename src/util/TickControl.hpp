@@ -56,6 +56,8 @@ class TickControl
 		int 	TicksPerSecond;
 		/// How long took us the last tick (ms)
 		int	LastTickDuration;
+		/// How many ms did we lose through ticks that took longer then planned
+		int Lag;
 
 		/// how many ms are spare till we should start the next tick
 		int		MsToNextTick;

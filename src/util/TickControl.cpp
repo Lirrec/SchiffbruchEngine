@@ -16,6 +16,7 @@ void TickControl::Init( int TPS, std::shared_ptr<Event> TickEvt )
 	MsToNextTick		= 0;
 	MaxTickDuration		= (1.0/TicksPerSecond) *1000;
 	TickCounter 		= 0;
+	Lag = 0;
 }
 
 void TickControl::SetTickEvent( std::shared_ptr<Event> TickEvt )
@@ -64,14 +65,24 @@ void TickControl::YieldTickRest()
 	LastTickDuration = Timer.getElapsedTime().asMilliseconds();
 
 	// check if we wait till next tick
-	if (LastTickDuration < MaxTickDuration )
+	if (LastTickDuration < MaxTickDuration)
 	{
 		MsToNextTick = MaxTickDuration - LastTickDuration;
-		boost::this_thread::sleep(boost::posix_time::milliseconds(MsToNextTick+1));
+		if ( Lag <= MsToNextTick )
+		{
+			boost::this_thread::sleep(boost::posix_time::milliseconds(MsToNextTick - Lag ));
+			Lag = 0;
+		}
+		else
+		{
+			Lag -= MsToNextTick;
+		}
 	}
 	else
 	{
-		if (LastTickDuration > MaxTickDuration*2 ) Engine::out(Engine::SPAM) << "[" << Module::Get()->GetName() << "] !!Very long Tick!! [ " << LastTickDuration << "/" << MaxTickDuration << "ms ]" << std::endl;
+		Lag += LastTickDuration - MaxTickDuration;
+		if (LastTickDuration > MaxTickDuration*2 ) 
+			Engine::out(Engine::SPAM) << "[" << Module::Get()->GetName() << "] Slow! [ " << LastTickDuration << "/" << MaxTickDuration << "ms, " << Lag << "ms Lag ]" << std::endl;
 	}
 }
 
@@ -94,6 +105,7 @@ void TickControl::LogModuleStats()
 																		:	Core::EvtCore->GetEventCount()
 																		 )) );
 
+		Lag = (LastStatsLog.getElapsedTime() - sf::seconds(1)).asMilliseconds();
 		TickCounter = 0;
 		LastStatsLog.restart();
 	}
