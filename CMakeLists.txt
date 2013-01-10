@@ -113,10 +113,36 @@ else()
 	set( CMAKE_C_FLAGS "-O3" CACHE STRING "C compiler flags" FORCE )
 endif()
 
-if (GCC_VERSION VERSION_GREATER 4.6)
+
+# get gcc compiler version
+if (CMAKE_COMPILER_IS_GNUCXX)
+	# if newer cmake, CMAKE_CXX_COMPILER_VERSION is set, so use it...
+	# if not, call 'c++ -dumpversion' and get it from there
+	if(CMAKE_CXX_COMPILER_VERSION)
+		set(GCC_VERSION "${CMAKE_CXX_COMPILER_VERSION}")
+	else()
+		execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
+	endif()
+endif()
+
+# set some definitions depending on gcc version
+if (GCC_VERSION VERSION_EQUAL 4.7 OR GCC_VERSION VERSION_GREATER 4.7)
     add_definitions ( -std=c++11 )
+
+		if(GCC_VERSION VERSION_EQUAL 4.8 OR GCC_VERSION VERSION_GREATER 4.8)
+			add_definitions ( -D__GCC_4_8__ )
+			if(SBE_DEBUG)
+				add_definitions( -Og )
+			endif(SBE_DEBUG)
+		endif()
 else()
-    add_definitions ( -std=c++0x )
+	if(GCC_VERSION VERSION_EQUAL 4.6 OR GCC_VERSION VERSION_GREATER 4.6)
+    add_definitions ( -std=c++0x -D__GCC_4_6__ )
+	else()
+		message("-- Unsupported compiler detected. Build might fail!")
+		# changing this to -std=c++0x if you've got an old compiler, might work
+		add_definitions( -std=c++11 )
+	endif()
 endif()
 
 link_directories(${SFML_ROOT})
@@ -135,4 +161,3 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
 target_link_libraries(sbe sfgui ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${GENERIC_LIBS})
-
