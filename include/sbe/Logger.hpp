@@ -52,14 +52,14 @@ public:
 
 	void ClearCache( int chars = -1 )
 	{
-		if ( chars == -1 ) 
+		if ( chars == -1 )
 		{
 			// clear everything
 			oss.str("");
 		}
 		else
 		{
-			oss.ignore( chars );
+			oss.str( oss.str().erase (0, chars) );
 		}
 
 		oss.clear();
