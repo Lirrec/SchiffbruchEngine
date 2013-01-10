@@ -13,7 +13,8 @@ EventUser::EventUser() : ID(Module::NewUUID())
 
 EventUser::~EventUser()
 {
-	Module::Get()->GetEventQueue()->RemoveEventUser( this );
+	if (Module::Get())
+		Module::Get()->GetEventQueue()->RemoveEventUser( this );
 }
 
 void EventUser::RegisterForEvent(const Event::EventType& EvtType, int priority)
