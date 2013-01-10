@@ -52,7 +52,7 @@ public:
 
 	void ClearCache( int chars = -1 )
 	{
-		if ( chars = -1 ) 
+		if ( chars == -1 ) 
 		{
 			// clear everything
 			oss.str("");
