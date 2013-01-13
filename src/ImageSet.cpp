@@ -28,7 +28,7 @@ ImageSet::ImageSet(const  std::string& _name,
 	FrameCount(_fcount),
 	FramesPerSecond(_fps)
 {
-	NumFrames = FrameCount.x() * FrameCount.y();
+	NumFrames = FrameCount.x * FrameCount.y;
 
 }
 
@@ -39,10 +39,10 @@ Geom::Vec2 ImageSet::CalcFramePos(const int index) const
 {
 	Geom::Vec2 FPos;
 
-	int tmp = (int)std::floor((float)index / (float)FrameCount.x());
+	int tmp = (int)std::floor((float)index / (float)FrameCount.x);
 
-	FPos.SetX( index % FrameCount.x());
-	FPos.SetY( tmp );
+	FPos.x = index % FrameCount.x;
+	FPos.y = tmp ;
 	return FPos;
 }
 
@@ -52,15 +52,15 @@ Geom::Rect ImageSet::FramePosToPixels(const Geom::Vec2 FramePos) const
 	Geom::Rect re;
 	Geom::Point topleft, bottomright;
 
-	topleft.SetX(StartPos.x() + FramePos.x() * FrameSize.x());
-	topleft.SetY(StartPos.y() + FramePos.y() * FrameSize.y());
+	topleft.x =StartPos.x + FramePos.x * FrameSize.x;
+	topleft.y =StartPos.y + FramePos.y * FrameSize.y;
 
-	bottomright.SetX(StartPos.x() + (FramePos.x() +1) * FrameSize.x());
-	bottomright.SetY(StartPos.y() + (FramePos.y() +1) * FrameSize.y());
+	bottomright.x = StartPos.x + (FramePos.x +1) * FrameSize.x;
+	bottomright.y = StartPos.y + (FramePos.y +1) * FrameSize.y;
 
 
-	re.SetX(topleft);
-	re.SetY(bottomright);
+	re.x = topleft;
+	re.y = bottomright;
 
 	return re;
 }
@@ -173,15 +173,15 @@ void ImageSet::CreateQuad( const Geom::Vec2 FramePos , sf::VertexArray& vA, cons
 
 	Geom::Rect coords = FramePosToPixels(FramePos);
 
-	vs[0].texCoords = sf::Vector2f( coords.x().x(), coords.x().y() );	// top-left
-	vs[1].texCoords = sf::Vector2f( coords.x().x(), coords.y().y() ); // bottom-left
-	vs[2].texCoords = sf::Vector2f( coords.y().x(), coords.y().y() ); // bottom-right
-	vs[3].texCoords = sf::Vector2f( coords.y().x(), coords.x().y() ); // top-right
+	vs[0].texCoords = sf::Vector2f( coords.x.x, coords.x.y );	// top-left
+	vs[1].texCoords = sf::Vector2f( coords.x.x, coords.y.y ); // bottom-left
+	vs[2].texCoords = sf::Vector2f( coords.y.x, coords.y.y ); // bottom-right
+	vs[3].texCoords = sf::Vector2f( coords.y.x, coords.x.y ); // top-right
 
-//	Engine::out() << "vs[0]tex " << coords.x().x() << " - " << coords.x().y() << std::endl;
-//	Engine::out() << "vs[1]tex " << coords.y().x() << " - " << coords.x().y() << std::endl;
-//	Engine::out() << "vs[2]tex " << coords.y().x() << " - " <<  coords.y().y() << std::endl;
-//	Engine::out() << "vs[3]tex " << coords.x().x() << " - " <<  coords.y().y() << std::endl;
+//	Engine::out() << "vs[0]tex " << coords.x.x << " - " << coords.x.y << std::endl;
+//	Engine::out() << "vs[1]tex " << coords.y.x << " - " << coords.x.y << std::endl;
+//	Engine::out() << "vs[2]tex " << coords.y.x << " - " <<  coords.y.y << std::endl;
+//	Engine::out() << "vs[3]tex " << coords.x.x << " - " <<  coords.y.y << std::endl;
 
 	if ( ArrayIndex == -1 )
 	{

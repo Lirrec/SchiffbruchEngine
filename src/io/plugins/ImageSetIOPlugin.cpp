@@ -25,17 +25,17 @@ ImageSetIOPlugin::ObjPtr ImageSetIOPlugin::loadObject(const boost::property_tree
 
 		re->Name = pt.get<std::string>("Name");
 		re->ImageName = pt.get<std::string>("ImageName");
-		re->StartPos.SetX( pt.get<int>("StartPos.x"));
-		re->StartPos.SetY( pt.get<int>("StartPos.y"));
+		re->StartPos.x = pt.get<int>("StartPos.x");
+		re->StartPos.y = pt.get<int>("StartPos.y");
 
-		re->DestPos.SetX( pt.get<int>("DestPos.x"));
-		re->DestPos.SetY( pt.get<int>("DestPos.y"));
+		re->DestPos.x = pt.get<int>("DestPos.x");
+		re->DestPos.y = pt.get<int>("DestPos.y");
 
-		re->FrameSize.SetX( pt.get<int>("FrameSize.x"));
-		re->FrameSize.SetY( pt.get<int>("FrameSize.y"));
+		re->FrameSize.x = pt.get<int>("FrameSize.x");
+		re->FrameSize.y = pt.get<int>("FrameSize.y");
 
-		re->FrameCount.SetX( pt.get<int>("FrameCount.x"));
-		re->FrameCount.SetY( pt.get<int>("FrameCount.y"));
+		re->FrameCount.x = pt.get<int>("FrameCount.x");
+		re->FrameCount.y = pt.get<int>("FrameCount.y");
 	}
 	catch ( boost::property_tree::ptree_error )
 	{
@@ -55,17 +55,17 @@ bool ImageSetIOPlugin::saveObject( const std::string& name, const ImageSet& obje
 
 		pt.put("Name", name);
 		pt.put("ImageName", object.ImageName);
-		pt.put("StartPos.x", object.StartPos.x());
-		pt.put("StartPos.y", object.StartPos.y());
+		pt.put("StartPos.x", object.StartPos.x);
+		pt.put("StartPos.y", object.StartPos.y);
 
-		pt.put("DestPos.x", object.DestPos.x());
-		pt.put("DestPos.y", object.DestPos.y());
+		pt.put("DestPos.x", object.DestPos.x);
+		pt.put("DestPos.y", object.DestPos.y);
 
-		pt.put("FrameSize.x", object.FrameSize.x());
-		pt.put("FrameSize.y", object.FrameSize.y());
+		pt.put("FrameSize.x", object.FrameSize.x);
+		pt.put("FrameSize.y", object.FrameSize.y);
 
-		pt.put("FrameCount.x", object.FrameCount.x());
-		pt.put("FrameCount.y", object.FrameCount.y());
+		pt.put("FrameCount.x", object.FrameCount.x);
+		pt.put("FrameCount.y", object.FrameCount.y);
 
 		pt.put("FramesPerSecond", object.FramesPerSecond);
 		pt.put("NumFrames", object.NumFrames);

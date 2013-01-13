@@ -46,7 +46,7 @@ void Animation::Reset()
 void Animation::SetScreenPosition( Geom::Point p )
 {
 	Screen_Position = p;
-	Sprite.setPosition( (float)Screen_Position.x(), (float)Screen_Position.y() );
+	Sprite.setPosition( (float)Screen_Position.x, (float)Screen_Position.y );
 }
 
 void Animation::SetFrame(int index)
@@ -125,7 +125,7 @@ void Animation::SetReverse(bool _reverse)
 void Animation::Advance()
 {
 	// Finished
-	if ((CurFrame == RangeToPlay.y() && !looping) || !playing )
+	if ((CurFrame == RangeToPlay.y && !looping) || !playing )
 	{
 		Finish();
 		Engine::out() << "Anim " << AnimData.Name << " finished." << std::endl;
@@ -133,9 +133,9 @@ void Animation::Advance()
 		return;
 	}
 	// we're looping, reset to first frame
-	else if (CurFrame == RangeToPlay.y())
+	else if (CurFrame == RangeToPlay.y)
 	{
-		CurFrame = RangeToPlay.x();
+		CurFrame = RangeToPlay.x;
 	}
 	else
 	{
@@ -148,16 +148,16 @@ void Animation::Advance()
 void Animation::RAdvance()
 {
 	// Finished
-	if ((CurFrame == RangeToPlay.x() && !looping) || !playing )
+	if ((CurFrame == RangeToPlay.x && !looping) || !playing )
 	{
 		Finish();
 		Reset();
 		return;
 	}
 	// we're looping, reset to last frame
-	else if (CurFrame == RangeToPlay.x())
+	else if (CurFrame == RangeToPlay.x)
 	{
-		CurFrame = RangeToPlay.y();
+		CurFrame = RangeToPlay.y;
 	}
 	else
 	{
