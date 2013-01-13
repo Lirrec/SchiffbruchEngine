@@ -82,7 +82,12 @@ Logger& Engine::out(LogLevel level)
 		*(Instance->SpamLogger) << Clock::now().time_since_epoch().count() << "[E]";
 		return *(Instance->ErrorLogger);
 		break;
-	} 
+
+		default:
+			*(Instance->SpamLogger) << Clock::now().time_since_epoch().count() << "[S]";
+			return *(Instance->SpamLogger);
+			break;
+	}
 }
 
 std::shared_ptr<SoundSystem> 		Engine::GetSndSys() 		{ return Instance->SndSys; }

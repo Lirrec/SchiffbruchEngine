@@ -167,11 +167,14 @@ bool IO::saveObject( const std::string& name, const T& object, bool overwrite )
 		}
 
 		tmp.first->close();
+		return true;
 	}
 	catch (fs::filesystem_error& e)
 	{
 		Engine::out() << "[IO] boost::fs exception! '" << e.what() << "'" << std::endl;
 	}
+
+	return false;
 }
 
 template <class T>
