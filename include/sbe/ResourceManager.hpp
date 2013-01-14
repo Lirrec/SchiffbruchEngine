@@ -127,14 +127,7 @@ class ResourceManager
         template < typename T>
         void registerResource( const std::string& name);
 
-        // - Settings/Registry -
-        // ebenfalls über Events erreichbar
-        /**
-			Returns a property tree used for storing various settings.
-			There is a "system" subtree which stores various engine settings.
-			Users may user the "user" subtree to store their own settings
-        */
-        boost::property_tree::ptree& getSettings() { return Settings; }
+
 		const sf::Font& getDefaultFont();
 
 
@@ -187,9 +180,6 @@ class ResourceManager
         ResourceMap Resources;
         ResourceInfos ResInfos;
 
-        /// stores settings
-        boost::property_tree::ptree Settings;
-
         std::shared_ptr<IO> mIO;
 };
 
@@ -199,4 +189,3 @@ class ResourceManager
 
 
 #endif // RESMGR_H
-

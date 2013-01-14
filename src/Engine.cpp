@@ -3,6 +3,7 @@
 
 #include "sbe/ResourceManager.hpp"
 #include "sbe/io/IO.hpp"
+#include "sbe/Config.hpp"
 #include "sbe/Sound.hpp"
 #include "sbe/Graphic.hpp"
 
@@ -43,6 +44,8 @@ void Engine::CreateSubSystems()
 
 	ResMgr->init();
 
+	Engine::out() << "[Engine] Config..." << std::endl;
+	_config.reset( new Config );
 
 	Engine::out() << "[Engine] SoundSys..." << std::endl;
 	SndSys.reset 	( new SoundSystem );
@@ -90,7 +93,8 @@ Logger& Engine::out(LogLevel level)
 	}
 }
 
-std::shared_ptr<SoundSystem> 		Engine::GetSndSys() 		{ return Instance->SndSys; }
-std::shared_ptr<ResourceManager>	Engine::GetResMgr() 		{ return Instance->ResMgr; }
-std::shared_ptr<IO>	Engine::GetIO() 		{ return Instance->Io; }
-sf::RenderWindow&					Engine::GetApp() 		{ return Instance->App; }
+std::shared_ptr<SoundSystem>     Engine::GetSndSys() { return Instance->SndSys; }
+std::shared_ptr<ResourceManager> Engine::GetResMgr() { return Instance->ResMgr; }
+std::shared_ptr<IO>	             Engine::GetIO()     { return Instance->Io; }
+std::shared_ptr<Config>	         Engine::getCfg()    { return Instance->_config; }
+sf::RenderWindow&                Engine::GetApp()    { return Instance->App; }

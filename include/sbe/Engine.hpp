@@ -12,6 +12,7 @@ class Graphics;
 class AssetManager;
 class SFMLEventConverter;
 class IO;
+class Config;
 //class Logger;
 
 #include <memory>
@@ -38,9 +39,9 @@ class Engine
 		void UnloadSubSystems();
 
 		static std::shared_ptr<Logger> GetLogger(LogLevel level = LogLevel::SPAM)
-		{ 
+		{
 			switch ( level )
-			{	
+			{
 				case LogLevel::SPAM:
 				return Instance->SpamLogger;
 				break;
@@ -56,7 +57,7 @@ class Engine
 				case LogLevel::ERROR:
 				return Instance->ErrorLogger;
 				break;
-			}  
+			}
 		}
 		// returns a reference to the currently valid output and logging stream
 		// (could be to stdout or some class )
@@ -66,6 +67,7 @@ class Engine
 		static std::shared_ptr<ResourceManager> GetResMgr ();
 		static sf::RenderWindow&                GetApp    ();
 		static std::shared_ptr<IO>              GetIO();
+		static std::shared_ptr<Config>          getCfg();
 
 
 	private:
@@ -83,6 +85,7 @@ class Engine
 		std::shared_ptr<SoundSystem> 	SndSys;
 		std::shared_ptr<ResourceManager>	ResMgr;
 		std::shared_ptr<IO>	Io;
+		std::shared_ptr<Config>	_config;
 };
 
 

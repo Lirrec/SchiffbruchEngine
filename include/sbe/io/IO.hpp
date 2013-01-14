@@ -53,6 +53,11 @@ class IO
 		*/
 		std::string popPath( );
 
+		/**
+			Returns the top of the search path stack
+		*/
+		std::string topPath( );
+
 
 		/**
 			Tries to load a given path.

@@ -33,6 +33,10 @@ std::string IO::popPath( )
 	return re;
 }
 
+std::string IO::topPath(){
+	return Paths.front();
+}
+
 std::shared_ptr<IOPlugin> IO::getPlugin( const std::type_index& ti )
 {
 	//Engine::out() << "[IO:getPlugin] IOPlugin count '" << Plugins.size() << "'" << std::endl;
