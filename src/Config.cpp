@@ -4,7 +4,7 @@
 #include "sbe/Engine.hpp"
 #include "sbe/io/IO.hpp"
 
-const std::string Config::_fileName = "config.info";
+const std::string Config::_fileName = "config.conf";
 
 Config::Config() {
 	load();
