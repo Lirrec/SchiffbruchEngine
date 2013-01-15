@@ -17,7 +17,7 @@ void Config::load() {
 	fs::path p ( Engine::GetIO()->topPath() ); // use to path in IO-stack to save config to
 	p /= _fileName;
 
-	if(!fs::status(p).type() == fs::file_type::file_not_found && fs::is_regular_file(p)){
+	if(!(fs::status(p).type() == fs::file_type::file_not_found) && fs::is_regular_file(p)){
 
 		fin.open(p);
 
