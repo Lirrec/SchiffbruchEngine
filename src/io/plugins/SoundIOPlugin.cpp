@@ -26,7 +26,7 @@ SoundIOPlugin::ObjectList SoundIOPlugin::decodeStream(std::istream& in)
 
 bool SoundIOPlugin::encodeStream(const sf::SoundBuffer& o, std::ostream& out)
 {
-	Engine::out() << "[SoundIOPlugin] Sorry, saving not implemented!" << std::endl;
+	Engine::out(Engine::ERROR) << "[SoundIOPlugin] Sorry, saving not implemented!" << std::endl;
 	return false;
 }
 

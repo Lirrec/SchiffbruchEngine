@@ -26,7 +26,7 @@ Event::Event(const std::string& EventName,
 
 	if (!Core::EvtCore->HasEvent( EventName ))
 	{
-		Engine::out() << "[EVENT] First Time occurence of new Event: '" << EventName << "'" << std::endl;
+		//Engine::out() << "[EVENT] First Time occurence of new Event: '" << EventName << "'" << std::endl;
 		Core::EvtCore->RegisterEventName( EventName );
 	}
 

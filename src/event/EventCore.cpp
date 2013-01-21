@@ -61,7 +61,7 @@ bool EventCore::RegisterEventName(const std::string& EventName)
 		return true;
 	}
 
-	Engine::out() << "FAILED!!!" << std::endl;
+	Engine::out(Engine::ERROR) << "[EC] Unable to register new Event!" << std::endl;
 	return false;
 }
 
@@ -164,7 +164,7 @@ void EventCore::RemoveModule ( size_t ModuleID )
 	}
 	else
 	{
-		Engine::out() << "[EC] Can't remove non-registered Module( ID: " << ModuleID << " ) from Eventcore!!" << std::endl;
+		Engine::out(Engine::ERROR) << "[EC] Can't remove non-registered Module( ID: " << ModuleID << " ) from Eventcore!!" << std::endl;
 	}
 }
 
@@ -187,7 +187,7 @@ void EventCore::PostEventToQueue( size_t ModuleID, const Event& e)
 	}
 	else
 	{
-		Engine::out() << "[EC] PostEvent to invalid Queue " << ModuleID << std::endl;
+		Engine::out(Engine::ERROR) << "[EC] PostEvent to invalid Queue " << ModuleID << std::endl;
 	}
 }
 
@@ -198,7 +198,7 @@ size_t EventCore::GetQueueID( const std::string& Name)
 	auto it = ModulesByName.find(Name);
 	if ( it == ModulesByName.end() )
 	{
-		Engine::out() << "[EC] No such Queue with name: " << Name << std::endl;
+		Engine::out(Engine::ERROR) << "[EC] No such Queue with name: " << Name << std::endl;
 	}
 
 	return it->second->ID;

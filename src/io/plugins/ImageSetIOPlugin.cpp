@@ -39,7 +39,7 @@ ImageSetIOPlugin::ObjPtr ImageSetIOPlugin::loadObject(const boost::property_tree
 	}
 	catch ( boost::property_tree::ptree_error )
 	{
-		Engine::out() << "[ImageSetIOPlugin] Error loading ImageSet from ptree!" << std::endl;
+		Engine::out(Engine::ERROR) << "[ImageSetIOPlugin] Error loading ImageSet from ptree!" << std::endl;
 		re.reset();
 		return re;
 	}
@@ -75,7 +75,7 @@ bool ImageSetIOPlugin::saveObject( const std::string& name, const ImageSet& obje
 	}
 	catch ( boost::property_tree::ptree_error )
 	{
-		Engine::out() << "[ImageSetIOPlugin] Error saving ImageSet to ptree!" << std::endl;
+		Engine::out(Engine::ERROR) << "[ImageSetIOPlugin] Error saving ImageSet to ptree!" << std::endl;
 		return false;
 	}
 }

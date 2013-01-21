@@ -81,7 +81,7 @@ void TickControl::YieldTickRest()
 	else
 	{
 		Lag += LastTickDuration - MaxTickDuration;
-		if (LastTickDuration > MaxTickDuration*2 ) 
+		if (LastTickDuration > MaxTickDuration*2 )
 			Engine::out(Engine::SPAM) << "[" << Module::Get()->GetName() << "] Slow! [ " << LastTickDuration << "/" << MaxTickDuration << "ms, " << Lag << "ms Lag ]" << std::endl;
 	}
 }
@@ -90,15 +90,15 @@ void TickControl::LogModuleStats()
 {
 	if (LastStatsLog.getElapsedTime() > sf::seconds(1.0))
 	{
-		Module::Get()->DebugString("Tick   ["+Module::Get()->GetName()+"]: ",
+		Module::Get()->DebugString("Tick ["+Module::Get()->GetName()+"]",
 									boost::lexical_cast<std::string>(LastTickDuration) +"+("
 									+ boost::lexical_cast<std::string>(MsToNextTick) + ") / "
 									+ boost::lexical_cast<std::string>(MaxTickDuration)  );
 
-		Module::Get()->DebugString("FPS    ["+Module::Get()->GetName()+"]: ",
+		Module::Get()->DebugString("FPS ["+Module::Get()->GetName()+"]",
 									boost::lexical_cast<std::string>(TickCounter));
 
-		Module::Get()->DebugString("Events ["+Module::Get()->GetName()+"]: ",
+		Module::Get()->DebugString("Events ["+Module::Get()->GetName()+"]",
 									boost::lexical_cast<std::string>((
 																		Module::Get()->useEventQueue
 																		?	Module::Get()->GetEventQueue()->GetEventCount()

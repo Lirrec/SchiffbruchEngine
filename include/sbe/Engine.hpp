@@ -29,7 +29,10 @@ class Engine
 
 	enum LogLevel
 	{
-		SPAM,INFO,WARNING,ERROR
+		SPAM,
+		INFO,
+		WARNING,
+		ERROR
 	};
 
 		Engine();

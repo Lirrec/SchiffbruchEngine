@@ -95,7 +95,7 @@ void ResourceManager::registerResource( const iResource& iR, std::shared_ptr<IOP
 
         Engine::GetIO()->addPlugin<T>( IOP );
 
-        Engine::out() << "[ResourceManager] Registered class " << ti.name() << " as Resource." << std::endl;
+        //Engine::out() << "[ResourceManager] Registered class " << ti.name() << " as Resource." << std::endl;
     }
     else
     {
@@ -113,7 +113,7 @@ void ResourceManager::registerResource( const std::string& name)
         Resources[ti] = std::shared_ptr<BaseList> ( new NamedList<T>() );
         ResInfos[ti] = iResource::createResInfo( name, false, false);
 
-        Engine::out() << "[ResourceManager] Registered class " << ti.name() << " as Resource." << std::endl;
+        //Engine::out() << "[ResourceManager] Registered class " << ti.name() << " as Resource." << std::endl;
     }
     else
     {

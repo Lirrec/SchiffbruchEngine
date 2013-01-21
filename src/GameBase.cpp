@@ -46,15 +46,15 @@ void GameBase::EngineInit()
 
 
 
-	Engine::out() << "Engine Initialisation done..." << std::endl;
+	Engine::out() << "[Engine] Initialisation done..." << std::endl;
 }
 
 
 void GameBase::CleanUp()
 {
-	Engine::out() << "Starting Cleanup ... " << std::endl ;
+	Engine::out() << "[Engine] Starting Cleanup ... " << std::endl ;
 
-	Engine::out() << "Deleting Modules ... " << std::endl ;
+	Engine::out() << "[Engine] Deleting Modules ... " << std::endl ;
 	for ( auto r_it = Modules.rbegin(); r_it != Modules.rend(); ++r_it)
 	{
 		Engine::out() << r_it->first << " - " << r_it->second.Name << std::endl;
@@ -63,10 +63,10 @@ void GameBase::CleanUp()
 	Modules.clear();
 
 
-	Engine::out() << "Deleting Game ... " << std::endl ;
+	Engine::out() << "[Engine] Deleting Game ... " << std::endl ;
 	DeInit();
 
-	Engine::out() << "Deleting Engine ... " << std::endl ;
+	Engine::out() << "[Engine] Deleting Engine ... " << std::endl ;
 	_Engine.reset();
 
 }
@@ -74,17 +74,17 @@ void GameBase::CleanUp()
 
 void GameBase::RegisterModule(Module* Mod, const ModuleStartInfo& Info)
 {
-	Engine::out() << "Registered Module: [" << Info.Name << "]" << std::endl;
+	Engine::out() << "[Engine] New Module: [" << Info.Name << "]" << std::endl;
 	Modules.push_back(std::make_pair(Mod, Info));
 }
 
 void GameBase::StartModules()
 {
-	Engine::out() << "Starting Modules: " << std::endl;
+	Engine::out() << "[Engine] Starting Modules: " << std::endl;
 
 	for (auto& M : Modules)
 	{
-		Engine::out() << "[" << M.second.Name << "]" << std::endl;
+		//Engine::out() << "[" << M.second.Name << "]" << std::endl;
 		M.first->StartModule(M.second);
 
 		if (M.second.delay != 0) boost::this_thread::sleep(boost::posix_time::milliseconds(M.second.delay));
@@ -93,11 +93,11 @@ void GameBase::StartModules()
 
 void GameBase::JoinModules()
 {
-	Engine::out() << "Joining Threads." << std::endl;
+	Engine::out() << "[Engine] Joining Threads." << std::endl;
 
 	for ( auto r_it = Modules.rbegin(); r_it != Modules.rend(); ++r_it)
 	{
-		if (!r_it->first->getThread()->joinable() ) Engine::out() << "ERROR: can't join Threads!!" << std::endl;
+		if (!r_it->first->getThread()->joinable() ) Engine::out() << "[Engine] ERROR: can't join Threads!!" << std::endl;
 
 		r_it->first->getThread()->join();
 	}

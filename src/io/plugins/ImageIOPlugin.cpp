@@ -24,7 +24,7 @@ ImageIOPlugin::ObjectList ImageIOPlugin::decodeStream(std::istream& in)
     }
     else
 	{
-		Engine::out() << "[ImageIOPlugin] Error while loading stream!" << std::endl;
+		Engine::out(Engine::ERROR) << "[ImageIOPlugin] Error while loading stream!" << std::endl;
 	}
 
     return re;
@@ -32,7 +32,7 @@ ImageIOPlugin::ObjectList ImageIOPlugin::decodeStream(std::istream& in)
 
 bool ImageIOPlugin::encodeStream(const sf::Image& o, std::ostream& out)
 {
-	Engine::out() << "[ImageIOPlugin] Sorry, saving not implemented!" << std::endl;
+	Engine::out(Engine::ERROR) << "[ImageIOPlugin] Sorry, saving not implemented!" << std::endl;
 	return false;
 }
 

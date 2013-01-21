@@ -54,15 +54,11 @@ int EventQueue::GetEventCount()
 	return re;
 }
 
-/** @brief RegisterEventUser
-  *
-  * @todo: document this function
-  */
 void EventQueue::RegisterEventUser(EventUser* Listener, const std::string& EvtName, int priority)
 {
 	if ( !Core::EvtCore->HasEvent( EvtName ) )
 	{
-		Engine::out() << "[EventQueue]: " << "Listener " << Listener << " registered for new Event '" << EvtName << "'" << std::endl;
+		//Engine::out() << "[EventQueue]: " << "Listener " << Listener << " registered for new Event '" << EvtName << "'" << std::endl;
 		Core::EvtCore->RegisterEventName( EvtName );
 	}
 
@@ -73,7 +69,7 @@ void EventQueue::RegisterEventUser ( EventUser* Listener, Event::EventType EvtTy
 {
 	if (!Core::EvtCore->HasEvent( EvtType ) )
 	{
-		Engine::out() << "[EventQueue]: " << "Listener " << Listener << " tried to register for non-existing EventType " << EvtType << std::endl;
+		//Engine::out() << "[EventQueue]: " << "Listener " << Listener << " tried to register for non-existing EventType " << EvtType << std::endl;
 		return;
 	}
 
@@ -82,7 +78,7 @@ void EventQueue::RegisterEventUser ( EventUser* Listener, Event::EventType EvtTy
 		EventListeners[EvtType].insert ( std::make_pair ( priority, Listener ) );
 		EventUsers[Listener->GetID()] = Listener;
 
-		Engine::out() << "[EventQueue]: Registered Listener for Event: " << Core::EvtCore->GetEventName( EvtType) << " - " << EvtType << std::endl;
+		Engine::out() << "[EventQueue] New listener: " << Core::EvtCore->GetEventName( EvtType) << std::endl;
 	}
 }
 
@@ -133,7 +129,7 @@ void EventQueue::AddEventUser( EventUser* User )
 {
 	if (User == nullptr )
 	{
-		Engine::out() << "[EventQueue:AddEventUser] Got nullptr!" << std::endl;
+		Engine::out(Engine::ERROR) << "[EventQueue:AddEventUser] Got nullptr!" << std::endl;
 		return;
 	}
 
@@ -144,7 +140,7 @@ void EventQueue::RemoveEventUser ( EventUser* Listener )
 {
 	if (Listener == nullptr )
 	{
-		Engine::out() << "[EventQueue:RemoveEventUser]: Got nullptr!" << std::endl;
+		Engine::out(Engine::ERROR) << "[EventQueue:RemoveEventUser] Got nullptr!" << std::endl;
 		return;
 	}
 

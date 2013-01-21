@@ -43,7 +43,7 @@ bool ResourceManager::isResource( const std::type_index& ti )
 
 void ResourceManager::loadDefaultPlugins()
 {
-	Engine::out() << "[ResourceManager] Loading IO plugins:" << std::endl;
+	Engine::out() << "[ResourceManager] IO plugins" << std::endl;
 
 	std::shared_ptr<IOPlugin> SoundIOP ( new SoundIOPlugin() );
 	registerResource<sf::SoundBuffer>( iResource::createResInfo("SoundBuffer", false, false), SoundIOP);
@@ -56,7 +56,7 @@ void ResourceManager::loadDefaultPlugins()
 
 	registerResource<sf::Font>( "Font" );
 
-	Engine::out() << "[ResourceManager] IO Plugins loaded." << std::endl;
+	//Engine::out() << "[ResourceManager] IO Plugins loaded." << std::endl;
 }
 
 

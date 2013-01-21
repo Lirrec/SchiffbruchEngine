@@ -78,7 +78,7 @@ void Module::ThreadLocalInit()
 	Instance.reset( this );
 	ModuleTime.restart();
 
-	Engine::out() << "[" << Module::Get()->GetName() << "] New Thread/Module" << std::endl;
+	Engine::out() << "[" << Module::Get()->GetName() << "] New module." << std::endl;
 
 	Init();
 	Execute();

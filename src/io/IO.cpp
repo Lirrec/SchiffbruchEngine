@@ -43,7 +43,7 @@ std::shared_ptr<IOPlugin> IO::getPlugin( const std::type_index& ti )
 
 	if ( Plugins.find( ti ) == Plugins.end() )
 	{
-		Engine::out() << "[IO] No IOPlugin found for type '" << ti.name() << "'!" << std::endl;
+		Engine::out(Engine::ERROR) << "[IO] No IOPlugin found for type '" << ti.name() << "'!" << std::endl;
 		return std::shared_ptr<IOPlugin>();
 	}
 
@@ -71,7 +71,7 @@ std::pair<std::shared_ptr<fs::ofstream>, std::string> IO::getOfstream( std::shar
 	}
 	else
 	{
-		Engine::out() << "[IO] Saving " << name << " ( " << p << " -- " << ") would overwrite existing file!" << std::endl;
+		Engine::out(Engine::WARNING) << "[IO] Saving " << name << " ( " << p << " -- " << ") would overwrite existing file!" << std::endl;
 	}
 
 	return std::make_pair(re, p.string());

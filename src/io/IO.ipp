@@ -12,8 +12,8 @@ void IO::addPlugin(std::shared_ptr<IOPlugin> IOP)
 
 	if (Plugins.find( ti ) == Plugins.end())
 	{
-		Engine::out() << "[IO] Registering Plugin for '" << ti.name() << "'" << std::endl;
-		Engine::out() << "[IO] IOPlugin count '" << Plugins.size() << "'" << std::endl;
+		//Engine::out() << "[IO] Registering Plugin for '" << IOP.name() << "'" << std::endl;
+		//Engine::out() << "[IO] IOPlugin count '" << Plugins.size() << "'" << std::endl;
 		Plugins[ ti ] = IOP;
 	}
 	else
@@ -38,7 +38,7 @@ std::vector<std::shared_ptr<T>> IO::loadPath( const std::string& filename )
 	}
 	catch (fs::filesystem_error& e)
 	{
-		Engine::out() << "[IO] boost::fs exception! '" << e.what() << "'" << std::endl;
+		Engine::out(Engine::ERROR) << "[IO] boost::fs exception! '" << e.what() << "'" << std::endl;
 	}
 
 	return std::vector<std::shared_ptr<T>>();
@@ -51,7 +51,7 @@ std::vector<std::shared_ptr<T>> IO::loadPath(  std::shared_ptr<IOPlugin>& IOP, c
 
 	if ( !fs::exists( cp ) )
 	{
-		Engine::out() << "[IO] Unable to load path! '" << cp.generic_string() << "' not found!" << std::endl;
+		Engine::out(Engine::ERROR) << "[IO] Unable to load path! '" << cp.generic_string() << "' not found!" << std::endl;
 		return std::vector<std::shared_ptr<T>>();
 	}
 
@@ -68,7 +68,7 @@ std::vector<std::shared_ptr<T>> IO::loadPath(  std::shared_ptr<IOPlugin>& IOP, c
 	{
 		if (IOP->loader_type == IOPlugin::loader::PTREE )
 		{
-			Engine::out() << "[IO] Unable to load directory '" << cp.generic_string() << "' into a ptree!" << std::endl;
+			Engine::out(Engine::ERROR) << "[IO] Unable to load directory '" << cp.generic_string() << "' into a ptree!" << std::endl;
 			return std::vector<std::shared_ptr<T>>();
 		}
 		else
@@ -89,7 +89,7 @@ std::vector<std::shared_ptr<T>> IO::loadPath(  std::shared_ptr<IOPlugin>& IOP, c
 	}
 	else
 	{
-		Engine::out() << "[IO] Unable to load path! '" << cp.generic_string() << "' not a directory nor a file!" << std::endl;
+		Engine::out(Engine::ERROR) << "[IO] Unable to load path! '" << cp.generic_string() << "' not a directory nor a file!" << std::endl;
 	}
 
 	return std::vector<std::shared_ptr<T>>();
@@ -105,7 +105,7 @@ std::vector<std::shared_ptr<T>> IO::loadFile( std::shared_ptr<IOPlugin>& IOP, co
 	std::string ext = p.extension().string().substr(1);
 	if (std::find(vec.begin(), vec.end(), ext) == vec.end() )
 	{
-		Engine::out() << "[IO] Unsupported file extension '" << ext << "' for '" << ti.name() << "'!" << std::endl;
+		Engine::out(Engine::ERROR) << "[IO] Unsupported file extension '" << ext << "' for '" << ti.name() << "'!" << std::endl;
 		return std::vector<std::shared_ptr<T>>();
 	}
 
@@ -137,7 +137,7 @@ std::vector<std::shared_ptr<T>> IO::loadFile( std::shared_ptr<IOPlugin>& IOP, co
 			if (ptr) re.push_back(ptr);
 		}
 
-		Engine::out() << " done! ( got " << re.size() << " objs )" << std::endl;
+		Engine::out() << "done! ( got " << re.size() << " objs )" << std::endl;
 
 		return re;
 	}
@@ -171,7 +171,7 @@ bool IO::saveObject( const std::string& name, const T& object, bool overwrite )
 	}
 	catch (fs::filesystem_error& e)
 	{
-		Engine::out() << "[IO] boost::fs exception! '" << e.what() << "'" << std::endl;
+		Engine::out(Engine::ERROR) << "[IO] boost::fs exception! '" << e.what() << "'" << std::endl;
 	}
 
 	return false;
@@ -197,7 +197,7 @@ bool IO::saveFile( std::shared_ptr<IOPlugin>& IOP, const T& object, const std::s
 			return true;
 		}
 
-		Engine::out() << "[IO] Error creating ptree for: " << name << " ( " << typeid(T).name() << ")" << std::endl;
+		Engine::out(Engine::ERROR) << "[IO] Error creating ptree for: " << name << " ( " << typeid(T).name() << ")" << std::endl;
 
 		return false;
 	}
@@ -239,7 +239,7 @@ bool IO::saveObjects( std::map<std::string,std::shared_ptr<T>>& Objects, bool ov
 			}
 			else
 			{
-				Engine::out() << "[IO] Error creating ptree for: " << name << " ( " << ti.name() << " )" << std::endl;
+				Engine::out(Engine::ERROR) << "[IO] Error creating ptree for: " << name << " ( " << ti.name() << " )" << std::endl;
 				return false;
 			}
 		}
@@ -255,7 +255,7 @@ bool IO::saveObjects( std::map<std::string,std::shared_ptr<T>>& Objects, bool ov
 		}
 		catch (fs::filesystem_error& e)
 		{
-			Engine::out() << "[IO] boost::fs exception! '" << e.what() << "'" << std::endl;
+			Engine::out(Engine::ERROR) << "[IO] boost::fs exception! '" << e.what() << "'" << std::endl;
 		}
 
 		return true;

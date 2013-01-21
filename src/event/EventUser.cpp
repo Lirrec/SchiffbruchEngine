@@ -25,14 +25,10 @@ void EventUser::RegisterForEvent(const Event::EventType& EvtType, int priority)
 	}
 	else
 	{
-		Engine::out() << "ERROR: Couldn't register for non-existing Event " << EvtType << std::endl;
+		Engine::out(Engine::ERROR) << "[EventUser] Couldn't register for non-existing Event " << EvtType << std::endl;
 	}
 }
 
-/** @brief RegisterForEvent
-  *
-  * @todo: document this function
-  */
 void EventUser::RegisterForEvent(const std::string& EvtName, int priority)
 {
 	Module::Get()->GetEventQueue()->RegisterEventUser(this, EvtName, priority);
