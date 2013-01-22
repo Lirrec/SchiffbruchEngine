@@ -11,6 +11,9 @@ set( CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/SFGUI/extlibs/SFML/cmake/Modules" 
 
 
 option( SBE_DEBUG "Enable build in debug mode" ON)
+if (CMAKE_BUILD_TYPE MATCHES Release)
+	set(SBE_DEBUG FALSE)
+endif()
 option( USE_CUSTOM_BOOST "" OFF)
 option( USE_CUSTOM_SFML "" ON)
 set( CUSTOM_BOOST_ROOT "" CACHE PATH "custom boost build root dir")
