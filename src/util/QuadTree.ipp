@@ -17,19 +17,15 @@ QuadTreeNode<Item>::QuadTreeNode(Geom::Rect area)
 template < class Item >
 QuadTreeNode<Item>::QuadTreeNode()
 {
+	ChildNodes = nullptr;
+	ItemsInside = nullptr;
 }
 
 template < class Item >
 QuadTreeNode<Item>::~QuadTreeNode()
 {
-	if (!bottomnode)
-	{
-		delete[] ChildNodes;
-	}
-	else
-	{
-		delete ItemsInside;
-	}
+	if (ChildNodes != nullptr) delete[] ChildNodes;
+	if (ItemsInside != nullptr) delete ItemsInside;
 }
 
 template < class Item >
