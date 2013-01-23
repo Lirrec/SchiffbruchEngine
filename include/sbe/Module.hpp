@@ -145,6 +145,12 @@ class Module : sf::NonCopyable
 			return  boost::uuids::random_generator()();
 		}
 
+		/**
+			Change the target TicksPerSecond at runtime.
+			@see TickControl::SetTargetTicksPerSecond
+		*/
+		void SetTPS( int TPS );
+
 	protected:
 
 		/**
@@ -156,12 +162,6 @@ class Module : sf::NonCopyable
 		*/
 		void SetDbgStringEvent( std::shared_ptr<Event>() );
 
-
-		/**
-			Change the target TicksPerSecond at runtime.
-			@see TickControl::SetTargetTicksPerSecond
-		*/
-		void SetTPS( int TPS );
 
 		/**
 			Change the TickEvent at runtime.
