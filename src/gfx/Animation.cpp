@@ -1,11 +1,11 @@
-#include "sbe/Animation.hpp"
-
-#include <SFML/Graphics.hpp>
+#include "sbe/gfx/Animation.hpp"
 
 #include "sbe/Engine.hpp"
 
 #include "sbe/ResourceManager.hpp"
 #include "sbe/Geom.hpp"
+
+#include <SFML/Graphics.hpp>
 
 #include <cmath>
 #include <iostream>

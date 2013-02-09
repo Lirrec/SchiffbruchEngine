@@ -1,4 +1,4 @@
-#include "sbe/Graphic.hpp"
+#include "sbe/gfx/Graphic.hpp"
 
 #include "sbe/Module.hpp"
 

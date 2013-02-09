@@ -3,7 +3,7 @@
 
 #include <boost/uuid/uuid.hpp>
 
-#include "Geom.hpp"
+#include "sbe/Geom.hpp"
 
 #include <string>
 #include <memory>

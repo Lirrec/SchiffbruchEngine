@@ -1,4 +1,4 @@
-#include "sbe/ImageSet.hpp"
+#include "sbe/gfx/ImageSet.hpp"
 
 #include "sbe/ResourceManager.hpp"
 
