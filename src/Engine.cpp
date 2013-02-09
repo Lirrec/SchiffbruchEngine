@@ -5,7 +5,7 @@
 #include "sbe/io/IO.hpp"
 #include "sbe/Config.hpp"
 #include "sbe/Sound.hpp"
-#include "sbe/Graphic.hpp"
+#include "sbe/gfx/Graphic.hpp"
 
 #include "sbe/event/Event.hpp"
 #include "sbe/event/SFMLEvent.hpp"

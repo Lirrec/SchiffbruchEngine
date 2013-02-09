@@ -1,7 +1,7 @@
 #ifndef SOUNDIOPLUGIN_HPP
 #define SOUNDIOPLUGIN_HPP
 
-#include "sbe/ImageSet.hpp"
+#include "sbe/gfx/ImageSet.hpp"
 #include "sbe/io/IOPlugin.hpp"
 
 #include <SFML/Audio/SoundBuffer.hpp>

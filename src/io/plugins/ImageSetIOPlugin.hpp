@@ -1,7 +1,7 @@
 #ifndef IMAGESETIOPLUGIN_HPP
 #define IMAGESETIOPLUGIN_HPP
 
-#include "sbe/ImageSet.hpp"
+#include "sbe/gfx/ImageSet.hpp"
 
 #include "sbe/io/IOPlugin.hpp"
 
