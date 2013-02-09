@@ -13,11 +13,14 @@
 #include <cmath>
 #include <iostream>
 
+/**
+	This namespace holds various Geometry and Math related functions and classes
+*/
 namespace Geom
 {
 
 	template <class T>
-	class point 
+	class point
 		: boost::operators< point<T> >// note: private inheritance is OK here!
 		, boost::operators2< point<T>, T >// note: private inheritance is OK here!
 /*		: boost::addable< 		point<T>     // point + point
@@ -67,15 +70,21 @@ namespace Geom
 			T y;
 	};
 
+	/// the common Pointi as found in all natural binary habitats
 	typedef point<int> Point;
+	/// Same as a Point, may be used to stress the semantic usage
 	typedef Point Vec2;
+	/// the common Pointf as found in all natural binary habitats ( IEEE approved )
 	typedef point<float> Pointf;
+	/// Same as a Point, may be used to stress the semantic usage
 	typedef Pointf Vec2f;
 
 	/// a Rect consists of 2 points, top-left and bottom-right position of the rect
 	typedef point<Point> Rect;
+	/// a Rect consists of 2 points, top-left and bottom-right position of the rect
 	typedef point<Pointf> Rectf;
 
+	/// operator<< overloaded for point<T>s
 	template <typename T>
 	std::ostream &operator<<(std::ostream &stream, point<T> ob)
 	{
@@ -84,8 +93,8 @@ namespace Geom
 	  return stream;
 	}
 
-	
 
+	/// Converts a rectangle to a human readable string suitable for debugging purposes
 	inline std::string RectToString( const Geom::Rect& r)
 	{
 		std::string re("");
@@ -102,14 +111,13 @@ namespace Geom
 		return re;
 	}
 
-
-
-
+	/// returns the origin (0,0)
 	inline Point Origin() { return Point(0,0); }
+	/// returns the origin (0.0,0.0)
 	inline Pointf Originf() { return Pointf(0.0f,0.0f); }
 
 
-	
+	/// Checks wether p is inside rc
 	inline bool PointInRect(const Rect& rc, const Point& p)
 	{
 			if (
@@ -123,60 +131,51 @@ namespace Geom
 
 
 
+	/**
+		Calculate the next power of 2 which is greater than x.
+		old ref: http://acius2.blogspot.com/2007/11/calculating-next-power-of-2.html
+	*/
 	inline int nextPow2(int x)
 	{
-		//int tmp = x;
 		int y = x;
-
 		while ( x &= ( x ^ ( ~x + 1 ) ) )
 			y = x << 1;
-
-		//Engine::out() << "next pow2 to " << tmp << " is " << y << std::endl;
-
-
 		return y;
 	}
 
 
-//		// http://acius2.blogspot.com/2007/11/calculating-next-power-of-2.html
-//		int powof2 = 1;
-//		// Double powof2 until >= val
-//		while( powof2 < val ) powof2 <<= 1;
-//
-//		return powof2;
-//	}
-
-
-
+	/// returns the width of a rectangle
 	inline int rcWidth(const Rect& rc)
 	{
 		return abs(rc.y.x - rc.x.x);
 	}
 
+	/// returns the height of a rectangle
 	inline int rcHeight(const Rect& rc)
 	{
 		return abs(rc.y.y - rc.x.y);
 	}
 
+	/// returns the top right point of a rectangle
 	inline Point rcBLPoint(const Rect& rc)
 	{
 		return Geom::Point(rc.x.x, rc.y.y);
 	}
 
-	// returns the top right point of a rect, computed from TL-point + width
+	/// returns the top right point of a rectangle
 	inline Point rcTRPoint(const Rect& rc)
 	{
 		return Geom::Point(rc.y.x , rc.x.y );
 	}
 
 
-
+	/// Construction helper for rectangles ( takes 4 ints instead of 2 points
 	inline Rect makeRect(int left, int top, int right, int bottom)
 	{
 		return Rect( Point(left, top), Point(right, bottom) );
 	}
 
-	/// is r in r
+	/// Checks if r is inside rc
 	inline bool RectInRect(const Rect& rc, const Rect& r)
 	{
 			if (
@@ -188,10 +187,10 @@ namespace Geom
 		return false;
 	}
 
-
+	/// Checks if two rectangles overlap
 	inline bool rcOverlap(const Rect& lhs, const Rect& rhs)
 	{
-		// check if the don't overlap
+		// check if they _don't_ overlap
 		if (
 				// lhs right of rhs
 			   lhs.x.x > rhs.y.x
@@ -223,11 +222,11 @@ namespace Geom
 //		return false;
 	}
 
-		/**
-	Some helper functios for "quadifying" an area
+	/*
+		Some helper functios for "quadifying"/subdividing an area
 	*/
 
-	/// return the top left quad for a given rectangle
+	/// Subdivie a rectangle into 4 subrectangles, return top-left one
 	inline Rect rcTLQuad(const Rect& r)
 	{
 		return Rect( //top left point
@@ -238,7 +237,7 @@ namespace Geom
 				);
 	}
 
-	/// top right
+	/// Subdivie a rectangle into 4 subrectangles, return top-right one
 	inline Rect rcTRQuad(const Rect& r)
 	{
 		return Rect( //top left point
@@ -250,7 +249,7 @@ namespace Geom
 				);
 	}
 
-	/// bottom right
+	/// Subdivie a rectangle into 4 subrectangles, return bottom-right one
 	inline Rect rcBRQuad(const Rect& r)
 	{
 		return Rect( //top left point
@@ -261,7 +260,7 @@ namespace Geom
 				);
 	}
 
-	/// bottom left
+	/// Subdivie a rectangle into 4 subrectangles, return bottom-left one
 	inline Rect rcBLQuad(const Rect& r)
 	{
 		return Rect( //top left point
@@ -289,42 +288,47 @@ namespace Geom
 	/// calculates the distance between two points (just simple and not optimized)
 	inline double distance(const Point& lhs, const Point& rhs)
 	{
-		return sqrt(
-					pow(static_cast<int>(abs(lhs.x)) - abs(rhs.x), 2)
-					+
-					pow(static_cast<int>(abs(lhs.y)) - abs(rhs.y), 2)
-					);
+		return sqrt( pow(static_cast<int>(abs(lhs.x)) - abs(rhs.x), 2)    +    pow(static_cast<int>(abs(lhs.y)) - abs(rhs.y), 2));
 	}
 
+	/// Compute the distance between two points ( floating point version )
 	inline double distance(const Pointf& from, const Pointf& to)
 	{
-		return sqrt(
-					pow(to.x - from.x, 2)
-					+
-					pow(to.y - from.y, 2)
-					);
+		return sqrt( pow(to.x - from.x, 2)    +    pow(to.y - from.y, 2));
 	}
 
-
-
+	/// Compute the length of a vector
 	inline float length( Vec2f V )
 	{
 			return distance( Originf(), V );
 	}
-	
+
+	/// Normalize a vector
 	inline Vec2f normalize( Vec2f V )
 	{
 			return V / Vec2f(length(V), length(V));
 	}
 
-	inline Geom::Point middle(const Point& p1, const Point& p2)
+	/**
+		Normalize a float, i.e. scale it to a range from 0.0 to 1.0
+		@param f the float to normalize
+		@param min the minimum
+	*/
+	inline float normalize ( float f, float min, float max)
 	{
-		return Geom::Point(
-							static_cast<int>(abs(p1.x + p2.x)/2),
-							static_cast<int>(abs(p1.y + p2.y)/2)
-							);
+		assert ( max - min != 0 );
+		return (f - min)/( max - min );
 	}
 
+	/**
+		Return the middle point of a line defined by p1 and p2
+	*/
+	inline Geom::Point middle(const Point& p1, const Point& p2)
+	{
+		return Geom::Point( static_cast<int>(abs(p1.x + p2.x)/2),    static_cast<int>(abs(p1.y + p2.y)/2));
+	}
+
+	/// converts a Geom::Rect to sf::Floatrect
 	inline sf::FloatRect toSFFloatRect ( const Rect& r)
 	{
 		return sf::FloatRect( r.x.x, // left
@@ -333,6 +337,7 @@ namespace Geom
 							r.y.y-r.x.y ); // height
 	}
 
+	/// converts a Geom::Rect to sf::IntRect
 	inline sf::IntRect toSFRect(const Rect& r)
 	{
 		return sf::IntRect( r.x.x, // left
@@ -341,6 +346,7 @@ namespace Geom
 							r.y.y-r.x.y ); // height
 	}
 
+	/// converts a sf::FloatRect to sf::IntRect ( ! Loss of fp precision ! )
 	inline sf::IntRect SFRectFloatToInt(const sf::FloatRect& r)
 	{
 		sf::IntRect re ( static_cast<int>(r.left),
@@ -348,24 +354,26 @@ namespace Geom
 						 static_cast<int>(r.width),
 						 static_cast<int>(r.height)
 						);
-
-		//Engine::out() << "float:" << r.Left << " / " << r.Top << " / " << r.Right << " / " << r.Bottom << std::endl;
-		//Engine::out() << "int:" << re.Left << " / " << re.Top << " / " << re.Right << " / " << re.Bottom << std::endl;
 		return re;
 	}
 
+	/// converts a sf::IntRect to Geom::Rect
 	inline Rect fromSFRect(const sf::IntRect& r)
 	{
 		return Rect(Point(r.left, r.top), Point(r.left + r.width, r.top + r.height));
 	}
 
+	/// converts a sf::FloatRect to Geom::Rect ( ! Loss of fp precision ! )
 	inline Rect fromSFFloatRect ( const sf::FloatRect& r )
 	{
 		return fromSFRect( SFRectFloatToInt(r) );
 	}
 
 	// TRIANGLE
-
+	/**
+		Checks wether a given point is inside a triangle
+		@see PointInTri(Point p, Point t1, Point t2, Point t3) a version which takes points as parameters
+	*/
 	inline bool PointInTri(int X, int Y, int X0, int Y0, int X1, int Y1, int /*X3*/, int Y3)
 	{
 		float	x,y,
