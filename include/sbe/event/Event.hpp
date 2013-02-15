@@ -62,15 +62,15 @@
 		@code
 
 		// somewhere in your class' code (constructor/ init)
-		RegisterForEvent("VIEW_DBG_STRING")
+		RegisterForEvent("EVT_MY_EVT")
 
 		myClass::HandleEvent( Event& e )
 		{
 			// check event type
-			if (e.Is("VIEW_DBG_STRING"))
+			if (e.Is("EVT_MY_EVT"))
 			{
 				// check event datatype
-				if (e.Data().type() == typeid( std::pair< std::string, std::string> ))
+				if (e.Data().type() == typeid( float ))
 				{
 					// cast into desired type
 					float D = boost::any_cast<float>(e.Data());

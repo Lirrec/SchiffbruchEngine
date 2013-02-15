@@ -1,8 +1,6 @@
 #ifndef VERTEXUTIL_HPP
 #define VERTEXUTIL_HPP
 
-
-
 #include <SFML/Graphics/Vertex.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/Vector2.hpp>
@@ -48,7 +46,7 @@ namespace gfx
 	/**
 		Append a quad to a vertexarray. This version takes Texturecoordinates
 	*/
-	void AppendQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, const Geom::Rect& coords )
+	inline void AppendQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, Geom::Rect coords )
 	{
 		sf::Vertex vs[4];
 		SetQuadPos( vs, Pos );
@@ -63,7 +61,7 @@ namespace gfx
 	/**
 		Append a quad to a vertexarray. This version takes Vertexcolors
 	*/
-	void AppendQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, const sf::Color& c )
+	inline void AppendQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, sf::Color c )
 	{
 		sf::Vertex vs[4];
 		SetQuadPos( vs, Pos );
@@ -78,7 +76,7 @@ namespace gfx
 	/**
 		Update a quad in a vertexarray ( 4 vertices ). This version takes Texturecoordinates
 	*/
-	void UpdateQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, const Geom::Rect& coords, const int ArrayIndex)
+	inline void UpdateQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, const Geom::Rect& coords, const int ArrayIndex)
 	{
 		sf::Vertex vs[4];
 		SetQuadPos( vs, Pos );
@@ -93,7 +91,7 @@ namespace gfx
 	/**
 		Update a quad in a vertexarray ( 4 vertices ). This version takes Vertexcolors
 	*/
-	void UpdateQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, const sf::Color& c, const int ArrayIndex)
+	inline void UpdateQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, const sf::Color& c, const int ArrayIndex)
 	{
 		sf::Vertex vs[4];
 		SetQuadPos( vs, Pos );
@@ -108,22 +106,22 @@ namespace gfx
 	/**
 		Update a line in a vertexarray ( 2 vertices).
 	*/
-	void UpdateLine( sf::VertexArray& vA, const Geom::Point& start, const Geom::Point& end, const sf::Color& c,  const int ArrayIndex )
+	inline void UpdateLine( sf::VertexArray& vA, const sf::Vector2f& start, const sf::Vector2f& end, const sf::Color& c,  const int ArrayIndex )
 	{
-		vA[ArrayIndex] = sf::Vertex( sf::Vector2f(start.x, start.y), c );
-		vA[ArrayIndex + 1] = sf::Vertex( sf::Vector2f(end.x, end.y), c );
+		vA[ArrayIndex] = sf::Vertex( start, c );
+		vA[ArrayIndex + 1] = sf::Vertex( end, c );
 	}
 
 	/**
 		Append a line to a vertexarray ( 2 vertices).
 	*/
-	void AppendLine( sf::VertexArray& vA, const Geom::Point& start, const Geom::Point& end, const sf::Color& c )
+	inline void AppendLine( sf::VertexArray& vA, const sf::Vector2f& start, const sf::Vector2f& end, const sf::Color& c )
 	{
-		vA.append( sf::Vertex( sf::Vector2f(start.x, start.y), c) );
-		vA.append( sf::Vertex( sf::Vector2f(end.x, end.y), c) );
+		vA.append( sf::Vertex( start, c) );
+		vA.append( sf::Vertex( end, c) );
 	}
 
-}
+};
 
 #endif // VERTEXUTIL_HPP
 
