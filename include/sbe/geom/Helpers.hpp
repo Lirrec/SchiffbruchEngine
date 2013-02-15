@@ -2,9 +2,12 @@
 #define HELPERS_HPP
 
 #include <boost/lexical_cast.hpp>
+
 #include <SFML/Graphics/Rect.hpp>
+
 #include <cmath>
-#include "sbe/geom/Template.hpp"
+
+#include "sbe/geom/Point.hpp"
 
 namespace Geom
 {

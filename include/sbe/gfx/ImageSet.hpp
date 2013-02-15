@@ -30,8 +30,10 @@ class ImageSet
 				  const Geom::Vec2&  _fcount,
 				  const int _fps);
 
-		/// calculates the rectangle on the image which contains the given frame
-		Geom::Rect FramePosToPixels( const Geom::Vec2 FramePos ) const;
+		/// calculates the rectangle on the image which contains the given frame ( 2d-framepos )
+		Geom::Rect CalcTexCoords( const Geom::Vec2 FramePos ) const;
+		/// calculates the rectangle on the image which contains the given frame ( frame-index )
+		Geom::Rect CalcTexCoords( const int index ) const;
 
 		/// calculate the frame position in the image from a frame index
 		Geom::Vec2 CalcFramePos( const int index ) const ;

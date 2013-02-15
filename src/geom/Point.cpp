@@ -1,4 +1,4 @@
-#include "sbe/geom/Template.hpp"
+#include "sbe/geom/Point.hpp"
 
 namespace Geom {
 	template class point<int>;

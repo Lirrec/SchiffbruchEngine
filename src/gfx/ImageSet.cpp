@@ -46,8 +46,12 @@ Geom::Vec2 ImageSet::CalcFramePos(const int index) const
 	return FPos;
 }
 
+Geom::Rect ImageSet::CalcTexCoords(const int index) const
+{
+	return CalcTexCoords( CalcFramePos( index ) );
+}
 
-Geom::Rect ImageSet::FramePosToPixels(const Geom::Vec2 FramePos) const
+Geom::Rect ImageSet::CalcTexCoords(const Geom::Vec2 FramePos) const
 {
 	Geom::Rect re;
 	Geom::Point topleft, bottomright;
@@ -86,7 +90,7 @@ sf::Sprite ImageSet::CreateSprite(const Geom::Vec2 FramePos)
 	if ( updateTexture() )
 	{
 		re.setTexture(*Tex);
-		re.setTextureRect( Geom::toSFRect( FramePosToPixels(FramePos) ) );
+		re.setTextureRect( Geom::toSFRect( CalcTexCoords(FramePos) ) );
 	}
 	else
 	{
@@ -104,7 +108,7 @@ std::shared_ptr<sf::Sprite> ImageSet::CreateSpritePtr(const Geom::Vec2 FramePos)
 	if ( updateTexture() )
 	{
 		re->setTexture(*Tex);
-		re->setTextureRect( Geom::toSFRect( FramePosToPixels(FramePos) ) );
+		re->setTextureRect( Geom::toSFRect( CalcTexCoords(FramePos) ) );
 	}
 	else
 	{
@@ -171,7 +175,7 @@ void ImageSet::CreateQuad( const Geom::Vec2 FramePos , sf::VertexArray& vA, cons
 //	Engine::out() << "vs[2] " << Pos.left+Pos.width << " - " <<  Pos.top+Pos.height << std::endl;
 //	Engine::out() << "vs[3] " << Pos.left << " - " <<  Pos.top+Pos.height << std::endl;
 
-	Geom::Rect coords = FramePosToPixels(FramePos);
+	Geom::Rect coords = CalcTexCoords(FramePos);
 
 	vs[0].texCoords = sf::Vector2f( coords.x.x, coords.x.y );	// top-left
 	vs[1].texCoords = sf::Vector2f( coords.x.x, coords.y.y ); // bottom-left

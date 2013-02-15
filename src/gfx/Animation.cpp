@@ -39,7 +39,7 @@ void Animation::Reset()
 	CurFrame = 0;
 	CurFramePos = AnimData.StartPos;
 	RangeToPlay = AnimData.FrameCount;
-	Sprite.setTextureRect( Geom::toSFRect( AnimData.FramePosToPixels(CurFramePos) ) );
+	Sprite.setTextureRect( Geom::toSFRect( AnimData.CalcTexCoords(CurFramePos) ) );
 	LastUpdate = Module::Get()->GetModuleTime();
 }
 
@@ -179,7 +179,7 @@ void Animation::Finish()
 
 void Animation::updateSprite()
 {
-	Geom::Rect subrect = AnimData.FramePosToPixels(CurFramePos);
+	Geom::Rect subrect = AnimData.CalcTexCoords(CurFramePos);
 	Sprite.setTextureRect(Geom::toSFRect(subrect));
 }
 
