@@ -81,6 +81,34 @@ bool ResourceManager::saveAllObjects( bool overwrite )
     return mIO->saveObjects( NL->GetMap(), overwrite);
 }
 
+// use his only for objects saved by saveObject()
+//~ template <class T>
+//~ std::shared_ptr<T> ResourceManager::loadObject( const std::string name ){
+	//~ if( ! isResource( typeid(T) ) ) return nullptr;
+//~
+	//~ return mIO->loadObjects<T>( name)[0]; // there should be only one object in that list, so this should be fine
+//~ }
+
+template <class T>
+bool ResourceManager::loadAllObjects(){
+	if( ! isResource( typeid(T) ) ) return false;
+
+	auto tmp = mIO->loadObjects<T>( );
+	if(tmp.empty()) return false;
+
+	// add tmp to res-list somehow
+	//for(const &T o : tmp){
+	//	add(o, );
+	//}
+
+	// I don't like it like this... it shold load all objects into the resources list, but
+	// - where to get the name from?
+	// - what to do with the stuff that's already in it?
+	// also, how get the loaded data from the resmgr to the simulator efficiently?
+	return true;
+}
+
+
 // - Plugin and Class Management -
 
 template < typename T>

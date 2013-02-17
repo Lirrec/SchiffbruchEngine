@@ -106,6 +106,10 @@ class ResourceManager
         template<class T>
         bool saveAllObjects( bool overwrite = false );
 
+				//~ template<class T>
+				//~ std::shared_ptr<T> loadObject(const std::string name,  lObj);
+				template<class T>
+				bool loadAllObjects();
 
 
         // - Plugin and Class Management -

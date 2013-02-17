@@ -70,6 +70,11 @@ class IO
         template<class T>
         std::vector<std::shared_ptr<T>> loadPath( const std::string& filename );
 
+		template <class T>
+		std::vector<std::shared_ptr<T> > loadObjects( );
+		template <class T>
+		std::vector<std::shared_ptr<T> > loadObjects( const std::string name );
+
 		/**
 		*/
 		template<class T>

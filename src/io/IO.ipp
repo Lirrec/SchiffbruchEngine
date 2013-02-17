@@ -32,7 +32,7 @@ std::vector<std::shared_ptr<T>> IO::loadPath( const std::string& filename )
 
 		for ( const std::string& current_path : Paths )
 		{
-			return loadPath<T>( IOP, current_path, filename);
+			return loadPath<T>( IOP, current_path, filename);  // bp: hä?!?
 		}
 
 	}
@@ -143,7 +143,29 @@ std::vector<std::shared_ptr<T>> IO::loadFile( std::shared_ptr<IOPlugin>& IOP, co
 	}
 }
 
+template <class T>
+std::vector<std::shared_ptr<T> > IO::loadObjects( const std::string name ){
+	auto ti = std::type_index( typeid(T) );
 
+	std::shared_ptr<IOPlugin> iop = getPlugin( ti );
+	if(!iop) return std::vector<std::shared_ptr<T> >();
+
+	// determine filename
+	std::string filename = name;
+	if ( filename.find('.') == std::string::npos )
+		filename += '.' + iop->getSupportedFileExtensions()[0];
+
+	return loadPath<T>(filename);
+
+}
+
+template <class T>
+std::vector<std::shared_ptr<T> > IO::loadObjects(){
+	std::shared_ptr<IOPlugin> iop = getPlugin( std::type_index( typeid(T) ) );
+	if(!iop) return std::vector<std::shared_ptr<T> >();
+
+	return loadPath<T>(iop->relative_path);
+}
 
 // #################################################
 //						SAVING
