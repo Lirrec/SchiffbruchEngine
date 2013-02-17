@@ -10,10 +10,10 @@ set( CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/SFGUI/extlibs/SFML/cmake/Modules" 
 #############################################################
 
 
-option( SBE_DEBUG "Enable build in debug mode" ON)
-if (CMAKE_BUILD_TYPE MATCHES Release)
-	set(SBE_DEBUG FALSE)
-endif()
+#option( SBE_DEBUG "Enable build in debug mode" ON)
+#if (CMAKE_BUILD_TYPE MATCHES Release)
+#	set(SBE_DEBUG FALSE)
+#endif()
 option( USE_CUSTOM_BOOST "" OFF)
 option( USE_CUSTOM_SFML "" ON)
 set( CUSTOM_BOOST_ROOT "" CACHE PATH "custom boost build root dir")
@@ -104,16 +104,16 @@ endif()
 
 add_definitions( -DBOOST_THREAD_USE_LIB )
 
-if (SBE_DEBUG)
-	add_definitions(-DCOUNT_EVENTS -DDEBUG -DSBE_DEBUG)
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+	add_definitions(-DCOUNT_EVENTS)
 	#override those, usually not set but SFGUI adds a bunch of additional warnings we dont want
-	set( CMAKE_CXX_FLAGS "-Wall -g -O0" CACHE STRING "C++ compiler flags" FORCE )
-	set( CMAKE_C_FLAGS   "-Wall -g -O0" CACHE STRING "C compiler flags" FORCE )
+	set( CMAKE_CXX_FLAGS_DEBUG "-Wall -g -O0" CACHE STRING "C++ compiler flags" FORCE )
+	set( CMAKE_C_FLAGS_DEBUG   "-Wall -g -O0" CACHE STRING "C compiler flags" FORCE )
 else()
 	add_definitions(-fomit-frame-pointer -fexpensive-optimizations -O3 )
 	#override those, usually not set but SFGUI adds a bunch of additional warnings we dont want
-	set( CMAKE_CXX_FLAGS "-O3" CACHE STRING "C++ compiler flags" FORCE )
-	set( CMAKE_C_FLAGS "-O3" CACHE STRING "C compiler flags" FORCE )
+	set( CMAKE_CXX_FLAGS_RELEASE "-O3" CACHE STRING "C++ compiler flags" FORCE )
+	set( CMAKE_C_FLAGS_RELEASE   "-O3" CACHE STRING "C compiler flags" FORCE )
 endif()
 
 
@@ -134,9 +134,9 @@ if (GCC_VERSION VERSION_EQUAL 4.7 OR GCC_VERSION VERSION_GREATER 4.7)
 
 		if(GCC_VERSION VERSION_EQUAL 4.8 OR GCC_VERSION VERSION_GREATER 4.8)
 			add_definitions ( -D__GCC_4_8__ )
-			if(SBE_DEBUG)
+			if(CMAKE_BUILD_TYPE MATCHES Debug)
 				add_definitions( -Og )
-			endif(SBE_DEBUG)
+			endif()
 		endif()
 else()
 	if(GCC_VERSION VERSION_EQUAL 4.6 OR GCC_VERSION VERSION_GREATER 4.6)
