@@ -128,9 +128,9 @@ int GraphPlotter::interpolatedCurveData( const Curve& c, float percentage)
 	//float per = std::modf( percentage*c.data.size(), &unused );
 	float per = percentage*c.data.size() - (int)(percentage*c.data.size());
 
-	Engine::out() << "c.data[" << from << "]" << c.data[from] << std::endl;
-	Engine::out() << "c.data["<< to <<"]" << c.data[to] << std::endl;
-	Engine::out() << "percentage" << percentage << " - per: " << per << std::endl;
+	//Engine::out() << "c.data[" << from << "]" << c.data[from] << std::endl;
+	//Engine::out() << "c.data["<< to <<"]" << c.data[to] << std::endl;
+	//Engine::out() << "percentage" << percentage << " - per: " << per << std::endl;
 
 	return c.data[from] + ( c.data[to] - c.data[from] )*per;
 
