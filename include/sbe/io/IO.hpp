@@ -8,6 +8,7 @@
 #include <map>
 #include <vector>
 #include <deque>
+#include <iterator>
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -84,6 +85,8 @@ class IO
 		*/
 		template<class T>
 		bool saveObjects( std::map<std::string,std::shared_ptr<T>>& Objects, bool overwrite = false );
+		template<class T, class Iter>
+		bool saveObjects( Iter start, Iter end, bool overwrite = false );
 
     private:
 

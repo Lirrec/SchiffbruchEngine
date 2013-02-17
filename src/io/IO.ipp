@@ -225,6 +225,42 @@ bool IO::saveFile( std::shared_ptr<IOPlugin>& IOP, const T& object, const std::s
 	}
 }
 
+template <class T, class Iter>
+bool IO::saveObjects(Iter start, Iter end, bool ov){
+	auto ti = std::type_index( typeid(T) );
+	std::shared_ptr<IOPlugin> IOP = getPlugin( ti );
+	if ( !IOP ) return false;
+
+	if( IOP->loader_type == IOPlugin::loader::PTREE) {
+		auto tio = dynamic_pointer_cast<iTreeIOPlugin<T>>(IOP);
+		pt::ptree tree;
+
+		for( auto it = start; it != end; ++it){
+			if(tio->saveObject(ti.name(), **it, tree)){ // need some real name here instead of "some"... grrr.
+				Engine::out(Engine::SPAM) << "[IO] Saved " << ti.name() << std::endl;
+			} else {
+				Engine::out(Engine::ERROR) << "[IO] Error creating ptree for: " << ti.name() << std::endl;
+				return false;
+			}
+		}
+
+		try {
+			auto tmp = getOfstream( IOP, IOP->relative_path, Paths.front(), ov);
+			if(!tmp.first->is_open()) return false;
+			// write the tree:
+			pt::info_parser::write_info( *(tmp.first), tree);
+
+			tmp.first->close();
+		}
+		catch ( fs::filesystem_error &e) {
+			Engine::out(Engine::ERROR) << "[IO] boost::fs exception! '" << e.what() << "'" << std::endl;
+		}
+		return true;
+	} else{
+		return false; // binary not supported...
+	}
+}
+
 template<class T>
 bool IO::saveObjects( std::map<std::string,std::shared_ptr<T>>& Objects, bool overwrite )
 {
@@ -257,7 +293,7 @@ bool IO::saveObjects( std::map<std::string,std::shared_ptr<T>>& Objects, bool ov
 
 			if ( TreeIO->saveObject( name, *it->second, tree))
 			{
-				Engine::out() << "[IO] Saved " << name << " ( " << ti.name() << " )" << std::endl;
+				Engine::out(Engine::SPAM) << "[IO] Saved " << name << " ( " << ti.name() << " )" << std::endl;
 			}
 			else
 			{
