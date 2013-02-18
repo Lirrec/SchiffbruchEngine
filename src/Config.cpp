@@ -43,10 +43,6 @@ void Config::load() {
 		Engine::out(Engine::ERROR) << "[config::load] boost::fs exception! '" << e.what() << "'" << std::endl;
 	}
 
-	_fileName = "debug.conf";
-	save(true);
-	_fileName = "config.conf";
-
 	fin.close();
 
 	Engine::out(Engine::INFO) << "[config::load] Loading done!" << std::endl;
