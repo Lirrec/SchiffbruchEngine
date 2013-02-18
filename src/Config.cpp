@@ -22,7 +22,7 @@ void Config::load() {
 		fin.open(p);
 
 	} else {
-		Engine::out(Engine::WARNING) << "[config::load] Cant load from '" << p << "'!" << std::endl;
+		Engine::out(Engine::ERROR) << "[config::load] Cant load from '" << p << "'!" << std::endl;
 		return;
 	}
 
@@ -31,12 +31,12 @@ void Config::load() {
 		pt::ini_parser::read_ini( fin, _settings );
 
 	} catch (fs::filesystem_error& e)	{
-		Engine::out(Engine::WARNING) << "[config::load] boost::fs exception! '" << e.what() << "'" << std::endl;
+		Engine::out(Engine::ERROR) << "[config::load] boost::fs exception! '" << e.what() << "'" << std::endl;
 	}
 
 	fin.close();
 
-	Engine::out() << "[config::load] Loading done!" << std::endl;
+	Engine::out(Engine::INFO) << "[config::load] Loading done!" << std::endl;
 }
 
 void Config::save(bool overwrite) {
@@ -62,7 +62,7 @@ void Config::save(bool overwrite) {
 		pt::ini_parser::write_ini( fout, _settings );
 
 	} catch (fs::filesystem_error& e)	{
-		Engine::out(Engine::WARNING) << "[config::save] boost::fs exception! '" << e.what() << "'" << std::endl;
+		Engine::out(Engine::ERROR) << "[config::save] boost::fs exception! '" << e.what() << "'" << std::endl;
 
 	}
 

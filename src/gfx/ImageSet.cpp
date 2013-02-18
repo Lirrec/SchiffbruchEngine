@@ -94,7 +94,7 @@ sf::Sprite ImageSet::CreateSprite(const Geom::Vec2 FramePos)
 	}
 	else
 	{
-		Engine::out() << "ImageSet::CreateSprite: Unable to create Sprite, image not found: " << ImageName << "!" << std::endl;
+		Engine::out(Engine::ERROR) << "ImageSet::CreateSprite: Unable to create Sprite, image not found: " << ImageName << "!" << std::endl;
 	}
 
 	return re;
@@ -112,7 +112,7 @@ std::shared_ptr<sf::Sprite> ImageSet::CreateSpritePtr(const Geom::Vec2 FramePos)
 	}
 	else
 	{
-		Engine::out() << "ImageSet::CreateSprite: Unable to create Sprite, image not found: " << ImageName << "!" << std::endl;
+		Engine::out(Engine::ERROR) << "ImageSet::CreateSprite: Unable to create Sprite, image not found: " << ImageName << "!" << std::endl;
 	}
 
 	return re;
@@ -126,7 +126,7 @@ bool ImageSet::updateTexture( bool force )
 
 		if (!img)
 		{
-			Engine::out() << "[ImageSet] Unable to update internal texture, Image with name " << ImageName << " doesn't exist anymore!" << std::endl;
+			Engine::out(Engine::ERROR) << "[ImageSet] Unable to update internal texture, Image with name " << ImageName << " doesn't exist anymore!" << std::endl;
 			return false;
 		}
 
@@ -134,11 +134,11 @@ bool ImageSet::updateTexture( bool force )
 
 		if (Tex->loadFromImage( *img ))
 		{
-			Engine::out() << "[ImageSet] Created texture for ImageSet " << Name << ", from Image with name " << ImageName << std::endl;
+			Engine::out(Engine::INFO) << "[ImageSet] Created texture for ImageSet " << Name << ", from Image with name " << ImageName << std::endl;
 		}
 		else
 		{
-			Engine::out() << "[ImageSet] ERROR creating texture for ImageSet " << Name << ", from Image with name " << ImageName << std::endl;
+			Engine::out(Engine::ERROR) << "[ImageSet] ERROR creating texture for ImageSet " << Name << ", from Image with name " << ImageName << std::endl;
 			Tex.reset();
 		}
 	}

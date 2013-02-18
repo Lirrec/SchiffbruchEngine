@@ -78,7 +78,7 @@ void EventQueue::RegisterEventUser ( EventUser* Listener, Event::EventType EvtTy
 		EventListeners[EvtType].insert ( std::make_pair ( priority, Listener ) );
 		EventUsers[Listener->GetID()] = Listener;
 
-		Engine::out() << "[EventQueue] New listener: " << Core::EvtCore->GetEventName( EvtType) << std::endl;
+		Engine::out(Engine::SPAM) << "[EventQueue] New listener: " << Core::EvtCore->GetEventName( EvtType) << std::endl;
 	}
 }
 

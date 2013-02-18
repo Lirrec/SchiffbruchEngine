@@ -18,7 +18,7 @@ void IO::addPlugin(std::shared_ptr<IOPlugin> IOP)
 	}
 	else
 	{
-		Engine::out() << "[IO] Plugin for '" << ti.name() << "' already registered!" << std::endl;
+		Engine::out(Engine::ERROR) << "[IO] Plugin for '" << ti.name() << "' already registered!" << std::endl;
 	}
 }
 
@@ -109,7 +109,7 @@ std::vector<std::shared_ptr<T>> IO::loadFile( std::shared_ptr<IOPlugin>& IOP, co
 		return std::vector<std::shared_ptr<T>>();
 	}
 
-	Engine::out() << "[IO] Loading " << p << " (" << ti.name() << ") ... " ;
+	Engine::out(Engine::INFO) << "[IO] Loading " << p << " (" << ti.name() << ") ... " ;
 
 	fs::ifstream in(p);
 
@@ -118,7 +118,7 @@ std::vector<std::shared_ptr<T>> IO::loadFile( std::shared_ptr<IOPlugin>& IOP, co
 
 			auto BinIO = dynamic_pointer_cast<iBinaryIOPlugin<T>>(IOP);
 			auto re = BinIO->decodeStream ( in );
-			Engine::out() << "done!" << std::endl;
+			Engine::out(Engine::INFO) << "done!" << std::endl;
 			return re;
 	}
 	else
@@ -137,7 +137,7 @@ std::vector<std::shared_ptr<T>> IO::loadFile( std::shared_ptr<IOPlugin>& IOP, co
 			if (ptr) re.push_back(ptr);
 		}
 
-		Engine::out() << "done! ( got " << re.size() << " objs )" << std::endl;
+		Engine::out(Engine::INFO) << "done! ( got " << re.size() << " objs )" << std::endl;
 
 		return re;
 	}
@@ -185,7 +185,7 @@ bool IO::saveObject( const std::string& name, const T& object, bool overwrite )
 
 		if ( saveFile(IOP, object, name, *(tmp.first)) )
 		{
-			Engine::out() << "[IO] Saved " << name << " ( " << tmp.second  << " -- " << ti.name() << ")" << std::endl;
+			Engine::out(Engine::INFO) << "[IO] Saved " << name << " ( " << tmp.second  << " -- " << ti.name() << ")" << std::endl;
 		}
 
 		tmp.first->close();

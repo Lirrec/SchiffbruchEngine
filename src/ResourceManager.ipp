@@ -127,7 +127,7 @@ void ResourceManager::registerResource( const iResource& iR, std::shared_ptr<IOP
     }
     else
     {
-        Engine::out() << "[ResourceManager] Cant register class " << ti.name() << " as Resource, already registered!" << std::endl;
+        Engine::out(Engine::ERROR) << "[ResourceManager] Cant register class " << ti.name() << " as Resource, already registered!" << std::endl;
     }
 }
 
@@ -145,6 +145,6 @@ void ResourceManager::registerResource( const std::string& name)
     }
     else
     {
-        Engine::out() << "[ResourceManager] Cant register class " << ti.name() << " as Resource, already registered!" << std::endl;
+        Engine::out(Engine::ERROR) << "[ResourceManager] Cant register class " << ti.name() << " as Resource, already registered!" << std::endl;
     }
 }

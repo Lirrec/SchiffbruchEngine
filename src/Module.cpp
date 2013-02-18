@@ -78,14 +78,14 @@ void Module::ThreadLocalInit()
 	Instance.reset( this );
 	ModuleTime.restart();
 
-	Engine::out() << "[" << Module::Get()->GetName() << "] New module." << std::endl;
+	Engine::out(Engine::INFO) << "[" << Module::Get()->GetName() << "] New module." << std::endl;
 
 	Init();
 	Execute();
 	DeInit();
 
 	if (useEventQueue) Core::EvtCore->RemoveModule(QueueID);
-	Engine::out() << "[" << Module::Get()->GetName() << "] Thread/Module has exited" << std::endl;
+	Engine::out(Engine::INFO) << "[" << Module::Get()->GetName() << "] Thread/Module has exited" << std::endl;
 	// without this the thread_specific_ptr would call delete on this module
 	Instance.release();
 }

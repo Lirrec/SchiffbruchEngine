@@ -32,7 +32,7 @@ const std::string& HashManager::GetString(const HashedString::HashType& Hash) co
 		return it->second->getStr();
 	}
 
-	Engine::out() << " Couldnt find String for Hash " << Hash << std::endl;
+	Engine::out(Engine::ERROR) << " Couldnt find String for Hash " << Hash << std::endl;
 	return invalid_name;
 }
 
@@ -48,7 +48,7 @@ HashedString::HashType HashManager::GetHash(const std::string& Name) const
 		return it->second->getHashValue();
 	}
 
-	Engine::out() << " Couldnt find hash for string " << Name << std::endl;
+	Engine::out(Engine::ERROR) << " Couldnt find hash for string " << Name << std::endl;
 	return HashedString::InvalidHash;
 }
 
@@ -95,7 +95,7 @@ bool HashManager::RegisterElement(const std::string& Name)
 
 		if (HS->getHashValue() == 0)
 		{
-			Engine::out() << "HashManager: Element '" << Name << "' gives 0 (zero) as Hash, which is reserved!" << std::endl;
+			Engine::out(Engine::ERROR) << "HashManager: Element '" << Name << "' gives 0 (zero) as Hash, which is reserved!" << std::endl;
 			return false;
 		}
 
@@ -106,7 +106,7 @@ bool HashManager::RegisterElement(const std::string& Name)
 	}
 	else
 	{
-		Engine::out() << "HashManager: Element '" << Name << "' already exists" << std::endl;
+		Engine::out(Engine::ERROR) << "HashManager: Element '" << Name << "' already exists" << std::endl;
 		return false;
 	}
 }

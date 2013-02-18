@@ -77,7 +77,7 @@ void EventCore::Tick()
 
 	if (ModulesById.empty())
 	{
-		Engine::out() << "[EC] No more modules connected, shutting down, " << Module::Get()->GetName() << std::endl;
+		Engine::out(Engine::INFO) << "[EC] No more modules connected, shutting down, " << Module::Get()->GetName() << std::endl;
 		Module::Get()->RequestQuit();
 	}
 
@@ -158,7 +158,7 @@ void EventCore::RemoveModule ( size_t ModuleID )
 	auto it = ModulesById.find( ModuleID );
 	if ( it != ModulesById.end() )
 	{
-		Engine::out() << "[EC] Module: " << it->second->Name << " - ID: " << it->second->ID << " removed." << std::endl;
+		Engine::out(Engine::INFO) << "[EC] Module: " << it->second->Name << " - ID: " << it->second->ID << " removed." << std::endl;
 		ModulesByName.erase ( it->second->Name );
 		ModulesById.erase ( it );
 	}

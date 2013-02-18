@@ -45,7 +45,7 @@ bool SFMLEventConverter::HandleEvent(sf::Event& e)
 {
 	for ( auto it = EvtConversions.lower_bound( e.type ); it != EvtConversions.upper_bound( e.type ); ++ it )
 	{
-		Engine::out() << "[EvtConv] SFML: " << std::get<0>(it->second) << std::endl;
+		Engine::out(Engine::SPAM) << "[EvtConv] SFML: " << std::get<0>(it->second) << std::endl;
 
 		Event TmpEvt( std::get<0>(it->second) );
 		TmpEvt.Data() = std::get<2>(it->second);
@@ -58,7 +58,7 @@ bool SFMLEventConverter::HandleEvent(sf::Event& e)
 		{
 			for ( auto it = KeyConversions.lower_bound( e.key.code ); it != KeyConversions.upper_bound( e.key.code ); ++ it )
 			{
-				Engine::out() << "[EvtConv] KEY: " << std::get<0>(it->second) << std::endl;
+				Engine::out(Engine::SPAM) << "[EvtConv] KEY: " << std::get<0>(it->second) << std::endl;
 
 				Event TmpEvt( std::get<0>(it->second) );
 				TmpEvt.Data() = std::get<2>(it->second);

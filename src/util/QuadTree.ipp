@@ -9,7 +9,7 @@ template<class Type> int QuadTreeNode<Type>::MinNodeSize(128);
 template < class Item >
 QuadTreeNode<Item>::QuadTreeNode(Geom::Rect area)
 {
-	Engine::out() << "Creating QuadTree of Dimensions: " << area << std::endl;
+	Engine::out(Engine::SPAM) << "Creating QuadTree of Dimensions: " << area << std::endl;
 
 	init(area);
 }
@@ -124,13 +124,13 @@ void QuadTreeNode<Item>::InsertItem(const Geom::Point& center, Item t)
 {
 	if (!t)
 	{
-		Engine::out() << "Got invalid Item to insert in QuadTree!!" << std::endl;
+		Engine::out(Engine::ERROR) << "Got invalid Item to insert in QuadTree!!" << std::endl;
 		return;
 	}
 
 	if (!Geom::PointInRect(area, center))
 	{
-		Engine::out() << "QTN:InsertItem: center " << center << " not in QT "<< area <<"!" << std::endl;
+		Engine::out(Engine::ERROR) << "QTN:InsertItem: center " << center << " not in QT "<< area <<"!" << std::endl;
 		abort();
 	}
 
@@ -173,13 +173,13 @@ void QuadTreeNode<Item>::InsertItem(const Geom::Point& center, Item t)
 		else
 		{
 
-			Engine::out() << "ERROR" <<  area << " " << center <<std::endl;
-			Engine::out() << "Child0 TL: " <<  ChildNodes[0].area << std::endl;
-			Engine::out() << "Child1 TR: " <<  ChildNodes[1].area << std::endl;
-			Engine::out() << "Child2 BR: " <<  ChildNodes[2].area << std::endl;
-			Engine::out() << "Child3 BL: " <<  ChildNodes[3].area << std::endl;
+			Engine::out(Engine::ERROR) << "ERROR" <<  area << " " << center <<std::endl;
+			Engine::out(Engine::ERROR) << "Child0 TL: " <<  ChildNodes[0].area << std::endl;
+			Engine::out(Engine::ERROR) << "Child1 TR: " <<  ChildNodes[1].area << std::endl;
+			Engine::out(Engine::ERROR) << "Child2 BR: " <<  ChildNodes[2].area << std::endl;
+			Engine::out(Engine::ERROR) << "Child3 BL: " <<  ChildNodes[3].area << std::endl;
 
-			Engine::out() << Geom::PointInRect(Geom::makeRect(1024,0, 2048, 1024),  Geom::Point(1665,36)) << std::endl;
+			Engine::out(Engine::ERROR) << Geom::PointInRect(Geom::makeRect(1024,0, 2048, 1024),  Geom::Point(1665,36)) << std::endl;
 
 			abort();
 		}
@@ -192,13 +192,13 @@ void QuadTreeNode<Item>::RemoveItem(Geom::Point& center, Item t)
 
 	if (!t)
 	{
-		Engine::out() << "Got invalid Item to remove from  QuadTree!!" << std::endl;
+		Engine::out(Engine::ERROR) << "Got invalid Item to remove from  QuadTree!!" << std::endl;
 		return;
 	}
 
 	if (!Geom::PointInRect(area, center))
 	{
-		Engine::out() << "QTN:RemoveItem: center " << center << " not in QT "<< area <<"!" << std::endl;
+		Engine::out(Engine::ERROR) << "QTN:RemoveItem: center " << center << " not in QT "<< area <<"!" << std::endl;
 		return;
 	}
 
@@ -241,12 +241,12 @@ void QuadTreeNode<Item>::RemoveItem(Geom::Point& center, Item t)
 		else
 		{
 
-			Engine::out() << "ERROR" <<  area << " " << center <<std::endl;
-			Engine::out() << "Child0 TL: " <<  ChildNodes[0].area << std::endl;
-			Engine::out() << "Child1 TR: " <<  ChildNodes[1].area << std::endl;
-			Engine::out() << "Child2 BR: " <<  ChildNodes[2].area << std::endl;
-			Engine::out() << "Child3 BL: " <<  ChildNodes[3].area << std::endl;
-			Engine::out() << Geom::PointInRect(Geom::makeRect(1024,0, 2048, 1024),  Geom::Point(1665,36)) << std::endl;
+			Engine::out(Engine::ERROR) << "ERROR" <<  area << " " << center <<std::endl;
+			Engine::out(Engine::ERROR) << "Child0 TL: " <<  ChildNodes[0].area << std::endl;
+			Engine::out(Engine::ERROR) << "Child1 TR: " <<  ChildNodes[1].area << std::endl;
+			Engine::out(Engine::ERROR) << "Child2 BR: " <<  ChildNodes[2].area << std::endl;
+			Engine::out(Engine::ERROR) << "Child3 BL: " <<  ChildNodes[3].area << std::endl;
+			Engine::out(Engine::ERROR) << Geom::PointInRect(Geom::makeRect(1024,0, 2048, 1024),  Geom::Point(1665,36)) << std::endl;
 		}
 	}
 }

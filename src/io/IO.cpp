@@ -21,7 +21,7 @@ void IO::addPath( const std::string& path )
 	}
 	else
 	{
-		Engine::out() << "[IO::addPath] Error: '" << path << "' is not a valid path!" << std::endl;
+		Engine::out(Engine::ERROR) << "[IO::addPath] '" << path << "' is not a valid path!" << std::endl;
 	}
 }
 

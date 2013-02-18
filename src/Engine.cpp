@@ -36,18 +36,18 @@ void Engine::CreateSubSystems()
 	WarningLogger.reset( new Logger );
 	ErrorLogger.reset( new Logger );
 
-	Engine::out() << "[Engine] ResourceManager..." << std::endl;
+	Engine::out(Engine::INFO) << "[Engine] ResourceManager..." << std::endl;
 	ResMgr.reset 	( new ResourceManager );
 
-	Engine::out() << "[Engine] IO..." << std::endl;
+	Engine::out(Engine::INFO) << "[Engine] IO..." << std::endl;
 	Io.reset 	( new IO );
 
 	ResMgr->init();
 
-	Engine::out() << "[Engine] Config..." << std::endl;
+	Engine::out(Engine::INFO) << "[Engine] Config..." << std::endl;
 	_config.reset( new Config );
 
-	Engine::out() << "[Engine] SoundSys..." << std::endl;
+	Engine::out(Engine::INFO) << "[Engine] SoundSys..." << std::endl;
 	SndSys.reset 	( new SoundSystem );
 }
 
