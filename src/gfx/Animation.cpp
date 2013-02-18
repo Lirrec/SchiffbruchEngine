@@ -61,7 +61,7 @@ void Animation::Play(unsigned int from, unsigned int to)
 
 	if (from == to || from < 1 || to > AnimData.NumFrames)
 	{
-		Engine::out() << "Animation::Play() # Can't play Animation, requested index out of range!" << std::endl;
+		Engine::out(Engine::ERROR) << "Animation::Play() # Can't play Animation, requested index out of range!" << std::endl;
 		return;
 	}
 	if (to == 0) to = AnimData.NumFrames;
@@ -128,7 +128,7 @@ void Animation::Advance()
 	if ((CurFrame == RangeToPlay.y && !looping) || !playing )
 	{
 		Finish();
-		Engine::out() << "Anim " << AnimData.Name << " finished." << std::endl;
+		Engine::out(Engine::SPAM) << "Anim " << AnimData.Name << " finished." << std::endl;
 		Reset();
 		return;
 	}
