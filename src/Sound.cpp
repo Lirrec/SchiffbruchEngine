@@ -30,7 +30,7 @@ std::shared_ptr<sf::Sound> SoundSystem::GetSound(const std::string& name)
         return s;
 	}
 
-	Engine::out(Engine::Error) << "SoundSYS: Unable to play or load sound: " << name << std::endl;
+	Engine::out(Engine::ERROR) << "SoundSYS: Unable to play or load sound: " << name << std::endl;
 
 	return s;
 }
