@@ -4,7 +4,14 @@
 #include "sbe/Engine.hpp"
 #include "sbe/io/IO.hpp"
 
-const std::string Config::_fileName = "config.conf";
+#include <boost/property_tree/info_parser.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
+
+namespace fs = boost::filesystem;
+namespace pt = boost::property_tree;
+
+/*const*/ std::string Config::_fileName = "config.conf";
 
 Config::Config() {
 	load();
@@ -28,11 +35,17 @@ void Config::load() {
 
 	try{
 
-		pt::ini_parser::read_ini( fin, _settings );
+		pt::info_parser::read_info( fin, _settings );
+
+
 
 	} catch (fs::filesystem_error& e)	{
 		Engine::out(Engine::ERROR) << "[config::load] boost::fs exception! '" << e.what() << "'" << std::endl;
 	}
+
+	_fileName = "debug.conf";
+	save(true);
+	_fileName = "config.conf";
 
 	fin.close();
 
@@ -59,12 +72,14 @@ void Config::save(bool overwrite) {
 		if (!fout.is_open()) return;
 
 		// write the complete ptree
-		pt::ini_parser::write_ini( fout, _settings );
+		pt::info_parser::write_info( fout, _settings );
 
 	} catch (fs::filesystem_error& e)	{
 		Engine::out(Engine::ERROR) << "[config::save] boost::fs exception! '" << e.what() << "'" << std::endl;
 
 	}
+
+	Engine::out(Engine::INFO) << "[config::save] Saving done! '" << p << "'" << std::endl;
 
 	fout.close();
 }

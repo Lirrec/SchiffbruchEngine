@@ -1,15 +1,8 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
-#include "util/NamedList.hpp"
-
 #include <boost/any.hpp>
 #include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/ini_parser.hpp>
-#include <boost/filesystem.hpp>
-#include <boost/filesystem/fstream.hpp>
-namespace fs = boost::filesystem;
-namespace pt = boost::property_tree;
 
 class Config {
 
@@ -20,7 +13,7 @@ private:
 	// settings cache
 	//NamedList<boost::any> _cache;
 
-	static const std::string _fileName;
+	static /*const*/ std::string _fileName;
 
 #ifdef __GCC_4_6__
 	Config(const Config&) {} // no copying allowed
@@ -96,7 +89,7 @@ T Config::get(const std::string &key, const T &dfault) const {
 
 		return _settings.get<T>(key);
 
-	} catch(pt::ptree_error &e){ // if key doesn't exist or translation fails, return default
+	} catch(boost::property_tree::ptree_error &e){ // if key doesn't exist or translation fails, return default
 
 		return dfault;
 	}

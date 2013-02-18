@@ -55,6 +55,7 @@ void Engine::UnloadSubSystems()
 {
 	SndSys  .reset();
 	ResMgr  .reset();
+	_config.reset();
 
 	SpamLogger.reset();
 	InfoLogger.reset();
