@@ -11,17 +11,19 @@ IO::~IO()
 
 }
 
-void IO::addPath( const std::string& path )
+bool IO::addPath( const std::string& path )
 {
 	fs::path p ( path );
 
 	if ( fs::is_directory( p ))
 	{
 		Paths.push_front( p.string() );
+		return true;
 	}
 	else
 	{
 		Engine::out(Engine::ERROR) << "[IO::addPath] '" << path << "' is not a valid path!" << std::endl;
+		return false;
 	}
 }
 

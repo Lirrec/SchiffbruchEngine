@@ -47,7 +47,7 @@ class IO
 			Add a path on top of the search path stack
 			Missing resources are searched for in all paths starting from the top
 		*/
-        void addPath( const std::string& path );
+        bool addPath( const std::string& path );
 
 		/**
 			Removes the top of the search path stack and returns it
