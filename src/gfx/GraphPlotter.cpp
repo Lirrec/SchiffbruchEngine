@@ -2,23 +2,57 @@
 
 #include "sbe/gfx/VertexUtils.hpp"
 #include "sbe/Engine.hpp"
+#include "sbe/ResourceManager.hpp"
 
 #include <cmath>
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
-void GraphPlotter::setGraph ( const Graph& g )
+
+bool Graph::addCurve( const Curve& c)
 {
+	if ( c.data.empty() ) return false;
+	Curves.push_back ( c );
+}
+
+//##############################################################
+//##############################################################
+//##############################################################
+
+GraphPlotter::GraphPlotter()
+{
+	valid = false;
+}
+
+bool GraphPlotter::setGraph ( const Graph& g )
+{
+	if ( g.Curves.empty() )
+	{
+		Engine::out(Engine::ERROR) << "[GraphPlotter] Graph has no Curves!" << std::endl;
+		return false;
+	}
+
+
+	valid = true;
 	this->g = g;
 	RenderArrays.clear();
+	Legend.clear();
 	Axes.clear();
 	Axes.setPrimitiveType(sf::Lines );
 	RenderArrays.insert( RenderArrays.end(), 2 + g.Curves.size(), sf::VertexArray() );
 	for ( sf::VertexArray& vA : RenderArrays) vA.setPrimitiveType(sf::Lines);
+
+	return true;
 }
 
 void GraphPlotter::updateCurve ( std::string& name, Curve& C )
 {
+	if (!valid)
+	{
+		Engine::out(Engine::ERROR) << "[GraphPlotter] no valid graph set!" << std::endl;
+		return;
+	}
+
 	for ( int i = 0; i < g.Curves.size(); ++i)
 	{
 		if ( g.Curves[i].name == name )
@@ -32,6 +66,11 @@ void GraphPlotter::updateCurve ( std::string& name, Curve& C )
 
 void GraphPlotter::updateVertexArrays()
 {
+	if (!valid)
+	{
+		Engine::out(Engine::ERROR) << "[GraphPlotter] no valid graph set!" << std::endl;
+		return;
+	}
 	if ( g.drawLegend ) drawLegend();
 	if ( g.drawAxes ) drawAxes();
 
@@ -43,16 +82,71 @@ void GraphPlotter::updateVertexArrays()
 
 void GraphPlotter::draw ( sf::RenderTarget& Target )
 {
+	if (!valid)
+	{
+		Engine::out(Engine::ERROR) << "[GraphPlotter] no valid graph set!" << std::endl;
+		return;
+	}
+
+
 	Target.clear( sf::Color::White );
-	Target.draw( Axes );
+
+	if ( g.drawAxes ) Target.draw( Axes );
 
 	for ( sf::VertexArray& v : RenderArrays )
 		Target.draw(v);
+
+	if ( g.drawLegend )
+	{
+		for ( sf::Text& t : Legend)
+		{
+			Target.draw(t);
+		}
+	}
 }
 
 void GraphPlotter::drawLegend()
 {
-	// not implemented yet
+	const int border = 1;
+	/// spacing between the end of the marker on the axis and the position of the text
+	const int spacing = 5;
+	/// distance between each Datapoint
+	float PointDistance, x,y;
+	PointDistance = (float)g.Size.x/ g.AxesPoints.x;
+
+	for ( unsigned int p = 1; p <= g.AxesPoints.x; ++p)
+	{
+		x = (float)p*PointDistance;
+		y = g.Size.y - (p%5==0?10:5);
+		drawText( sf::Vector2f(x, y - spacing), boost::lexical_cast<std::string>( g.AxisSize.x/g.AxesPoints.x * p ), true );
+		Engine::out(Engine::SPAM) << " Label " << g.AxisSize.x/g.AxesPoints.x * p << " - at: " << x << "," << y-spacing << std::endl;
+	}
+
+	PointDistance = (float)g.Size.y / g.AxesPoints.y;
+	for ( unsigned int p = 1; p <= g.AxesPoints.y; ++p)
+	{
+		y = g.Size.y - (float)p*PointDistance;
+		x = p%5==0?10:5;
+
+		drawText( sf::Vector2f(x+border+ spacing, y), boost::lexical_cast<std::string>( g.AxisSize.y/g.AxesPoints.y * p ), false );
+		Engine::out(Engine::SPAM) << " Label " << g.AxisSize.y/g.AxesPoints.y * p << " - at: " << x+border+ spacing << "," << y << std::endl;
+	}
+}
+
+void GraphPlotter::drawText( const sf::Vector2f& pos, const std::string& text, bool xAxis)
+{
+	sf::Text t;
+	t.setColor( sf::Color::Black );
+	t.setString( text );
+	t.setFont( *(Engine::GetResMgr()->get<sf::Font>("default")) );
+	t.setCharacterSize( g.textSize );
+	sf::FloatRect bounds = t.getLocalBounds();
+	// center the origin accordingly so we can move it by its centerpoint
+	// x axis labels, bottom-mid; y axis labels left-mid
+	if ( xAxis) t.setOrigin( bounds.width/2, bounds.height );
+	else		t.setOrigin( 0, bounds.height/2 );
+	t.setPosition( pos );
+	Legend.push_back( t );
 }
 
 void GraphPlotter::drawAxes()
