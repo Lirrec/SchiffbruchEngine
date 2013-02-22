@@ -61,6 +61,8 @@ class Engine
 				return Instance->ErrorLogger;
 				break;
 			}
+
+			return Instance->SpamLogger;
 		}
 		// returns a reference to the currently valid output and logging stream
 		// (could be to stdout or some class )

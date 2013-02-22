@@ -15,12 +15,12 @@ class QuadTreeNode
 		/**
 		Recursive creation of a quadtree
 		*/
-		QuadTreeNode(Geom::Rect area);
+		QuadTreeNode(Geom::Rect _area);
 		/**
 		for late construction with init()
 		*/
 		QuadTreeNode();
-		void init(Geom::Rect area);
+		void init(Geom::Rect _area);
 
 
 		~QuadTreeNode();

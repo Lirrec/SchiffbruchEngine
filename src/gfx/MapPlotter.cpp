@@ -5,8 +5,8 @@
 #include <algorithm>
 
 MapPlotter::MapPlotter()
- : Mode(PLOT_GREYSCALE),
-	Size(0,0)
+ : Size(0,0),
+ Mode(PLOT_GREYSCALE)
 {
 
 }

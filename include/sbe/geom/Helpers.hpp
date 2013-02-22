@@ -204,13 +204,13 @@ namespace Geom
 
 
 	/// calculates the distance between two points (just simple and not optimized)
-	inline double distance(const Point& lhs, const Point& rhs)
+	inline float distance(const Point& lhs, const Point& rhs)
 	{
 		return sqrt( pow(static_cast<int>(abs(lhs.x)) - abs(rhs.x), 2)    +    pow(static_cast<int>(abs(lhs.y)) - abs(rhs.y), 2));
 	}
 
 	/// Compute the distance between two points ( floating point version )
-	inline double distance(const Pointf& from, const Pointf& to)
+	inline float distance(const Pointf& from, const Pointf& to)
 	{
 		return sqrt( pow(to.x - from.x, 2)    +    pow(to.y - from.y, 2));
 	}

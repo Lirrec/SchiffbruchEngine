@@ -93,11 +93,11 @@ class EventCore : sf::NonCopyable
 				return *this;
 			}
 
-			ModuleInfo( const std::string& name, int _ID, EventQueue* _EvtQ)
+			ModuleInfo( const std::string& name, size_t _ID, EventQueue* _EvtQ)
 			: Name(name), ID(_ID),  EvtQ( _EvtQ), InputQueue() {}
 
 			std::string Name;
-			int ID;
+			size_t ID;
 			EventQueue* EvtQ;
 			ConcurrentQueue<Event> InputQueue;
 		};

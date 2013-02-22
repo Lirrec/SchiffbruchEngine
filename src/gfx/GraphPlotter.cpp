@@ -13,6 +13,8 @@ bool Graph::addCurve( const Curve& c)
 {
 	if ( c.data.empty() ) return false;
 	Curves.push_back ( c );
+
+	return true;
 }
 
 //##############################################################
@@ -24,9 +26,9 @@ GraphPlotter::GraphPlotter()
 	valid = false;
 }
 
-bool GraphPlotter::setGraph ( const Graph& g )
+bool GraphPlotter::setGraph ( const Graph& _g )
 {
-	if ( g.Curves.empty() )
+	if ( _g.Curves.empty() )
 	{
 		Engine::out(Engine::ERROR) << "[GraphPlotter] Graph has no Curves!" << std::endl;
 		return false;
@@ -34,7 +36,7 @@ bool GraphPlotter::setGraph ( const Graph& g )
 
 
 	valid = true;
-	this->g = g;
+	g = _g;
 	RenderArrays.clear();
 	Legend.clear();
 	Axes.clear();

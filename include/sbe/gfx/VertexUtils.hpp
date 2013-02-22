@@ -121,7 +121,7 @@ namespace gfx
 		vA.append( sf::Vertex( end, c) );
 	}
 
-};
+}
 
 #endif // VERTEXUTIL_HPP
 

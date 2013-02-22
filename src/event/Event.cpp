@@ -45,4 +45,4 @@ std::string Event::getDebugName()
 
 bool Event::Is(const std::string& Name) {
 	 return Type == Core::EvtCore->GetEventHash( Name );
-};
+}

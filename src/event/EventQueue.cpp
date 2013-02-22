@@ -39,10 +39,10 @@ void EventQueue::Tick()
 		LocalEventsThisSecond--;
 	}
 
-	for ( auto e : tmp_EventQueue)
+	for ( auto event : tmp_EventQueue)
 	{
 		LocalEventsThisSecond++;
-		PostEvent(e);
+		PostEvent(event);
 	}
 
 }

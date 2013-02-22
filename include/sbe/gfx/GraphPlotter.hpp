@@ -84,7 +84,7 @@ class GraphPlotter
 	/**
 		Set the graph to be plotted
 	*/
-	bool setGraph( const Graph& g );
+	bool setGraph( const Graph& _g );
 	Graph& getGraph() { return g; }
 
 	bool isValid() const { return valid; }

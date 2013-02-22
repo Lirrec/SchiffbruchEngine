@@ -7,11 +7,11 @@ template<class Type> int QuadTreeNode<Type>::MinNodeSize(128);
 
 
 template < class Item >
-QuadTreeNode<Item>::QuadTreeNode(Geom::Rect area)
+QuadTreeNode<Item>::QuadTreeNode(Geom::Rect _area)
 {
 	Engine::out(Engine::SPAM) << "Creating QuadTree of Dimensions: " << area << std::endl;
 
-	init(area);
+	init(_area);
 }
 
 template < class Item >
@@ -29,10 +29,10 @@ QuadTreeNode<Item>::~QuadTreeNode()
 }
 
 template < class Item >
-void QuadTreeNode<Item>::init(Geom::Rect area)
+void QuadTreeNode<Item>::init(Geom::Rect _area)
 {
 
-	this->area = area;
+	this->area = _area;
 
 
 	if (Geom::rcWidth(area) <= MinNodeSize  || Geom::rcHeight(area) <= MinNodeSize)
