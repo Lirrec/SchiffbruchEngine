@@ -25,6 +25,9 @@ void IO::addPlugin(std::shared_ptr<IOPlugin> IOP)
 template<class T>
 std::vector<std::shared_ptr<T>> IO::loadPath( const std::string& filename )
 {
+	bool found = false;
+	std::vector<std::shared_ptr<T>> tmp;
+	
 	try {
 
 		std::shared_ptr<IOPlugin> IOP = getPlugin( std::type_index(typeid(T)) );
@@ -32,7 +35,11 @@ std::vector<std::shared_ptr<T>> IO::loadPath( const std::string& filename )
 
 		for ( const std::string& current_path : Paths )
 		{
-			return loadPath<T>( IOP, current_path, filename);  // bp: hä?!?
+			tmp = loadPath<T>( IOP, current_path, filename);
+			if(!tmp.empty()){
+				found = true;
+				break;
+			}
 		}
 
 	}
@@ -40,7 +47,10 @@ std::vector<std::shared_ptr<T>> IO::loadPath( const std::string& filename )
 	{
 		Engine::out(Engine::ERROR) << "[IO] boost::fs exception! '" << e.what() << "'" << std::endl;
 	}
-
+	
+	if(found){
+		return tmp;
+	}		
 	return std::vector<std::shared_ptr<T>>();
 }
 
