@@ -109,4 +109,6 @@ int SFMLEventConverter::LoadKeyBindingsFromConfig(const std::string& root)
 			}
 		}
 	}
+
+	return count;
 }
