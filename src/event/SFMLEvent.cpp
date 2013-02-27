@@ -1,5 +1,10 @@
 #include "sbe/event/SFMLEvent.hpp"
+#include "sbe/event/SFMLKeys.hpp"
 
+#include "sbe/Config.hpp"
+
+#include <boost/optional.hpp>
+#include <boost/property_tree/ptree.hpp>
 
  SFMLEventConverter::SFMLEventConverter()
 {
@@ -19,6 +24,18 @@ void SFMLEventConverter::AddEventConversion(sf::Event::EventType SFMLEvtType, co
 void SFMLEventConverter::AddKeyConversion(sf::Keyboard::Key Key, const std::string& EvtName, bool sendglobal, boost::any Data)
 {
 	KeyConversions.insert( std::make_pair( Key, CreateConversion( EvtName, sendglobal, Data )) );
+}
+
+void SFMLEventConverter::AddKeyConversion(const std::string& Key, const std::string& EvtName, bool sendglobal, boost::any Data)
+{
+	auto keycode = SFMLKeyNames.find( Key );
+	if ( keycode == SFMLKeyNames.end() )
+	{
+		Engine::out(Engine::ERROR) << "[SFMLEventConverter] Tried to register unknown key string: " << Key << std::endl;
+		return;
+	}
+
+	KeyConversions.insert( std::make_pair( keycode->second, CreateConversion( EvtName, sendglobal, Data )) );
 }
 
 void SFMLEventConverter::HandleEvent(Event& e)
@@ -71,4 +88,25 @@ bool SFMLEventConverter::HandleEvent(sf::Event& e)
 	return false;
 }
 
+int SFMLEventConverter::LoadKeyBindingsFromConfig(const std::string& root)
+{
+	auto rootnode = Engine::getCfg()->getPath(root);
+	if (!rootnode) return 0;
+	int count = 0;
 
+	const boost::property_tree::ptree& pt = *rootnode;
+
+	for ( const boost::property_tree::ptree::value_type& node : pt)
+	{
+		auto keycode = SFMLKeyNames.find(node.first);
+		if( keycode != SFMLKeyNames.end())
+		{
+			try {
+				AddKeyConversion(keycode->second, node.second.get<std::string>("event"),  node.second.get<bool>("global", false));
+				count++;
+			} catch ( boost::property_tree::ptree_error& e) {
+				Engine::out(Engine::ERROR) << "[EvtConv::LoadKeyBindingsFromConfig] Error: " << e.what() << std::endl;
+			}
+		}
+	}
+}

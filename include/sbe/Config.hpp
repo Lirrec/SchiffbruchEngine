@@ -3,6 +3,7 @@
 
 #include <boost/any.hpp>
 #include <boost/property_tree/ptree.hpp>
+#include <boost/optional.hpp>
 
 class Config {
 
@@ -42,6 +43,13 @@ public:
 	 */
 	template<typename T>
 	T get(const std::string &key) const;
+
+	/**
+	 * \brief get a ptree node by path
+	 * \return the requested node or empty optional
+	 * \warning not threadsave
+	 */
+	boost::optional<const boost::property_tree::ptree&> getPath(const std::string &path) const;
 
 	/**
 	 * \brief get value of key

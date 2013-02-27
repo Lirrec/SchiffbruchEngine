@@ -17,6 +17,16 @@ Config::Config() {
 	load();
 }
 
+boost::optional<const boost::property_tree::ptree&> Config::getPath(const std::string &path) const
+{
+	try{
+		const boost::property_tree::ptree& p = _settings.get_child(path);
+		return boost::optional<const boost::property_tree::ptree& > (p);
+	} catch(boost::property_tree::ptree_bad_path &e) {
+		Engine::out(Engine::ERROR) << "[Config::getNode] Path '" << path << "' doesn't exist!" << std::endl;
+		return boost::optional<const boost::property_tree::ptree&>();
+	}
+}
 
 void Config::load() {
 	fs::ifstream fin;

@@ -54,7 +54,27 @@ class SFMLEventConverter : public EventUser, public SFMLEventListener
 		typedef std::pair< sf::Event::EventType, SFMLEventConverter::ConvEvt > EvtConvData;
 
 		void AddKeyConversion( sf::Keyboard::Key Key, const std::string& EvtName, bool sendglobal = false, boost::any Data = boost::any() );
+		void AddKeyConversion( const std::string& Key , const std::string& EvtName, bool sendglobal = false, boost::any Data = boost::any() );
 		void AddEventConversion( sf::Event::EventType SFMLEvtType, const std::string& EvtName, bool sendglobal = false, boost::any Data = boost::any() );
+
+		/**
+			Loads key bindings from a node in the config file ( default: "KeyEventBindings"). Right now this only works for key bindings, no eventconversions (sfml->sbe)
+			The config should look like this:
+
+			@code
+			KeyEventBindings
+			{
+				Escape	; <- the name of the key, see sf::Keyboard::Key for possible values
+				{
+					Event "EVT_QUIT"	; <- the name of the event to send
+					global true			; <- this is optional, default is false
+				}
+
+			}
+
+			@return the number of bindings read from the config file
+		*/
+		int LoadKeyBindingsFromConfig(const std::string& root = "KeyEventBindings");
 
 	private:
 		ConvEvt CreateConversion( const std::string& EvtName, bool sendglobal, boost::any Data );
