@@ -22,27 +22,46 @@ class Camera;
 */
 class RenderLayer
 {
-	RenderLayer() :
-		isActive(true),
-		cull(false),
-		changed(true) {}
+	public:
+		RenderLayer() :
+			isActive(true),
+			cull(false),
+			changed(true) {}
 
-	/// enable or disable rendering of this layer
-	bool isActive;
-	/// enable or disable culling
-	bool cull;
+		RenderLayer( std::shared_ptr<Camera> C, sf::RenderStates S )
+		: RenderLayer()
+		{
+			Cam = C;
+			States = S;
+		}
 
-	/// the renderstates to use ( for setting a custom texture for vertexarrays or shaders
-	sf::RenderStates States;
-	std::shared_ptr<Camera> Cam;
+		RenderLayer( std::shared_ptr<Camera> C )
+		: RenderLayer()
+		{
+			Cam = C;
+		}
 
-	friend class Renderer;
+		RenderLayer( sf::RenderStates S )
+		: RenderLayer() {
+			States = S;
+		}
+
+		/// enable or disable rendering of this layer
+		bool isActive;
+		/// enable or disable culling
+		bool cull;
+
+		/// the renderstates to use ( for setting a custom texture for vertexarrays or shaders
+		sf::RenderStates States;
+		std::shared_ptr<Camera> Cam;
+
+		friend class Renderer;
 	private:
 
-	/// did the RenderList change since last frame ( used to determine a recull
-	bool changed;
+		/// did the RenderList change since last frame ( used to determine a recull
+		bool changed;
 
-	std::vector< std::shared_ptr<Actor> > RenderList;
+		std::vector< std::shared_ptr<Actor> > RenderList;
 };
 
 /**
@@ -65,6 +84,8 @@ class Renderer : EventUser
 {
 	public:
 		Renderer();
+
+		~Renderer() {};
 
 		/**	Events handled:
 			Event			| 	Data
@@ -106,6 +127,12 @@ class Renderer : EventUser
 			@return a pointer to the requested Layer or nullptr if the index is invalid
 		*/
 		RenderLayer* getLayer( int index );
+
+		/**
+			Remove all Actors from a Layer
+			@param index the index of the Layer
+		*/
+		void clearLayer( int index );
 
 		// - Actor Management -
 		/**

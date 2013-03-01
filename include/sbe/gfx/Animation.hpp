@@ -18,7 +18,7 @@ class Animation
 	public:
 
 		Animation( ImageSet& _A);
-		virtual ~Animation();
+		virtual ~Animation() {}
 
 		/// Reset the animation. Sets the current frame to 1 and stops.
 		void reset( const sf::Time& GameTime );

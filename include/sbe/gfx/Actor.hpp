@@ -20,11 +20,11 @@ class Actor {
 	public:
 
 	Actor();
-	virtual ~Actor();
+	virtual ~Actor() {}
 
 	virtual void update( const sf::Time& RenderTime ) {};
 	virtual sf::Drawable& getDrawable() = 0;
-	ActorID getID();
+	ActorID getID() { return ID; }
 
 	private:
 		const ActorID ID;
@@ -34,7 +34,6 @@ class SpriteActor : public Actor
 {
 	public:
 		sf::Drawable& getDrawable();
-	private:
 		sf::Sprite sprite;
 
 };
@@ -43,7 +42,6 @@ class VertexActor : public Actor
 {
 	public:
 		sf::Drawable& getDrawable();
-	private:
 		sf::VertexArray arr;
 };
 
@@ -51,7 +49,6 @@ class AnimationActor : public Actor {
 	public:
 		void update( const sf::Time& RenderTime );
 		sf::Drawable& getDrawable();
-	private:
 		AnimatedSprite Anim;
 };
 

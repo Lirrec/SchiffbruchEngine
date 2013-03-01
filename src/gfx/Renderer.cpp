@@ -1,5 +1,6 @@
 #include "sbe/gfx/Renderer.hpp"
 #include "sbe/gfx/Camera.hpp"
+#include "sbe/Engine.hpp"
 
 
 #include <algorithm>
@@ -83,7 +84,10 @@ void Renderer::drawLayer(const RenderLayer& L, sf::RenderTarget& t)
 	if ( L.Cam ) t.setView( L.Cam->getView() );
 
 	for ( const std::shared_ptr<Actor>& A : L.RenderList)
+	{
 		t.draw( A->getDrawable(), L.States );
+	}
+
 }
 
 
@@ -108,6 +112,17 @@ RenderLayer* Renderer::getLayer(int index)
 		return &Layers[index];
 	return nullptr;
 }
+
+void Renderer::clearLayer(int index)
+{
+	if ( index >= 0 && index < Layers.size() )
+	{
+		auto copy = Layers[index].RenderList;
+		for ( std::shared_ptr<Actor>& A : copy) removeActor( A->getID() );
+	}
+
+}
+
 
 void Renderer::addActor(std::shared_ptr<Actor>& A, int Layer)
 {

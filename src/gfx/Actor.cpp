@@ -9,7 +9,6 @@ Actor::Actor()
 {
 }
 
-
 sf::Drawable& SpriteActor::getDrawable() { return sprite; }
 sf::Drawable& VertexActor::getDrawable() { return arr; }
 void AnimationActor::update( const sf::Time& RenderTime ) { Anim.update ( RenderTime ); }

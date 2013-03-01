@@ -1,7 +1,6 @@
 #include "sbe/util/QuadTree.hpp"
 
 #include "sbe/Engine.hpp"
-#include "sbe/gfx/Graphic.hpp"
 
 template<class Type> int QuadTreeNode<Type>::MinNodeSize(128);
 
