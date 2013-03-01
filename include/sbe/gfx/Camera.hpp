@@ -7,6 +7,12 @@
 
 #include <SFML/Window/Event.hpp>
 
+/**
+	This class proveds a small wrapper around sf::View to enable simple scrolling and zooming
+	via mouse and keyboard.
+
+	@todo make keys for moving and zooming customizable ( via Config )
+*/
 class Camera
 {
 	public:
@@ -20,6 +26,7 @@ class Camera
 
 		void setViewport ( const sf::FloatRect& FR) { view.setViewport( FR ); }
 		void setTargetSize ( const sf::Vector2f& size ) { TargetSize = size; }
+		void setTargetCenter ( const sf::Vector2f& c ) { TargetCenter = c; }
 
 		sf::View& getView() { return view; }
 

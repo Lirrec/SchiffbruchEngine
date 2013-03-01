@@ -5,6 +5,8 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/optional.hpp>
 
+#include "sbe/Engine.hpp"
+
 class Config {
 
 private:
@@ -88,7 +90,12 @@ void Config::set(const std::string &key, const T &value){
 
 template<typename T>
 T Config::get(const std::string &key) const {
+	try {
 	return _settings.get<T>(key);
+	} catch(boost::property_tree::ptree_error &e){ // if key doesn't exist or translation fails, return default
+		Engine::out(Engine::ERROR) << "[Config] " << e.what() << std::endl;
+		throw;
+	}
 }
 
 template<typename T>
