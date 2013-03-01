@@ -1,11 +1,10 @@
 #include "sbe/gfx/Animation.hpp"
 
 #include "sbe/Engine.hpp"
-
-#include "sbe/ResourceManager.hpp"
+#include "sbe/Module.hpp"
 #include "sbe/Geom.hpp"
 
-#include <SFML/Graphics.hpp>
+
 
 #include <cmath>
 #include <iostream>
@@ -20,16 +19,12 @@
 
 Animation::Animation( ImageSet& _A) : AnimData(_A)
 {
-	std::shared_ptr<sf::Texture> txt = Engine::GetResMgr()->get<sf::Texture>(AnimData.ImageName);
-	if (txt) {
-		Sprite.setTexture(*txt);
-	}
 
-	Reset();
+	reset( sf::Time() );
 //	Engine::out() << "Animation(" << this << ")" << std::endl;
 }
 
-void Animation::Reset()
+void Animation::reset( const sf::Time& GameTime )
 {
 	playing = false;
 	reverse = false;
@@ -39,23 +34,21 @@ void Animation::Reset()
 	CurFrame = 0;
 	CurFramePos = AnimData.StartPos;
 	RangeToPlay = AnimData.FrameCount;
-	Sprite.setTextureRect( Geom::toSFRect( AnimData.CalcTexCoords(CurFramePos) ) );
-	LastUpdate = Module::Get()->GetModuleTime();
+	LastUpdate = GameTime;
 }
 
-void Animation::SetScreenPosition( Geom::Point p )
+void Animation::setScreenPosition( Geom::Point p )
 {
 	Screen_Position = p;
-	Sprite.setPosition( (float)Screen_Position.x, (float)Screen_Position.y );
 }
 
-void Animation::SetFrame(int index)
+void Animation::setFrame(int index)
 {
 	CurFrame = index;
 	CurFramePos = AnimData.CalcFramePos( index );
 }
 
-void Animation::Play(unsigned int from, unsigned int to)
+void Animation::play(unsigned int from, unsigned int to)
 {
 	//if (from < 1) from = 1;
 
@@ -73,19 +66,19 @@ void Animation::Play(unsigned int from, unsigned int to)
 	CurFramePos = AnimData.CalcFramePos( CurFrame );
 }
 
-void Animation::PlayRandomized()
+void Animation::playRandomized( const sf::Time& GameTime )
 {
 	int from = rand() % AnimData.NumFrames;
 	from ++; // this yields a frame-number from 1 to numFrames+1
 
-	Play( from, 0);
+	play( from, 0);
 	// this should give an random offest off maximum 1.f ( 1 second )
 	// maxes updates look much more naturally
-	LastUpdate = Module::Get()->GetModuleTime() - sf::seconds((float)std::rand() / static_cast<float>(RAND_MAX));
+	LastUpdate = GameTime - sf::seconds((float)std::rand() / static_cast<float>(RAND_MAX));
 }
 
 
-void Animation::TogglePlay()
+void Animation::togglePlay()
 {
 	if (playing)
 	{
@@ -97,39 +90,39 @@ void Animation::TogglePlay()
 	}
 }
 
-bool Animation::IsPlaying()
+bool Animation::isPlaying()
 {
 	return playing;
 }
 
-bool Animation::IsReverse()
+bool Animation::isReverse()
 {
 	return reverse;
 }
 
-bool Animation::IsLooping()
+bool Animation::isLooping()
 {
 	return looping;
 }
 
-void Animation::SetLooping(bool loop)
+void Animation::setLooping(bool loop)
 {
 	looping = loop;
 }
 
-void Animation::SetReverse(bool _reverse)
+void Animation::setReverse(bool _reverse)
 {
 	this->reverse = _reverse;
 }
 
-void Animation::Advance()
+void Animation::advance()
 {
 	// Finished
 	if ((CurFrame == RangeToPlay.y && !looping) || !playing )
 	{
-		Finish();
+		finish();
 		Engine::out(Engine::SPAM) << "Anim " << AnimData.Name << " finished." << std::endl;
-		Reset();
+		reset( sf::Time() );
 		return;
 	}
 	// we're looping, reset to first frame
@@ -145,13 +138,13 @@ void Animation::Advance()
 	CurFramePos = AnimData.CalcFramePos( CurFrame );
 }
 
-void Animation::RAdvance()
+void Animation::rAdvance()
 {
 	// Finished
 	if ((CurFrame == RangeToPlay.x && !looping) || !playing )
 	{
-		Finish();
-		Reset();
+		finish();
+		reset( sf::Time() );
 		return;
 	}
 	// we're looping, reset to last frame
@@ -167,23 +160,18 @@ void Animation::RAdvance()
 	CurFramePos = AnimData.CalcFramePos( CurFrame );
 }
 
-void Animation::Finish()
+void Animation::finish()
 {
 	if (sendEndEvent)
 	{
-		Event e = Event("EVT_ANIM_END", GetID());
+		Event e = Event("EVT_ANIM_END");
 		Module::Get()->QueueEvent(e);
 	}
 }
 
 
-void Animation::updateSprite()
-{
-	Geom::Rect subrect = AnimData.CalcTexCoords(CurFramePos);
-	Sprite.setTextureRect(Geom::toSFRect(subrect));
-}
 
-void Animation::Update( sf::Time GameTime )
+void Animation::update( const sf::Time& GameTime )
 {
 	sf::Time diff = GameTime - LastUpdate;
 	sf::Time FrameTime = sf::seconds(1.0f/(float)AnimData.FramesPerSecond);
@@ -198,27 +186,11 @@ void Animation::Update( sf::Time GameTime )
 		while (diff > FrameTime)
 		{
 			//Engine::out() << "Diff: " << diff << std::endl;
-			reverse?RAdvance():Advance();
+			reverse?rAdvance():advance();
 			diff -= FrameTime;
 		}
-
-		updateSprite();
 	}
 
 
 	LastUpdate = GameTime - diff;
 }
-
-sf::Sprite& Animation::GetSprite()
-{
-	return Sprite;
-}
-
-void Animation::HandleEvent( Event& )
-{
-//	if ( e.Is("EVT_TICK") && playing)
-//	{
-//		Update( Module::Get()->GetModuleTime() );
-//	}
-}
-

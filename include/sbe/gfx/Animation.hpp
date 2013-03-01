@@ -1,71 +1,67 @@
 #ifndef ANIM_H
 #define ANIM_H
 
-#include <SFML/Graphics.hpp>
-
-#include "sbe/Geom.hpp"
-#include "sbe/event/EventUser.hpp"
+#include "sbe/geom/Point.hpp"
 #include "sbe/gfx/ImageSet.hpp"
+
+#include <SFML/System/Time.hpp>
 
 #include <string>
 #include <memory>
 
 /**
-This is an instance of an animation, a 'view' on an animatedImage
+	This is an base class for animations.
+	@see AnimatedSprite, AnimatedVertexArray
 */
-class Animation : public EventUser
+class Animation
 {
 	public:
 
 		Animation( ImageSet& _A);
+		virtual ~Animation();
 
 		/// Reset the animation. Sets the current frame to 1 and stops.
-		void Reset();
+		void reset( const sf::Time& GameTime );
 
-		void SetScreenPosition( Geom::Point p );
+		void setScreenPosition( Geom::Point p );
 
 		/// Set the animation to a specific Frame
-		void SetFrame(int index);
+		void setFrame(int index);
 
 		/// Start playing the animation by default all frames
-		void Play(unsigned int from = 0, unsigned int to = 0);
+		void play(unsigned int from = 0, unsigned int to = 0);
 		/// Starts the animation at a random frame, including a slight random time offset
 		/// This is required if you start many animations in very short time, bc they would
 		/// otherwise update all at the same time
-		void PlayRandomized();
+		void playRandomized( const sf::Time& GameTime );
 
 		/// Pauses/Unpauses the Animation
-		void TogglePlay();
+		void togglePlay();
 
 		/// returns wether the animation is playing right now
-		bool IsPlaying();
-		bool IsReverse();
-		bool IsLooping();
+		bool isPlaying();
+		bool isReverse();
+		bool isLooping();
 
 		/// play the frames in reverse oder
-		void SetReverse(bool reverse);
-		void SetLooping(bool loop);
+		void setReverse(bool reverse);
+		void setLooping(bool loop);
 
 		/// Advance the animation to the next frame
-		void Advance();
+		void advance();
 		/// Reverse Advance the animation to the current frame (which is the next one when playing reverse)
-		void RAdvance();
+		void rAdvance();
 
-		/// For listening to ticks
-		virtual void HandleEvent( Event& );
-
-		void Update( sf::Time GameTime );
-		sf::Sprite& GetSprite();
+		virtual void update( const sf::Time& GameTime );
+		virtual void updateDrawable() = 0;
 
 
-	private:
+	protected:
 
-		/// udate the associated sprite to show the correct sub-rect/frame of the image
-		void updateSprite();
+		/// called once the animation is finished, send an EVT_ANIM_FINISCH event if requested
+		void finish();
 
 		const ImageSet& AnimData;
-		sf::Sprite Sprite;
-
 		Geom::Point Screen_Position;
 
 		bool playing;
@@ -80,12 +76,17 @@ class Animation : public EventUser
 
 		sf::Time LastUpdate;
 
-		// small helpers
-
-		/// called once the animation is finished, send an EVT_ANIM_FINISCH event if requested
-		void Finish();
-
 };
+
+
+//class AnimatedVertexArray : Animation
+//{
+//		/// update the associated sprite/vertexarray to show the correct sub-rect/frame of the image
+//		void updateArray();
+//	private:
+//		sf::VertexArray Arr;
+//		std::vector<sf::Time> Times;
+//};
 
 
 #endif // ANIM_H
