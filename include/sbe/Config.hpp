@@ -63,13 +63,23 @@ public:
 	T get(const std::string &key, const T &dfault) const;
 
 	/**
-	 * \brief load settings into the internal cache from the settings file.
+	 * \brief loads content of the default conf file into the "system" subtree.
 	 * Searchpath for the settings file is the current top of the IO-stack.
 	 * \warning not threadsave
 	 * \warning Make sure there's a valid IO-stack in IO bevore calling this
-	 * \see IO::topPath()
+	 * \see IO::topPath(), loadInto()
 	 */
 	void load();
+
+	/**
+	 * \brief load a ptree from a file into our config ptree
+	 * Reads a ptree from given .info file and inserts it
+	 * as subtree with the given name into the config ptree.
+	 * Wehn calling save(), those will be written to their respective files.
+	 * \warning not threadsave
+	 * \warning Make sure there's a valid IO-stack in IO bevore calling this
+	 */
+	void loadInto(const std::string &dest, const std::string &file);
 
 	/**
 	 * \brief save settings from the internal cache to the settings file.

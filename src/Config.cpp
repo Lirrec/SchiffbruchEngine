@@ -20,19 +20,24 @@ Config::Config() {
 boost::optional<const boost::property_tree::ptree&> Config::getPath(const std::string &path) const
 {
 	try{
-		const boost::property_tree::ptree& p = _settings.get_child(path);
+		const pt::ptree& p = _settings.get_child(path);
 		return boost::optional<const boost::property_tree::ptree& > (p);
-	} catch(boost::property_tree::ptree_bad_path &e) {
+	} catch(pt::ptree_bad_path &e) {
 		Engine::out(Engine::ERROR) << "[Config::getNode] Path '" << path << "' doesn't exist!" << std::endl;
-		return boost::optional<const boost::property_tree::ptree&>();
+		return boost::optional<const pt::ptree&>();
 	}
 }
 
 void Config::load() {
+	loadInto("system", _fileName); // load default config file and add it to system
+}
+
+void Config::loadInto(const std::string &dest, const std::string &filename){
+	pt::ptree tree;
 	fs::ifstream fin;
 
 	fs::path p ( Engine::GetIO()->topPath() ); // use to path in IO-stack to save config to
-	p /= _fileName;
+	p /= filename;
 
 	if(!(fs::status(p).type() == fs::file_type::file_not_found) && fs::is_regular_file(p)){
 
@@ -45,9 +50,7 @@ void Config::load() {
 
 	try{
 
-		pt::info_parser::read_info( fin, _settings );
-
-
+		pt::info_parser::read_info( fin, tree );
 
 	} catch (fs::filesystem_error& e)	{
 		Engine::out(Engine::ERROR) << "[config::load] boost::fs exception! '" << e.what() << "'" << std::endl;
@@ -55,37 +58,45 @@ void Config::load() {
 
 	fin.close();
 
-	Engine::out(Engine::INFO) << "[config::load] Loading done!" << std::endl;
+	_settings.add_child(dest, tree);
+	_settings.put<std::string>(dest, p.string()); // or better add filename alone?
+
+	Engine::out(Engine::INFO) << "[config::load] Loading " << p
+	                          << " into "<< dest <<" successful!" << std::endl;
 }
 
 void Config::save(bool overwrite) {
 	fs::ofstream fout;
 
-	fs::path p ( Engine::GetIO()->topPath() ); // use to path in IO-stack to save config to
-	p /= _fileName;
+	for ( const pt::ptree::value_type& n : _settings){
 
-	if ( fs::status(p).type() == fs::file_type::file_not_found || (fs::is_regular_file(p) && overwrite) ){
+		fs::path p ( Engine::GetIO()->topPath() ); // use to path in IO-stack to save config to
+		p /= n.second.get_value<std::string>(); //_settings.get<std::string>(n.first);
 
-		fout.open(p);
+		if ( fs::status(p).type() == fs::file_type::file_not_found || (fs::is_regular_file(p) && overwrite) ){
 
-	}	else {
+			fout.open(p);
 
-		Engine::out(Engine::WARNING) << "[config::save] Saving " << " ( " << p << " -- " << ") would overwrite existing file!" << std::endl;
+		}	else {
+
+			Engine::out(Engine::WARNING) << "[config::save] Saving " << " ( " << p << " -- " << ") would overwrite existing file!" << std::endl;
+		}
+
+		try {
+
+			if (!fout.is_open()) return;
+
+			// write the complete ptree
+			pt::info_parser::write_info( fout, n.second );
+
+		} catch (fs::filesystem_error& e)	{
+			Engine::out(Engine::ERROR) << "[config::save] boost::fs exception! '" << e.what() << "'" << std::endl;
+
+		}
+
+		Engine::out(Engine::INFO) << "[config::save] Saving " << n.first
+		                          << " to '" << p << "'" << std::endl;
+
+		fout.close();
 	}
-
-	try {
-
-		if (!fout.is_open()) return;
-
-		// write the complete ptree
-		pt::info_parser::write_info( fout, _settings );
-
-	} catch (fs::filesystem_error& e)	{
-		Engine::out(Engine::ERROR) << "[config::save] boost::fs exception! '" << e.what() << "'" << std::endl;
-
-	}
-
-	Engine::out(Engine::INFO) << "[config::save] Saving done! '" << p << "'" << std::endl;
-
-	fout.close();
 }

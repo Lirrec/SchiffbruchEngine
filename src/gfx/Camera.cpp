@@ -12,10 +12,10 @@ using boost::io::group;
 Camera::Camera()
  : Scrolling( false )
 {
-	ZoomFactor = Engine::getCfg()->get<float>("ui.simView.zoomFactor");
-	ScrollFactor = Engine::getCfg()->get<float>("ui.simView.scrollFactor");
-	delta = Engine::getCfg()->get<float>("ui.simView.delta");
-	WheelZoomFactor = Engine::getCfg()->get<float>("ui.simView.wheelZoomFactor");
+	ZoomFactor = Engine::getCfg()->get<float>("system.ui.simView.zoomFactor");
+	ScrollFactor = Engine::getCfg()->get<float>("system.ui.simView.scrollFactor");
+	delta = Engine::getCfg()->get<float>("system.ui.simView.delta");
+	WheelZoomFactor = Engine::getCfg()->get<float>("system.ui.simView.wheelZoomFactor");
 }
 
 void Camera::showDebugInfo()
@@ -26,17 +26,17 @@ void Camera::showDebugInfo()
 
 void Camera::Setup()
 {
-	view.setSize(Engine::getCfg()->get<int>("renderer.windowsize.x"),
-					Engine::getCfg()->get<int>("renderer.windowsize.y"));
+	view.setSize(Engine::getCfg()->get<int>("system.renderer.windowsize.x"),
+					Engine::getCfg()->get<int>("system.renderer.windowsize.y"));
 
-	view.setCenter(Engine::getCfg()->get<int>("renderer.windowsize.x")/2,
-					Engine::getCfg()->get<int>("renderer.windowsize.y")/2);
+	view.setCenter(Engine::getCfg()->get<int>("system.renderer.windowsize.x")/2,
+					Engine::getCfg()->get<int>("system.renderer.windowsize.y")/2);
 
-	TargetSize = sf::Vector2f(Engine::getCfg()->get<int>("renderer.windowsize.x"),
-							Engine::getCfg()->get<int>("renderer.windowsize.y"));
+	TargetSize = sf::Vector2f(Engine::getCfg()->get<int>("system.renderer.windowsize.x"),
+							Engine::getCfg()->get<int>("system.renderer.windowsize.y"));
 
-	TargetCenter = sf::Vector2f(Engine::getCfg()->get<int>("renderer.windowsize.x")/2,
-								Engine::getCfg()->get<int>("renderer.windowsize.y")/2);
+	TargetCenter = sf::Vector2f(Engine::getCfg()->get<int>("system.renderer.windowsize.x")/2,
+								Engine::getCfg()->get<int>("system.renderer.windowsize.y")/2);
 }
 
 void Camera::Update()
@@ -146,4 +146,3 @@ void Camera::HandleEvent( const sf::Event& e)
 			break;
 	}
 }
-
