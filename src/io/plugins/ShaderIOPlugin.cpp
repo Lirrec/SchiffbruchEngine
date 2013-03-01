@@ -1,6 +1,7 @@
 #include "ShaderIOPlugin.hpp"
 
 #include <sbe/Engine.hpp>
+#include <sbe/io/IO.hpp>
 
 using boost::property_tree::ptree;
 
@@ -16,13 +17,13 @@ ShaderIOPlugin::ObjPtr ShaderIOPlugin::loadObject(const boost::property_tree::pt
 	try{
 		const ptree& pt = node.second;
 
-		string name = pt.get<string>("name");
-		string base = Engine::getIO()->topPath() + "/shader/";
+		std::string name = pt.get<std::string>("name");
+		std::string base = Engine::GetIO()->topPath() + "/shader/";
 
 		re.reset( new sf::Shader() );
 
-		re->loadFromFile(base + pt.get<string>("vert") + ".vert",
-		                 base + pt.get<string>("frag") + ".frag")
+		re->loadFromFile(base + pt.get<std::string>("vert") + ".vert",
+		                 base + pt.get<std::string>("frag") + ".frag");
 
 
 	} catch( boost::property_tree::ptree_error )
