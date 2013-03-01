@@ -37,6 +37,6 @@ ShaderIOPlugin::ObjPtr ShaderIOPlugin::loadObject(const boost::property_tree::pt
 }
 
 
-bool saveObject( const std::string& name, const sf::Shader &o, boost::property_tree::ptree &root){
+bool ShaderIOPlugin::saveObject( const std::string& name, const sf::Shader &o, boost::property_tree::ptree &root){
 	Engine::out(Engine::ERROR) << "[ShaderIOPlugin] Saving shaders not possible!";
 }

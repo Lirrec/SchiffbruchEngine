@@ -8,6 +8,7 @@
 #include "io/plugins/ImageSetIOPlugin.hpp"
 #include "io/plugins/SoundIOPlugin.hpp"
 #include "io/plugins/ImageIOPlugin.hpp"
+#include "io/plugins/ShaderIOPlugin.hpp"
 
 ResourceManager::ResourceManager()
 {
@@ -51,8 +52,13 @@ void ResourceManager::loadDefaultPlugins()
 	std::shared_ptr<IOPlugin> ImgIOP ( new ImageIOPlugin() );
 	registerResource<sf::Image>( iResource::createResInfo("Image", false, false), ImgIOP);
 
+	std::shared_ptr<IOPlugin> ShaderIOP ( new ShaderIOPlugin() );
+	registerResource<sf::Shader>( iResource::createResInfo("SHADER", false, false), ShaderIOP);
+
 	std::shared_ptr<IOPlugin> ImageSetIOP ( new ImageSetIOPlugin() );
 	registerResource<ImageSet>( iResource::createResInfo("ImageSet", false, false), ImageSetIOP);
+
+
 
 	registerResource<sf::Font>( "Font" );
 
