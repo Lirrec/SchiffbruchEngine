@@ -22,8 +22,8 @@ ShaderIOPlugin::ObjPtr ShaderIOPlugin::loadObject(const boost::property_tree::pt
 
 		re.reset( new sf::Shader() );
 
-		re->loadFromFile(base + pt.get<std::string>("vert") + ".vert",
-		                 base + pt.get<std::string>("frag") + ".frag");
+		re->loadFromFile(base + pt.get<std::string>("vert"),
+		                 base + pt.get<std::string>("frag"));
 
 
 	} catch( boost::property_tree::ptree_error )
