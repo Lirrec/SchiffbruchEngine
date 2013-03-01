@@ -74,7 +74,7 @@ class SFMLEventConverter : public EventUser, public SFMLEventListener
 
 			@return the number of bindings read from the config file
 		*/
-		int LoadKeyBindingsFromConfig(const std::string& root = "KeyEventBindings");
+		int LoadKeyBindingsFromConfig(const std::string& root = "system.KeyEventBindings");
 
 	private:
 		ConvEvt CreateConversion( const std::string& EvtName, bool sendglobal, boost::any Data );
@@ -84,4 +84,3 @@ class SFMLEventConverter : public EventUser, public SFMLEventListener
 };
 
 #endif // SFML_EVT_H
-
