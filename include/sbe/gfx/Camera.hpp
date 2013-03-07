@@ -8,7 +8,7 @@
 #include <SFML/Window/Event.hpp>
 
 /**
-	This class proveds a small wrapper around sf::View to enable simple scrolling and zooming
+	A Wrapper class around sf::View to enable simple scrolling and zooming
 	via mouse and keyboard.
 
 	@todo make keys for moving and zooming customizable ( via Config )
@@ -17,11 +17,32 @@ class Camera
 {
 	public:
 
+		/** Default Constructor.
+			Uses config values:
+				Multiplier for zooming					system.ui.simView.zoomFactor
+				Multiplier for Mouse scrolling: 		system.ui.simView.scrollFactor
+				Amount of speedup when shift is held:	system.ui.simView.delta
+				Multiplier for zooming with the wheel:	system.ui.simView.wheelZoomFactor
+		*/
 		Camera();
 
-		void Setup();
-		void Update();
+		/**
+			Sets a few default values from the config:
+				Size: 	system.renderer.windowsize.x")
+				Center: system.renderer.windowsize/2
 
+		*/
+		void setup();
+
+		/**
+			Update the Camera ( continue smooth scrolling/zooming until target size/center is reached).
+			Should be called every frame
+		*/
+		void update();
+
+		/**
+			Handles SFML events for zooming and Scrolling
+		*/
 		void HandleEvent( const sf::Event& e);
 
 		void setViewport ( const sf::FloatRect& FR) { view.setViewport( FR ); }
@@ -30,6 +51,9 @@ class Camera
 
 		sf::View& getView() { return view; }
 
+		/**
+			Sends DEBUG_STRING Events with Camrect and Center.
+		*/
 		void showDebugInfo();
 
 	private:

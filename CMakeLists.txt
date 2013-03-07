@@ -162,5 +162,6 @@ set_property(GLOBAL PROPERTY SBE_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include;${P
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/src)
+include_directories(${PROJECT_SOURCE_DIR}/SFGUI/include)
 
 target_link_libraries(sbe sfgui ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${GENERIC_LIBS})

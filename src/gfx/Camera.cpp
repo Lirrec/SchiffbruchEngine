@@ -24,7 +24,7 @@ void Camera::showDebugInfo()
 	Module::Get()->DebugString("View Pos", str(format("%.0f x %.0f") % TargetCenter.x % TargetCenter.y));
 }
 
-void Camera::Setup()
+void Camera::setup()
 {
 	view.setSize(Engine::getCfg()->get<int>("system.renderer.windowsize.x"),
 					Engine::getCfg()->get<int>("system.renderer.windowsize.y"));
@@ -39,7 +39,7 @@ void Camera::Setup()
 								Engine::getCfg()->get<int>("system.renderer.windowsize.y")/2);
 }
 
-void Camera::Update()
+void Camera::update()
 {
 	// minimum difference between Target and current position to be smoothed
 	const int minDiff = 2;
