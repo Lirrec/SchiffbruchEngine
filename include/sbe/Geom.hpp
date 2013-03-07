@@ -2,7 +2,8 @@
 #define GEOM_H
 
 /**
-	@file this Header includes all headers from the geom/ subdirectory
+	@file Geom.hpp
+	@brief this Header includes all headers from the geom/ subdirectory
 */
 
 #include "sbe/geom/Point.hpp"
@@ -10,6 +11,3 @@
 
 
 #endif // GEOM_H
-
-
-

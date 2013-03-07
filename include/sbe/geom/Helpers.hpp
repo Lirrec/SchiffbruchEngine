@@ -231,6 +231,7 @@ namespace Geom
 		Normalize a float, i.e. scale it to a range from 0.0 to 1.0
 		@param f the float to normalize
 		@param min the minimum
+		@param max the maximum
 	*/
 	inline float normalize ( float f, float min, float max)
 	{

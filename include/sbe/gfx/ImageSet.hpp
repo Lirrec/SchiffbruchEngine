@@ -52,6 +52,7 @@ class ImageSet
 			Add a given Image from the ImageSet to a VertexArray.
 			@param index index of the image to add to the vertexarray
 			@param vA the VertexArray which is modified
+			@param Pos pos
 			@param ArrayIndex the position in the vertexarray which sould be used ( -1/default will append to the array, other values will overwrite existing vertices from the given position on)
 		*/
 		void CreateQuad( const int index , sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex = -1);
@@ -60,6 +61,7 @@ class ImageSet
 			Add a given Image from the ImageSet to a VertexArray.
 			@param FramePos The position of the image/frame on the ImageSet to add to the vertexarray
 			@param vA the VertexArray which is modified
+			@param Pos pos
 			@param ArrayIndex the position in the vertexarray which sould be used ( -1/default will append to the array, other values will overwrite existing vertices from the given position on)
 		*/
 		void CreateQuad( const Geom::Vec2 FramePos, sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex = -1);

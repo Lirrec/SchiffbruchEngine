@@ -1,5 +1,6 @@
 /**
-	@file template implementation of IO ( include/IO.hpp )
+	@file IO.ipp
+	template implementation of IO ( include/IO.hpp )
 */
 
 
@@ -27,7 +28,7 @@ std::vector<std::shared_ptr<T>> IO::loadPath( const std::string& filename )
 {
 	bool found = false;
 	std::vector<std::shared_ptr<T>> tmp;
-	
+
 	try {
 
 		std::shared_ptr<IOPlugin> IOP = getPlugin( std::type_index(typeid(T)) );
@@ -47,10 +48,10 @@ std::vector<std::shared_ptr<T>> IO::loadPath( const std::string& filename )
 	{
 		Engine::out(Engine::ERROR) << "[IO] boost::fs exception! '" << e.what() << "'" << std::endl;
 	}
-	
+
 	if(found){
 		return tmp;
-	}		
+	}
 	return std::vector<std::shared_ptr<T>>();
 }
 

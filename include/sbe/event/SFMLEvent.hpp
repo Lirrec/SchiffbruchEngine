@@ -23,15 +23,16 @@ class SFMLEventListener
 };
 
 
-/** A Class for easily listening to global SFMLEvents
+/**
+A Class for easily listening to global SFMLEvents
 by letting them be converted to normalEvents.
 
 Conversion can also be added by Events:
 
-	Name		| 		DataType
-----------------------------------
-SFML_KEY_CONV	|  SFMLEventConverter::KeyConvData
-SFML_EVT_CONV	|  SFMLEventConverter::EvtConvData
+Name          | DataType
+--------------|-------------------
+SFML_KEY_CONV | SFMLEventConverter::KeyConvData
+SFML_EVT_CONV | SFMLEventConverter::EvtConvData
 
 */
 class SFMLEventConverter : public EventUser, public SFMLEventListener
@@ -64,13 +65,14 @@ class SFMLEventConverter : public EventUser, public SFMLEventListener
 			@code
 			KeyEventBindings
 			{
-				Escape	; <- the name of the key, see sf::Keyboard::Key for possible values
+				Escape	; //<- the name of the key, see sf::Keyboard::Key for possible values
 				{
-					Event "EVT_QUIT"	; <- the name of the event to send
-					global true			; <- this is optional, default is false
+					Event "EVT_QUIT"	; //<- the name of the event to send
+					global true			; //<- this is optional, default is false
 				}
 
 			}
+			@endcode
 
 			@return the number of bindings read from the config file
 		*/
@@ -84,4 +86,3 @@ class SFMLEventConverter : public EventUser, public SFMLEventListener
 };
 
 #endif // SFML_EVT_H
-

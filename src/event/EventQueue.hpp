@@ -25,6 +25,7 @@ class EventQueue : sf::NonCopyable
 
 		/// Queue an Event.
 		/// will be fired on next tick
+		/// @param e event to put into the queue
 		/// @param global determines if the Event will be sent to all modules or only visible in this module
 		/// or only fired in this thread
 		void QueueEvent( const Event& e, bool global = false);
@@ -65,4 +66,3 @@ class EventQueue : sf::NonCopyable
 };
 
 #endif // EVENT_QUEUE_H
-

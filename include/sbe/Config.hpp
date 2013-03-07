@@ -55,7 +55,8 @@ public:
 
 	/**
 	 * \brief get value of key
-	 * \param default default value
+	 * \param key key to get value from
+	 * \param dfault default value
 	 * \return the value key is set to or, if key not set, the the value given as default
 	 * \warning not threadsave
 	 */
