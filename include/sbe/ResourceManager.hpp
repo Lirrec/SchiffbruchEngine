@@ -83,7 +83,6 @@ class ResourceManager
 
 		/**
 			Removes a single object from the Resourcemanager
-			@param ti the type of the object
 			@param name the name of the object
 			@return true on succes, false on error or if the objects was not found
 		*/
@@ -119,7 +118,7 @@ class ResourceManager
         /**
 			Register a new Resource with a BinaryIOPlugin
 			@param iR the Resource information
-			@param IOPlugin the plugin responsible for loading/saving this resource
+			@param IOP the plugin responsible for loading/saving this resource
         */
         template < typename T>
         void registerResource( const iResource& iR, std::shared_ptr<IOPlugin> IOP);

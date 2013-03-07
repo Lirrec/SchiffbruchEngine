@@ -25,7 +25,7 @@ public:
 	/**
 		Set the data to convert.
 		@param data an 2d-Array of floats, stored linearised.
-		@param Size the size of the 2d array given in data in x/y
+		@param _Size the size of the 2d array given in data in x/y
 		@param normalize if set to false the data is assumed to be normalized ( valures range from 0.0 to 1.0). Otherwise the lowest value will be scaled to 0, the highest to 1
 	*/
 	void setData( std::vector<float>& data, Geom::Vec2 _Size, bool normalize = false );
@@ -65,4 +65,3 @@ private:
 };
 
 #endif // MAPPLOT_H
-
