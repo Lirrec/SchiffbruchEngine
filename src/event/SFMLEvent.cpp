@@ -58,7 +58,7 @@ void SFMLEventConverter::HandleEvent(Event& e)
 	}
 }
 
-bool SFMLEventConverter::HandleEvent(sf::Event& e)
+void SFMLEventConverter::HandleSfmlEvent ( const sf::Event& e)
 {
 	for ( auto it = EvtConversions.lower_bound( e.type ); it != EvtConversions.upper_bound( e.type ); ++ it )
 	{
@@ -84,8 +84,6 @@ bool SFMLEventConverter::HandleEvent(sf::Event& e)
 		}
 
 	}
-
-	return false;
 }
 
 int SFMLEventConverter::LoadKeyBindingsFromConfig(const std::string& root)

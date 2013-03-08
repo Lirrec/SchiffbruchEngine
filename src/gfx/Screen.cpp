@@ -91,7 +91,7 @@ void Screen::Render()
 		}
 
 		// give it to the converter
-		EvtConv->HandleEvent( sfEvent );
+		EvtConv->HandleSfmlEvent( sfEvent );
 	}
 
 	// don't draw if the window is closed

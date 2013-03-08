@@ -12,10 +12,10 @@ using boost::io::group;
 Camera::Camera()
  : Scrolling( false )
 {
-	ZoomFactor = Engine::getCfg()->get<float>("system.ui.simView.zoomFactor");
-	ScrollFactor = Engine::getCfg()->get<float>("system.ui.simView.scrollFactor");
-	delta = Engine::getCfg()->get<float>("system.ui.simView.delta");
-	WheelZoomFactor = Engine::getCfg()->get<float>("system.ui.simView.wheelZoomFactor");
+	ZoomFactor = Engine::getCfg()->get<float>("system.camera.zoomFactor");
+	ScrollFactor = Engine::getCfg()->get<float>("system.camera.scrollFactor");
+	delta = Engine::getCfg()->get<float>("system.camera.delta");
+	WheelZoomFactor = Engine::getCfg()->get<float>("system.camera.wheelZoomFactor");
 }
 
 void Camera::showDebugInfo()

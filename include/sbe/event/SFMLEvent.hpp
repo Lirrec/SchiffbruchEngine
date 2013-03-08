@@ -30,9 +30,9 @@ class SFMLEventConverter : public EventUser, public SFMLEventUser
 	public:
 		SFMLEventConverter();
 
-		virtual void HandleEvent( Event& e );
+		void HandleEvent( Event& e );
 
-		virtual bool HandleEvent(sf::Event& e);
+		void HandleSfmlEvent ( const sf::Event& e);
 
 		/// This defines the event which is sent, once a conversion matches.
 		/// The string is the Name of the event to be sent, the bool defines
