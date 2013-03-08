@@ -26,7 +26,7 @@ class DebugWindow : public EventUser
 			--------------------|-----------------
 			VIEW_DBG_STRING		|	std::pair<string,string>
 			EVT_FRAME			|	-
-			TOGGLE_SHOW_CONSOLE	|	-
+			TOGGLE_SHOW_DBGWIN	|	-
 		*/
 		void HandleEvent( Event& e);
 

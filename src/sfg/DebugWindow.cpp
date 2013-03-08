@@ -6,7 +6,7 @@ DebugWindow::DebugWindow( const Geom::Point& RelativePosition, const Geom::Vec2 
 {
 	RegisterForEvent( "VIEW_DBG_STRING" );
 	RegisterForEvent( "EVT_FRAME" );
-	RegisterForEvent( "TOGGLE_SHOW_CONSOLE" );
+	RegisterForEvent( "TOGGLE_SHOW_DBGWIN" );
 
 	updateCounter = 0;
 	currentlabeltext = 0;
@@ -94,7 +94,7 @@ void DebugWindow::HandleEvent( Event& e )
 		}
 		updateCounter++;
 	}
-	else if (e.Is("TOGGLE_SHOW_CONSOLE"))
+	else if (e.Is("TOGGLE_SHOW_DBGWIN"))
     {
         if (Win->IsGloballyVisible())
 		{

@@ -19,10 +19,10 @@ class Camera
 
 		/** Default Constructor.
 			Uses config values:
-				Multiplier for zooming					system.ui.simView.zoomFactor
-				Multiplier for Mouse scrolling: 		system.ui.simView.scrollFactor
-				Amount of speedup when shift is held:	system.ui.simView.delta
-				Multiplier for zooming with the wheel:	system.ui.simView.wheelZoomFactor
+				Multiplier for zooming					system.camera.zoomFactor
+				Multiplier for Mouse scrolling: 		system.camera.scrollFactor
+				Amount of speedup when shift is held:	system.camera.delta
+				Multiplier for zooming with the wheel:	system.camera.wheelZoomFactor
 		*/
 		Camera();
 

@@ -6,21 +6,11 @@
 #include <boost/any.hpp>
 
 #include "sbe/event/EventUser.hpp"
+#include "sbe/event/SFMLEventUser.hpp"
 
 #include <tuple>
 #include <map>
 
-/**
-This Class defines a Listener for an sfml::Event
-*/
-class SFMLEventListener
-{
-	public:
-	/// Handle an event
-	/// @return returns true if the event was consumed, false it it should
-	/// continue bubbling
-	virtual bool HandleEvent( sf::Event& e ) = 0;
-};
 
 
 /**
@@ -35,7 +25,7 @@ SFML_KEY_CONV | SFMLEventConverter::KeyConvData
 SFML_EVT_CONV | SFMLEventConverter::EvtConvData
 
 */
-class SFMLEventConverter : public EventUser, public SFMLEventListener
+class SFMLEventConverter : public EventUser, public SFMLEventUser
 {
 	public:
 		SFMLEventConverter();
