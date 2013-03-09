@@ -61,15 +61,11 @@
 
 		myClass::HandleEvent( Event& e )
 		{
-			// check event type
-			if (e.Is("EVT_MY_EVT"))
+			// check event type and data ( second parameter is optional )
+			if (e.Is("EVT_MY_EVT", typeid( float)))
 			{
-				// check event datatype
-				if (e.Data().type() == typeid( float ))
-				{
-					// cast into desired type
-					float D = boost::any_cast<float>(e.Data());
-				}
+				// cast into desired type
+				float D = boost::any_cast<float>(e.Data());
 			}
 		}
 		@endcode
@@ -123,6 +119,10 @@ class Event
 
 		/// check if the event is of the given type (string-name)
 		bool Is(const std::string& Name);
+
+		/// check if the event is of the given string-name and the data is of the given type
+		bool Is(const std::string& Name, const std::type_info &type );
+
 		/// check if the event is of the given type (EventType / string-hash)
 		bool Is(const EventType& otherType) { return Type == otherType; };
 

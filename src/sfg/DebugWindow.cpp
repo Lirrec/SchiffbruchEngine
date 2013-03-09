@@ -70,20 +70,12 @@ void DebugWindow::CreateWindow( const Geom::Point& RelativePosition, const Geom:
 
 void DebugWindow::HandleEvent( Event& e )
 {
-	if (e.Is("VIEW_DBG_STRING"))
+	if (e.Is("VIEW_DBG_STRING", typeid( std::pair< std::string, std::string> )))
 	{
 		//Engine::out() << "[DebugWindow] DebugString Event" << std::endl;
 
-		if (e.Data().type() == typeid( std::pair< std::string, std::string> ))
-		{
-			std::pair< std::string, std::string> D = boost::any_cast<  std::pair< std::string, std::string>  >(e.Data());
-			DebugStrings[D.first] = D.second;
-
-		}
-		else
-		{
-			Engine::out(Engine::ERROR) << "[DebugWindow] DebugString Event with wrong parameters" << std::endl;
-		}
+		std::pair< std::string, std::string> D = boost::any_cast<  std::pair< std::string, std::string>  >(e.Data());
+		DebugStrings[D.first] = D.second;
 	}
 	else if (e.Is("EVT_FRAME"))
 	{

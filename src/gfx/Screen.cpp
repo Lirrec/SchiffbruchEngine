@@ -151,20 +151,13 @@ void Screen::HandleEvent(Event& e)
 		Event ev("WINDOW_RESIZE");
 		Module::Get()->QueueEvent(ev, true);
 	}
-	else if (e.Is("SCREEN_ADD_WINDOW"))
+	else if (e.Is("SCREEN_ADD_WINDOW", typeid( sfg::Window::Ptr )))
 	{
-		if (e.Data().type() == typeid( sfg::Window::Ptr ) )
-		{
-			sfg::Window::Ptr P = boost::any_cast<sfg::Window::Ptr>(e.Data());
-			P->GetSignal( sfg::Window::OnMouseEnter ).Connect( &Screen::OnHandledEvent, this );
+		sfg::Window::Ptr P = boost::any_cast<sfg::Window::Ptr>(e.Data());
+		P->GetSignal( sfg::Window::OnMouseEnter ).Connect( &Screen::OnHandledEvent, this );
 
-			Engine::out() << "[Screen] Adding Window " << P->GetTitle().toAnsiString() << std::endl;
-			Desktop->Add(P);
-		}
-		else
-		{
-			Engine::out(Engine::ERROR) << "[Screen] SCREEN_ADD_WIDGET Event with wrong parameters" << std::endl;
-		}
+		Engine::out() << "[Screen] Adding Window " << P->GetTitle().toAnsiString() << std::endl;
+		Desktop->Add(P);
 	}
 	else if (e.Is("EVT_QUIT"))
 	{

@@ -46,3 +46,15 @@ std::string Event::getDebugName()
 bool Event::Is(const std::string& Name) {
 	 return Type == Core::EvtCore->GetEventHash( Name );
 }
+
+bool Is(const std::string& Name, const std::type_info &type )
+{
+	if (!Is(Name)) return false;
+	if ( Data.type() != type )
+	{
+		Engine::out(Engine::ERROR) << "[Event] " << Name << " has wrong Datatype!" <<std::endl;
+		return false;
+	}
+
+	return true;
+}

@@ -40,21 +40,15 @@ void SFMLEventConverter::AddKeyConversion(const std::string& Key, const std::str
 
 void SFMLEventConverter::HandleEvent(Event& e)
 {
-	if (e.Is("SFML_KEY_CONV"))
+	if (e.Is("SFML_KEY_CONV", typeid(KeyConvData)))
 	{
-		if (e.Data().type() == typeid(KeyConvData))
-		{
-			KeyConvData KCData = boost::any_cast<KeyConvData>(e.Data());
-			KeyConversions.insert( KCData );
-		}
+		KeyConvData KCData = boost::any_cast<KeyConvData>(e.Data());
+		KeyConversions.insert( KCData );
 	}
-	else if (e.Is("SFML_EVT_CONV"))
+	else if (e.Is("SFML_EVT_CONV", typeid(EvtConvData )))
 	{
-		if (e.Data().type() == typeid(EvtConvData))
-		{
-			EvtConvData ECData = boost::any_cast<EvtConvData>(e.Data());
-			EvtConversions.insert( ECData );
-		}
+		EvtConvData ECData = boost::any_cast<EvtConvData>(e.Data());
+		EvtConversions.insert( ECData );
 	}
 }
 

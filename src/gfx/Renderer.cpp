@@ -23,27 +23,20 @@ Renderer::Renderer()
 */
 void Renderer::HandleEvent(Event& e)
 {
-	if ( e.Is ("ADD_ACTOR") )
+	if ( e.Is ("ADD_ACTOR", typeid ( std::pair<std::shared_ptr<Actor>, int> )) )
 	{
-		if ( e.Data().type() == typeid ( std::pair<std::shared_ptr<Actor>, int> ) )
-		{
-			ActorInfo AI = boost::any_cast<ActorInfo>( e.Data() );
-			addActor( AI.first, AI.second );
-		}
-	} else if ( e.Is ("UPDATE_ACTOR") )
+		ActorInfo AI = boost::any_cast<ActorInfo>( e.Data() );
+		addActor( AI.first, AI.second );
+	}
+	else if ( e.Is ("UPDATE_ACTOR", typeid ( std::shared_ptr<Actor> )) )
 	{
-		if ( e.Data().type() == typeid ( std::shared_ptr<Actor> ) )
-		{
-			std::shared_ptr<Actor> A = boost::any_cast<std::shared_ptr<Actor>>( e.Data() );
-			updateActor( A->getID(), A );
-		}
-	} else if ( e.Is ("REMOVE_ACTOR") )
+		std::shared_ptr<Actor> A = boost::any_cast<std::shared_ptr<Actor>>( e.Data() );
+		updateActor( A->getID(), A );
+	}
+	else if ( e.Is ("REMOVE_ACTOR", typeid ( ActorID )) )
 	{
-		if ( e.Data().type() == typeid ( ActorID ) )
-		{
-			ActorID ID = boost::any_cast<ActorID>( e.Data() );
-			removeActor( ID );
-		}
+		ActorID ID = boost::any_cast<ActorID>( e.Data() );
+		removeActor( ID );
 	}
 }
 
