@@ -8,6 +8,7 @@
 
 class EventCore;
 
+/// Router class for distributing threaded Events (internal)
 class Core : public Module
 {
 	public:

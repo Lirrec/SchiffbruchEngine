@@ -12,13 +12,14 @@ class TickControl;
 
 /**
 	This class contains configuration parameters for the behaviour and default settings of a module.
-	This struct provides a clear way to set all required parameters to run a module
+	It provides a clear way to set all required parameters to run a module.
 	@see GameBase::RegisterModule()
 */
 struct ModuleStartInfo
 {
 
-	/** Default Constructor.
+	/**
+		Default Constructor.
 		The configuration will be as following:
 		Name: "_NameNotSet"
 		TicksPerSecond: 100
@@ -90,8 +91,7 @@ class Module : sf::NonCopyable
 		/// Static module getter. Use this in your code to access the current module.
 		static Module* Get() { return Module::Instance.get(); }
 
-
-
+		///	Starts the module thread
 		virtual void StartModule( const ModuleStartInfo& m );
 
 		/// returns the modules name
@@ -100,21 +100,35 @@ class Module : sf::NonCopyable
 		// TODO: implement routing
 		//virtual std::forward_list<std::string> ReturnDesiredEvents() = 0;
 
-		// return evtq non-static
+		/// return evtq non-static
 		EventQueue* GetEventQueue() { return EvtQ.get(); };
 
+		/// return the ID of the Eventqueue
 		size_t GetQueueID() { return QueueID; }
 
-		void PostEvent( Event &e)
+		/**
+			Immediatly send an Event to all (local) listeners.
+		*/
+		void PostEvent( Event &e )
 		{
 			EvtQ->PostEvent( e );
 		}
 
+		/**
+			Add an Event to the Eventqueue to be fired on the next frame.
+			@param e the Event to send
+			@param global if set to true the event will also be sent to all other modules
+		*/
 		void QueueEvent( const Event& e, bool global = false)
 		{
 			EvtQ->QueueEvent( e, global );
 		}
 
+		/**
+			Add an Event to the Eventqueue to be fired on the next frame.
+			@param EvtName the name of the Event to send
+			@param global if set to true the event will also be sent to all other modules
+		*/
 		void QueueEvent( const std::string& EvtName, bool global = false)
 		{
 			EvtQ->QueueEvent( EvtName, global );

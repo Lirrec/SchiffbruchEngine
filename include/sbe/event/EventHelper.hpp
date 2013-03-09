@@ -21,6 +21,10 @@ class SFMLEventBinder : SFMLEventUser
 
 
 */
+
+/**
+	Binds the occurence of a given Event to a std::function ( lambda, function pointer, member pointer, functor, etc )
+*/
 class EventBinder : EventUser
 {
 	public:

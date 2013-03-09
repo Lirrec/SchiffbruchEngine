@@ -1,12 +1,19 @@
 #ifndef MAPPLOT_H
 #define MAPPLOT_H
 
-#include "sbe/Geom.hpp"
+#include "sbe/geom/Point.hpp"
 
 #include <vector>
 #include <SFML/Graphics/Image.hpp>
 
-class MapPlotter {
+/**
+
+	A class for drawing 2-dimensional maps.
+	Used to create visual Heatmaps, Heightmaps Humiditymaps out of a 2d Array
+
+*/
+class MapPlotter
+{
 public:
 
 	/**
@@ -14,12 +21,13 @@ public:
 		These modes define how the normalized input data ( 0.0-1.0 ) is converted into RGB values
 	*/
 	enum PlotMode {
-		/// simple greyscale represantation
+		/// simple greyscale representation
 		PLOT_GREYSCALE,
 		/// color gradient from blue -> cyan -> green -> yellow -> red
 		PLOT_HEATMAP
 	};
 
+	/// default ctor
 	MapPlotter();
 
 	/**
@@ -40,7 +48,8 @@ public:
 	PlotMode getMode( ) { return Mode; }
 
 	/**
-		Draw the current data to the internal Image. Result may be accessed via getImage().
+		Draw the current data to the internal Image.
+		Result may be accessed via getImage().
 	*/
 	void plot( );
 

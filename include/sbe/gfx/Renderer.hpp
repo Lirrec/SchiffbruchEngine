@@ -78,7 +78,7 @@ class RenderLayer
 
 	A few tips for efficient rendering in General:
 		- avoid using a large amount of sprites ( e.g. for Tilemaps ), use a Vertexarray instead
-		- avoid many textureswitches ( draw everything that uses one texture together
+		- avoid many textureswitches ( draw everything that uses one texture together ( e.g. on one layer )
 */
 class Renderer : EventUser
 {
@@ -87,9 +87,10 @@ class Renderer : EventUser
 
 		~Renderer() {};
 
-		/**	Events handled:
+		/**
+			Events handled:
 			Event			| 	Data
-			----------------+---------------------------------------------
+			----------------|---------------------------------------------
 			ADD_ACTOR		|	std::shared_ptr<Actor>
 			UPDATE_ACTOR	|	std::pair<ActorID, std::shared_ptr<Actor>>
 			REMOVE_ACTOR	|	std::pair<ActorID, std::shared_ptr<Actor>>

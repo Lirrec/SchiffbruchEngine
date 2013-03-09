@@ -5,9 +5,16 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/Vector2.hpp>
 
+/**
+	Namespace for helper functions for dealing with Vertices and VertexArrays
+*/
 namespace gfx
 {
 
+	/**
+		Set the position of a quad.
+		@param coords a sf::FloatRect containing the new texture coordinates
+	*/
 	inline void SetQuadPos( sf::Vertex* vs, const sf::FloatRect& Pos )
 	{
 		// Order is important here ( vertices are added counterclockwise in opengl )
@@ -22,6 +29,10 @@ namespace gfx
 		//	Engine::out() << "vs[3] " << Pos.left << " - " <<  Pos.top+Pos.height << std::endl;
 	}
 
+	/**
+		Set the texture coordinates of a quad.
+		@param coords a Geom::Rect containing the new texture coordinates
+	*/
 	inline void SetQuadTex( sf::Vertex* vs, const Geom::Rect& coords )
 	{
 		vs[0].texCoords = sf::Vector2f( coords.x.x, coords.x.y );	// top-left
@@ -35,6 +46,26 @@ namespace gfx
 		//	Engine::out() << "vs[3]tex " << coords.x.x << " - " <<  coords.y.y << std::endl;
 	}
 
+	/**
+		Set the texture coordinates of a quad.
+		@param coords a sf::FloatRect containing the new texture coordinates
+	*/
+	inline void SetQuadTex( sf::Vertex* vs, const sf::FloatRect& coords )
+	{
+		vs[0].texCoords = sf::Vector2f( coords.left, coords.top );	// top-left
+		vs[1].texCoords = sf::Vector2f( coords.left, coords.top+coords.height ); // bottom-left
+		vs[2].texCoords = sf::Vector2f( coords.left+coords.width, coords.top+coords.height ); // bottom-right
+		vs[3].texCoords = sf::Vector2f( coords.left+coords.width, coords.top ); // top-right
+
+		//	Engine::out() << "vs[0]tex " << coords.x.x << " - " << coords.x.y << std::endl;
+		//	Engine::out() << "vs[1]tex " << coords.y.x << " - " << coords.x.y << std::endl;
+		//	Engine::out() << "vs[2]tex " << coords.y.x << " - " <<  coords.y.y << std::endl;
+		//	Engine::out() << "vs[3]tex " << coords.x.x << " - " <<  coords.y.y << std::endl;
+	}
+
+	/**
+		Set the Color off all Vertices of a Quad.
+	*/
 	inline void SetQuadColor( sf::Vertex* vs, const sf::Color& c )
 	{
 		vs[0].color = c; // top-left

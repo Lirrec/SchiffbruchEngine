@@ -21,7 +21,8 @@ Screen* Screen::Instance = nullptr;
 
 
 Screen::Screen()
- : Fullscreen(false)
+ : Fullscreen(false),
+ clear ( true )
 {
 	Instance = this;
 
@@ -101,7 +102,7 @@ void Screen::Render()
 	Desktop->Update( guiclock.restart().asSeconds() );
 
 	// Clear screen
-	Engine::GetApp().clear( bgColor );
+	if ( clear ) Engine::GetApp().clear( bgColor );
 
 	Cam->update();
 	Picasso->render( Engine::GetApp() );

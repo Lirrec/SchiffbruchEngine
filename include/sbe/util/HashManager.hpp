@@ -1,16 +1,18 @@
 #ifndef HASHMGR_H
 #define HASHMGR_H
 
-/** This class manages a set of mappings from string to hashedstrings.
-This is required for the eventsystem, as internal stringcompares are costly.
-*/
-
 #include "HashedString.hpp"
 
 #include <map>
 #include <string>
 #include <memory>
 
+/**
+	This class manages a set of mappings from string to hashedstrings.
+	Used by the Eventsystem:
+	By storing already hashed values duplicate and already known events can easily be identified.
+	Also internal stringcompares are costly, using a simple hash is usually faster.
+*/
 class HashManager
 {
 	public:

@@ -5,8 +5,11 @@
 #include <memory>
 #include <SFGUI/SFGUI.hpp>
 
+#include "sbe/geom/Point.hpp"
+
 /**
 	A Simple Window showing the VIEW_DEBUG_STRING events and the log.
+	On construction it will automatically register itself to the screen with the SCREEN_ADD_WINDOW event.
 */
 class DebugWindow : public EventUser
 {

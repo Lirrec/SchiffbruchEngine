@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <SFML/Audio.hpp>
+#include <SFML/System/NonCopyable.hpp>
 
 #include "util/NamedList.hpp"
 
@@ -11,7 +12,11 @@
 #include <map>
 #include <string>
 
-class SoundSystem
+/**
+	A Soundsystem for managing currently active Sounds and volume.
+	@note this is not completely implemented
+*/
+class SoundSystem : sf::NonCopyable
 {
 	public:
 

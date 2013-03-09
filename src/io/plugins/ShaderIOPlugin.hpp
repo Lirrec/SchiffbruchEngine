@@ -9,7 +9,7 @@
 #include <sbe/io/IOPlugin.hpp>
 #include <SFML/Graphics/Shader.hpp>
 
-
+/// iTreeIOPlugin for sf::Shader
 class ShaderIOPlugin : public iTreeIOPlugin<sf::Shader> {
 public:
 	ShaderIOPlugin()

@@ -8,6 +8,7 @@
 
 #include "sbe/io/IOPlugin.hpp"
 
+/// iBinaryIOPlugin for sf::Image
 class ImageIOPlugin : public iBinaryIOPlugin<sf::Image>
 {
 public:

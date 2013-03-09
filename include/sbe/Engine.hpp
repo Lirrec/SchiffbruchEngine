@@ -18,8 +18,17 @@ class Config;
 #include <memory>
 #include <chrono>
 
+/**
+	Main class for the Engine providing static access to most subsystems.
 
+	This class holds pointers to all subsystems and provides an easy interface to the logger.
+	Just use the out() method like std::cout. The parameter defines the loglevel/severity of the message.
+	Default is LogLevel::SPAM ( not shown in the ingame DebugWindow, only on the console ).
+	@code
+		Engine::out(Engine::ERROR) << "Error!! " << i << std::cout;
+	@endcode
 
+*/
 class Engine
 {
 
@@ -27,18 +36,25 @@ class Engine
 
 	typedef std::chrono::high_resolution_clock Clock;
 
+	/// Defines the differnt severity levels of log messages
 	enum LogLevel
 	{
+		/// Used for all messages appearing frequently, like debbuging messages for every frame
 		SPAM,
+		/// General informative message
 		INFO,
+		/// Warnings
 		WARNING,
+		/// Errors
 		ERROR
 	};
 
 		Engine();
 		~Engine();
 
+		/// create and initialize Engine subsystems ( called per default only from GameBase )
 		void CreateSubSystems();
+		/// destroy Engine subsystems ( called per default only from GameBase )
 		void UnloadSubSystems();
 
 		static std::shared_ptr<Logger> GetLogger(LogLevel level = LogLevel::SPAM)
@@ -64,14 +80,23 @@ class Engine
 
 			return Instance->SpamLogger;
 		}
-		// returns a reference to the currently valid output and logging stream
-		// (could be to stdout or some class )
+		/**
+			Returns a reference to the currently valid output and logging stream.
+			(could be to stdout or some class )
+			@param level the severity of the log message
+			@see Engine::LogLevel
+		*/
 		static Logger& out(LogLevel level = LogLevel::INFO);
 
+		/// static access to the SoundSystem
 		static std::shared_ptr<SoundSystem> 	GetSndSys ();
+		/// static access to the ResourceManager
 		static std::shared_ptr<ResourceManager> GetResMgr ();
+		/// static access to the sf::RenderWindow
 		static sf::RenderWindow&                GetApp    ();
+		/// static access to the IO
 		static std::shared_ptr<IO>              GetIO();
+		/// static access to the Config
 		static std::shared_ptr<Config>          getCfg();
 
 

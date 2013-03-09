@@ -31,10 +31,10 @@ void Engine::CreateSubSystems()
 {
 	// Logging
 	std::cout << "[Engine] Logger." << std::endl;
-	SpamLogger.reset( new Logger );
-	InfoLogger.reset( new Logger );
-	WarningLogger.reset( new Logger );
-	ErrorLogger.reset( new Logger );
+	SpamLogger.reset( new Logger( std::cout ) );
+	InfoLogger.reset( new Logger( std::cout ) );
+	WarningLogger.reset( new Logger( std::cout ) );
+	ErrorLogger.reset( new Logger( std::cerr ) );
 
 	Engine::out(Engine::INFO) << "[Engine] ResourceManager..." << std::endl;
 	ResMgr.reset 	( new ResourceManager );

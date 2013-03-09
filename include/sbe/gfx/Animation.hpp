@@ -10,7 +10,9 @@
 #include <memory>
 
 /**
-	This is an base class for animations.
+	A base class for animations.
+	It supports restarting, pausing, setting the current frame, playing forwards/backwards etc.
+	To get a smooth Animation update() should be called in regular intervalls with a timer which represents the time passed ingame
 	@see AnimatedSprite, AnimatedVertexArray
 */
 class Animation
@@ -38,13 +40,16 @@ class Animation
 		/// Pauses/Unpauses the Animation
 		void togglePlay();
 
-		/// returns wether the animation is playing right now
+		/// is the animation playing right now
 		bool isPlaying();
+		/// is the Animation playing reversed
 		bool isReverse();
+		/// is the Animation looping
 		bool isLooping();
 
 		/// play the frames in reverse oder
 		void setReverse(bool reverse);
+		/// enable or disable looping ( restarting after the last frame )
 		void setLooping(bool loop);
 
 		/// Advance the animation to the next frame
@@ -52,7 +57,16 @@ class Animation
 		/// Reverse Advance the animation to the current frame (which is the next one when playing reverse)
 		void rAdvance();
 
+		/**
+			Update the animation.
+			@param GameTime should contain the time passed since the start of the game
+		*/
 		virtual void update( const sf::Time& GameTime );
+
+		/**
+			Update the drawable managed by a Animation.
+			Has to be implemented by Classes deriving from Animation.
+		*/
 		virtual void updateDrawable() = 0;
 
 

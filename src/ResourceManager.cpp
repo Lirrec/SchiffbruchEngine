@@ -58,8 +58,6 @@ void ResourceManager::loadDefaultPlugins()
 	std::shared_ptr<IOPlugin> ImageSetIOP ( new ImageSetIOPlugin() );
 	registerResource<ImageSet>( iResource::createResInfo("ImageSet", false, false), ImageSetIOP);
 
-
-
 	registerResource<sf::Font>( "Font" );
 
 	//Engine::out() << "[ResourceManager] IO Plugins loaded." << std::endl;

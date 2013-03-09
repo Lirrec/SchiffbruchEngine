@@ -11,7 +11,7 @@ using sf::Int64; // or better use int64_t?
 
 /**
 	This class is an implementation of sf::Inputstream on std::istreams.
-	Warning: the getSize() method requires seeking to the end of the stream, which can be very inefficient or time consuming in some cases
+	@warning the getSize() method requires seeking to the end of the stream, which can be very inefficient or time consuming in some cases
 */
 class sfIStream : public sf::InputStream
 {

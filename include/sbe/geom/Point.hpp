@@ -11,6 +11,11 @@
 namespace Geom
 {
 
+	/**
+
+		A base clase for points/vectors with 2 elements
+
+	*/
 	template <class T>
 	class point
 		: boost::operators< point<T> >// note: private inheritance is OK here!

@@ -1,16 +1,11 @@
 #ifndef EVENT_H
 #define EVENT_H
 
-
-
-
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/any.hpp>
 
 #include "sbe/util/HashedString.hpp"
-#include "sbe/Geom.hpp"
-
 #include "sbe/Engine.hpp"
 
 #include <map>
@@ -101,7 +96,7 @@ class Event
 	public:
 
 		/**
-		Constructor
+			Constructor. Takes the Name of the Event as String and an optional source uuid ( currently not used ).
 		*/
 		Event( const std::string& EventName, const boost::uuids::uuid& Source = invalid_source_id );
 

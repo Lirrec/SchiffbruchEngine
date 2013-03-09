@@ -11,18 +11,28 @@
 #include <vector>
 #include <list>
 
+/**
+	Struct representing a curve in a Graph.
+*/
 class Curve
 {
 	public:
 	Curve( const std::string& _name, const std::vector<int> _data, const sf::Color& _color)
 	: name( _name), data(_data), color(_color)
 	{}
+	/// the name of the Curve
 	std::string name;
+	/// a vector of datapoints
 	std::vector<int> data;
+	/// the color of the curve
 	sf::Color color;
 
 };
 
+/**
+	A Graph.
+	This is a Graph with one or more curves.
+*/
 class Graph
 {
 public:
@@ -45,17 +55,21 @@ public:
 	*/
 	bool addCurve ( const Curve& c );
 
+	/**
+		The Size of the final image to which this graph should be rendered
+	*/
 	Geom::Vec2 Size;
 	/**
 		Determines the range of the x and y axes ( e.g. start -> start + AxesSize.x )
 	*/
 	Geom::Vec2 AxisSize;
+
 	/**
 		Determines the first point on each axis to show ( usually 0,0 )
 	*/
 	//Geom::Vec2 AxisStart;
 
-	/** determines the granularity of the graph ( default 50 ) */
+	// determines the granularity of the graph or how many points should be rendered ( default 50 )
 	unsigned int PointsToDraw;
 
 	/**
@@ -63,10 +77,11 @@ public:
 	*/
 	Geom::Vec2 AxesPoints;
 
-
+	/// wether to draw a legend
 	bool drawLegend;
 	/// character size of the legend text in pixels
 	int textSize;
+	/// wether to draw the axes
 	bool drawAxes;
 
 	friend class GraphPlotter;
@@ -85,8 +100,10 @@ class GraphPlotter
 		Set the graph to be plotted
 	*/
 	bool setGraph( const Graph& _g );
+	/// access the current graph
 	Graph& getGraph() { return g; }
 
+	/// return wether the current graph is valid and can be rendered
 	bool isValid() const { return valid; }
 
 	/**

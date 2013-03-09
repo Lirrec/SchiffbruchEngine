@@ -45,10 +45,32 @@ class Camera
 		*/
 		void HandleEvent( const sf::Event& e);
 
-		void setViewport ( const sf::FloatRect& FR) { view.setViewport( FR ); }
-		void setTargetSize ( const sf::Vector2f& size ) { TargetSize = size; }
-		void setTargetCenter ( const sf::Vector2f& c ) { TargetCenter = c; }
+		/**
+			Set the current viewport of the Camera.
+			From sfml doc:
+			The viewport is the rectangle into which the contents of the view are displayed, expressed as a factor (between 0 and 1) of the size of the RenderTarget to which the view is applied.
+			For example, a view which takes the left side of the target would be defined with View.setViewport(sf::FloatRect(0, 0, 0.5, 1)). By default, a view has a viewport which covers the entire target.
 
+			@see sf::View::setViewport()
+		*/
+		void setViewport ( const sf::FloatRect& FR) { view.setViewport( FR ); }
+
+		/**
+			Set the target size of the rectangle which should be shown by the Camera.
+			The camera will smooth the transition to the new value over several frames.
+			@param size the new size
+			@param dontsmooth set to true to disable the smoothing and set the new size instantly
+		*/
+		void setTargetSize ( const sf::Vector2f& size, bool dontsmooth = false  );
+				/**
+			Set the center of the rectangle which should be shown by the Camera.
+			The camera will smooth the transition to the new value over several frames.
+			@param c the new center
+			@param dontsmooth set to true to disable the smoothing and set the new center instantly
+		*/
+		void setTargetCenter ( const sf::Vector2f& c, bool dontsmooth = false );
+
+		/// access the internal sf::View
 		sf::View& getView() { return view; }
 
 		/**

@@ -4,7 +4,10 @@
 #include "sbe/gfx/Animation.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 
+/**
 
+	An Animated sf::Sprite.
+*/
 class AnimatedSprite : public Animation
 {
 public:
@@ -13,6 +16,7 @@ public:
 
 		/// update the associated sprite/vertexarray to show the correct sub-rect/frame of the image
 		void updateDrawable();
+		/// return the managed Sprite
 		sf::Sprite& getSprite();
 	private:
 		sf::Sprite s;

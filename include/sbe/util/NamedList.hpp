@@ -8,6 +8,10 @@
 #include <map>
 #include <iostream>
 
+/**
+	Baseclass for NamedList.
+	@see NamedList
+*/
 class BaseList
 {
 	public:
@@ -16,7 +20,8 @@ class BaseList
 };
 
 /**
-  * This is a simple templated list for stored named objects/resources in a map
+	A simple templated list for stored named objects/resources in a map.
+	Provides basic getters and setters.
   */
 template< class stored_type >
 class NamedList : public BaseList

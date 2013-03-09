@@ -44,12 +44,35 @@ class SFMLEventConverter : public EventUser, public SFMLEventUser
 		/// Data required for setting a event-conversion by event
 		typedef std::pair< sf::Event::EventType, SFMLEventConverter::ConvEvt > EvtConvData;
 
+		/**
+			Convert a given Key into a named Event.
+			@param Key which Key to listen for
+			@param EvtName the name of the Event to emit OnKeyRelease
+			@param sendglobal wether the event is sent to all or only the local module
+			@param Data an optional Data to set for all sent events
+		*/
 		void AddKeyConversion( sf::Keyboard::Key Key, const std::string& EvtName, bool sendglobal = false, boost::any Data = boost::any() );
+
+		/**
+			Convert a given Key into a named Event.
+			@param Key String name of the Key to listen for, se sfml doc for possible Keyboard::Key:: values
+			@param EvtName the name of the Event to emit OnKeyRelease
+			@param sendglobal wether the event is sent to all or only the local module
+			@param Data an optional Data to set for all sent events
+		*/
 		void AddKeyConversion( const std::string& Key , const std::string& EvtName, bool sendglobal = false, boost::any Data = boost::any() );
+
+		/**
+			Convert a given sfml event into a named event.
+			@param SFMLEvtType the type of sfml event to listen to
+			@param EvtName the name of the Event to emit on occurence of SFMLEvtType
+			@param sendglobal wether the event is sent to all or only the local module
+			@param Data an optional Data to set for all sent events
+		*/
 		void AddEventConversion( sf::Event::EventType SFMLEvtType, const std::string& EvtName, bool sendglobal = false, boost::any Data = boost::any() );
 
 		/**
-			Loads key bindings from a node in the config file ( default: "KeyEventBindings"). Right now this only works for key bindings, no eventconversions (sfml->sbe)
+			Loads key bindings from a node in the config file ( default: "system.KeyEventBindings"). Right now this only works for key bindings, no eventconversions (sfml->sbe)
 			The config should look like this:
 
 			@code

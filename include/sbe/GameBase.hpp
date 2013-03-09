@@ -24,8 +24,7 @@ class Engine;
 		- DeInit		- (optional) - you can run some cleanup code here
 		- ModuleInit	- (required) - Use RegisterModule() to tell the engine about your modules
 
-	@sa Module
-	@sa Event
+	@sa Module, Event, Engine
 */
 class GameBase
 {
@@ -46,7 +45,7 @@ protected:
 		*/
 		void RegisterModule( Module* Mod, const ModuleStartInfo& Info );
 
-		/// Game related init- The Game should initialise its own classes here, called after the engine and modules have been started
+		/// Game related init- The Game should initialize its own classes here, called after the engine and modules have been started
 		virtual void GameInit() {};
 
 		/// Game related cleanup - called after all Modules have been unloaded

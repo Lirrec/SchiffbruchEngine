@@ -24,7 +24,7 @@ class IO;
 
 
 /**
-	Holds information about a resource
+	Holds information about a resource.
 */
 class iResource
 {
@@ -44,6 +44,35 @@ class iResource
 	bool preload;		/// should all available resources of this type be autoloaded from a savegame?
 };
 
+/**
+	The ResourceManager stores Resources to avoid copying and allow access by name.
+	A Resource is every kind of object that is required by the Game and is usually unique.
+	This applies to sounds, textures, models, levels and similiar.
+
+	This class does not load or save those Resources itself.
+	@see IO, IOPLugin
+	All available Resources should be registered with the ResourceManager and IO before use.
+	Example how the engines own plugins are loaded:
+	@code
+		std::shared_ptr<IOPlugin> SoundIOP ( new SoundIOPlugin() );
+		registerResource<sf::SoundBuffer>( iResource::createResInfo("SoundBuffer", false, false), SoundIOP);
+
+		std::shared_ptr<IOPlugin> ImgIOP ( new ImageIOPlugin() );
+		registerResource<sf::Image>( iResource::createResInfo("Image", false, false), ImgIOP);
+
+		std::shared_ptr<IOPlugin> ShaderIOP ( new ShaderIOPlugin() );
+		registerResource<sf::Shader>( iResource::createResInfo("SHADER", false, false), ShaderIOP);
+
+		std::shared_ptr<IOPlugin> ImageSetIOP ( new ImageSetIOPlugin() );
+		registerResource<ImageSet>( iResource::createResInfo("ImageSet", false, false), ImageSetIOP);
+
+		registerResource<sf::Font>( "Font" );
+	@endcode
+
+
+	It provides a simple savegame feature to save/load all resources to a user defined path.
+
+*/
 class ResourceManager
 {
 
@@ -116,7 +145,7 @@ class ResourceManager
 
 
         /**
-			Register a new Resource with a BinaryIOPlugin
+			Register a new Resource with an IOPlugin
 			@param iR the Resource information
 			@param IOP the plugin responsible for loading/saving this resource
         */

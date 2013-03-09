@@ -8,7 +8,7 @@
 #include <boost/property_tree/ptree.hpp>
 
 
-
+/// iTreeIOPlugin for ImageSet
 class ImageSetIOPlugin : public iTreeIOPlugin<ImageSet>
 {
 public:

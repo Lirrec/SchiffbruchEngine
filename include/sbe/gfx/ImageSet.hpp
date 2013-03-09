@@ -4,7 +4,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "sbe/Geom.hpp"
+#include "sbe/geom/Point.hpp"
 
 #include "sbe/Engine.hpp"
 
@@ -73,6 +73,7 @@ class ImageSet
 		*/
 		bool updateTexture( bool force=false );
 
+		/// access the texture managed by the ImageSet
 		std::shared_ptr<sf::Texture> getTexture();
 
 		//## DATA members ##
@@ -103,6 +104,7 @@ class ImageSet
 		/// after how many Ticks should the next frame be played? (anim only)
 		unsigned int FramesPerSecond;
 
+		/// the number of frames in the ImageSet, usuallly calculated from FrameCount
 		unsigned int NumFrames;
 
 	private:

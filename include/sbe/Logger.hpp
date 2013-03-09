@@ -1,8 +1,7 @@
-/*
- * File:   logger.h
- * Original Author: Kiran Mohan
- *
- */
+/**
+	@file Logger.hpp
+	Original Author: Kiran Mohan
+*/
 
 #ifndef LOGGER_H
 #define LOGGER_H
@@ -10,13 +9,13 @@
 #include <boost/thread.hpp>
 #include <iostream>
 /**
- * a thread safe logger to print to stdout or stderr
+ * A thread safe logger to print to stdout or stderr
  */
 class Logger
 {
 public:
 
-    Logger() {}
+    Logger( std::ostream& _out ) :out(_out) {}
     virtual ~Logger() {}
 
     template <typename T>
@@ -26,7 +25,7 @@ public:
          */
         boost::mutex::scoped_lock io_mutex_lock(io_mutex);
         oss << data;
-        std::cout << data;
+        out << data;
         return *this;
     }
 
@@ -35,7 +34,7 @@ public:
         // for stream manipulators
         boost::mutex::scoped_lock io_mutex_lock(io_mutex);
         oss << pf;
-        std::cout << pf;
+        out << pf;
         return *this;
     }
 
@@ -69,6 +68,7 @@ private:
 
     static boost::mutex io_mutex;
     std::stringstream oss;
+    std::ostream& out;
 
 };
 

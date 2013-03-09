@@ -3,7 +3,6 @@
 
 #include <boost/uuid/uuid.hpp>
 
-#include "sbe/Geom.hpp"
 #include "sbe/gfx/AnimatedSprite.hpp"
 
 #include <string>
@@ -14,8 +13,13 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
+/// unique ID of an Actor
 typedef boost::uuids::uuid ActorID;
 
+/**
+	An Actor defines an entity which represents a graphical element and is rendered by the Renderer.
+	@see Renderer
+*/
 class Actor {
 	public:
 
@@ -30,6 +34,9 @@ class Actor {
 		const ActorID ID;
 };
 
+/**
+	An Actor holding a simple sf::Sprite
+*/
 class SpriteActor : public Actor
 {
 	public:
@@ -38,6 +45,9 @@ class SpriteActor : public Actor
 
 };
 
+/**
+	An Actor holding a sf::VertexArray
+*/
 class VertexActor : public Actor
 {
 	public:
@@ -45,6 +55,9 @@ class VertexActor : public Actor
 		sf::VertexArray arr;
 };
 
+/**
+	An Actor holding an AnimatedSprite
+*/
 class AnimationActor : public Actor {
 	public:
 		void update( const sf::Time& RenderTime );

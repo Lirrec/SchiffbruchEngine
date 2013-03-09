@@ -1,5 +1,7 @@
-/* Thread safe queue by Anthony Williams
-http://www.justsoftwaresolutions.co.uk/threading/implementing-a-thread-safe-queue-using-condition-variables.html
+/**
+	@file ConcurrentQueue.hpp
+	Thread safe queue by Anthony Williams:
+	http://www.justsoftwaresolutions.co.uk/threading/implementing-a-thread-safe-queue-using-condition-variables.html
 */
 
 #ifndef CONCURRENT_QUEUE_H
@@ -9,6 +11,7 @@ http://www.justsoftwaresolutions.co.uk/threading/implementing-a-thread-safe-queu
 #include <boost/thread.hpp>
 #include <queue>
 
+/// Thread safe Queue
 template<typename Data>
 class ConcurrentQueue
 	{

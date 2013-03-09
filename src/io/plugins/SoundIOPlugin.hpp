@@ -9,6 +9,7 @@
 #include <istream>
 #include <ostream>
 
+/// iBinaryIOPluing for sf::SoundBuffer
 class SoundIOPlugin : public iBinaryIOPlugin<sf::SoundBuffer>
 {
 public:

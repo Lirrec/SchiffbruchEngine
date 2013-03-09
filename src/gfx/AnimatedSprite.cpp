@@ -2,6 +2,8 @@
 
 #include "sbe/ResourceManager.hpp"
 
+#include "sbe/geom/Helpers.hpp"
+
 AnimatedSprite::AnimatedSprite( ImageSet& _A )
 	: Animation ( _A )
 {

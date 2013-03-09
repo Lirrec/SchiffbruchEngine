@@ -54,6 +54,7 @@ class Screen : public EventUser, public sf::NonCopyable
 		/// add this as a handler on all your custom SFGUI Bindings, otherwise the clicks on items will also be sent to the renderer
 		void OnHandledEvent() { desktopHandledEvent = true; }
 
+		/// static getter to access the singleton screen instance
 		static Screen* get()
 		{
 			return Instance;
@@ -62,28 +63,49 @@ class Screen : public EventUser, public sf::NonCopyable
 		/**
 			Add an object which should receive all sfml events in addition to the converter and sfg desktop.
 			This allows Users to handle sfml events in their own classes.
+			@param U the new SFMLEventUser
 		*/
 		void addSFMLEventHandler( SFMLEventUser* U ) { sfEvtHandlers.push_back(U); }
 
 		/**
 			Remove a registered sf events listener.
+			@param U the listener to remove
 		*/
 		void removeSFMLEventHandler( SFMLEventUser* U );
 
+		/// enable or disable clearing the screen every Frame
+		void setClear( bool c = true ) { clear = c; };
+		/// set the color which is used to clear the screen
+		/// default is sf::Color(180,180,180)
+		void setClearColor ( sf::Color& c ) { bgColor = c; }
+		/// check clear status
+		bool isCleared() { return clear; }
+		/// get current clear color
+		sf::Color getClearColor() { return bgColor; }
+
+		/// static access to the Camera
 		static std::shared_ptr<Camera> sCam() { return Instance->Cam; }
+		/// static access to the Renderer
 		static std::shared_ptr<Renderer> sRndr() { return Instance->Picasso; }
+		/// static access to the sfgui Desktop
 		static std::shared_ptr<sfg::Desktop> sDesk() { return Instance->Desktop; }
+		/// static Access to the SFMLEventConverter
 		static std::shared_ptr<SFMLEventConverter> sEvtConv() { return Instance->EvtConv; }
 
+		/// access to the Camera
 		std::shared_ptr<Camera> getCam() { return Cam; }
+		/// access to the Renderer
 		std::shared_ptr<Renderer> getRenderer() { return Picasso; }
+		/// access to the Desktop
 		std::shared_ptr<sfg::Desktop> getDesktop() { return Desktop; }
+		/// access to the SFMLEventConverter
 		std::shared_ptr<SFMLEventConverter> getEvtConv() { return EvtConv; }
 	private:
 
 		void Init();
 
 		sf::Color bgColor;
+		bool clear;
 		bool Fullscreen;
 
 		std::shared_ptr<SFMLEventConverter> EvtConv;

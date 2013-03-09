@@ -3,16 +3,18 @@
 
 #include <string>
 
-// This Code was taken from GameCode3, which accompanies the great book "Game Coding Complete"
-// --
-// GameCode3 is the sample application that encapsulates much of the source code
-// discussed in "Game Coding Complete - 3rd Edition" by Mike McShaffry, published by
-// Charles River Media. ISBN-10: 1-58450-680-6   ISBN-13: 978-1-58450-680-5
+/**
+	@file HashedString.hpp
+	This Code was taken from GameCode3, which accompanies the great book "Game Coding Complete"
+	--
+	GameCode3 is the sample application that encapsulates much of the source code
+	discussed in "Game Coding Complete - 3rd Edition" by Mike McShaffry, published by
+	Charles River Media. ISBN-10: 1-58450-680-6   ISBN-13: 978-1-58450-680-5
 
+	A hashed string.  It retains the initial (ANSI) string in addition to the hash value for easy reference.
 
-// A hashed string.  It retains the initial (ANSI) string in addition to the hash value for easy reference.
-
-// class HashedString				- Chapter 10, page 274
+	class HashedString				- Chapter 10, page 274
+*/
 
 class HashedString
 {

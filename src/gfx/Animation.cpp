@@ -2,7 +2,7 @@
 
 #include "sbe/Engine.hpp"
 #include "sbe/Module.hpp"
-#include "sbe/Geom.hpp"
+#include "sbe/geom/Point.hpp"
 
 
 

@@ -1,33 +1,23 @@
 #ifndef IOPLUGIN_H
 #define IOPLUGIN_H
 
-
-
 #include <vector>
 #include <string>
 
 #include <istream>
 #include <ostream>
 
-//namespace std
-//{
-//	class istream;
-//	class ostream;
-//}
-
 #include <boost/property_tree/ptree.hpp>
-
-//namespace boost
-//{
-//	namespace property_tree
-//	{
-//		class ptree;
-//	}
-//}
 
 
 /**
-	Generic IO Plugin. Base Class for Binary and Tree Plugins
+	Generic IO Plugin.
+	Base Class for Binary and Tree Plugins.
+	Currently two types of Plugins are supported:
+	- Binary: Objects are saved in a custom way to a binary outputstream
+	- Tree: Objects are saved to a boost property tree
+
+
 */
 class IOPlugin
 {
@@ -49,22 +39,24 @@ public:
 	virtual ~IOPlugin() {};
 
 	/**
+		Returns supported file extensions by the plugin.
 		@return a vector of string containing the supported file endinges (e.g. "png", "jpg", "jpeg")
 	*/
 	virtual const std::vector<std::string>& getSupportedFileExtensions() = 0;
 
 	/**
 			Defines the relative path (binary loader) or file(ptree loader) which is used to store all Resources of this type.
-			Example: the "textures" subdirectory for all textures
-			Example: the "Creatures.info" file for all creatures
+			Example ( binary plugin ) : the "textures" subdirectory for all textures
+			Example ( ptree plugin  ): the "Creatures.info" file for all creatures
 	*/
 	std::string relative_path;
 
-
-
 };
 
-
+/**
+	A Binary IOPlugin.
+	This plugin saves its objects to an outputstream.
+*/
 template<class T>
 class iBinaryIOPlugin : public IOPlugin
 {
@@ -79,10 +71,18 @@ class iBinaryIOPlugin : public IOPlugin
 
         typedef std::vector<std::shared_ptr<T>> ObjectList;
 
+		/**
+			Called when an object should be loaded from a stream.
+			@param in the inputstream from which the object should be loaded
+			@return a possibly empty ObjectList ( vector of objects )
+		*/
         virtual ObjectList decodeStream(std::istream& in) = 0;
 
         /**
-        * @return true on successfull encoding
+			Called when an object should be saved to a stream.
+			@param object the object to be saved
+			@param out the outputstream to which the object should be saved
+			@return true on successfull encoding
         */
         virtual bool encodeStream( const T& object, std::ostream& out) = 0;
 
@@ -93,6 +93,14 @@ class iBinaryIOPlugin : public IOPlugin
 
 };
 
+/**
+	A Tree IOPlugin.
+	This plugin saves its objects to a boost::ptree.
+
+	Please see their documentation on how to work with boost::property_tree:
+	http://www.boost.org/doc/libs/release/libs/property_tree/
+
+*/
 template<class T>
 class iTreeIOPlugin : public IOPlugin
 {
@@ -105,10 +113,19 @@ class iTreeIOPlugin : public IOPlugin
 
         typedef std::shared_ptr<T> ObjPtr;
 
+		/**
+			Called when an object should be loaded.
+			@param node the root of the tree which contains the object
+			@return a possibly empty shared_ptr to the loaded object
+		*/
         virtual ObjPtr loadObject(const boost::property_tree::ptree::value_type& node) = 0;
 
         /**
-        * @return true on successfull encoding
+			Called when an object should be saved.
+			@param name the name of the object
+			@param object the object itself
+			@param root the root of the ptree to save to
+			@return true on successfull encoding
         */
         virtual bool saveObject( const std::string& name, const T& object, boost::property_tree::ptree& root) = 0;
 

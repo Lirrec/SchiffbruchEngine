@@ -39,6 +39,18 @@ void Camera::setup()
 								Engine::getCfg()->get<int>("system.renderer.windowsize.y")/2);
 }
 
+void Camera::setTargetSize ( const sf::Vector2f& size, bool dontsmooth)
+{
+	 TargetSize = size;
+	 if ( dontsmooth ) view.setSize( size );
+}
+
+void Camera::setTargetCenter ( const sf::Vector2f& c, bool dontsmooth)
+{
+	TargetCenter = c;
+	if (dontsmooth) view.setCenter ( c );
+}
+
 void Camera::update()
 {
 	// minimum difference between Target and current position to be smoothed
