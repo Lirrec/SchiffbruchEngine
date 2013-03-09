@@ -19,6 +19,7 @@ public:
 	/**
 		Available plotting modes.
 		These modes define how the normalized input data ( 0.0-1.0 ) is converted into RGB values
+		Default: GreyScale
 	*/
 	enum PlotMode {
 		/// simple greyscale representation
@@ -29,6 +30,9 @@ public:
 
 	/// default ctor
 	MapPlotter();
+
+	MapPlotter( const std::string& _name, PlotMode m = PLOT_GREYSCALE)
+	 : name( _name), Size(0,0), Mode(m) {}
 
 	/**
 		Set the data to convert.
@@ -47,6 +51,11 @@ public:
 	/// return the current PlotMode
 	PlotMode getMode( ) { return Mode; }
 
+	/// set the name
+	void setName ( const std::string& _name ) {name = _name;}
+	/// get current name
+	std::string& getName () { return name; }
+
 	/**
 		Draw the current data to the internal Image.
 		Result may be accessed via getImage().
@@ -57,6 +66,9 @@ public:
 	sf::Image& getImage() { return Img; }
 
 private:
+
+	/// a string name for this plot
+	std::string name;
 
 	/// our input data
 	std::vector<float> Data;

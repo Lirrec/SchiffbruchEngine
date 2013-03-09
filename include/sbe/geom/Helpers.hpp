@@ -235,7 +235,8 @@ namespace Geom
 	*/
 	inline float normalize ( float f, float min, float max)
 	{
-		assert ( max - min != 0 );
+		//assert ( max - min != 0 );
+		if (max -min == 0) return 0;
 		return (f - min)/( max - min );
 	}
 
