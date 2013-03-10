@@ -30,11 +30,14 @@ private:
 	// settings cache
 	//NamedList<boost::any> _cache;
 
-	static /*const*/ std::string _fileName;
+	/*const*/
+	      std::string _fileName;
+	const std::string _defaultPath;
 
 public:
 
 	Config();
+	Config(const std::string &fileName, const std::string &defaultPath);
 
 	/**
 	 * \brief set a key to value

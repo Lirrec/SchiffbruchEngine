@@ -11,9 +11,12 @@
 namespace fs = boost::filesystem;
 namespace pt = boost::property_tree;
 
-/*const*/ std::string Config::_fileName = "config.conf";
+Config::Config() : _fileName("config.conf"), _defaultPath("system") {
+	load();
+}
 
-Config::Config() {
+Config::Config(const std::string &fileName, const std::string &defaultPath)
+	 : _fileName(fileName), _defaultPath(defaultPath) {
 	load();
 }
 
@@ -29,7 +32,7 @@ boost::optional<const boost::property_tree::ptree&> Config::getPath(const std::s
 }
 
 void Config::load() {
-	loadInto("system", _fileName); // load default config file and add it to system
+	loadInto(_defaultPath, _fileName); // load default config file and add it to system
 }
 
 void Config::loadInto(const std::string &dest, const std::string &filename){
@@ -45,24 +48,25 @@ void Config::loadInto(const std::string &dest, const std::string &filename){
 
 	} else {
 		Engine::out(Engine::ERROR) << "[config::load] Cant load from '" << p << "'!" << std::endl;
-		return;
 	}
 
-	try{
+	if(fin.is_open()){
+		try{
 
-		pt::info_parser::read_info( fin, tree );
+			pt::info_parser::read_info( fin, tree );
 
-	} catch (fs::filesystem_error& e)	{
-		Engine::out(Engine::ERROR) << "[config::load] boost::fs exception! '" << e.what() << "'" << std::endl;
+		} catch (fs::filesystem_error& e)	{
+			Engine::out(Engine::ERROR) << "[config::load] boost::fs exception! '" << e.what() << "'" << std::endl;
+		}
+
+		fin.close();
+
+		_settings.add_child(dest, tree);
+
+		Engine::out(Engine::INFO) << "[config::load] Loading " << p
+		                          << " into "<< dest <<" successful!" << std::endl;
 	}
-
-	fin.close();
-
-	_settings.add_child(dest, tree);
 	_settings.put<std::string>(dest, p.string()); // or better add filename alone?
-
-	Engine::out(Engine::INFO) << "[config::load] Loading " << p
-	                          << " into "<< dest <<" successful!" << std::endl;
 }
 
 void Config::save(bool overwrite) {
@@ -70,8 +74,11 @@ void Config::save(bool overwrite) {
 
 	for ( const pt::ptree::value_type& n : _settings){
 
-		fs::path p ( Engine::GetIO()->topPath() ); // use to path in IO-stack to save config to
-		p /= n.second.get_value<std::string>(); //_settings.get<std::string>(n.first);
+		//~ fs::path p ( Engine::GetIO()->topPath() ); // use to path in IO-stack to save config to
+		//~ p /= n.second.get_value<std::string>(); //_settings.get<std::string>(n.first);
+		fs::path p(n.second.get_value<std::string>());
+
+		Engine::out(Engine::SPAM) << p << std::endl;
 
 		if ( fs::status(p).type() == fs::file_type::file_not_found || (fs::is_regular_file(p) && overwrite) ){
 
@@ -94,7 +101,7 @@ void Config::save(bool overwrite) {
 
 		}
 
-		Engine::out(Engine::INFO) << "[config::save] Saving " << n.first
+		Engine::out(Engine::INFO) << "[config::save] Saved " << n.first
 		                          << " to '" << p << "'" << std::endl;
 
 		fout.close();
