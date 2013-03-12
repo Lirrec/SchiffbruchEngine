@@ -73,6 +73,8 @@ class Camera
 		/// access the internal sf::View
 		sf::View& getView() { return view; }
 
+		sf::FloatRect& getDrawnArea() { return DrawnRectangle; };
+
 		/**
 			Sends DEBUG_STRING Events with Camrect and Center.
 		*/
@@ -86,6 +88,9 @@ class Camera
 		sf::Vector2f TargetSize;
 		// the desired camera center
 		sf::Vector2f TargetCenter;
+		// the rendered rectangle in RENDER coordinates
+		sf::FloatRect DrawnRectangle;
+		void CalcDrawArea();
 
 		// how fast should we zoom
 		float ZoomFactor;

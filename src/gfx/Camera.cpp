@@ -82,6 +82,16 @@ void Camera::update()
 
 		view.setCenter( Target );
 	}
+
+	CalcDrawArea();
+}
+
+void Camera::CalcDrawArea()
+{
+	DrawnRectangle.left = view.getCenter().x - view.getSize().x/2;
+	DrawnRectangle.top = view.getCenter().y - view.getSize().y/2;
+	DrawnRectangle.width = view.getSize().x;
+	DrawnRectangle.height = view.getSize().y;
 }
 
 void Camera::HandleEvent( const sf::Event& e)
