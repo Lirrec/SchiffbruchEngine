@@ -72,7 +72,7 @@ class SFMLEventConverter : public EventUser, public SFMLEventUser
 		void AddEventConversion( sf::Event::EventType SFMLEvtType, const std::string& EvtName, bool sendglobal = false, boost::any Data = boost::any() );
 
 		/**
-			Loads key bindings from a node in the config file ( default: "system.KeyEventBindings"). Right now this only works for key bindings, no eventconversions (sfml->sbe)
+			Loads key bindings from a node in the config file ( default: "keys.KeyEventBindings"). Right now this only works for key bindings, no eventconversions (sfml->sbe)
 			The config should look like this:
 
 			@code
@@ -89,7 +89,7 @@ class SFMLEventConverter : public EventUser, public SFMLEventUser
 
 			@return the number of bindings read from the config file
 		*/
-		int LoadKeyBindingsFromConfig(const std::string& root = "system.KeyEventBindings");
+		int LoadKeyBindingsFromConfig(const std::string& root = "keys.KeyEventBindings");
 
 	private:
 		ConvEvt CreateConversion( const std::string& EvtName, bool sendglobal, boost::any Data );
