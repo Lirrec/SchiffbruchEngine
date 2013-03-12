@@ -35,7 +35,7 @@ template < typename T >
 bool ResourceManager::add(std::shared_ptr<T> res, const std::string& name)
 {
 	auto ti = std::type_index(typeid(T));
-	if ( ! isResource( ti ) ) return false;
+	if ( ! isResource( ti ) || !res ) return false;
 
     auto r = dynamic_pointer_cast<NamedList<T>> ( Resources[ std::type_index(ti) ] );
     r->AddItem(name, res);

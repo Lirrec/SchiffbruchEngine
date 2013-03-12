@@ -63,9 +63,7 @@ void DebugWindow::CreateWindow( const Geom::Point& RelativePosition, const Geom:
 	Win->SetTitle( "Debug Information [F3]" );
 	Win->Add( wholeBox );
 
-	Event e("SCREEN_ADD_WINDOW");
-	e.SetData( Win );
-	Module::Get()->QueueEvent( e );
+	Module::Get()->QueueEvent( Event("SCREEN_ADD_WINDOW", Win) );
 }
 
 void DebugWindow::HandleEvent( Event& e )

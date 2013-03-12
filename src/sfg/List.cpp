@@ -109,9 +109,7 @@ void sfgList::LabelClicked(std::string Name)
 
 				if (EvTName != "")
 				{
-					Event e(EvTName);
-					e.SetData( (*it)->text );
-					Module::Get()->QueueEvent(e);
+					Module::Get()->QueueEvent( Event(EvTName, (*it)->text) );
 				}
 			}
 			break;

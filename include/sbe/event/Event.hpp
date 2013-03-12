@@ -40,9 +40,13 @@
 
 		Example:
 		@code
-		Event d("EVT_MY_EVT");
+		// event without data
+		Event e("EVT_MY_EVT");
+		// event with data ( templated, pass anything you want )
 		float mydata = 5;
-		e.SetData( mydata );
+		Event d("EVT_MY_DATA", mydata);
+		// another way to set the data:
+		d.SetData( mydata );
 
 		Module::Get()->QueueEvent(e, true); // set to false to only send to own module
 		@endcode
@@ -95,6 +99,11 @@ class Event
 			Constructor. Takes the Name of the Event as String and an optional source uuid ( currently not used ).
 		*/
 		Event( const std::string& EventName, const boost::uuids::uuid& Source = invalid_source_id );
+		Event( const std::string& EventName, const boost::any& _Data );
+
+		template < class T >
+		Event( const std::string& EventName, const T& _Data )
+			: Event(EventName, boost::any(_Data)) {} ;
 
 		typedef boost::any EventData;
 		typedef HashedString::HashType EventType;

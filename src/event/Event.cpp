@@ -33,6 +33,17 @@ Event::Event(const std::string& EventName,
 	Type = Core::EvtCore->GetEventHash( EventName );
 }
 
+Event::Event( const std::string& EventName, const boost::any& _Data )
+		 : 	SourceID(invalid_source_id),
+			EventID(Module::NewUUID()),
+			EvtData( _Data )
+{
+	if (!Core::EvtCore->HasEvent( EventName ))
+		Core::EvtCore->RegisterEventName( EventName );
+
+	Type = Core::EvtCore->GetEventHash( EventName );
+}
+
 std::string Event::getDebugName()
 {
 	std::string re("");
