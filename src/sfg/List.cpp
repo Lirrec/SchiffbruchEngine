@@ -88,32 +88,30 @@ void sfgList::LabelClicked(std::string Name)
 			}
 			else
 			{
-				if ( selectedItems == 0 || MultiSelect)
+
+				if ( !MultiSelect )
 				{
-					if ( !MultiSelect )
+					// deselect others
+					for ( auto it = Items.begin(); it != Items.end(); ++it)
 					{
-						// deselect others
-						for ( auto it = Items.begin(); it != Items.end(); ++it)
+						if ( (*it)->active )
 						{
-							if ( (*it)->active )
-							{
-								(*it)->active = false;
-								(*it)->label->SetText((*it)->text);
-								selectedItems--;
-							}
+							(*it)->active = false;
+							(*it)->label->SetText((*it)->text);
+							selectedItems--;
 						}
 					}
+				}
 
-					(*it)->active = true;
-					(*it)->label->SetText( "* " + (*it)->text);
-					selectedItems++;
+				(*it)->active = true;
+				(*it)->label->SetText( "* " + (*it)->text);
+				selectedItems++;
 
-					if (EvTName != "")
-					{
-						Event e(EvTName);
-						e.SetData( (*it)->text );
-						Module::Get()->QueueEvent(e);
-					}
+				if (EvTName != "")
+				{
+					Event e(EvTName);
+					e.SetData( (*it)->text );
+					Module::Get()->QueueEvent(e);
 				}
 			}
 			break;
