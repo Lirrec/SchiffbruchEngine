@@ -58,8 +58,8 @@ Geom::Rect ImageSet::CalcTexCoords(const Geom::Vec2 FramePos) const
 	Geom::Rect re;
 	Geom::Point topleft, bottomright;
 
-	topleft.x =StartPos.x + FramePos.x * FrameSize.x;
-	topleft.y =StartPos.y + FramePos.y * FrameSize.y;
+	topleft.x = StartPos.x + FramePos.x * FrameSize.x;
+	topleft.y = StartPos.y + FramePos.y * FrameSize.y;
 
 	bottomright.x = StartPos.x + (FramePos.x +1) * FrameSize.x;
 	bottomright.y = StartPos.y + (FramePos.y +1) * FrameSize.y;

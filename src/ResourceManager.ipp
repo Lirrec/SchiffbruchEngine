@@ -51,7 +51,7 @@ bool ResourceManager::remove( std::string& name )
 	if ( !isResource( ti ) ) return false;
 
     auto r = dynamic_pointer_cast<NamedList<T>>( Resources[ std::type_index(ti) ] );
-    r->erase(name);
+    r->RemoveItem(name);
     return true;
 }
 

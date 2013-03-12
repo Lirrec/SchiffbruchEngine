@@ -6,7 +6,7 @@
 
 #include <functional>
 
-#include <SFGUI/ViewPort.hpp>
+#include <SFGUI/Viewport.hpp>
 
 sfgList::sfgList(std::string ClickEventName)
  : selectedItems(0), EvTName ( ClickEventName ), MultiSelect(false)

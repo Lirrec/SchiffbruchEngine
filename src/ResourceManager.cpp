@@ -57,6 +57,7 @@ void ResourceManager::loadDefaultPlugins()
 
 	std::shared_ptr<IOPlugin> ImageSetIOP ( new ImageSetIOPlugin() );
 	registerResource<ImageSet>( iResource::createResInfo("ImageSet", false, false), ImageSetIOP);
+	registerResource<sf::Texture>("Texture");
 
 	registerResource<sf::Font>( "Font" );
 
