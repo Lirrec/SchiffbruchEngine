@@ -41,9 +41,9 @@ void MapPlotter::plot()
 		return;
 	}
 
-	for ( int x = 0; x < Size.x; ++x )
-		for (int y = 0; y < Size.y; ++y)
-			Img.setPixel( x, y, getColor( Data[ x + y*Size.y ] ));
+	for (int y = 0; y < Size.y; ++y)
+		for ( int x = 0; x < Size.x; ++x )
+			Img.setPixel( x, y, getColor( Data[ Geom::linear(x,y, Size.x ) ] ));
 }
 
 sf::Color MapPlotter::getColor(float f)

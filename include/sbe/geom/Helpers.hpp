@@ -201,18 +201,29 @@ namespace Geom
 
 
 
+	/// calculates the squareddistance between two points (avoiding the sqrt, but still fine for comparisions)
+	inline float squaredist(const Point& from, const Point& to)
+	{
+		return abs(pow(from.x - to.x, 2)
+				+ pow(from.y - to.y, 2));
+	}
 
+	inline float squaredist(const Pointf& from, const Pointf& to)
+	{
+		return abs(pow(from.x - to.x, 2)
+				+ pow(from.y - to.y, 2));
+	}
 
 	/// calculates the distance between two points (just simple and not optimized)
-	inline float distance(const Point& lhs, const Point& rhs)
+	inline float distance(const Point& from, const Point& to)
 	{
-		return sqrt( pow(static_cast<int>(abs(lhs.x)) - abs(rhs.x), 2)    +    pow(static_cast<int>(abs(lhs.y)) - abs(rhs.y), 2));
+		return sqrt( squaredist(from,to) );
 	}
 
 	/// Compute the distance between two points ( floating point version )
 	inline float distance(const Pointf& from, const Pointf& to)
 	{
-		return sqrt( pow(to.x - from.x, 2)    +    pow(to.y - from.y, 2));
+		return sqrt( squaredist( from,to ) );
 	}
 
 	/// Compute the length of a vector
@@ -220,6 +231,13 @@ namespace Geom
 	{
 			return distance( Originf(), V );
 	}
+
+	/// returns the index of a 2d position in an array, assumes data is stored in rows, not columns
+	inline size_t linear( int x, int y, int width ) { return x + y*width; }
+	/// returns the index of a 2d position in an array, assumes data is stored in rows, not columns
+	inline size_t linear( Geom::Vec2f p, int width ) { return linear(p.x, p.y, width); }
+	/// returns the index of a 2d position in an array, assumes data is stored in rows, not columns
+	inline size_t linear( Geom::Vec2 p, int width ) { return linear(p.x, p.y, width); }
 
 	/// Normalize a vector
 	inline Vec2f normalize( Vec2f V )

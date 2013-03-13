@@ -86,7 +86,7 @@ class Engine
 			@param level the severity of the log message
 			@see Engine::LogLevel
 		*/
-		static Logger& out(LogLevel level = LogLevel::INFO);
+		static Logger& out(LogLevel level = LogLevel::SPAM);
 
 		/// static access to the SoundSystem
 		static std::shared_ptr<SoundSystem> 	GetSndSys ();

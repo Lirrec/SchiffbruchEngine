@@ -2,6 +2,7 @@
 #include "sbe/gfx/Camera.hpp"
 #include "sbe/Engine.hpp"
 
+#include <SFML/System/Clock.hpp>
 
 #include <algorithm>
 
@@ -54,7 +55,9 @@ void Renderer::render(sf::RenderTarget& t)
 void Renderer::renderSingleLayer(int index, sf::RenderTarget& t)
 {
 	if ( index >= 0 && index < Layers.size())
+	{
 		drawLayer( Layers[index], t );
+	}
 }
 
 void Renderer::updateLayer(RenderLayer& L)
@@ -80,7 +83,6 @@ void Renderer::drawLayer(const RenderLayer& L, sf::RenderTarget& t)
 	{
 		t.draw( A->getDrawable(), L.States );
 	}
-
 }
 
 
