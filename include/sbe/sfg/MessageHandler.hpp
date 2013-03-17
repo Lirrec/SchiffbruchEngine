@@ -4,16 +4,21 @@
 #include "sbe/event/EventUser.hpp"
 #include "Message.hpp"
 
-class MessageHandler : public EventUser
+namespace sbe
 {
-	public:
-		MessageHandler();
-		~MessageHandler() {}
 
-		void RemoveAndDestroyMessage( const Message* m );
-		void HandleEvent( Event& e);
-	private:
-		void SaveAndShowMessage( const std::shared_ptr<Message> m );
-		std::list<std::shared_ptr<Message>> MessageList;
-};
+	class MessageHandler : public EventUser
+	{
+		public:
+			MessageHandler();
+			~MessageHandler() {}
+
+			void RemoveAndDestroyMessage( const Message* m );
+			void HandleEvent( Event& e);
+		private:
+			void SaveAndShowMessage( const std::shared_ptr<Message> m );
+			std::list<std::shared_ptr<Message>> MessageList;
+	};
+
+} // namespace sbe
 #endif // MESSAGEHANDLER_H
