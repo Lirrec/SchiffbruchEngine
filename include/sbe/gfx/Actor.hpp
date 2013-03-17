@@ -13,65 +13,68 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
-/// unique ID of an Actor
-typedef boost::uuids::uuid ActorID;
-
-/**
-	An Actor defines an entity which represents a graphical element and is rendered by the Renderer.
-	@see Renderer
-*/
-class Actor {
-	public:
-
-	Actor();
-	virtual ~Actor() {}
-
-	virtual void update( const sf::Time& RenderTime ) {};
-	virtual sf::Drawable& getDrawable() = 0;
-	ActorID getID() { return ID; }
-
-	private:
-		const ActorID ID;
-};
-
-/**
-	An Actor holding a simple sf::Sprite
-*/
-class SpriteActor : public Actor
+namespace sbe
 {
-	public:
-		sf::Drawable& getDrawable();
-		sf::Sprite sprite;
+	/// unique ID of an Actor
+	typedef boost::uuids::uuid ActorID;
 
-};
+	/**
+		An Actor defines an entity which represents a graphical element and is rendered by the Renderer.
+		@see Renderer
+	*/
+	class Actor {
+		public:
 
-/**
-	An Actor holding a sf::VertexArray
-*/
-class VertexActor : public Actor
-{
-	public:
-		sf::Drawable& getDrawable();
-		sf::VertexArray arr;
-};
+		Actor();
+		virtual ~Actor() {}
 
-/**
-	An Actor holding an AnimatedSprite
-*/
-class AnimationActor : public Actor {
-	public:
-		void update( const sf::Time& RenderTime );
-		sf::Drawable& getDrawable();
-		AnimatedSprite Anim;
-};
+		virtual void update( const sf::Time& RenderTime ) {};
+		virtual sf::Drawable& getDrawable() = 0;
+		ActorID getID() { return ID; }
 
-//class VertexAnimationActor : public Actor {
-//	public:
-//		void draw( sf::RenderTarget& t) { t.draw ( arr ); }
-//		void update( const sf::Time& RenderTime ) {  }
-//	private:
-//		Animation Anim;
-//		sf::VertexArray arr;
-//};
+		private:
+			const ActorID ID;
+	};
 
+	/**
+		An Actor holding a simple sf::Sprite
+	*/
+	class SpriteActor : public Actor
+	{
+		public:
+			sf::Drawable& getDrawable();
+			sf::Sprite sprite;
+
+	};
+
+	/**
+		An Actor holding a sf::VertexArray
+	*/
+	class VertexActor : public Actor
+	{
+		public:
+			sf::Drawable& getDrawable();
+			sf::VertexArray arr;
+	};
+
+	/**
+		An Actor holding an AnimatedSprite
+	*/
+	class AnimationActor : public Actor {
+		public:
+			void update( const sf::Time& RenderTime );
+			sf::Drawable& getDrawable();
+			AnimatedSprite Anim;
+	};
+
+	//class VertexAnimationActor : public Actor {
+	//	public:
+	//		void draw( sf::RenderTarget& t) { t.draw ( arr ); }
+	//		void update( const sf::Time& RenderTime ) {  }
+	//	private:
+	//		Animation Anim;
+	//		sf::VertexArray arr;
+	//};
+
+} // namespace sbe
 #endif // GRAPHIC_H

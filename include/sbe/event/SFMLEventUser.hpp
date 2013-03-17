@@ -3,21 +3,24 @@
 
 #include <SFML/Window/Event.hpp>
 
-/**
-	A base class for classes which can handle sfml events.
-*/
-class SFMLEventUser
+namespace sbe
 {
-	public:
-	virtual ~SFMLEventUser(){}
 
 	/**
-		Handle an sfml event.
-		@param e const reference to the current event
+		A base class for classes which can handle sfml events.
 	*/
-	virtual void HandleSfmlEvent ( const sf::Event& e) = 0;
-};
+	class SFMLEventUser
+	{
+		public:
+		virtual ~SFMLEventUser(){}
 
+		/**
+			Handle an sfml event.
+			@param e const reference to the current event
+		*/
+		virtual void HandleSfmlEvent ( const sf::Event& e) = 0;
+	};
 
+} // namespace sbe
 #endif // SFMLEVENTUSER_HPP
 

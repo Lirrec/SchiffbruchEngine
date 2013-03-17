@@ -4,167 +4,169 @@
 #include "sbe/ResourceManager.hpp"
 #include "sbe/gfx/VertexUtils.hpp"
 
-ImageSet::ImageSet()
- : 	Name(),
-	ImageName(),
-	StartPos(),
-	DestPos(),
-	FrameSize(),
-	FrameCount(),
-	FramesPerSecond(0),
-	NumFrames(0)
-{}
-
-ImageSet::ImageSet(const  std::string& _name,
-				 const std::string& _imgname,
-				 const Geom::Point& _startpos,
-				 const Geom::Point& _destpos,
-				 const Geom::Vec2&  _fsize,
-				 const Geom::Vec2&  _fcount,
-				 const int 			_fps)
-: 	Name(_name),
-	ImageName(_imgname),
-	StartPos(_startpos),
-	DestPos(_destpos),
-	FrameSize(_fsize),
-	FrameCount(_fcount),
-	FramesPerSecond(_fps)
+namespace sbe
 {
-	NumFrames = FrameCount.x * FrameCount.y;
+	ImageSet::ImageSet()
+	 : 	Name(),
+		ImageName(),
+		StartPos(),
+		DestPos(),
+		FrameSize(),
+		FrameCount(),
+		FramesPerSecond(0),
+		NumFrames(0)
+	{}
 
-}
-
-
-
-
-Geom::Vec2 ImageSet::CalcFramePos(const int index) const
-{
-	Geom::Vec2 FPos;
-
-	int tmp = (int)std::floor((float)index / (float)FrameCount.x);
-
-	FPos.x = index % FrameCount.x;
-	FPos.y = tmp ;
-	return FPos;
-}
-
-Geom::Rect ImageSet::CalcTexCoords(const int index) const
-{
-	return CalcTexCoords( CalcFramePos( index ) );
-}
-
-Geom::Rect ImageSet::CalcTexCoords(const Geom::Vec2 FramePos) const
-{
-	Geom::Rect re;
-	Geom::Point topleft, bottomright;
-
-	topleft.x = StartPos.x + FramePos.x * FrameSize.x;
-	topleft.y = StartPos.y + FramePos.y * FrameSize.y;
-
-	bottomright.x = StartPos.x + (FramePos.x +1) * FrameSize.x;
-	bottomright.y = StartPos.y + (FramePos.y +1) * FrameSize.y;
-
-
-	re.x = topleft;
-	re.y = bottomright;
-
-	return re;
-}
-
-std::shared_ptr<sf::Sprite> ImageSet::CreateSpritePtr(const int index)
-{
-	//Engine::out() << "CreateSprite: " << index << std::endl;
-	return CreateSpritePtr(CalcFramePos(index));
-}
-
-sf::Sprite ImageSet::CreateSprite(const int index)
-{
-	//Engine::out() << "CreateSprite: " << index << std::endl;
-	return CreateSprite(CalcFramePos(index));
-}
-
-sf::Sprite ImageSet::CreateSprite(const Geom::Vec2 FramePos)
-{
-	//Engine::out() << "CreateSprite: " << FramePos << std::endl;
-	sf::Sprite re;
-	std::shared_ptr<sf::Image> img = Engine::GetResMgr()->get<sf::Image>(ImageName);
-
-	if ( updateTexture() )
+	ImageSet::ImageSet(const  std::string& _name,
+					 const std::string& _imgname,
+					 const Geom::Point& _startpos,
+					 const Geom::Point& _destpos,
+					 const Geom::Vec2&  _fsize,
+					 const Geom::Vec2&  _fcount,
+					 const int 			_fps)
+	: 	Name(_name),
+		ImageName(_imgname),
+		StartPos(_startpos),
+		DestPos(_destpos),
+		FrameSize(_fsize),
+		FrameCount(_fcount),
+		FramesPerSecond(_fps)
 	{
-		re.setTexture(*Tex);
-		re.setTextureRect( Geom::toSFRect( CalcTexCoords(FramePos) ) );
-	}
-	else
-	{
-		Engine::out(Engine::ERROR) << "ImageSet::CreateSprite: Unable to create Sprite, image not found: " << ImageName << "!" << std::endl;
+		NumFrames = FrameCount.x * FrameCount.y;
+
 	}
 
-	return re;
-}
 
-std::shared_ptr<sf::Sprite> ImageSet::CreateSpritePtr(const Geom::Vec2 FramePos)
-{
-	//Engine::out() << "CreateSprite: " << FramePos << std::endl;
-	std::shared_ptr<sf::Sprite> re( new sf::Sprite );
 
-	if ( updateTexture() )
+
+	Geom::Vec2 ImageSet::CalcFramePos(const int index) const
 	{
-		re->setTexture(*Tex);
-		re->setTextureRect( Geom::toSFRect( CalcTexCoords(FramePos) ) );
-	}
-	else
-	{
-		Engine::out(Engine::ERROR) << "ImageSet::CreateSprite: Unable to create Sprite, image not found: " << ImageName << "!" << std::endl;
+		Geom::Vec2 FPos;
+
+		int tmp = (int)std::floor((float)index / (float)FrameCount.x);
+
+		FPos.x = index % FrameCount.x;
+		FPos.y = tmp ;
+		return FPos;
 	}
 
-	return re;
-}
-
-bool ImageSet::updateTexture( bool force )
-{
-	if (!Tex || force)
+	Geom::Rect ImageSet::CalcTexCoords(const int index) const
 	{
+		return CalcTexCoords( CalcFramePos( index ) );
+	}
+
+	Geom::Rect ImageSet::CalcTexCoords(const Geom::Vec2 FramePos) const
+	{
+		Geom::Rect re;
+		Geom::Point topleft, bottomright;
+
+		topleft.x = StartPos.x + FramePos.x * FrameSize.x;
+		topleft.y = StartPos.y + FramePos.y * FrameSize.y;
+
+		bottomright.x = StartPos.x + (FramePos.x +1) * FrameSize.x;
+		bottomright.y = StartPos.y + (FramePos.y +1) * FrameSize.y;
+
+
+		re.x = topleft;
+		re.y = bottomright;
+
+		return re;
+	}
+
+	std::shared_ptr<sf::Sprite> ImageSet::CreateSpritePtr(const int index)
+	{
+		//Engine::out() << "CreateSprite: " << index << std::endl;
+		return CreateSpritePtr(CalcFramePos(index));
+	}
+
+	sf::Sprite ImageSet::CreateSprite(const int index)
+	{
+		//Engine::out() << "CreateSprite: " << index << std::endl;
+		return CreateSprite(CalcFramePos(index));
+	}
+
+	sf::Sprite ImageSet::CreateSprite(const Geom::Vec2 FramePos)
+	{
+		//Engine::out() << "CreateSprite: " << FramePos << std::endl;
+		sf::Sprite re;
 		std::shared_ptr<sf::Image> img = Engine::GetResMgr()->get<sf::Image>(ImageName);
 
-		if (!img)
+		if ( updateTexture() )
 		{
-			Engine::out(Engine::ERROR) << "[ImageSet] Unable to update internal texture, Image with name " << ImageName << " doesn't exist anymore!" << std::endl;
-			return false;
-		}
-
-		if (!Tex) Tex.reset ( new sf::Texture() );
-
-		if (Tex->loadFromImage( *img ))
-		{
-			Engine::out(Engine::INFO) << "[ImageSet] Created texture for ImageSet " << Name << ", from Image with name " << ImageName << std::endl;
+			re.setTexture(*Tex);
+			re.setTextureRect( Geom::toSFRect( CalcTexCoords(FramePos) ) );
 		}
 		else
 		{
-			Engine::out(Engine::ERROR) << "[ImageSet] ERROR creating texture for ImageSet " << Name << ", from Image with name " << ImageName << std::endl;
-			Tex.reset();
+			Engine::out(Engine::ERROR) << "ImageSet::CreateSprite: Unable to create Sprite, image not found: " << ImageName << "!" << std::endl;
 		}
+
+		return re;
 	}
 
-	return true;
-}
+	std::shared_ptr<sf::Sprite> ImageSet::CreateSpritePtr(const Geom::Vec2 FramePos)
+	{
+		//Engine::out() << "CreateSprite: " << FramePos << std::endl;
+		std::shared_ptr<sf::Sprite> re( new sf::Sprite );
 
-std::shared_ptr<sf::Texture> ImageSet::getTexture()
-{
-	return Tex;
-}
+		if ( updateTexture() )
+		{
+			re->setTexture(*Tex);
+			re->setTextureRect( Geom::toSFRect( CalcTexCoords(FramePos) ) );
+		}
+		else
+		{
+			Engine::out(Engine::ERROR) << "ImageSet::CreateSprite: Unable to create Sprite, image not found: " << ImageName << "!" << std::endl;
+		}
 
-void ImageSet::CreateQuad( const int index, sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex)
-{
-	CreateQuad( CalcFramePos(index), vA, Pos, ArrayIndex);
-}
+		return re;
+	}
 
-void ImageSet::CreateQuad( const Geom::Vec2 FramePos , sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex)
-{
-	updateTexture();
-	Geom::Rect coords = CalcTexCoords(FramePos);
-	if ( ArrayIndex == -1 )
-		gfx::AppendQuad( vA, Pos, coords);
-	else
-		gfx::UpdateQuad( vA, Pos, coords, ArrayIndex);
-}
+	bool ImageSet::updateTexture( bool force )
+	{
+		if (!Tex || force)
+		{
+			std::shared_ptr<sf::Image> img = Engine::GetResMgr()->get<sf::Image>(ImageName);
 
+			if (!img)
+			{
+				Engine::out(Engine::ERROR) << "[ImageSet] Unable to update internal texture, Image with name " << ImageName << " doesn't exist anymore!" << std::endl;
+				return false;
+			}
+
+			if (!Tex) Tex.reset ( new sf::Texture() );
+
+			if (Tex->loadFromImage( *img ))
+			{
+				Engine::out(Engine::INFO) << "[ImageSet] Created texture for ImageSet " << Name << ", from Image with name " << ImageName << std::endl;
+			}
+			else
+			{
+				Engine::out(Engine::ERROR) << "[ImageSet] ERROR creating texture for ImageSet " << Name << ", from Image with name " << ImageName << std::endl;
+				Tex.reset();
+			}
+		}
+
+		return true;
+	}
+
+	std::shared_ptr<sf::Texture> ImageSet::getTexture()
+	{
+		return Tex;
+	}
+
+	void ImageSet::CreateQuad( const int index, sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex)
+	{
+		CreateQuad( CalcFramePos(index), vA, Pos, ArrayIndex);
+	}
+
+	void ImageSet::CreateQuad( const Geom::Vec2 FramePos , sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex)
+	{
+		updateTexture();
+		Geom::Rect coords = CalcTexCoords(FramePos);
+		if ( ArrayIndex == -1 )
+			gfx::AppendQuad( vA, Pos, coords);
+		else
+			gfx::UpdateQuad( vA, Pos, coords, ArrayIndex);
+	}
+} // namespace sbe

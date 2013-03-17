@@ -7,17 +7,20 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-
-/// iTreeIOPlugin for ImageSet
-class ImageSetIOPlugin : public iTreeIOPlugin<ImageSet>
+namespace sbe
 {
-public:
-	ImageSetIOPlugin();
 
-	virtual ~ImageSetIOPlugin();
+	/// iTreeIOPlugin for ImageSet
+	class ImageSetIOPlugin : public iTreeIOPlugin<ImageSet>
+	{
+	public:
+		ImageSetIOPlugin();
 
-	virtual ObjPtr loadObject(const boost::property_tree::ptree::value_type& node);
-	virtual bool saveObject( const std::string& name, const ImageSet& object, boost::property_tree::ptree& root);
-};
+		virtual ~ImageSetIOPlugin();
 
+		virtual ObjPtr loadObject(const boost::property_tree::ptree::value_type& node);
+		virtual bool saveObject( const std::string& name, const ImageSet& object, boost::property_tree::ptree& root);
+	};
+
+} // namespace sbe
 #endif // IMAGESETIOPLUGIN_HPP

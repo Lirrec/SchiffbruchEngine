@@ -9,18 +9,22 @@
 #include <istream>
 #include <ostream>
 
-/// iBinaryIOPluing for sf::SoundBuffer
-class SoundIOPlugin : public iBinaryIOPlugin<sf::SoundBuffer>
+namespace sbe
 {
-public:
 
-    SoundIOPlugin();
+	/// iBinaryIOPluing for sf::SoundBuffer
+	class SoundIOPlugin : public iBinaryIOPlugin<sf::SoundBuffer>
+	{
+	public:
 
-    virtual ~SoundIOPlugin();
+		SoundIOPlugin();
 
-    virtual ObjectList decodeStream(std::istream &in);
-    virtual bool encodeStream( const sf::SoundBuffer &o, std::ostream &out);
-    virtual const std::vector<std::string>& getSupportedFileExtensions();
-};
+		virtual ~SoundIOPlugin();
 
+		virtual ObjectList decodeStream(std::istream &in);
+		virtual bool encodeStream( const sf::SoundBuffer &o, std::ostream &out);
+		virtual const std::vector<std::string>& getSupportedFileExtensions();
+	};
+
+} // namespace sbe
 #endif // SOUNDIOPLUGIN_HPP

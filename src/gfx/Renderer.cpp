@@ -7,84 +7,84 @@
 #include <algorithm>
 
 
-
-Renderer::Renderer()
+namespace sbe
 {
-	RegisterForEvent( "ADD_ACTOR" );
-	RegisterForEvent( "UPDATE_ACTOR" );
-	RegisterForEvent( "REMOVE_ACTOR" );
-}
-
-/*	Events handled:
-	Event			| 	Data
-	----------------+---------------------------------------------
-	ADD_ACTOR		|	std::pair<std::shared_ptr<Actor>, int>
-	UPDATE_ACTOR	|	std::shared_ptr<Actor>
-	REMOVE_ACTOR	|	ActorID
-*/
-void Renderer::HandleEvent(Event& e)
-{
-	if ( e.Is ("ADD_ACTOR", typeid ( std::pair<std::shared_ptr<Actor>, int> )) )
+	Renderer::Renderer()
 	{
-		ActorInfo AI = boost::any_cast<ActorInfo>( e.Data() );
-		addActor( AI.first, AI.second );
+		RegisterForEvent( "ADD_ACTOR" );
+		RegisterForEvent( "UPDATE_ACTOR" );
+		RegisterForEvent( "REMOVE_ACTOR" );
 	}
-	else if ( e.Is ("UPDATE_ACTOR", typeid ( std::shared_ptr<Actor> )) )
+
+	/*	Events handled:
+		Event			| 	Data
+		----------------+---------------------------------------------
+		ADD_ACTOR		|	std::pair<std::shared_ptr<Actor>, int>
+		UPDATE_ACTOR	|	std::shared_ptr<Actor>
+		REMOVE_ACTOR	|	ActorID
+	*/
+	void Renderer::HandleEvent(Event& e)
 	{
-		std::shared_ptr<Actor> A = boost::any_cast<std::shared_ptr<Actor>>( e.Data() );
-		updateActor( A->getID(), A );
+		if ( e.Is ("ADD_ACTOR", typeid ( std::pair<std::shared_ptr<Actor>, int> )) )
+		{
+			ActorInfo AI = boost::any_cast<ActorInfo>( e.Data() );
+			addActor( AI.first, AI.second );
+		}
+		else if ( e.Is ("UPDATE_ACTOR", typeid ( std::shared_ptr<Actor> )) )
+		{
+			std::shared_ptr<Actor> A = boost::any_cast<std::shared_ptr<Actor>>( e.Data() );
+			updateActor( A->getID(), A );
+		}
+		else if ( e.Is ("REMOVE_ACTOR", typeid ( ActorID )) )
+		{
+			ActorID ID = boost::any_cast<ActorID>( e.Data() );
+			removeActor( ID );
+		}
 	}
-	else if ( e.Is ("REMOVE_ACTOR", typeid ( ActorID )) )
+
+	void Renderer::render(sf::RenderTarget& t)
 	{
-		ActorID ID = boost::any_cast<ActorID>( e.Data() );
-		removeActor( ID );
+		for ( RenderLayer& L : Layers)
+		{
+			if ( L.isActive ) updateLayer( L );
+			if ( L.cull && L.changed ) cullLayer( L );
+			if ( L.isActive ) drawLayer( L, t );
+		}
 	}
-}
 
-void Renderer::render(sf::RenderTarget& t)
-{
-	for ( RenderLayer& L : Layers)
+
+	void Renderer::renderSingleLayer(int index, sf::RenderTarget& t)
 	{
-		if ( L.isActive ) updateLayer( L );
-		if ( L.cull && L.changed ) cullLayer( L );
-		if ( L.isActive ) drawLayer( L, t );
+		if ( index >= 0 && index < Layers.size())
+		{
+			drawLayer( Layers[index], t );
+		}
 	}
-}
 
-
-void Renderer::renderSingleLayer(int index, sf::RenderTarget& t)
-{
-	if ( index >= 0 && index < Layers.size())
+	void Renderer::updateLayer(RenderLayer& L)
 	{
-		drawLayer( Layers[index], t );
+		for ( std::shared_ptr<Actor>& A : L.RenderList)
+		{
+			A->update( RenderTime.getElapsedTime() );
+		}
 	}
-}
 
-void Renderer::updateLayer(RenderLayer& L)
-{
-	for ( std::shared_ptr<Actor>& A : L.RenderList)
+	void Renderer::cullLayer(RenderLayer& L)
 	{
-		A->update( RenderTime.getElapsedTime() );
+		// do culling, not yet implemented
+
+		L.changed = false;
 	}
-}
 
-void Renderer::cullLayer(RenderLayer& L)
-{
-	// do culling, not yet implemented
-
-	L.changed = false;
-}
-
-void Renderer::drawLayer(const RenderLayer& L, sf::RenderTarget& t)
-{
-	if ( L.Cam ) t.setView( L.Cam->getView() );
-
-	for ( const std::shared_ptr<Actor>& A : L.RenderList)
+	void Renderer::drawLayer(const RenderLayer& L, sf::RenderTarget& t)
 	{
-		t.draw( A->getDrawable(), L.States );
-	}
-}
+		if ( L.Cam ) t.setView( L.Cam->getView() );
 
+		for ( const std::shared_ptr<Actor>& A : L.RenderList)
+		{
+			t.draw( A->getDrawable(), L.States );
+		}
+	}
 
 void Renderer::addLayer(const RenderLayer& L, const int index)
 {
@@ -167,3 +167,4 @@ void Renderer::removeActor(const ActorID& ID)
 	Layers[AI.second].changed = true;
 }
 
+} // namespace sbe

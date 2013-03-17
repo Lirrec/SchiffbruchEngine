@@ -12,117 +12,121 @@
 
 #include <functional>
 
-sfgList::sfgList(std::string ClickEventName)
- : selectedItems(0), EvTName ( ClickEventName ), MultiSelect(false)
+namespace sbe
 {
-	Frame = sfg::ScrolledWindow::Create();
-	ItemBox = sfg::Box::Create(sfg::Box::VERTICAL);
 
-	Frame->AddWithViewport( ItemBox );
-	Frame->SetRequisition( sf::Vector2f( 100.f, 200.f ) );
-	Frame->SetPlacement( sfg::ScrolledWindow::Placement::TOP_LEFT );
-	Frame->SetScrollbarPolicy ( sfg::ScrolledWindow::VERTICAL_AUTOMATIC | sfg::ScrolledWindow::HORIZONTAL_NEVER );
-}
-
-sfg::SharedPtr<sfg::Widget> sfgList::getList()
-{
-	return Frame;
-}
-
-void sfgList::addItem(std::string name)
-{
-	for ( auto it = Items.begin(); it != Items.end(); ++it)
+	sfgList::sfgList(std::string ClickEventName)
+	 : selectedItems(0), EvTName ( ClickEventName ), MultiSelect(false)
 	{
-		if ( (*it)->text == name )
-		{
-			Engine::out() << "[sfgList] Duplicate Labels not allowed!" << std::endl;
-		}
+		Frame = sfg::ScrolledWindow::Create();
+		ItemBox = sfg::Box::Create(sfg::Box::VERTICAL);
+
+		Frame->AddWithViewport( ItemBox );
+		Frame->SetRequisition( sf::Vector2f( 100.f, 200.f ) );
+		Frame->SetPlacement( sfg::ScrolledWindow::Placement::TOP_LEFT );
+		Frame->SetScrollbarPolicy ( sfg::ScrolledWindow::VERTICAL_AUTOMATIC | sfg::ScrolledWindow::HORIZONTAL_NEVER );
 	}
 
-	sfg::Label::Ptr L = sfg::Label::Create( name );
-	std::shared_ptr<sfgList::item> I( new sfgList::item( *this, name, false, L ) );
-	L->GetSignal( sfg::Label::OnLeftClick ).Connect( &item::click, I.get() );
-	L->SetAlignment( sf::Vector2f( 0, 0 ) );
-	ItemBox->Pack( L, false, false );
-	Items.push_back(I);
-}
-
-void sfgList::removeItem(std::string name)
-{
-	for ( auto it = Items.begin(); it != Items.end(); ++it)
+	sfg::SharedPtr<sfg::Widget> sfgList::getList()
 	{
-		if ( (*it)->text == name )
-		{
-			ItemBox->Remove( (*it)->label );
-			Items.erase(it);
-			break;
-		}
+		return Frame;
 	}
-}
 
-std::string sfgList::getSelectedItem()
-{
-	for ( auto it = Items.begin(); it != Items.end(); ++it)
+	void sfgList::addItem(std::string name)
 	{
-		if ((*it)->active)
+		for ( auto it = Items.begin(); it != Items.end(); ++it)
 		{
-			return (*it)->text;
-		}
-	}
-	return "";
-}
-
-std::vector<std::string> sfgList::getSelectedItems()
-{
-	std::vector<std::string> re;
-	for ( auto it = Items.begin(); it != Items.end(); ++it)
-	{
-		if ((*it)->active)
-			re.push_back( (*it)->text );
-	}
-	return re;
-}
-
-void sfgList::LabelClicked(std::string Name)
-{
-	for ( auto it = Items.begin(); it != Items.end(); ++it)
-	{
-		if ( (*it)->text == Name )
-		{
-			if ( (*it)->active )
+			if ( (*it)->text == name )
 			{
-				(*it)->active = false;
-				(*it)->label->SetText((*it)->text);
-				selectedItems--;
+				Engine::out() << "[sfgList] Duplicate Labels not allowed!" << std::endl;
 			}
-			else
-			{
+		}
 
-				if ( !MultiSelect )
+		sfg::Label::Ptr L = sfg::Label::Create( name );
+		std::shared_ptr<sfgList::item> I( new sfgList::item( *this, name, false, L ) );
+		L->GetSignal( sfg::Label::OnLeftClick ).Connect( &item::click, I.get() );
+		L->SetAlignment( sf::Vector2f( 0, 0 ) );
+		ItemBox->Pack( L, false, false );
+		Items.push_back(I);
+	}
+
+	void sfgList::removeItem(std::string name)
+	{
+		for ( auto it = Items.begin(); it != Items.end(); ++it)
+		{
+			if ( (*it)->text == name )
+			{
+				ItemBox->Remove( (*it)->label );
+				Items.erase(it);
+				break;
+			}
+		}
+	}
+
+	std::string sfgList::getSelectedItem()
+	{
+		for ( auto it = Items.begin(); it != Items.end(); ++it)
+		{
+			if ((*it)->active)
+			{
+				return (*it)->text;
+			}
+		}
+		return "";
+	}
+
+	std::vector<std::string> sfgList::getSelectedItems()
+	{
+		std::vector<std::string> re;
+		for ( auto it = Items.begin(); it != Items.end(); ++it)
+		{
+			if ((*it)->active)
+				re.push_back( (*it)->text );
+		}
+		return re;
+	}
+
+	void sfgList::LabelClicked(std::string Name)
+	{
+		for ( auto it = Items.begin(); it != Items.end(); ++it)
+		{
+			if ( (*it)->text == Name )
+			{
+				if ( (*it)->active )
 				{
-					// deselect others
-					for ( auto it = Items.begin(); it != Items.end(); ++it)
+					(*it)->active = false;
+					(*it)->label->SetText((*it)->text);
+					selectedItems--;
+				}
+				else
+				{
+
+					if ( !MultiSelect )
 					{
-						if ( (*it)->active )
+						// deselect others
+						for ( auto it = Items.begin(); it != Items.end(); ++it)
 						{
-							(*it)->active = false;
-							(*it)->label->SetText((*it)->text);
-							selectedItems--;
+							if ( (*it)->active )
+							{
+								(*it)->active = false;
+								(*it)->label->SetText((*it)->text);
+								selectedItems--;
+							}
 						}
 					}
-				}
 
-				(*it)->active = true;
-				(*it)->label->SetText( "* " + (*it)->text);
-				selectedItems++;
+					(*it)->active = true;
+					(*it)->label->SetText( "* " + (*it)->text);
+					selectedItems++;
 
-				if (EvTName != "")
-				{
-					Module::Get()->QueueEvent( Event(EvTName, (*it)->text) );
+					if (EvTName != "")
+					{
+						Module::Get()->QueueEvent( Event(EvTName, (*it)->text) );
+					}
 				}
+				break;
 			}
-			break;
 		}
 	}
-}
 
+} // namespace sbe

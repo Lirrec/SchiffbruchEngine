@@ -4,74 +4,79 @@
 #include <memory>
 
 #include "sbe/event/Event.hpp"
+#include <SFML/System/Clock.hpp>
 
-/**
-	This class provides simple functionality for running a tick-based eventloop.
-	It tries to call the Eventloop in the given frequency and will sleep if there is time left.
-	You may specify a TickEvent which will be sent by default with each eventloop.
-	An undefined TickEvent will not be sent.
-*/
-class TickControl
+
+namespace sbe
 {
-	public:
-		/**
-			Init method
-			@param TPS the desired ticks per second
-			@param TickEvt the desired Event to be set each tick
-		*/
-		void Init( int TPS, std::shared_ptr<Event> TickEvt );
 
-		/**
-			Set the desired amount of TicksPerSecond
-		*/
-		void SetTargetTicksPerSecond( int TPS );
+	/**
+		This class provides simple functionality for running a tick-based eventloop.
+		It tries to call the Eventloop in the given frequency and will sleep if there is time left.
+		You may specify a TickEvent which will be sent by default with each eventloop.
+		An undefined TickEvent will not be sent.
+	*/
+	class TickControl
+	{
+		public:
+			/**
+				Init method
+				@param TPS the desired ticks per second
+				@param TickEvt the desired Event to be set each tick
+			*/
+			void Init( int TPS, std::shared_ptr<Event> TickEvt );
 
-		/**
-			Specify which event should be sent as TickEvent.
-			An invalid/empty shared_ptr defaults to no Event.
-		*/
-		void SetTickEvent( std::shared_ptr<Event> TickEvt );
+			/**
+				Set the desired amount of TicksPerSecond
+			*/
+			void SetTargetTicksPerSecond( int TPS );
 
-		/**
-			Do a tick.
-			This usually sends a TickEvent to this threads eventqueue.
-		*/
-		void Tick();
+			/**
+				Specify which event should be sent as TickEvent.
+				An invalid/empty shared_ptr defaults to no Event.
+			*/
+			void SetTickEvent( std::shared_ptr<Event> TickEvt );
 
-	private:
+			/**
+				Do a tick.
+				This usually sends a TickEvent to this threads eventqueue.
+			*/
+			void Tick();
 
-		/**
-			Logs tick information.
-			Sends information about the current fps, ms taken per tick and ms slept per tick via the DEBUG_STRING Event.
-		*/
-		void LogModuleStats();
+		private:
 
-		/// Sleep the rest of the current tick
-		void YieldTickRest();
+			/**
+				Logs tick information.
+				Sends information about the current fps, ms taken per tick and ms slept per tick via the DEBUG_STRING Event.
+			*/
+			void LogModuleStats();
 
-		/// This event will be sent locally each tick
-		std::shared_ptr<Event> TickEvent;
+			/// Sleep the rest of the current tick
+			void YieldTickRest();
 
-		/// How many eventqueue ticks per second should this module try to reach
-		int 	TicksPerSecond;
-		/// How long took us the last tick (ms)
-		int	LastTickDuration;
-		/// How many ms did we lose through ticks that took longer then planned
-		int Lag;
+			/// This event will be sent locally each tick
+			std::shared_ptr<Event> TickEvent;
 
-		/// how many ms are spare till we should start the next tick
-		int		MsToNextTick;
-		/// how long should a tick at maximum take to reach our TPS (ms)
-		int	MaxTickDuration;
+			/// How many eventqueue ticks per second should this module try to reach
+			int 	TicksPerSecond;
+			/// How long took us the last tick (ms)
+			int	LastTickDuration;
+			/// How many ms did we lose through ticks that took longer then planned
+			int Lag;
 
-		/// Counts Frames/Ticks
-		int TickCounter;
+			/// how many ms are spare till we should start the next tick
+			int		MsToNextTick;
+			/// how long should a tick at maximum take to reach our TPS (ms)
+			int	MaxTickDuration;
 
-		/// last time we reported our stats
-		sf::Clock LastStatsLog;
-		/// counts how long each Tick takes
-		sf::Clock Timer;
-};
+			/// Counts Frames/Ticks
+			int TickCounter;
 
+			/// last time we reported our stats
+			sf::Clock LastStatsLog;
+			/// counts how long each Tick takes
+			sf::Clock Timer;
+	};
+
+} // namespace sbe
 #endif // TICKCONTROL_H
-

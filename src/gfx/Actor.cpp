@@ -3,13 +3,30 @@
 #include "sbe/Module.hpp"
 
 #include <boost/uuid/uuid_generators.hpp>
-
-Actor::Actor()
- : ID( boost::uuids::random_generator()() )
+namespace sbe
 {
-}
+	Actor::Actor()
+	 : ID( boost::uuids::random_generator()() )
+	{
+	}
 
-sf::Drawable& SpriteActor::getDrawable() { return sprite; }
-sf::Drawable& VertexActor::getDrawable() { return arr; }
-void AnimationActor::update( const sf::Time& RenderTime ) { Anim.update ( RenderTime ); }
-sf::Drawable& AnimationActor::getDrawable() { return Anim.getSprite(); }
+	sf::Drawable& SpriteActor::getDrawable()
+	{
+		return sprite;
+	}
+
+	sf::Drawable& VertexActor::getDrawable()
+	{
+		return arr;
+	}
+
+	void AnimationActor::update( const sf::Time& RenderTime )
+	{
+		Anim.update ( RenderTime );
+	}
+
+	sf::Drawable& AnimationActor::getDrawable()
+	{
+		return Anim.getSprite();
+	}
+} // namespace sbe

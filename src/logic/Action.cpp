@@ -1,12 +1,17 @@
 #include "Action.hpp"
 
-void Action::Execute()
+namespace sbe
 {
 
-}
+	void Action::Execute()
+	{
 
-// State functions, add new states
-void Action::AddState ( const std::string& name, StateFunction state_function )
-{
+	}
 
-}
+	// State functions, add new states
+	void Action::AddState ( const std::string& name, StateFunction state_function )
+	{
+
+	}
+
+} // namespace sbe

@@ -4,25 +4,27 @@
 #include "sbe/gfx/Animation.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 
-/**
-
-	An Animated sf::Sprite.
-*/
-class AnimatedSprite : public Animation
+namespace sbe
 {
-public:
+	/**
 
-		AnimatedSprite( ImageSet& _A );
+		An Animated sf::Sprite.
+	*/
+	class AnimatedSprite : public Animation
+	{
+	public:
 
-		/// update the associated sprite/vertexarray to show the correct sub-rect/frame of the image
-		void updateDrawable();
-		/// return the managed Sprite
-		sf::Sprite& getSprite();
-	private:
-		sf::Sprite s;
+			AnimatedSprite( ImageSet& _A );
 
-};
+			/// update the associated sprite/vertexarray to show the correct sub-rect/frame of the image
+			void updateDrawable();
+			/// return the managed Sprite
+			sf::Sprite& getSprite();
+		private:
+			sf::Sprite s;
 
+	};
+} // namespace sbe
 #endif // ANIMATEDSPRITE_HPP
 
 

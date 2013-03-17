@@ -1,16 +1,16 @@
 #ifndef SOUND_H
 #define SOUND_H
 
-#include <cstddef>
-#include <SFML/Audio.hpp>
+#include <SFML/Audio/Sound.hpp>
 #include <SFML/System/NonCopyable.hpp>
 
 #include "util/NamedList.hpp"
 
-#include <utility>
 #include <memory>
-#include <map>
 #include <string>
+
+namespace sbe
+{
 
 /**
 	A Soundsystem for managing currently active Sounds and volume.
@@ -39,6 +39,8 @@ class SoundSystem : sf::NonCopyable
 		NamedList<sf::Sound> CurrentSounds;
 
 };
+
+} // namespace sbe
 
 
 #endif // SOUND_H

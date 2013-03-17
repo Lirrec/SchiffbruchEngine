@@ -2,14 +2,19 @@
 
 #include "../event/EventCore.hpp"
 
-EventCore* Core::EvtCore;
-
-Core::Core()
+namespace sbe
 {
-	EvtCore = new EventCore() ;
-}
 
-Core::~Core()
-{
-	delete EvtCore;
-}
+	EventCore* Core::EvtCore;
+
+	Core::Core()
+	{
+		EvtCore = new EventCore() ;
+	}
+
+	Core::~Core()
+	{
+		delete EvtCore;
+	}
+
+} // namespace sbe

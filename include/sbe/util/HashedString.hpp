@@ -3,69 +3,71 @@
 
 #include <string>
 
-/**
-	@file HashedString.hpp
-	This Code was taken from GameCode3, which accompanies the great book "Game Coding Complete"
-	--
-	GameCode3 is the sample application that encapsulates much of the source code
-	discussed in "Game Coding Complete - 3rd Edition" by Mike McShaffry, published by
-	Charles River Media. ISBN-10: 1-58450-680-6   ISBN-13: 978-1-58450-680-5
-
-	A hashed string.  It retains the initial (ANSI) string in addition to the hash value for easy reference.
-
-	class HashedString				- Chapter 10, page 274
-*/
-
-class HashedString
+namespace sbe
 {
-public:
+	/**
+		@file HashedString.hpp
+		This Code was taken from GameCode3, which accompanies the great book "Game Coding Complete"
+		--
+		GameCode3 is the sample application that encapsulates much of the source code
+		discussed in "Game Coding Complete - 3rd Edition" by Mike McShaffry, published by
+		Charles River Media. ISBN-10: 1-58450-680-6   ISBN-13: 978-1-58450-680-5
 
-	typedef unsigned long HashType;
+		A hashed string.  It retains the initial (ANSI) string in addition to the hash value for easy reference.
 
-	static const HashType InvalidHash;
+		class HashedString				- Chapter 10, page 274
+	*/
 
-	explicit HashedString( char const * const pIdentString )
-		: m_ident( hash_name( pIdentString ) )
-	, m_identStr( pIdentString )
+	class HashedString
 	{
-	}
+	public:
 
-	HashType getHashValue( void ) const
-	{
+		typedef unsigned long HashType;
 
-		return reinterpret_cast<HashType>( m_ident );
-	}
+		static const HashType InvalidHash;
 
-	const std::string & getStr() const
-	{
-		return m_identStr;
-	}
+		explicit HashedString( char const * const pIdentString )
+			: m_ident( hash_name( pIdentString ) )
+		, m_identStr( pIdentString )
+		{
+		}
 
-	static
-	void * hash_name( char const *  pIdentStr );
+		HashType getHashValue( void ) const
+		{
 
-	bool operator< ( HashedString const & o ) const
-	{
-		bool r = ( getHashValue() < o.getHashValue() );
-		return r;
-	}
+			return reinterpret_cast<HashType>( m_ident );
+		}
 
-	bool operator== ( HashedString const & o ) const
-	{
-		bool r = ( getHashValue() == o.getHashValue() );
-		return r;
-	}
+		const std::string & getStr() const
+		{
+			return m_identStr;
+		}
 
-private:
+		static
+		void * hash_name( char const *  pIdentStr );
 
-	// note: m_ident is stored as a void* not an int, so that in
-	// the debugger it will show up as hex-values instead of
-	// integer values. This is a bit more representative of what
-	// we're doing here and makes it easy to allow external code
-	// to assign event types as desired.
+		bool operator< ( HashedString const & o ) const
+		{
+			bool r = ( getHashValue() < o.getHashValue() );
+			return r;
+		}
 
-	void *             m_ident;
-	std::string		   m_identStr;
-};
+		bool operator== ( HashedString const & o ) const
+		{
+			bool r = ( getHashValue() == o.getHashValue() );
+			return r;
+		}
 
+	private:
+
+		// note: m_ident is stored as a void* not an int, so that in
+		// the debugger it will show up as hex-values instead of
+		// integer values. This is a bit more representative of what
+		// we're doing here and makes it easy to allow external code
+		// to assign event types as desired.
+
+		void *             m_ident;
+		std::string		   m_identStr;
+	};
+} // namespace sbe
 #endif // STRINGHASH_H

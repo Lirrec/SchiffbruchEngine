@@ -2,36 +2,40 @@
 
 #include "sbe/io/SFistream.hpp"
 
-SoundIOPlugin::SoundIOPlugin()
- : iBinaryIOPlugin( "sounds" )
-{}
-
-SoundIOPlugin::~SoundIOPlugin()
+namespace sbe
 {
 
-}
+	SoundIOPlugin::SoundIOPlugin()
+	 : iBinaryIOPlugin( "sounds" )
+	{}
 
-SoundIOPlugin::ObjectList SoundIOPlugin::decodeStream(std::istream& in)
-{
-	ObjectList re;
-    std::shared_ptr<sf::SoundBuffer> SB( new sf::SoundBuffer());
-    sfIStream stream( in );
-    if ( SB->loadFromStream( stream ) )
-    {
-		re.push_back( SB );
-    }
+	SoundIOPlugin::~SoundIOPlugin()
+	{
 
-    return re;
-}
+	}
 
-bool SoundIOPlugin::encodeStream(const sf::SoundBuffer& o, std::ostream& out)
-{
-	Engine::out(Engine::ERROR) << "[SoundIOPlugin] Sorry, saving not implemented!" << std::endl;
-	return false;
-}
+	SoundIOPlugin::ObjectList SoundIOPlugin::decodeStream(std::istream& in)
+	{
+		ObjectList re;
+		std::shared_ptr<sf::SoundBuffer> SB( new sf::SoundBuffer());
+		sfIStream stream( in );
+		if ( SB->loadFromStream( stream ) )
+		{
+			re.push_back( SB );
+		}
 
-const std::vector<std::string>& SoundIOPlugin::getSupportedFileExtensions()
-{
-    static std::vector<std::string> fileexts { "ogg", "wav", "flac", "aiff", "au" };
-    return fileexts;
-}
+		return re;
+	}
+
+	bool SoundIOPlugin::encodeStream(const sf::SoundBuffer& o, std::ostream& out)
+	{
+		Engine::out(Engine::ERROR) << "[SoundIOPlugin] Sorry, saving not implemented!" << std::endl;
+		return false;
+	}
+
+	const std::vector<std::string>& SoundIOPlugin::getSupportedFileExtensions()
+	{
+		static std::vector<std::string> fileexts { "ogg", "wav", "flac", "aiff", "au" };
+		return fileexts;
+	}
+} // namespace sbe

@@ -1,5 +1,5 @@
 #ifndef     HYPODERMIC_BOOST_UUID_HASH_FUNCTOR_H_
-# define    HYPODERMIC_BOOST_UUID_HASH_FUNCTOR_H_
+#define    HYPODERMIC_BOOST_UUID_HASH_FUNCTOR_H_
 
 /**
 	@file BoostUUIDHash.hpp
@@ -27,6 +27,5 @@ namespace std
     };
 
 } // namespace std
-
 
 #endif /* !HYPODERMIC_BOOST_UUID_HASH_FUNCTOR_H_ */

@@ -8,69 +8,74 @@
 
 #include <boost/thread.hpp>
 #include <iostream>
-/**
- * A thread safe logger to print to stdout or stderr
- */
-class Logger
+
+namespace sbe
 {
-public:
-
-    Logger( std::ostream& _out ) :out(_out) {}
-    virtual ~Logger() {}
-
-    template <typename T>
-    Logger & operator <<(T data)
-    {
-        /* Takes any data type and stores in a stringstream
-         */
-        boost::mutex::scoped_lock io_mutex_lock(io_mutex);
-        oss << data;
-        out << data;
-        return *this;
-    }
-
-    Logger & operator<<(std::ostream& (*pf)(std::ostream&))
-    {
-        // for stream manipulators
-        boost::mutex::scoped_lock io_mutex_lock(io_mutex);
-        oss << pf;
-        out << pf;
-        return *this;
-    }
-
-    Logger & operator<<(Logger & (*pf)(Logger &))
-    {
-        //applicator - mainly calling the print function;
-        return pf(*this);
-    }
-
-	std::string GetLog()
+	/**
+	 * A thread safe logger to print to stdout or stderr
+	 */
+	class Logger
 	{
-		return oss.str();
-	}
+	public:
 
-	void ClearCache( int chars = -1 )
-	{
-		if ( chars == -1 )
+		Logger( std::ostream& _out ) :out(_out) {}
+		virtual ~Logger() {}
+
+		template <typename T>
+		Logger & operator <<(T data)
 		{
-			// clear everything
-			oss.str("");
-		}
-		else
-		{
-			oss.str( oss.str().erase (0, chars) );
+			/* Takes any data type and stores in a stringstream
+			 */
+			boost::mutex::scoped_lock io_mutex_lock(io_mutex);
+			oss << data;
+			out << data;
+			return *this;
 		}
 
-		oss.clear();
-	}
+		Logger & operator<<(std::ostream& (*pf)(std::ostream&))
+		{
+			// for stream manipulators
+			boost::mutex::scoped_lock io_mutex_lock(io_mutex);
+			oss << pf;
+			out << pf;
+			return *this;
+		}
 
-private:
+		Logger & operator<<(Logger & (*pf)(Logger &))
+		{
+			//applicator - mainly calling the print function;
+			return pf(*this);
+		}
 
-    static boost::mutex io_mutex;
-    std::stringstream oss;
-    std::ostream& out;
+		std::string GetLog()
+		{
+			return oss.str();
+		}
 
-};
+		void ClearCache( int chars = -1 )
+		{
+			if ( chars == -1 )
+			{
+				// clear everything
+				oss.str("");
+			}
+			else
+			{
+				oss.str( oss.str().erase (0, chars) );
+			}
+
+			oss.clear();
+		}
+
+	private:
+
+		static boost::mutex io_mutex;
+		std::stringstream oss;
+		std::ostream& out;
+
+	};
+
+} // namespace sbe
 
 #endif  /* LOGGER_H */
 

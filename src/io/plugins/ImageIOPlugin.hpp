@@ -8,18 +8,22 @@
 
 #include "sbe/io/IOPlugin.hpp"
 
-/// iBinaryIOPlugin for sf::Image
-class ImageIOPlugin : public iBinaryIOPlugin<sf::Image>
+namespace sbe
 {
-public:
-	ImageIOPlugin();
 
-	virtual ~ImageIOPlugin();
+	/// iBinaryIOPlugin for sf::Image
+	class ImageIOPlugin : public iBinaryIOPlugin<sf::Image>
+	{
+	public:
+		ImageIOPlugin();
 
-	virtual ObjectList decodeStream(std::istream &in);
-	virtual bool encodeStream( const sf::Image &o, std::ostream &out);
-	virtual const std::vector<std::string>& getSupportedFileExtensions();
-};
+		virtual ~ImageIOPlugin();
 
+		virtual ObjectList decodeStream(std::istream &in);
+		virtual bool encodeStream( const sf::Image &o, std::ostream &out);
+		virtual const std::vector<std::string>& getSupportedFileExtensions();
+	};
+
+} // namespace sbe
 #endif // TERRAINIOPLUGIN_HPP
 

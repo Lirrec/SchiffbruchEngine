@@ -5,38 +5,44 @@
 
 using boost::property_tree::ptree;
 
-ShaderIOPlugin::~ShaderIOPlugin()
+namespace sbe
 {
 
-}
-
-ShaderIOPlugin::ObjPtr ShaderIOPlugin::loadObject(const boost::property_tree::ptree::value_type &node){
-		ObjPtr re;
-	if (node.first != "Shader") return re;
-
-	try{
-		const ptree& pt = node.second;
-
-		std::string name = pt.get<std::string>("name");
-		std::string base = Engine::GetIO()->topPath() + "/shader/";
-
-		re.reset( new sf::Shader() );
-
-		re->loadFromFile(base + pt.get<std::string>("vert"),
-		                 base + pt.get<std::string>("frag"));
 
 
-	} catch( boost::property_tree::ptree_error )
+	ShaderIOPlugin::~ShaderIOPlugin()
 	{
-		Engine::out() << "[ShaderIOPlugin] Error loading Shader from ptree!";
-		re.reset();
+
+	}
+
+	ShaderIOPlugin::ObjPtr ShaderIOPlugin::loadObject(const boost::property_tree::ptree::value_type &node){
+			ObjPtr re;
+		if (node.first != "Shader") return re;
+
+		try{
+			const ptree& pt = node.second;
+
+			std::string name = pt.get<std::string>("name");
+			std::string base = Engine::GetIO()->topPath() + "/shader/";
+
+			re.reset( new sf::Shader() );
+
+			re->loadFromFile(base + pt.get<std::string>("vert"),
+							 base + pt.get<std::string>("frag"));
+
+
+		} catch( boost::property_tree::ptree_error )
+		{
+			Engine::out() << "[ShaderIOPlugin] Error loading Shader from ptree!";
+			re.reset();
+			return re;
+		}
+
 		return re;
 	}
 
-	return re;
-}
 
-
-bool ShaderIOPlugin::saveObject( const std::string& name, const sf::Shader &o, boost::property_tree::ptree &root){
-	Engine::out(Engine::ERROR) << "[ShaderIOPlugin] Saving shaders not possible!";
-}
+	bool ShaderIOPlugin::saveObject( const std::string& name, const sf::Shader &o, boost::property_tree::ptree &root){
+		Engine::out(Engine::ERROR) << "[ShaderIOPlugin] Saving shaders not possible!";
+	}
+} // namespace sbe

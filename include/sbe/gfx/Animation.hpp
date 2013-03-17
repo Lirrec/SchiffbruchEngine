@@ -9,88 +9,91 @@
 #include <string>
 #include <memory>
 
-/**
-	A base class for animations.
-	It supports restarting, pausing, setting the current frame, playing forwards/backwards etc.
-	To get a smooth Animation update() should be called in regular intervalls with a timer which represents the time passed ingame
-	@see AnimatedSprite, AnimatedVertexArray
-*/
-class Animation
+namespace sbe
 {
-	public:
+	/**
+		A base class for animations.
+		It supports restarting, pausing, setting the current frame, playing forwards/backwards etc.
+		To get a smooth Animation update() should be called in regular intervalls with a timer which represents the time passed ingame
+		@see AnimatedSprite, AnimatedVertexArray
+	*/
+	class Animation
+	{
+		public:
 
-		Animation( ImageSet& _A);
-		virtual ~Animation() {}
+			Animation( ImageSet& _A);
+			virtual ~Animation() {}
 
-		/// Reset the animation. Sets the current frame to 1 and stops.
-		void reset( const sf::Time& GameTime );
+			/// Reset the animation. Sets the current frame to 1 and stops.
+			void reset( const sf::Time& GameTime );
 
-		void setScreenPosition( Geom::Point p );
+			void setScreenPosition( Geom::Point p );
 
-		/// Set the animation to a specific Frame
-		void setFrame(int index);
+			/// Set the animation to a specific Frame
+			void setFrame(int index);
 
-		/// Start playing the animation by default all frames
-		void play(unsigned int from = 0, unsigned int to = 0);
-		/// Starts the animation at a random frame, including a slight random time offset
-		/// This is required if you start many animations in very short time, bc they would
-		/// otherwise update all at the same time
-		void playRandomized( const sf::Time& GameTime );
+			/// Start playing the animation by default all frames
+			void play(unsigned int from = 0, unsigned int to = 0);
+			/// Starts the animation at a random frame, including a slight random time offset
+			/// This is required if you start many animations in very short time, bc they would
+			/// otherwise update all at the same time
+			void playRandomized( const sf::Time& GameTime );
 
-		/// Pauses/Unpauses the Animation
-		void togglePlay();
+			/// Pauses/Unpauses the Animation
+			void togglePlay();
 
-		/// is the animation playing right now
-		bool isPlaying();
-		/// is the Animation playing reversed
-		bool isReverse();
-		/// is the Animation looping
-		bool isLooping();
+			/// is the animation playing right now
+			bool isPlaying();
+			/// is the Animation playing reversed
+			bool isReverse();
+			/// is the Animation looping
+			bool isLooping();
 
-		/// play the frames in reverse oder
-		void setReverse(bool reverse);
-		/// enable or disable looping ( restarting after the last frame )
-		void setLooping(bool loop);
+			/// play the frames in reverse oder
+			void setReverse(bool reverse);
+			/// enable or disable looping ( restarting after the last frame )
+			void setLooping(bool loop);
 
-		/// Advance the animation to the next frame
-		void advance();
-		/// Reverse Advance the animation to the current frame (which is the next one when playing reverse)
-		void rAdvance();
+			/// Advance the animation to the next frame
+			void advance();
+			/// Reverse Advance the animation to the current frame (which is the next one when playing reverse)
+			void rAdvance();
 
-		/**
-			Update the animation.
-			@param GameTime should contain the time passed since the start of the game
-		*/
-		virtual void update( const sf::Time& GameTime );
+			/**
+				Update the animation.
+				@param GameTime should contain the time passed since the start of the game
+			*/
+			virtual void update( const sf::Time& GameTime );
 
-		/**
-			Update the drawable managed by a Animation.
-			Has to be implemented by Classes deriving from Animation.
-		*/
-		virtual void updateDrawable() = 0;
+			/**
+				Update the drawable managed by a Animation.
+				Has to be implemented by Classes deriving from Animation.
+			*/
+			virtual void updateDrawable() = 0;
 
 
-	protected:
+		protected:
 
-		/// called once the animation is finished, send an EVT_ANIM_FINISCH event if requested
-		void finish();
+			/// called once the animation is finished, send an EVT_ANIM_FINISCH event if requested
+			void finish();
 
-		const ImageSet& AnimData;
-		Geom::Point Screen_Position;
+			const ImageSet& AnimData;
+			Geom::Point Screen_Position;
 
-		bool playing;
-		bool reverse;
-		bool looping;
-		bool sendEndEvent;
+			bool playing;
+			bool reverse;
+			bool looping;
+			bool sendEndEvent;
 
-		Geom::Vec2 CurFramePos;
-		int CurFrame;
+			Geom::Vec2 CurFramePos;
+			int CurFrame;
 
-		Geom::Vec2 RangeToPlay;
+			Geom::Vec2 RangeToPlay;
 
-		sf::Time LastUpdate;
+			sf::Time LastUpdate;
 
-};
+	};
+} // namespace sbe
 
 
 //class AnimatedVertexArray : Animation
