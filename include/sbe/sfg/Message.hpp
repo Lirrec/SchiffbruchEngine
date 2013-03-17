@@ -30,7 +30,7 @@ namespace sbe
 		public:
 
 			enum Type { OK, CHOICE };
-			Message( const Message::Type type_, const std::string title_, const std::string message_, const std::string answerEventName_ );
+			Message( const Message::Type type_, const std::string& title_, const std::string& message_, const std::string& answerEventName_ = "" );
 			~Message() {}
 			void ShowMessage();
 			void SaveMessageHandler( MessageHandler* h );
