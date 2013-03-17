@@ -23,6 +23,46 @@ set( CUSTOM_SFML_ROOT "${PROJECT_SOURCE_DIR}/SFGUI/extlibs/SFML" CACHE PATH "cus
 SET( CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
 
+#######################################################
+# compiler version detection                          #
+#######################################################
+
+if (CMAKE_COMPILER_IS_GNUCXX  AND NOT VERSION_CHECK_DONE)
+	# get gcc compiler version if not set
+	# if newer cmake, CMAKE_CXX_COMPILER_VERSION is set, so use it...
+	# if not, call 'c++ -dumpversion' and get it from there
+	if(CMAKE_CXX_COMPILER_VERSION)
+		set(GCC_VERSION "${CMAKE_CXX_COMPILER_VERSION}")
+	else()
+		execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
+	endif()
+endif()
+
+if(NOT VERSION_CHECK_DONE)
+	# set some definitions depending on gcc version
+	if (GCC_VERSION VERSION_EQUAL 4.7 OR GCC_VERSION VERSION_GREATER 4.7)
+	    add_definitions ( -std=c++11 )
+
+			if(GCC_VERSION VERSION_EQUAL 4.8 OR GCC_VERSION VERSION_GREATER 4.8)
+				add_definitions ( -D__GCC_4_8__ )
+				if(CMAKE_BUILD_TYPE MATCHES Debug)
+					add_definitions( -Og )
+				endif()
+			endif()
+	else()
+		if(GCC_VERSION VERSION_EQUAL 4.6 OR GCC_VERSION VERSION_GREATER 4.6)
+	    add_definitions ( -std=c++0x -D__GCC_4_6__ )
+		else()
+			message("-- Unsupported compiler detected. Build might fail!")
+			# changing this to -std=c++0x if you've got an old compiler, might work
+			add_definitions( -std=c++11 )
+		endif()
+	endif()
+	set(VERSION_CHECK_DONE ON)
+endif()
+
+
+
 #############################################################
 #################### External Libraries #####################
 #############################################################
@@ -114,38 +154,6 @@ else()
 	#override those, usually not set but SFGUI adds a bunch of additional warnings we dont want
 	set( CMAKE_CXX_FLAGS_RELEASE "-O3" CACHE STRING "C++ compiler flags" FORCE )
 	set( CMAKE_C_FLAGS_RELEASE   "-O3" CACHE STRING "C compiler flags" FORCE )
-endif()
-
-
-# get gcc compiler version
-if (CMAKE_COMPILER_IS_GNUCXX)
-	# if newer cmake, CMAKE_CXX_COMPILER_VERSION is set, so use it...
-	# if not, call 'c++ -dumpversion' and get it from there
-	if(CMAKE_CXX_COMPILER_VERSION)
-		set(GCC_VERSION "${CMAKE_CXX_COMPILER_VERSION}")
-	else()
-		execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
-	endif()
-endif()
-
-# set some definitions depending on gcc version
-if (GCC_VERSION VERSION_EQUAL 4.7 OR GCC_VERSION VERSION_GREATER 4.7)
-    add_definitions ( -std=c++11 )
-
-		if(GCC_VERSION VERSION_EQUAL 4.8 OR GCC_VERSION VERSION_GREATER 4.8)
-			add_definitions ( -D__GCC_4_8__ )
-			if(CMAKE_BUILD_TYPE MATCHES Debug)
-				add_definitions( -Og )
-			endif()
-		endif()
-else()
-	if(GCC_VERSION VERSION_EQUAL 4.6 OR GCC_VERSION VERSION_GREATER 4.6)
-    add_definitions ( -std=c++0x -D__GCC_4_6__ )
-	else()
-		message("-- Unsupported compiler detected. Build might fail!")
-		# changing this to -std=c++0x if you've got an old compiler, might work
-		add_definitions( -std=c++11 )
-	endif()
 endif()
 
 link_directories(${SFML_ROOT})

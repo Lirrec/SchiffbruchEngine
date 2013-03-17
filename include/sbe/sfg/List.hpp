@@ -1,10 +1,14 @@
 #ifndef SFGLIST_HPP
 #define SFGLIST_HPP
 
-#include <SFGUI/Widget.hpp>
-#include <SFGUI/Label.hpp>
-#include <SFGUI/ScrolledWindow.hpp>
-#include <SFGUI/Box.hpp>
+
+#include <SFGUI/SharedPtr.hpp>
+namespace sfg {
+		class Widget;
+		class Label;
+		class Box;
+		class ScrolledWindow;
+}
 
 #include <string>
 #include <vector>
@@ -23,7 +27,7 @@ public:
 	*/
 	sfgList ( std::string ClickEventName = "" );
 
-	sfg::Widget::Ptr getList() { return Frame; }
+	sfg::SharedPtr<sfg::Widget> getList();
 
 	/// set single or multiple selects
 	void setMultiSelect( bool multi ) { MultiSelect = multi; }
@@ -44,11 +48,11 @@ private:
 
 	struct item
 	{
-		item ( sfgList& l, std::string t, bool b, sfg::Label::Ptr p )
+		item ( sfgList& l, std::string t, bool b, sfg::SharedPtr<sfg::Label> p )
 		: text(t), active(b), list(l), label(p) {}
 		std::string text;
 		bool active;
-		sfg::Label::Ptr label;
+		sfg::SharedPtr<sfg::Label> label;
 		sfgList& list;
 		void click() { list.LabelClicked(text); }
 	};
@@ -58,8 +62,8 @@ private:
 
 	std::string EvTName;
 
-	sfg::ScrolledWindow::Ptr Frame;
-	sfg::Box::Ptr ItemBox;
+	sfg::SharedPtr<sfg::ScrolledWindow> Frame;
+	sfg::SharedPtr<sfg::Box> ItemBox;
 	bool MultiSelect;
 };
 
