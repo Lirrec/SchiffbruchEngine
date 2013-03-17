@@ -12,7 +12,7 @@ using namespace sfg;
 namespace sbe
 {
 
-	Message::Message ( Message::Type type_, std::string title_, std::string message_, std::string answerEventName_ )
+	Message::Message ( Message::Type type_, const std::string& title_, const std::string& message_, const std::string& answerEventName_ )
 	{
 		RegisterForEvent( "WINDOW_RESIZE" );
 		RegisterForEvent( "TOGGLE_FULLSCREEN" );
@@ -49,10 +49,16 @@ namespace sbe
 	void Message::MakeOkMessage()
 	{
 		Box::Ptr box = Box::Create( Box::VERTICAL, 0 );
-		box->Pack( Label::Create( Message_ ) );
+		box->Pack( Label::Create( Message_ ));
 		Button::Ptr ok = Button::Create( "OK" );
 		ok->GetSignal( Button::OnLeftClick ).Connect( &Message::Ok, this );
-		box->Pack( ok, false, false );
+		ok->SetRequisition ( sf::Vector2f(40, 10) );
+		Box::Ptr buttonbox = Box::Create( Box::HORIZONTAL, 0 );
+		Box::Ptr spacer = Box::Create();
+		spacer->SetRequisition ( sf::Vector2f(10, 10) );
+		buttonbox->Pack ( spacer, true, true );
+		buttonbox->Pack ( ok, false, false);
+		box->Pack( buttonbox, false, false );
 		Win->Add( box );
 		Module::Get()->QueueEvent( Event( "SCREEN_ADD_WINDOW", Win ) );
 	}
@@ -76,21 +82,21 @@ namespace sbe
 	void Message::Ok ()
 	{
 		Win->Show( false );
-		Module::Get()->QueueEvent( AnswerEventName_, true );
+		if ( AnswerEventName_ != "" ) Module::Get()->QueueEvent( AnswerEventName_, true );
 		Handler->RemoveAndDestroyMessage( this );
 	}
 
 	void Message::Abort()
 	{
 		Win->Show( false );
-		Module::Get()->QueueEvent( Event( AnswerEventName_, false ), true );
+		if ( AnswerEventName_ != "" ) Module::Get()->QueueEvent( Event( AnswerEventName_, false ), true );
 		Handler->RemoveAndDestroyMessage( this );
 	}
 
 	void Message::Confirm()
 	{
 		Win->Show( false );
-		Module::Get()->QueueEvent( Event( AnswerEventName_, true ), true );
+		if ( AnswerEventName_ != "" ) Module::Get()->QueueEvent( Event( AnswerEventName_, true ), true );
 		Handler->RemoveAndDestroyMessage( this );
 	}
 
