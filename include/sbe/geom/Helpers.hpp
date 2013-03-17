@@ -55,7 +55,7 @@ namespace sbe
 			Calculate the next power of 2 which is greater than x.
 			old ref: http://acius2.blogspot.com/2007/11/calculating-next-power-of-2.html
 		*/
-		inline int nextPow2(int x)
+		inline int nextpow2(int x)
 		{
 			int y = x;
 			while ( x &= ( x ^ ( ~x + 1 ) ) )
@@ -67,13 +67,13 @@ namespace sbe
 		/// returns the width of a rectangle
 		inline int rcWidth(const Rect& rc)
 		{
-			return abs(rc.y.x - rc.x.x);
+			return std::abs(rc.y.x - rc.x.x);
 		}
 
 		/// returns the height of a rectangle
 		inline int rcHeight(const Rect& rc)
 		{
-			return abs(rc.y.y - rc.x.y);
+			return std::abs(rc.y.y - rc.x.y);
 		}
 
 		/// returns the top right point of a rectangle
@@ -206,26 +206,25 @@ namespace sbe
 		/// calculates the squareddistance between two points (avoiding the sqrt, but still fine for comparisions)
 		inline float squaredist(const Point& from, const Point& to)
 		{
-			return abs(pow(from.x - to.x, 2)
-					+ pow(from.y - to.y, 2));
+			return std::abs(std::pow(from.x - to.x, 2)
+					+ std::pow(from.y - to.y, 2));
 		}
 
 		inline float squaredist(const Pointf& from, const Pointf& to)
 		{
-			return abs(pow(from.x - to.x, 2)
-					+ pow(from.y - to.y, 2));
+			return std::abs(std::pow(from.x - to.x, 2) + std::pow(from.y - to.y, 2));
 		}
 
 		/// calculates the distance between two points (just simple and not optimized)
 		inline float distance(const Point& from, const Point& to)
 		{
-			return sqrt( squaredist(from,to) );
+			return std::sqrt( squaredist(from,to) );
 		}
 
 		/// Compute the distance between two points ( floating point version )
 		inline float distance(const Pointf& from, const Pointf& to)
 		{
-			return sqrt( squaredist( from,to ) );
+			return std::sqrt( squaredist( from,to ) );
 		}
 
 		/// Compute the length of a vector
@@ -265,7 +264,7 @@ namespace sbe
 		*/
 		inline Geom::Point middle(const Point& p1, const Point& p2)
 		{
-			return Geom::Point( static_cast<int>(abs(p1.x + p2.x)/2),    static_cast<int>(abs(p1.y + p2.y)/2));
+			return Geom::Point( static_cast<int>(std::abs(p1.x + p2.x)/2),    static_cast<int>(std::abs(p1.y + p2.y)/2));
 		}
 
 		/// converts a Geom::Rect to sf::Floatrect
