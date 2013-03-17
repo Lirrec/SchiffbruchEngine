@@ -4,9 +4,13 @@
 #include "sbe/Module.hpp"
 #include "sbe/Engine.hpp"
 
-#include <functional>
-
+#include <SFGUI/Widget.hpp>
+#include <SFGUI/Label.hpp>
+#include <SFGUI/ScrolledWindow.hpp>
+#include <SFGUI/Box.hpp>
 #include <SFGUI/Viewport.hpp>
+
+#include <functional>
 
 sfgList::sfgList(std::string ClickEventName)
  : selectedItems(0), EvTName ( ClickEventName ), MultiSelect(false)
@@ -18,6 +22,11 @@ sfgList::sfgList(std::string ClickEventName)
 	Frame->SetRequisition( sf::Vector2f( 100.f, 200.f ) );
 	Frame->SetPlacement( sfg::ScrolledWindow::Placement::TOP_LEFT );
 	Frame->SetScrollbarPolicy ( sfg::ScrolledWindow::VERTICAL_AUTOMATIC | sfg::ScrolledWindow::HORIZONTAL_NEVER );
+}
+
+sfg::SharedPtr<sfg::Widget> sfgList::getList()
+{
+	return Frame;
 }
 
 void sfgList::addItem(std::string name)

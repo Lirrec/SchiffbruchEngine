@@ -1,5 +1,13 @@
 #include "sbe/sfg/DebugWindow.hpp"
 
+#include <SFGUI/Label.hpp>
+#include <SFGUI/Box.hpp>
+#include <SFGUI/Window.hpp>
+#include <SFGUI/Entry.hpp>
+#include <SFGUI/ScrolledWindow.hpp>
+
+using namespace sfg;
+
 #include "sbe/gfx/Screen.hpp"
 
 DebugWindow::DebugWindow( const Geom::Point& RelativePosition, const Geom::Vec2 Size)
@@ -15,44 +23,44 @@ DebugWindow::DebugWindow( const Geom::Point& RelativePosition, const Geom::Vec2 
 
 void DebugWindow::CreateWindow( const Geom::Point& RelativePosition, const Geom::Vec2 Size )
 {
-    Win = sfg::Window::Create( sfg::Window::Style::BACKGROUND | sfg::Window::Style::TITLEBAR | sfg::Window::Style::SHADOW  | sfg::Window::Style::RESIZE );
+    Win = Window::Create( Window::Style::BACKGROUND | Window::Style::TITLEBAR | Window::Style::SHADOW  | Window::Style::RESIZE );
 
     //DbgText and DbgLabels are different, so it looks like two columns.
-	DbgText = sfg::Label::Create();
+	DbgText = Label::Create();
 	DbgText->SetAlignment( sf::Vector2f(0.f, 0.f) );
 
-	DbgLabels = sfg::Label::Create();
+	DbgLabels = Label::Create();
 	DbgLabels->SetAlignment( sf::Vector2f(0.f, 0.f) );
 
-	LogText = sfg::Label::Create();
+	LogText = Label::Create();
 
     // create Inputbox for console commands.
-    sfg::Entry::Ptr consoleInput = sfg::Entry::Create();
+    Entry::Ptr consoleInput = Entry::Create();
 
-    consoleInput->GetSignal( sfg::Entry::OnTextChanged ).Connect( &Screen::OnHandledEvent , Screen::get() );
+    consoleInput->GetSignal( Entry::OnTextChanged ).Connect( &Screen::OnHandledEvent , Screen::get() );
 
     //consoleInput->AppendText( "Not yet implemented." );
-    consoleInput->SetState( sfg::Widget::State::INSENSITIVE );
+    consoleInput->SetState( Widget::State::INSENSITIVE );
 
 	Win->SetPosition( sf::Vector2f(RelativePosition.x, RelativePosition.y ) );
 	//Win->SetRequisition( sf::Vector2f(Size.x, Size.y ) );
 
 	// main box, vertical
-	sfg::Box::Ptr wholeBox( sfg::Box::Create( sfg::Box::VERTICAL, 3.0f ) );
+	Box::Ptr wholeBox( Box::Create( Box::VERTICAL, 3.0f ) );
 	// topbox, horizontal
-	sfg::Box::Ptr topBox( sfg::Box::Create( sfg::Box::HORIZONTAL, 3.0f ) );
-		sfg::Box::Ptr boxInfo( sfg::Box::Create( sfg::Box::HORIZONTAL, 3.0f ) );
+	Box::Ptr topBox( Box::Create( Box::HORIZONTAL, 3.0f ) );
+		Box::Ptr boxInfo( Box::Create( Box::HORIZONTAL, 3.0f ) );
 		boxInfo->Pack( DbgLabels, false, false);
 		boxInfo->Pack( DbgText, false, false);
 	topBox->Pack(boxInfo, false, false);
 
-		LogBox = sfg::Box::Create( sfg::Box::VERTICAL );
+		LogBox = Box::Create( Box::VERTICAL );
 		LogBox->Pack(LogText, true, true);
 
-		scrolledwindow = sfg::ScrolledWindow::Create();
+		scrolledwindow = ScrolledWindow::Create();
 		scrolledwindow->AddWithViewport( LogBox );
 		scrolledwindow->SetRequisition( sf::Vector2f( 400.f, 100.f ) );
-		scrolledwindow->SetScrollbarPolicy( sfg::ScrolledWindow::HORIZONTAL_AUTOMATIC | sfg::ScrolledWindow::VERTICAL_AUTOMATIC );
+		scrolledwindow->SetScrollbarPolicy( ScrolledWindow::HORIZONTAL_AUTOMATIC | ScrolledWindow::VERTICAL_AUTOMATIC );
 	topBox->Pack ( scrolledwindow , true , true );
 	wholeBox->Pack ( topBox , true , true );
 	wholeBox->Pack ( consoleInput , false , false );
@@ -166,7 +174,7 @@ void DebugWindow::AddLogText( std::string& newtext, int labelTextLimit )
 		LogText->SetText( LogText->GetText() + labeltext);
 
 		Engine::out() << " Adding one more label.. " << std::endl;
-		LogText = sfg::Label::Create();
+		LogText = Label::Create();
 		LogText->SetAlignment( sf::Vector2f(0.f, 0.f) );
 		LogBox->Pack(LogText, true, true);
 

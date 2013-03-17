@@ -3,9 +3,18 @@
 
 #include "sbe/event/EventUser.hpp"
 #include <memory>
-#include <SFGUI/SFGUI.hpp>
+
+#include <SFGUI/SharedPtr.hpp>
+namespace sfg {
+		class Label;
+		class Box;
+		class Window;
+		class ScrolledWindow;
+}
 
 #include "sbe/geom/Point.hpp"
+
+
 
 /**
 	A Simple Window showing the VIEW_DEBUG_STRING events and the log.
@@ -41,13 +50,12 @@ class DebugWindow : public EventUser
 		void UpdateText(FilterLevel level = FilterLevel::VERBOSE);
 		void AddLogText( std::string& newtext, int labelTextLimit );
 
-
-		sfg::Label::Ptr LogText;
-		sfg::Label::Ptr DbgText;
-		sfg::Label::Ptr DbgLabels;
-		sfg::Box::Ptr	LogBox;
-		sfg::Window::Ptr Win;
-		sfg::ScrolledWindow::Ptr scrolledwindow;
+		sfg::SharedPtr<sfg::Label> LogText;
+		sfg::SharedPtr<sfg::Label> DbgText;
+		sfg::SharedPtr<sfg::Label> DbgLabels;
+		sfg::SharedPtr<sfg::Box>	LogBox;
+		sfg::SharedPtr<sfg::Window> Win;
+		sfg::SharedPtr<sfg::ScrolledWindow> scrolledwindow;
 		unsigned int currentlabeltext;
 		unsigned int updateCounter;
 
