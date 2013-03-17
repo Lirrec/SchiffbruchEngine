@@ -251,5 +251,8 @@ namespace sbe
 	};
 
 } // namespace sbe
+
+typedef sbe::Module Module;
+
 #endif // MODULE_H
 

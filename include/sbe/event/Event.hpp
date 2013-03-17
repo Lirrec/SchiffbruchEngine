@@ -148,5 +148,7 @@ namespace sbe
 
 } // sbe
 
+typedef sbe::Event Event;
+
 #endif // EVENT_H
 

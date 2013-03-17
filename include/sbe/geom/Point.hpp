@@ -100,4 +100,7 @@ namespace sbe
 
 	}
 } // namespace sbe
+
+namespace Geom = sbe::Geom;
+
 #endif // TEMPLATES_HPP

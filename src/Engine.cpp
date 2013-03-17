@@ -13,12 +13,14 @@
 #include "sbe/io/IO.hpp"
 #include "sbe/ResourceManager.hpp"
 
-
 #include <memory>
 #include <iostream>
+#include <chrono>
 
 namespace sbe
 {
+
+	typedef std::chrono::high_resolution_clock Clock;
 
 	Engine* Engine::Instance;
 

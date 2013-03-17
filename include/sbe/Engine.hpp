@@ -3,7 +3,6 @@
 
 #include "Logger.hpp"
 #include <memory>
-#include <chrono>
 
 namespace sf { class RenderWindow; }
 
@@ -35,7 +34,6 @@ namespace sbe
 
 		public:
 
-		typedef std::chrono::high_resolution_clock Clock;
 
 		/// Defines the differnt severity levels of log messages
 		enum LogLevel
@@ -117,4 +115,7 @@ namespace sbe
 	};
 
 } // namespace sbe
+
+typedef sbe::Engine Engine;
+
 #endif // ENGINE_H
