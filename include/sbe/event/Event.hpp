@@ -7,7 +7,6 @@
 
 #include "sbe/util/HashedString.hpp"
 #include "sbe/Engine.hpp"
-#include "sbe/Module.hpp"
 
 #include <map>
 #include <vector>

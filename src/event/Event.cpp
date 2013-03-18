@@ -32,7 +32,7 @@ namespace sbe
 		init ( EventName, _Data );
 	}
 
-	void Event::initIDs( const boost::uuids::uuid& Source = invalid_source_id )
+	void Event::initIDs( const boost::uuids::uuid& Source)
 	{
 		SourceID = Source;
 		EventID = Module::NewUUID();
