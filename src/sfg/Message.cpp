@@ -50,15 +50,22 @@ namespace sbe
 	{
 		Box::Ptr box = Box::Create( Box::VERTICAL, 0 );
 		box->Pack( Label::Create( Message_ ));
+		Box::Ptr buttonBox = Box::Create( Box::HORIZONTAL, 0 );
+		{
+			Box::Ptr spacer = Box::Create();
+			spacer->SetRequisition ( sf::Vector2f(10, 10) );
+			buttonBox->Pack ( spacer, true, true );
+		}
 		Button::Ptr ok = Button::Create( "OK" );
 		ok->GetSignal( Button::OnLeftClick ).Connect( &Message::Ok, this );
-		ok->SetRequisition ( sf::Vector2f(40, 10) );
-		Box::Ptr buttonbox = Box::Create( Box::HORIZONTAL, 0 );
-		Box::Ptr spacer = Box::Create();
-		spacer->SetRequisition ( sf::Vector2f(10, 10) );
-		buttonbox->Pack ( spacer, true, true );
-		buttonbox->Pack ( ok, false, false);
-		box->Pack( buttonbox, false, false );
+		ok->SetRequisition ( sf::Vector2f(50, 10) );
+		buttonBox->Pack ( ok, false, false );
+		box->Pack( buttonBox, false, false );
+		{
+			Box::Ptr spacer = Box::Create();
+			spacer->SetRequisition ( sf::Vector2f(10, 10) );
+			buttonBox->Pack ( spacer, true, true );
+		}
 		Win->Add( box );
 		Module::Get()->QueueEvent( Event( "SCREEN_ADD_WINDOW", Win ) );
 	}
@@ -68,13 +75,25 @@ namespace sbe
 		Box::Ptr box = Box::Create( Box::VERTICAL, 0 );
 		box->Pack( Label::Create( Message_ ) );
 		Box::Ptr buttonBox = Box::Create( Box::HORIZONTAL, 0 );
+		{
+			Box::Ptr spacer = Box::Create();
+			spacer->SetRequisition ( sf::Vector2f(10, 10) );
+			buttonBox->Pack ( spacer, true, true );
+		}
 		Button::Ptr abort = Button::Create( "Abort" );
+		abort->SetRequisition ( sf::Vector2f(50, 10) );
 		abort->GetSignal( Button::OnLeftClick ).Connect( &Message::Ok, this );
 		buttonBox->Pack( abort, false, false );
 		Button::Ptr confirm = Button::Create( "Confirm" );
+		confirm->SetRequisition ( sf::Vector2f(50, 10) );
 		confirm->GetSignal( Button::OnLeftClick ).Connect( &Message::Ok, this );
 		buttonBox->Pack( confirm, false, false );
-		box->Add( buttonBox );
+		{
+			Box::Ptr spacer = Box::Create();
+			spacer->SetRequisition ( sf::Vector2f(10, 10) );
+			buttonBox->Pack ( spacer, true, true );
+		}
+		box->Pack( buttonBox );
 		Win->Add( box );
 		Module::Get()->QueueEvent( Event( "SCREEN_ADD_WINDOW", Win ) );
 	}
@@ -89,7 +108,7 @@ namespace sbe
 	void Message::Abort()
 	{
 		Win->Show( false );
-		if ( AnswerEventName_ != "" ) Module::Get()->QueueEvent( Event( AnswerEventName_, false ), true );
+		//if ( AnswerEventName_ != "" ) Module::Get()->QueueEvent( Event( AnswerEventName_, false ), true );
 		Handler->RemoveAndDestroyMessage( this );
 	}
 
