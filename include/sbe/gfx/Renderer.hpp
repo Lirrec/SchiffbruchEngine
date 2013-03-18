@@ -26,23 +26,31 @@ namespace sbe
 			RenderLayer() :
 				isActive(true),
 				cull(false),
-				changed(true) {}
+				changed(true)
+			{}
 
 			RenderLayer( std::shared_ptr<Camera> C, sf::RenderStates S )
-			: RenderLayer()
+			: 	isActive(true),
+				cull(false),
+				changed(true)
 			{
 				Cam = C;
 				States = S;
 			}
 
 			RenderLayer( std::shared_ptr<Camera> C )
-			: RenderLayer()
+			: 	isActive(true),
+				cull(false),
+				changed(true)
 			{
 				Cam = C;
 			}
 
 			RenderLayer( sf::RenderStates S )
-			: RenderLayer() {
+			: 	isActive(true),
+				cull(false),
+				changed(true)
+			{
 				States = S;
 			}
 
