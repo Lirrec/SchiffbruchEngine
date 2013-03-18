@@ -21,28 +21,29 @@ namespace sbe
 	Event::Event(const std::string& EventName,
 				const boost::uuids::uuid& Source
 				 )
-			 : 	SourceID(Source),
-				EventID(Module::NewUUID())
 	{
-		EvtData = 0;
-
-		if (!Core::EvtCore->HasEvent( EventName ))
-		{
-			//Engine::out() << "[EVENT] First Time occurence of new Event: '" << EventName << "'" << std::endl;
-			Core::EvtCore->RegisterEventName( EventName );
-		}
-
-		Type = Core::EvtCore->GetEventHash( EventName );
+		initIDs( Source );
+		init ( EventName, 0 );
 	}
 
 	Event::Event( const std::string& EventName, const boost::any& _Data )
-			 : 	SourceID(invalid_source_id),
-				EventID(Module::NewUUID()),
-				EvtData( _Data )
+	{
+		initIDs();
+		init ( EventName, _Data );
+	}
+
+	void Event::initIDs( const boost::uuids::uuid& Source)
+	{
+		SourceID = Source;
+		EventID = Module::NewUUID();
+	}
+
+
+	void Event::init( const std::string& EventName, const boost::any& _Data)
 	{
 		if (!Core::EvtCore->HasEvent( EventName ))
 			Core::EvtCore->RegisterEventName( EventName );
-
+		EvtData = _Data;
 		Type = Core::EvtCore->GetEventHash( EventName );
 	}
 

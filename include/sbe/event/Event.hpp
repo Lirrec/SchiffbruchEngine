@@ -12,6 +12,8 @@
 #include <vector>
 #include <list>
 
+
+
 namespace sbe
 {
 
@@ -106,7 +108,12 @@ namespace sbe
 
 			template < class T >
 			Event( const std::string& EventName, const T& _Data )
-				: Event(EventName, boost::any(_Data)) {} ;
+			{
+				initIDs();
+				init( EventName, boost::any(_Data) );
+			}
+
+
 
 			typedef boost::any EventData;
 			typedef HashedString::HashType EventType;
@@ -139,6 +146,9 @@ namespace sbe
 			bool Is(const EventType& otherType) { return Type == otherType; };
 
 		private:
+
+			void init( const std::string& EventName, const boost::any& _data);
+			void initIDs( const boost::uuids::uuid& Source = invalid_source_id );
 
 			EventType Type;
 			boost::uuids::uuid SourceID;
