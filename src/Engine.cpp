@@ -12,6 +12,7 @@
 
 #include "sbe/io/IO.hpp"
 #include "sbe/ResourceManager.hpp"
+#include "sbe/util/console/CommandParser.hpp"
 
 #include <memory>
 #include <iostream>
@@ -51,6 +52,9 @@ namespace sbe
 
 		ResMgr->init();
 
+		Engine:out(Engine::INFO) << "[Engine] CommandParser..." << std::endl;
+		CmdPrs.reset(new sbe::CommandParser);
+
 		Engine::out(Engine::INFO) << "[Engine] Config..." << std::endl;
 		_config.reset( new Config );
 
@@ -66,6 +70,7 @@ namespace sbe
 		SndSys  .reset();
 		ResMgr  .reset();
 		_config.reset();
+		CmdPrs  .reset();
 
 		SpamLogger.reset();
 		InfoLogger.reset();
@@ -104,10 +109,11 @@ namespace sbe
 		}
 	}
 
-	std::shared_ptr<SoundSystem>     Engine::GetSndSys() { return Instance->SndSys; }
-	std::shared_ptr<ResourceManager> Engine::GetResMgr() { return Instance->ResMgr; }
-	std::shared_ptr<IO>	             Engine::GetIO()     { return Instance->Io; }
-	std::shared_ptr<Config>	         Engine::getCfg()    { return Instance->_config; }
-	sf::RenderWindow&                Engine::GetApp()    { return *(Instance->App); }
+	std::shared_ptr<SoundSystem>     Engine::GetSndSys()    { return Instance->SndSys; }
+	std::shared_ptr<ResourceManager> Engine::GetResMgr()    { return Instance->ResMgr; }
+	std::shared_ptr<IO>	             Engine::GetIO()        { return Instance->Io; }
+	std::shared_ptr<Config>	         Engine::getCfg()       { return Instance->_config; }
+	std::shared_ptr<CommandParser>   Engine::GetCmdParser() { return Instance->CmdPrs; }
+	sf::RenderWindow&                Engine::GetApp()       { return *(Instance->App); }
 
 } // namespace sbe
