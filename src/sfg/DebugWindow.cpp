@@ -8,7 +8,7 @@
 
 using namespace sfg;
 
-#include "sbe/gfx/Screen.hpp"
+// include "sbe/gfx/Screen.hpp"
 
 namespace sbe
 {
@@ -37,12 +37,13 @@ namespace sbe
 		LogText = Label::Create();
 
 		// create Inputbox for console commands.
-		Entry::Ptr consoleInput = Entry::Create();
+		ConsoleInput = Entry::Create();
 
-		consoleInput->GetSignal( Entry::OnTextChanged ).Connect( &Screen::OnHandledEvent , Screen::get() );
+		//ConsoleInput->GetSignal( Entry::OnTextChanged ).Connect( &Screen::OnHandledEvent , Screen::get() );
+		ConsoleInput->GetSignal( Entry::OnTextChanged ).Connect( &DebugWindow::EntryInput , this );
 
-		//consoleInput->AppendText( "Not yet implemented." );
-		consoleInput->SetState( Widget::State::INSENSITIVE );
+		//ConsoleInput->AppendText( "Not yet implemented." );
+		///ConsoleInput->SetState( Widget::State::INSENSITIVE );
 
 		Win->SetPosition( sf::Vector2f(RelativePosition.x, RelativePosition.y ) );
 		//Win->SetRequisition( sf::Vector2f(Size.x, Size.y ) );
@@ -65,7 +66,7 @@ namespace sbe
 			scrolledwindow->SetScrollbarPolicy( ScrolledWindow::HORIZONTAL_AUTOMATIC | ScrolledWindow::VERTICAL_AUTOMATIC );
 		topBox->Pack ( scrolledwindow , true , true );
 		wholeBox->Pack ( topBox , true , true );
-		wholeBox->Pack ( consoleInput , false , false );
+		wholeBox->Pack ( ConsoleInput , false , false );
 
 
 		// Create a window and add the box layouter to it. Also set the window's title.
@@ -107,6 +108,28 @@ namespace sbe
 			}
 		}
 	}
+
+    void DebugWindow::EntryInput()
+    {
+        std::string text = ((std::string)( ConsoleInput->GetText() ));
+        int cursorPos = ConsoleInput->GetCursorPosition();
+        if ( text != "" )
+        {
+            char lastChar = '\0';
+            if ( cursorPos != 0 )
+            {
+                lastChar = text.at( cursorPos - 1 );
+            }
+            if ( lastChar == ' ' )
+            {
+                text = text.substr( 0, cursorPos - 1 ) + text.substr( cursorPos, text.length() - cursorPos );
+                Module::Get()->QueueEvent( Event( "EVT_DEBUG_COMMAND", text ) );
+                /**DEBUG**/Engine::out() << "[DebugWindow] Command: '" << text << "'" << std::endl;
+                ConsoleInput->SetCursorPosition( 0 );
+                ConsoleInput->SetText( "" );
+            }
+        }
+    }
 
 	void DebugWindow::UpdateText(FilterLevel level)
 	{

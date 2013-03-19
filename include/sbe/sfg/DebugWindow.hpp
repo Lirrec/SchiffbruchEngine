@@ -10,6 +10,7 @@ namespace sfg {
 		class Box;
 		class Window;
 		class ScrolledWindow;
+		class Entry;
 }
 
 #include "sbe/geom/Point.hpp"
@@ -45,7 +46,7 @@ namespace sbe
 		private:
 			void CreateWindow(const Geom::Point& RelativePosition, const Geom::Vec2 Size);
 
-			void OnConsoleInputActivation();
+			void EntryInput();
 
 			void UpdateText(FilterLevel level = FilterLevel::VERBOSE);
 			void AddLogText( std::string& newtext, int labelTextLimit );
@@ -56,6 +57,7 @@ namespace sbe
 			sfg::SharedPtr<sfg::Box>	LogBox;
 			sfg::SharedPtr<sfg::Window> Win;
 			sfg::SharedPtr<sfg::ScrolledWindow> scrolledwindow;
+            sfg::SharedPtr<sfg::Entry> ConsoleInput;
 			unsigned int currentlabeltext;
 			unsigned int updateCounter;
 
