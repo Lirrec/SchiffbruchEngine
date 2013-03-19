@@ -41,12 +41,14 @@ namespace sbe
 				EVT_FRAME			|	-
 				TOGGLE_SHOW_DBGWIN	|	-
 			*/
-			void HandleEvent( Event& e);
+			void HandleEvent( Event& e );
 
 		private:
-			void CreateWindow(const Geom::Point& RelativePosition, const Geom::Vec2 Size);
+			void CreateWindow( const Geom::Point& RelativePosition, const Geom::Vec2 Size );
 
-			void EntryInput();
+			void EntryGainFocus();
+			void EntryLostFocus();
+			bool ListenToActionKeys;
 
 			void UpdateText(FilterLevel level = FilterLevel::VERBOSE);
 			void AddLogText( std::string& newtext, int labelTextLimit );

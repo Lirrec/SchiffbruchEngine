@@ -13,10 +13,10 @@ namespace sbe
 		public:
 
 			Node();
-            virtual ~Node() {}
+			virtual ~Node() {}
 
 		private:
-            std::list<Node> Childs;
+			std::list<Node> Childs;
 	};
 } // namespace sbe
 #endif // NODE
