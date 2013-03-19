@@ -1,5 +1,6 @@
 #include "sbe/sfg/DebugWindow.hpp"
 
+#include <sbe/util/console/CommandParser.hpp>
 #include <SFGUI/Label.hpp>
 #include <SFGUI/Box.hpp>
 #include <SFGUI/Window.hpp>
@@ -120,11 +121,15 @@ namespace sbe
             {
                 lastChar = text.at( cursorPos - 1 );
             }
-            if ( lastChar == ' ' )
+            if ( lastChar == '.' )
             {
                 text = text.substr( 0, cursorPos - 1 ) + text.substr( cursorPos, text.length() - cursorPos );
-                Module::Get()->QueueEvent( Event( "EVT_DEBUG_COMMAND", text ) );
-                /**DEBUG**/Engine::out() << "[DebugWindow] Command: '" << text << "'" << std::endl;
+                if ( text.length() > 0 )
+                {
+                    Module::Get()->QueueEvent( Event( "EVT_DEBUG_COMMAND", text ) );
+                    Engine::GetCmdParser()->Execute( text );
+                    /**DEBUG**/Engine::out() << "[DebugWindow] Command: '" << text << "'" << std::endl;
+                }
                 ConsoleInput->SetCursorPosition( 0 );
                 ConsoleInput->SetText( "" );
             }
