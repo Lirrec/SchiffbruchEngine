@@ -92,6 +92,22 @@ namespace sbe
 		}
 
 		/**
+			Append a quad to a vertexarray. This version takes Texturecoordinates
+		*/
+		inline void AppendQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, Geom::Rect coords, sf::Color _color )
+		{
+			sf::Vertex vs[4];
+			SetQuadPos( vs, Pos );
+			SetQuadTex( vs, coords );
+			SetQuadColor( vs, _color);
+
+			vA.append( vs[0] );
+			vA.append( vs[1] );
+			vA.append( vs[2] );
+			vA.append( vs[3] );
+		}
+
+		/**
 			Append a quad to a vertexarray. This version takes Vertexcolors
 		*/
 		inline void AppendQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, sf::Color c )
@@ -114,6 +130,22 @@ namespace sbe
 			sf::Vertex vs[4];
 			SetQuadPos( vs, Pos );
 			SetQuadTex( vs, coords );
+
+			vA[ ArrayIndex ] = vs[0];
+			vA[ ArrayIndex + 1 ] = vs[1];
+			vA[ ArrayIndex + 2 ] = vs[2];
+			vA[ ArrayIndex + 3 ] = vs[3];
+		}
+
+		/**
+			Update a quad in a vertexarray ( 4 vertices ). This version takes Texturecoordinates
+		*/
+		inline void UpdateQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, const Geom::Rect& coords, const int ArrayIndex, sf::Color _color)
+		{
+			sf::Vertex vs[4];
+			SetQuadPos( vs, Pos );
+			SetQuadTex( vs, coords );
+			SetQuadColor( vs, _color);
 
 			vA[ ArrayIndex ] = vs[0];
 			vA[ ArrayIndex + 1 ] = vs[1];
