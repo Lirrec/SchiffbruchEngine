@@ -16,7 +16,7 @@ namespace sbe
 	class SFMLEventConverter;
 	class IO;
 	class Config;
-	//class Logger;
+	class CommandParser;
 
 	/**
 		Main class for the Engine providing static access to most subsystems.
@@ -97,6 +97,8 @@ namespace sbe
 			static std::shared_ptr<IO>              GetIO();
 			/// static access to the Config
 			static std::shared_ptr<Config>          getCfg();
+			/// static access to the CommandParser
+			static std::shared_ptr<CommandParser>   GetCmdParser();
 
 
 		private:
@@ -108,10 +110,11 @@ namespace sbe
 			std::shared_ptr<Logger>			WarningLogger;
 			std::shared_ptr<Logger>			ErrorLogger;
 
-			std::shared_ptr<SoundSystem> 	SndSys;
-			std::shared_ptr<ResourceManager>	ResMgr;
-			std::shared_ptr<IO>	Io;
+			std::shared_ptr<SoundSystem>     SndSys;
+			std::shared_ptr<ResourceManager> ResMgr;
+			std::shared_ptr<IO>              Io;
 			std::shared_ptr<Config>	_config;
+			std::shared_ptr<CommandParser>   CmdPrs;
 	};
 
 } // namespace sbe
