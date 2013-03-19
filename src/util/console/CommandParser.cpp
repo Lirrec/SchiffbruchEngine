@@ -28,6 +28,7 @@ namespace sbe
 
 	std::string CommandParser::Complete( std::string c )
 	{
-
+		///@TODO: search in tree (first implement tree)
+		return c + " tab";
 	}
 }

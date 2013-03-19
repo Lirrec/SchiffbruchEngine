@@ -9,8 +9,6 @@
 
 using namespace sfg;
 
-// include "sbe/gfx/Screen.hpp"
-
 namespace sbe
 {
 	DebugWindow::DebugWindow( const Geom::Point& RelativePosition, const Geom::Vec2 Size)
@@ -18,9 +16,12 @@ namespace sbe
 		RegisterForEvent( "VIEW_DBG_STRING" );
 		RegisterForEvent( "EVT_FRAME" );
 		RegisterForEvent( "TOGGLE_SHOW_DBGWIN" );
+		RegisterForEvent( "KEY_PRESSED_ENTER" );
+		RegisterForEvent( "KEY_PRESSED_TAB" );
 
 		updateCounter = 0;
 		currentlabeltext = 0;
+		ListenToActionKeys = false;
 		CreateWindow(RelativePosition, Size);
 	}
 
@@ -40,8 +41,8 @@ namespace sbe
 		// create Inputbox for console commands.
 		ConsoleInput = Entry::Create();
 
-		//ConsoleInput->GetSignal( Entry::OnTextChanged ).Connect( &Screen::OnHandledEvent , Screen::get() );
-		ConsoleInput->GetSignal( Entry::OnTextChanged ).Connect( &DebugWindow::EntryInput , this );
+		ConsoleInput->GetSignal( Entry::OnGainFocus ).Connect( &DebugWindow::EntryGainFocus , this );
+		ConsoleInput->GetSignal( Entry::OnLostFocus ).Connect( &DebugWindow::EntryLostFocus , this );
 
 		//ConsoleInput->AppendText( "Not yet implemented." );
 		///ConsoleInput->SetState( Widget::State::INSENSITIVE );
@@ -82,8 +83,6 @@ namespace sbe
 	{
 		if (e.Is("VIEW_DBG_STRING", typeid( std::pair< std::string, std::string> )))
 		{
-			//Engine::out() << "[DebugWindow] DebugString Event" << std::endl;
-
 			std::pair< std::string, std::string> D = boost::any_cast<  std::pair< std::string, std::string>  >(e.Data());
 			DebugStrings[D.first] = D.second;
 		}
@@ -108,33 +107,37 @@ namespace sbe
 				Win->GrabFocus();
 			}
 		}
+		else if ( e.Is( "KEY_PRESSED_TAB" ) && ListenToActionKeys )
+		{
+			std::string text = ConsoleInput->GetText().toAnsiString();
+			if ( text != "" )
+			{
+				text = Engine::GetCmdParser()->Complete( text );
+				ConsoleInput->SetText( text );
+				ConsoleInput->SetCursorPosition( text.length() );
+			}
+		}
+		else if ( e.Is( "KEY_PRESSED_ENTER" ) && ListenToActionKeys )
+		{
+			std::string text = ((std::string)( ConsoleInput->GetText() ));
+			if ( text != "" )
+			{
+				Engine::GetCmdParser()->Execute( text );
+				ConsoleInput->SetCursorPosition( 0 );
+				ConsoleInput->SetText( "" );
+			}
+		}
 	}
 
-    void DebugWindow::EntryInput()
-    {
-        std::string text = ((std::string)( ConsoleInput->GetText() ));
-        int cursorPos = ConsoleInput->GetCursorPosition();
-        if ( text != "" )
-        {
-            char lastChar = '\0';
-            if ( cursorPos != 0 )
-            {
-                lastChar = text.at( cursorPos - 1 );
-            }
-            if ( lastChar == '.' )
-            {
-                text = text.substr( 0, cursorPos - 1 ) + text.substr( cursorPos, text.length() - cursorPos );
-                if ( text.length() > 0 )
-                {
-                    Module::Get()->QueueEvent( Event( "EVT_DEBUG_COMMAND", text ) );
-                    Engine::GetCmdParser()->Execute( text );
-                    /**DEBUG**/Engine::out() << "[DebugWindow] Command: '" << text << "'" << std::endl;
-                }
-                ConsoleInput->SetCursorPosition( 0 );
-                ConsoleInput->SetText( "" );
-            }
-        }
-    }
+	void DebugWindow::EntryGainFocus()
+	{
+		ListenToActionKeys = true;
+	}
+
+	void DebugWindow::EntryLostFocus()
+	{
+		ListenToActionKeys = false;
+	}
 
 	void DebugWindow::UpdateText(FilterLevel level)
 	{
