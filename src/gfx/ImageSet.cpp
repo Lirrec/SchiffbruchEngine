@@ -155,18 +155,18 @@ namespace sbe
 		return Tex;
 	}
 
-	void ImageSet::CreateQuad( const int index, sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex)
+	void ImageSet::CreateQuad( const int index, sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex, sf::Color _color)
 	{
-		CreateQuad( CalcFramePos(index), vA, Pos, ArrayIndex);
+		CreateQuad( CalcFramePos(index), vA, Pos, ArrayIndex, _color);
 	}
 
-	void ImageSet::CreateQuad( const Geom::Vec2 FramePos , sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex)
+	void ImageSet::CreateQuad( const Geom::Vec2 FramePos , sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex, sf::Color _color)
 	{
 		updateTexture();
 		Geom::Rect coords = CalcTexCoords(FramePos);
 		if ( ArrayIndex == -1 )
-			gfx::AppendQuad( vA, Pos, coords);
+			gfx::AppendQuad( vA, Pos, coords, _color);
 		else
-			gfx::UpdateQuad( vA, Pos, coords, ArrayIndex);
+			gfx::UpdateQuad( vA, Pos, coords, ArrayIndex, _color);
 	}
 } // namespace sbe

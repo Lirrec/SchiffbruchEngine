@@ -17,6 +17,7 @@ namespace sbe
 	/// @param std::string title_
 	/// @param std::string message_
 	/// @param std::string answerEventName_ in the format "MESSAGE_ANSWER_<classname>"
+	/// and send an Event named "NEW_MESSAGE" with an std::shared_ptr<Message> of the Message object as Data.
 	/// Dont forget to listen for the same string as @p answerEventName_, which will give you some kind of Data depending on the Type of Message:
 	///
 	///  Type   | Data
