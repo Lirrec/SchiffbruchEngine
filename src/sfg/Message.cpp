@@ -82,11 +82,11 @@ namespace sbe
 		}
 		Button::Ptr abort = Button::Create( "Abort" );
 		abort->SetRequisition ( sf::Vector2f(50, 10) );
-		abort->GetSignal( Button::OnLeftClick ).Connect( &Message::Ok, this );
+		abort->GetSignal( Button::OnLeftClick ).Connect( &Message::Abort, this );
 		buttonBox->Pack( abort, false, false );
 		Button::Ptr confirm = Button::Create( "Confirm" );
 		confirm->SetRequisition ( sf::Vector2f(50, 10) );
-		confirm->GetSignal( Button::OnLeftClick ).Connect( &Message::Ok, this );
+		confirm->GetSignal( Button::OnLeftClick ).Connect( &Message::Confirm, this );
 		buttonBox->Pack( confirm, false, false );
 		{
 			Box::Ptr spacer = Box::Create();
@@ -108,7 +108,7 @@ namespace sbe
 	void Message::Abort()
 	{
 		Win->Show( false );
-		//if ( AnswerEventName_ != "" ) Module::Get()->QueueEvent( Event( AnswerEventName_, false ), true );
+		if ( AnswerEventName_ != "" ) Module::Get()->QueueEvent( Event( AnswerEventName_, false ), true );
 		Handler->RemoveAndDestroyMessage( this );
 	}
 
