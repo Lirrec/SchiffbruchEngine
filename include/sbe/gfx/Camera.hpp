@@ -72,10 +72,14 @@ namespace sbe
 			*/
 			void setTargetCenter ( const sf::Vector2f& c, bool dontsmooth = false );
 
+			void zoom( float zoomFactor ) { TargetSize *= zoomFactor; }
+
 			/// access the internal sf::View
 			sf::View& getView() { return view; }
 
-			sf::FloatRect& getDrawnArea() { return DrawnRectangle; };
+			sf::Vector2f& getTargetCenter() { return TargetCenter; }
+			sf::Vector2f& getTargetSize() { return TargetSize; }
+			sf::FloatRect& getDrawnArea() { return DrawnRectangle; }
 
 			/**
 				Sends DEBUG_STRING Events with Camrect and Center.
