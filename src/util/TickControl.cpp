@@ -41,24 +41,17 @@ namespace sbe
 		{
 			// Send a TickEvent if it is valid
 			if (TickEvent)
-			{
 				Module::Get()->QueueEvent( *TickEvent );
-			}
-
 			// Clear the EventQueue
 			Module::Get()->GetEventQueue()->Tick();
-		}
-		else
-		{
+		} else {
 			// do a core tick
 			Core::EvtCore->Tick();
 		}
 
 		// Post module info to the gameview (debug)
 		LogModuleStats();
-
 		TickCounter++;
-
 		// Sleep if theres time left
 		YieldTickRest();
 	}
@@ -77,12 +70,11 @@ namespace sbe
 				Lag = 0;
 			}
 			else
-			{
 				Lag -= MsToNextTick;
-			}
 		}
 		else
 		{
+			MsToNextTick = 0;
 			Lag += LastTickDuration - MaxTickDuration;
 			if (LastTickDuration > MaxTickDuration*2 )
 				Engine::out(Engine::SPAM) << "[" << Module::Get()->GetName() << "] Slow! [ " << LastTickDuration << "/" << MaxTickDuration << "ms, " << Lag << "ms Lag ]" << std::endl;
