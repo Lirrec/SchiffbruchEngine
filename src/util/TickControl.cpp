@@ -8,6 +8,12 @@
 #include "../modules/Core.hpp"
 #include "../event/EventCore.hpp"
 
+#include <string>
+
+#include <boost/format.hpp>
+using boost::format;
+using boost::io::group;
+
 namespace sbe
 {
 
@@ -77,7 +83,7 @@ namespace sbe
 			MsToNextTick = 0;
 			Lag += LastTickDuration - MaxTickDuration;
 			if (LastTickDuration > MaxTickDuration*2 )
-				Engine::out(Engine::SPAM) << "[" << Module::Get()->GetName() << "] Slow! [ " << LastTickDuration << "/" << MaxTickDuration << "ms, " << Lag << "ms Lag ]" << std::endl;
+				Engine::out(Engine::SPAM) << "[" << Module::Get()->GetName() << "] Slow! " << str(format("[ %.2g/%.2gms, %.2gms Lag]")  % LastTickDuration % MaxTickDuration % Lag ) << std::endl;
 		}
 	}
 
@@ -85,20 +91,13 @@ namespace sbe
 	{
 		if (LastStatsLog.getElapsedTime() > sf::seconds(1.0))
 		{
-			Module::Get()->DebugString("Tick ["+Module::Get()->GetName()+"]",
-										boost::lexical_cast<std::string>(LastTickDuration) +"+("
-										+ boost::lexical_cast<std::string>(MsToNextTick) + ") / "
-										+ boost::lexical_cast<std::string>(MaxTickDuration)  );
+			Module::Get()->DebugString( str(format("Tick [%s]") % Module::Get()->GetName()) , str(format(" %.2g+%.2g / %.2g") % LastTickDuration % MsToNextTick % MaxTickDuration ) );
 
-			Module::Get()->DebugString("FPS ["+Module::Get()->GetName()+"]",
-										boost::lexical_cast<std::string>(TickCounter));
+			Module::Get()->DebugString(str(format("FPS [%s]") % Module::Get()->GetName()),
+										str(format("%.1g")%TickCounter));
 
-			Module::Get()->DebugString("Events ["+Module::Get()->GetName()+"]",
-										boost::lexical_cast<std::string>((
-																			Module::Get()->useEventQueue
-																			?	Module::Get()->GetEventQueue()->GetEventCount()
-																			:	Core::EvtCore->GetEventCount()
-																			 )) );
+			Module::Get()->DebugString("Events [%s] " + Module::Get()->GetName(),
+										str( format("%d") % (Module::Get()->useEventQueue ?	Module::Get()->GetEventQueue()->GetEventCount() : Core::EvtCore->GetEventCount() ) ));
 
 			Lag = (LastStatsLog.getElapsedTime() - sf::seconds(1)).asMilliseconds();
 			TickCounter = 0;
