@@ -107,7 +107,7 @@ namespace sbe
 		try {
 		return _settings.get<T>(key);
 		} catch(boost::property_tree::ptree_error &e){ // if key doesn't exist or translation fails, return default
-			Engine::out(Engine::ERROR) << "[Config] " << e.what() << std::endl;
+			Engine::out(Engine::ERROR) << "[Config] " << key << ":" << e.what() << std::endl;
 			throw;
 		}
 	}
