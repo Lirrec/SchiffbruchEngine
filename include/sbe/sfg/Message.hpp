@@ -31,10 +31,11 @@ namespace sbe
 		public:
 
 			enum Type { OK, CHOICE };
-			Message( const Message::Type type_, const std::string& title_, const std::string& message_, const std::string& answerEventName_ = "" );
+			Message( const Message::Type type_, const std::string& title_, const std::string& message_, const std::string& answerEventName_ = "", bool pause_ = false );
 			~Message() {}
 			void ShowMessage();
 			void SaveMessageHandler( MessageHandler* h );
+			bool doPause() { return pause; }
 
 			void HandleEvent( Event& e);
 		private:
@@ -49,6 +50,7 @@ namespace sbe
 			std::string Title_;
 			std::string Message_;
 			std::string AnswerEventName_;
+			bool pause;
 
 			sfg::SharedPtr<sfg::Window> Win;
 

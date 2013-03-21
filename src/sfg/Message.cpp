@@ -12,7 +12,7 @@ using namespace sfg;
 namespace sbe
 {
 
-	Message::Message ( Message::Type type_, const std::string& title_, const std::string& message_, const std::string& answerEventName_ )
+	Message::Message ( Message::Type type_, const std::string& title_, const std::string& message_, const std::string& answerEventName_, bool pause_ )
 	{
 		RegisterForEvent( "WINDOW_RESIZE" );
 		RegisterForEvent( "TOGGLE_FULLSCREEN" );
@@ -20,6 +20,7 @@ namespace sbe
 		Title_ = title_;
 		Message_ = message_;
 		AnswerEventName_ = answerEventName_;
+		pause = pause_;
 	}
 
 	void Message::ShowMessage()
