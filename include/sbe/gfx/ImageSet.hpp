@@ -58,7 +58,6 @@ namespace sbe
 				@param ArrayIndex the position in the vertexarray which sould be used ( -1/default will append to the array, other values will overwrite existing vertices from the given position on)
 			*/
 			void CreateQuad( const int index , sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex = -1, const sf::Color& _color = sf::Color::White);
-			void CreateQuad( const int index , sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex = -1, sf::Color _color = sf::Color::Black);
 
 			/**
 				Add a given Image from the ImageSet to a VertexArray.
@@ -68,7 +67,6 @@ namespace sbe
 				@param ArrayIndex the position in the vertexarray which sould be used ( -1/default will append to the array, other values will overwrite existing vertices from the given position on)
 			*/
 			void CreateQuad( const Geom::Vec2 FramePos, sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex = -1, const sf::Color& _color = sf::Color::White);
-			void CreateQuad( const Geom::Vec2 FramePos, sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex = -1, sf::Color _color = sf::Color::Black);
 
 			/**
 				Updates the internal pointer to sf::Texture, call to update sprites after the image was changed
