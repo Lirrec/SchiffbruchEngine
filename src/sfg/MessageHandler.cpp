@@ -5,6 +5,7 @@ namespace sbe
 {
 
 	MessageHandler::MessageHandler()
+	 : pauseEvent("")
 	{
 		RegisterForEvent( "NEW_MESSAGE" );
 		MessageList = std::list<std::shared_ptr<Message>>();
@@ -24,6 +25,7 @@ namespace sbe
 		m->SaveMessageHandler( this );
 		MessageList.push_front( m );
 		m->ShowMessage();
+		if ( m->doPause() && pauseEvent != "" ) Module::Get()->QueueEvent( pauseEvent );
 	}
 
 	void MessageHandler::RemoveAndDestroyMessage( const Message* m )

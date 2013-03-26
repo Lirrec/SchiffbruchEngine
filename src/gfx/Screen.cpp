@@ -52,6 +52,7 @@ namespace sbe
 		Engine::GetApp().create( sf::VideoMode ( Engine::getCfg()->get<int>("system.renderer.windowsize.x"),
 												Engine::getCfg()->get<int>("system.renderer.windowsize.y") ),
 												"SchiffbruchEngine powered." );
+
 		// must be created before using SFGUI
 		SFG.reset ( new sfg::SFGUI );
 
@@ -120,8 +121,12 @@ namespace sbe
 		{
 			Render();
 		}
-		else if(e.Is("WINDOW_RESIZE")){
-			Cam->setTargetSize(sf::Vector2f( Engine::GetApp().getSize().x, Engine::GetApp().getSize().y));
+		else if(e.Is("WINDOW_RESIZE"))
+		{
+			float xzoom = Cam->getTargetSize().x / Engine::GetApp().getSize().x;
+			float yzoom = Cam->getTargetSize().y / Engine::GetApp().getSize().y;
+			Cam->setTargetSize( sf::Vector2f(Engine::GetApp().getSize().x, Engine::GetApp().getSize().y) );
+			Cam->zoom( std::min(xzoom,yzoom)  );
 		}
 		else if (e.Is("TOGGLE_FULLSCREEN"))
 		{

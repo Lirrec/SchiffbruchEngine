@@ -94,6 +94,43 @@ namespace sbe
 		{
 			return Rect( Point(left, top), Point(right, bottom) );
 		}
+		/// Construction helper for rectangles ( takes 4 floats instead of 2 pointfs
+		inline Rectf makeRectf(float left, float top, float right, float bottom)
+		{
+			return Rectf( Pointf(left, top), Pointf(right, bottom) );
+		}
+
+		/// convert a point<int> to point<float>,
+		inline Pointf PIToF( const Point& p )
+		{
+			return Pointf( p.x, p.y );
+		}
+
+		/// convert a point<float> to point<int>, precision loss!
+		inline Point PFToI( const Pointf& p )
+		{
+			return Point( (int)p.x, (int)p.y );
+		}
+
+		/// returns the 4 points of a rectangle ( clockwise starting at top-left )
+		inline void decompose( Pointf* re, const Rectf& r )
+		{
+			re[0] = r.x;
+			re[1] = Pointf(r.y.x, r.x.y);
+			re[2] = r.y;
+			re[3] = Pointf(r.x.x, r.y.y);
+			return;
+		}
+
+		/// returns the 4 points of a rectangle ( clockwise starting at top-left )
+		inline void decompose( Point* re, const Rect& r )
+		{
+			re[0] = r.x;
+			re[1] = Point(r.y.x, r.x.y);
+			re[2] = r.y;
+			re[3] = Point(r.x.x, r.y.y);
+			return;
+		}
 
 		/// Checks if r is inside rc
 		inline bool RectInRect(const Rect& rc, const Rect& r)

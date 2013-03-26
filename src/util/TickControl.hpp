@@ -60,14 +60,14 @@ namespace sbe
 			/// How many eventqueue ticks per second should this module try to reach
 			int 	TicksPerSecond;
 			/// How long took us the last tick (ms)
-			int	LastTickDuration;
+			float	LastTickDuration;
 			/// How many ms did we lose through ticks that took longer then planned
-			int Lag;
+			float Lag;
 
 			/// how many ms are spare till we should start the next tick
-			int		MsToNextTick;
+			float		MsToNextTick;
 			/// how long should a tick at maximum take to reach our TPS (ms)
-			int	MaxTickDuration;
+			float	MaxTickDuration;
 
 			/// Counts Frames/Ticks
 			int TickCounter;

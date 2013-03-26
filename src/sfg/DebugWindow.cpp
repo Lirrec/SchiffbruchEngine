@@ -1,5 +1,6 @@
 #include "sbe/sfg/DebugWindow.hpp"
 
+#include <sbe/util/console/CommandParser.hpp>
 #include <SFGUI/Label.hpp>
 #include <SFGUI/Box.hpp>
 #include <SFGUI/Window.hpp>
@@ -8,8 +9,6 @@
 
 using namespace sfg;
 
-#include "sbe/gfx/Screen.hpp"
-
 namespace sbe
 {
 	DebugWindow::DebugWindow( const Geom::Point& RelativePosition, const Geom::Vec2 Size)
@@ -17,9 +16,12 @@ namespace sbe
 		RegisterForEvent( "VIEW_DBG_STRING" );
 		RegisterForEvent( "EVT_FRAME" );
 		RegisterForEvent( "TOGGLE_SHOW_DBGWIN" );
+		RegisterForEvent( "KEY_PRESSED_ENTER" );
+		RegisterForEvent( "KEY_PRESSED_TAB" );
 
 		updateCounter = 0;
 		currentlabeltext = 0;
+		ListenToActionKeys = false;
 		CreateWindow(RelativePosition, Size);
 	}
 
@@ -37,12 +39,13 @@ namespace sbe
 		LogText = Label::Create();
 
 		// create Inputbox for console commands.
-		Entry::Ptr consoleInput = Entry::Create();
+		ConsoleInput = Entry::Create();
 
-		consoleInput->GetSignal( Entry::OnTextChanged ).Connect( &Screen::OnHandledEvent , Screen::get() );
+		ConsoleInput->GetSignal( Entry::OnGainFocus ).Connect( &DebugWindow::EntryGainFocus , this );
+		ConsoleInput->GetSignal( Entry::OnLostFocus ).Connect( &DebugWindow::EntryLostFocus , this );
 
-		//consoleInput->AppendText( "Not yet implemented." );
-		consoleInput->SetState( Widget::State::INSENSITIVE );
+		//ConsoleInput->AppendText( "Not yet implemented." );
+		///ConsoleInput->SetState( Widget::State::INSENSITIVE );
 
 		Win->SetPosition( sf::Vector2f(RelativePosition.x, RelativePosition.y ) );
 		//Win->SetRequisition( sf::Vector2f(Size.x, Size.y ) );
@@ -65,7 +68,7 @@ namespace sbe
 			scrolledwindow->SetScrollbarPolicy( ScrolledWindow::HORIZONTAL_AUTOMATIC | ScrolledWindow::VERTICAL_AUTOMATIC );
 		topBox->Pack ( scrolledwindow , true , true );
 		wholeBox->Pack ( topBox , true , true );
-		wholeBox->Pack ( consoleInput , false , false );
+		wholeBox->Pack ( ConsoleInput , false , false );
 
 
 		// Create a window and add the box layouter to it. Also set the window's title.
@@ -80,8 +83,6 @@ namespace sbe
 	{
 		if (e.Is("VIEW_DBG_STRING", typeid( std::pair< std::string, std::string> )))
 		{
-			//Engine::out() << "[DebugWindow] DebugString Event" << std::endl;
-
 			std::pair< std::string, std::string> D = boost::any_cast<  std::pair< std::string, std::string>  >(e.Data());
 			DebugStrings[D.first] = D.second;
 		}
@@ -106,6 +107,36 @@ namespace sbe
 				Win->GrabFocus();
 			}
 		}
+		else if ( e.Is( "KEY_PRESSED_TAB" ) && ListenToActionKeys )
+		{
+			std::string text = ConsoleInput->GetText().toAnsiString();
+			if ( text != "" )
+			{
+				text = Engine::GetCmdParser()->Complete( text );
+				ConsoleInput->SetText( text );
+				ConsoleInput->SetCursorPosition( text.length() );
+			}
+		}
+		else if ( e.Is( "KEY_PRESSED_ENTER" ) && ListenToActionKeys )
+		{
+			std::string text = ((std::string)( ConsoleInput->GetText() ));
+			if ( text != "" )
+			{
+				Engine::GetCmdParser()->Execute( text );
+				ConsoleInput->SetCursorPosition( 0 );
+				ConsoleInput->SetText( "" );
+			}
+		}
+	}
+
+	void DebugWindow::EntryGainFocus()
+	{
+		ListenToActionKeys = true;
+	}
+
+	void DebugWindow::EntryLostFocus()
+	{
+		ListenToActionKeys = false;
 	}
 
 	void DebugWindow::UpdateText(FilterLevel level)
