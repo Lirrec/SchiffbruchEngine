@@ -63,22 +63,29 @@ namespace sbe
 				@param size the new size
 				@param dontsmooth set to true to disable the smoothing and set the new size instantly
 			*/
-			void setTargetSize ( const sf::Vector2f& size, bool dontsmooth = false  );
+			void setTargetSize ( sf::Vector2f size, bool dontsmooth = false  );
 					/**
 				Set the center of the rectangle which should be shown by the Camera.
 				The camera will smooth the transition to the new value over several frames.
 				@param c the new center
 				@param dontsmooth set to true to disable the smoothing and set the new center instantly
 			*/
-			void setTargetCenter ( const sf::Vector2f& c, bool dontsmooth = false );
+			void setTargetCenter ( sf::Vector2f c, bool dontsmooth = false );
+
+			void setZoomLimits( const sf::Vector2f& min, const sf::Vector2f& max);
+
+			void setCamLimits( const sf::FloatRect& f ) { CamLimits = f; }
 
 			void zoom( float zoomFactor ) { TargetSize *= zoomFactor; }
 
 			/// access the internal sf::View
 			sf::View& getView() { return view; }
 
-			sf::Vector2f& getTargetCenter() { return TargetCenter; }
-			sf::Vector2f& getTargetSize() { return TargetSize; }
+			sf::FloatRect& getZoomLimits() { return ZoomLimits; }
+			sf::FloatRect& getCamLimits() { return CamLimits; }
+
+			sf::Vector2f&  getTargetCenter() { return TargetCenter; }
+			sf::Vector2f&  getTargetSize() { return TargetSize; }
 			sf::FloatRect& getDrawnArea() { return DrawnRectangle; }
 
 			/**
@@ -88,19 +95,30 @@ namespace sbe
 
 		private:
 
+			static const sf::Vector2f nullVector;
+
 			sf::View view;
 
-			// the desired camera size
+			// LIMITS
+			/// minimum/maximum size of the Area shown by the viewrect
+			sf::FloatRect ZoomLimits;
+			/// allowed Scroll Area used to limit the scrollable area
+			sf::FloatRect CamLimits;
+
+
+			/// the desired camera size
 			sf::Vector2f TargetSize;
-			// the desired camera center
+			/// the desired camera center
 			sf::Vector2f TargetCenter;
 			// the rendered rectangle in RENDER coordinates
 			sf::FloatRect DrawnRectangle;
+
 			void CalcDrawArea();
 
-			// how fast should we zoom
+			/// how fast should we zoom
 			float ZoomFactor;
 
+			/// are we currently scrolling? tracks mousedown and up events
 			bool Scrolling;
 			sf::Vector2i lastMousePos;
 

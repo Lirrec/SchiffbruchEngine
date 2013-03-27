@@ -1,6 +1,9 @@
 #include "sbe/gfx/ImageSet.hpp"
 
-#include "sbe/geom/Helpers.hpp"
+#include "sbe/geom/Point.hpp"
+#include "sbe/geom/SfmlHelpers.hpp"
+
+
 #include "sbe/ResourceManager.hpp"
 #include "sbe/gfx/VertexUtils.hpp"
 

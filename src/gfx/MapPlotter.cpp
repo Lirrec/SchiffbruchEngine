@@ -1,6 +1,8 @@
 #include "sbe/gfx/MapPlotter.hpp"
 
 #include "sbe/Engine.hpp"
+
+#include "sbe/geom/Point.hpp"
 #include "sbe/geom/Helpers.hpp"
 
 #include <algorithm>

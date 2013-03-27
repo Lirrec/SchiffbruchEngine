@@ -4,6 +4,7 @@
 #include "sbe/Engine.hpp"
 #include "sbe/Module.hpp"
 #include "sbe/geom/Point.hpp"
+#include "sbe/geom/SfmlHelpers.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -14,6 +15,8 @@ using boost::io::group;
 namespace sbe
 {
 
+	const sf::Vector2f Camera::nullVector = sf::Vector2f(0,0);
+
 	Camera::Camera()
 	 : Scrolling( false )
 	{
@@ -21,12 +24,17 @@ namespace sbe
 		ScrollFactor = Engine::getCfg()->get<float>("system.camera.scrollFactor");
 		delta = Engine::getCfg()->get<float>("system.camera.delta");
 		WheelZoomFactor = Engine::getCfg()->get<float>("system.camera.wheelZoomFactor");
+
+		CamLimits = sf::FloatRect( 0,0,0,0 );
+		ZoomLimits = sf::FloatRect( 0,0,0,0 );
 	}
 
 	void Camera::showDebugInfo()
 	{
 		Module::Get()->DebugString("View Size",  str(format("%.0f x %.0f") % TargetSize.x % TargetSize.y));
 		Module::Get()->DebugString("View Pos", str(format("%.0f x %.0f") % TargetCenter.x % TargetCenter.y));
+		Module::Get()->DebugString("View Limits", str(format("%.0f/%.0f/%.0f/%.0f") % CamLimits.left % CamLimits.top % CamLimits.width % CamLimits.height));
+		Module::Get()->DebugString("Zoom Limits", str(format("%.0f/%.0f/%.0f/%.0f") % ZoomLimits.left % ZoomLimits.top % ZoomLimits.width % ZoomLimits.height ));
 	}
 
 	void Camera::setup()
@@ -44,16 +52,29 @@ namespace sbe
 									Engine::getCfg()->get<int>("system.renderer.windowsize.y")/2);
 	}
 
-	void Camera::setTargetSize ( const sf::Vector2f& size, bool dontsmooth)
+	void Camera::setTargetSize ( sf::Vector2f size, bool dontsmooth)
 	{
-		 TargetSize = size;
-		 if ( dontsmooth ) view.setSize( size );
+		if ( ZoomLimits.width != 0 && ZoomLimits.height != 0)
+			if (Geom::clip( size, ZoomLimits ) != size) return;
+
+		TargetSize = size;
+
+		if ( dontsmooth ) view.setSize( size );
 	}
 
-	void Camera::setTargetCenter ( const sf::Vector2f& c, bool dontsmooth)
+	void Camera::setTargetCenter ( sf::Vector2f c, bool dontsmooth)
 	{
+		if ( CamLimits.width != 0 && CamLimits.height != 0 )
+			c = Geom::clip( c, CamLimits );
+
 		TargetCenter = c;
+
 		if (dontsmooth) view.setCenter ( c );
+	}
+
+	void Camera::setZoomLimits( const sf::Vector2f& min, const sf::Vector2f& max)
+	{
+		ZoomLimits = Geom::makeSfRectf(min, max);
 	}
 
 	void Camera::update()
@@ -75,6 +96,7 @@ namespace sbe
 			if ( std::abs(CurrentSize.x - TargetSize.x) < minDiff ) Target.x = TargetSize.x;
 			if ( std::abs(CurrentSize.y - TargetSize.y) < minDiff ) Target.y = TargetSize.y;
 
+			//Target = Geom::clip( Target, ZoomLimits);
 			view.setSize( Target );
 		}
 
@@ -85,6 +107,7 @@ namespace sbe
 			if ( std::abs(CurrentCenter.x - TargetCenter.x) < minDiff ) Target.x = TargetCenter.x;
 			if ( std::abs(CurrentCenter.y - TargetCenter.y) < minDiff ) Target.y = TargetCenter.y;
 
+			//Target = Geom::clip( Target, CamLimits);
 			view.setCenter( Target );
 		}
 
@@ -136,17 +159,26 @@ namespace sbe
 					default:
 						break;
 				}
+
+				TargetCenter = Geom::clip( TargetCenter, CamLimits);
+
 				break;
 
 			case sf::Event::MouseWheelMoved:
+			{
 
-
+				sf::Vector2f NewSize;
 				for (int i = 0; i < std::abs(e.mouseWheel.delta); ++i)
 				{
-					TargetSize *= (e.mouseWheel.delta < 0) ? 1 + WheelZoomFactor : 1 - WheelZoomFactor;
+					NewSize = TargetSize * ( (e.mouseWheel.delta < 0) ? 1 + WheelZoomFactor : 1 - WheelZoomFactor );
 				}
-				break;
 
+				// only set TargetSize if NewSize doesnt exceed any ZoomLimits
+				if ( NewSize == Geom::clip( NewSize, ZoomLimits))
+					TargetSize = NewSize;
+
+				break;
+			}
 			case sf::Event::MouseMoved:
 			{
 				sf::Vector2i mouseMove(e.mouseMove.x, e.mouseMove.y);
@@ -157,6 +189,7 @@ namespace sbe
 				if (Scrolling)
 				{
 					TargetCenter += (glLastMousePos - glMouseMove )*ScrollFactor;
+					TargetCenter = Geom::clip( TargetCenter, CamLimits);
 				}
 
 				lastMousePos.x = e.mouseMove.x;

@@ -1,7 +1,7 @@
 #ifndef QUADTREE_H
 #define QUADTREE_H
 
-#include "sbe/geom/Helpers.hpp"
+#include "sbe/geom/RectHelpers.hpp"
 
 #include <forward_list>
 

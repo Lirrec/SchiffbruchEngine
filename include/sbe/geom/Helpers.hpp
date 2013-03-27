@@ -9,47 +9,14 @@
 
 #include "sbe/geom/Point.hpp"
 
+/**
+	@file "Helpers.hpp" General Helper functions
+*/
+
 namespace sbe
 {
 	namespace Geom
 	{
-
-		/// Converts a rectangle to a human readable string suitable for debugging purposes
-		inline std::string RectToString( const Geom::Rect& r)
-		{
-			std::string re("");
-			re += "[";
-			re += boost::lexical_cast<std::string>(r.x.x);
-			re += "/";
-			re += boost::lexical_cast<std::string>(r.x.y);
-			re += "|";
-			re += boost::lexical_cast<std::string>(r.y.x);
-			re += "/";
-			re += boost::lexical_cast<std::string>(r.y.y);
-			re += "]";
-
-			return re;
-		}
-
-		/// returns the origin (0,0)
-		inline Point Origin() { return Point(0,0); }
-		/// returns the origin (0.0,0.0)
-		inline Pointf Originf() { return Pointf(0.0f,0.0f); }
-
-
-		/// Checks wether p is inside rc
-		inline bool PointInRect(const Rect& rc, const Point& p)
-		{
-				if (
-					(p.x >= rc.x.x && p.x <= rc.y.x)
-					&&
-					(p.y >= rc.x.y && p.y <= rc.y.y)
-					)
-					return true;
-			return false;
-		}
-
-
 
 		/**
 			Calculate the next power of 2 which is greater than x.
@@ -63,225 +30,12 @@ namespace sbe
 			return y;
 		}
 
-
-		/// returns the width of a rectangle
-		inline int rcWidth(const Rect& rc)
-		{
-			return std::abs(rc.y.x - rc.x.x);
-		}
-
-		/// returns the height of a rectangle
-		inline int rcHeight(const Rect& rc)
-		{
-			return std::abs(rc.y.y - rc.x.y);
-		}
-
-		/// returns the top right point of a rectangle
-		inline Point rcBLPoint(const Rect& rc)
-		{
-			return Geom::Point(rc.x.x, rc.y.y);
-		}
-
-		/// returns the top right point of a rectangle
-		inline Point rcTRPoint(const Rect& rc)
-		{
-			return Geom::Point(rc.y.x , rc.x.y );
-		}
-
-
-		/// Construction helper for rectangles ( takes 4 ints instead of 2 points
-		inline Rect makeRect(int left, int top, int right, int bottom)
-		{
-			return Rect( Point(left, top), Point(right, bottom) );
-		}
-		/// Construction helper for rectangles ( takes 4 floats instead of 2 pointfs
-		inline Rectf makeRectf(float left, float top, float right, float bottom)
-		{
-			return Rectf( Pointf(left, top), Pointf(right, bottom) );
-		}
-
-		/// convert a point<int> to point<float>,
-		inline Pointf PIToF( const Point& p )
-		{
-			return Pointf( p.x, p.y );
-		}
-
-		/// convert a point<float> to point<int>, precision loss!
-		inline Point PFToI( const Pointf& p )
-		{
-			return Point( (int)p.x, (int)p.y );
-		}
-
-		/// returns the 4 points of a rectangle ( clockwise starting at top-left )
-		inline void decompose( Pointf* re, const Rectf& r )
-		{
-			re[0] = r.x;
-			re[1] = Pointf(r.y.x, r.x.y);
-			re[2] = r.y;
-			re[3] = Pointf(r.x.x, r.y.y);
-			return;
-		}
-
-		/// returns the 4 points of a rectangle ( clockwise starting at top-left )
-		inline void decompose( Point* re, const Rect& r )
-		{
-			re[0] = r.x;
-			re[1] = Point(r.y.x, r.x.y);
-			re[2] = r.y;
-			re[3] = Point(r.x.x, r.y.y);
-			return;
-		}
-
-		/// Checks if r is inside rc
-		inline bool RectInRect(const Rect& rc, const Rect& r)
-		{
-				if (
-					PointInRect(rc, r.x)
-					&&
-					PointInRect(rc, r.y)
-					)
-					return true;
-			return false;
-		}
-
-		/// Checks if two rectangles overlap
-		inline bool rcOverlap(const Rect& lhs, const Rect& rhs)
-		{
-			// check if they _don't_ overlap
-			if (
-					// lhs right of rhs
-				   lhs.x.x > rhs.y.x
-					// lhs left of rhs
-				|| lhs.y.x < rhs.x.x
-					// lhs below rhs
-				|| lhs.x.y > rhs.y.y
-					// lhs above rhs
-				|| lhs.y.y < rhs.x.y
-				)
-				return false;
-			return true;
-
-
-	//		if (   PointInRect(lhs, rhs.x)
-	//			|| PointInRect(lhs, rcTRPoint(rhs))
-	//			|| PointInRect(lhs, rhs.y)
-	//			|| PointInRect(lhs, rcBLPoint(rhs))
-	//
-	//			|| PointInRect(rhs, lhs.x)
-	//			|| PointInRect(rhs, rcTRPoint(lhs))
-	//			|| PointInRect(rhs, lhs.y)
-	//			|| PointInRect(rhs, rcBLPoint(lhs))
-	//			//|| RectInRect(lhs, rhs)
-	//			//|| RectInRect(rhs, lhs)
-	//			)
-	//		return true;
-	//
-	//		return false;
-		}
-
-		/*
-			Some helper functios for "quadifying"/subdividing an area
-		*/
-
-		/// Subdivie a rectangle into 4 subrectangles, return top-left one
-		inline Rect rcTLQuad(const Rect& r)
-		{
-			return Rect( //top left point
-					 r.x,
-					 //bottom right point add half height/width
-					 Point( static_cast<int>(r.x.x + 0.5*rcWidth(r)),
-							static_cast<int>(r.x.y + 0.5*rcHeight(r)) )
-					);
-		}
-
-		/// Subdivie a rectangle into 4 subrectangles, return top-right one
-		inline Rect rcTRQuad(const Rect& r)
-		{
-			return Rect( //top left point
-					 Point( static_cast<int>(r.x.x + 0.5*rcWidth(r)),
-							r.x.y ),
-					 //bottom right point
-					 Point( r.y.x,
-							static_cast<int>(r.x.y + 0.5*rcHeight(r)) )
-					);
-		}
-
-		/// Subdivie a rectangle into 4 subrectangles, return bottom-right one
-		inline Rect rcBRQuad(const Rect& r)
-		{
-			return Rect( //top left point
-					 Point( static_cast<int>(r.x.x + 0.5*rcWidth(r)),
-							static_cast<int>(r.x.y + 0.5*rcHeight(r)) ),
-					 //bottom right point
-					 r.y
-					);
-		}
-
-		/// Subdivie a rectangle into 4 subrectangles, return bottom-left one
-		inline Rect rcBLQuad(const Rect& r)
-		{
-			return Rect( //top left point
-					 Point( r.x.x,
-							static_cast<int>( r.x.y + 0.5*rcHeight(r))),
-					 //bottom right point add half height/width
-					 Point( static_cast<int>(r.x.x + 0.5*rcWidth(r)),
-							r.y.y )
-					);
-		}
-
-	//	inline Point rcMid(const Rect& r)
-	//	{
-	//		return Point( r.x.x + 0.5*rcWidth(r),
-	//					  r.x.y + 0.5*rcHeight(r)
-	//				);
-	//	}
-
-
-
-
-
-		/// calculates the squareddistance between two points (avoiding the sqrt, but still fine for comparisions)
-		inline float squaredist(const Point& from, const Point& to)
-		{
-			return std::abs(std::pow(from.x - to.x, 2)
-					+ std::pow(from.y - to.y, 2));
-		}
-
-		inline float squaredist(const Pointf& from, const Pointf& to)
-		{
-			return std::abs(std::pow(from.x - to.x, 2) + std::pow(from.y - to.y, 2));
-		}
-
-		/// calculates the distance between two points (just simple and not optimized)
-		inline float distance(const Point& from, const Point& to)
-		{
-			return std::sqrt( squaredist(from,to) );
-		}
-
-		/// Compute the distance between two points ( floating point version )
-		inline float distance(const Pointf& from, const Pointf& to)
-		{
-			return std::sqrt( squaredist( from,to ) );
-		}
-
-		/// Compute the length of a vector
-		inline float length( Vec2f V )
-		{
-				return distance( Originf(), V );
-		}
-
 		/// returns the index of a 2d position in an array, assumes data is stored in rows, not columns
 		inline size_t linear( int x, int y, int width ) { return x + y*width; }
 		/// returns the index of a 2d position in an array, assumes data is stored in rows, not columns
 		inline size_t linear( Geom::Vec2f p, int width ) { return linear(p.x, p.y, width); }
 		/// returns the index of a 2d position in an array, assumes data is stored in rows, not columns
 		inline size_t linear( Geom::Vec2 p, int width ) { return linear(p.x, p.y, width); }
-
-		/// Normalize a vector
-		inline Vec2f normalize( Vec2f V )
-		{
-				return V / Vec2f(length(V), length(V));
-		}
 
 		/**
 			Normalize a float, i.e. scale it to a range from 0.0 to 1.0
@@ -302,47 +56,6 @@ namespace sbe
 		inline Geom::Point middle(const Point& p1, const Point& p2)
 		{
 			return Geom::Point( static_cast<int>(std::abs(p1.x + p2.x)/2),    static_cast<int>(std::abs(p1.y + p2.y)/2));
-		}
-
-		/// converts a Geom::Rect to sf::Floatrect
-		inline sf::FloatRect toSFFloatRect ( const Rect& r)
-		{
-			return sf::FloatRect( r.x.x, // left
-								r.x.y, // top
-								r.y.x-r.x.x, // width
-								r.y.y-r.x.y ); // height
-		}
-
-		/// converts a Geom::Rect to sf::IntRect
-		inline sf::IntRect toSFRect(const Rect& r)
-		{
-			return sf::IntRect( r.x.x, // left
-								r.x.y, // top
-								r.y.x-r.x.x, // width
-								r.y.y-r.x.y ); // height
-		}
-
-		/// converts a sf::FloatRect to sf::IntRect ( ! Loss of fp precision ! )
-		inline sf::IntRect SFRectFloatToInt(const sf::FloatRect& r)
-		{
-			sf::IntRect re ( static_cast<int>(r.left),
-							 static_cast<int>(r.top),
-							 static_cast<int>(r.width),
-							 static_cast<int>(r.height)
-							);
-			return re;
-		}
-
-		/// converts a sf::IntRect to Geom::Rect
-		inline Rect fromSFRect(const sf::IntRect& r)
-		{
-			return Rect(Point(r.left, r.top), Point(r.left + r.width, r.top + r.height));
-		}
-
-		/// converts a sf::FloatRect to Geom::Rect ( ! Loss of fp precision ! )
-		inline Rect fromSFFloatRect ( const sf::FloatRect& r )
-		{
-			return fromSFRect( SFRectFloatToInt(r) );
 		}
 
 		// TRIANGLE

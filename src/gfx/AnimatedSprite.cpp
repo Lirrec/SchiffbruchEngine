@@ -2,7 +2,7 @@
 
 #include "sbe/ResourceManager.hpp"
 
-#include "sbe/geom/Helpers.hpp"
+#include "sbe/geom/SfmlHelpers.hpp"
 
 namespace sbe
 {

@@ -82,22 +82,22 @@ namespace sbe
 		{
 			MsToNextTick = 0;
 			Lag += LastTickDuration - MaxTickDuration;
-			if (LastTickDuration > MaxTickDuration*2 )
-				Engine::out(Engine::SPAM) << "[" << Module::Get()->GetName() << "] Slow! " << str(format("[ %.2g/%.2gms, %.2gms Lag]")  % LastTickDuration % MaxTickDuration % Lag ) << std::endl;
+//			if (LastTickDuration > MaxTickDuration*2 )
+//				Engine::out(Engine::SPAM) << "[" << Module::Get()->GetName() << "] Slow! " << str(format("[ %.2g/%.2gms, %.2gms Lag]")  % LastTickDuration % MaxTickDuration % Lag ) << std::endl;
 		}
 	}
 
 	void TickControl::LogModuleStats()
 	{
-		if (LastStatsLog.getElapsedTime() > sf::seconds(1.0))
+		if (LastStatsLog.getElapsedTime() > sf::seconds(1))
 		{
 			Module::Get()->DebugString( str(format("Tick [%s]") % Module::Get()->GetName()) , str(format(" %.2g+%.2g / %.2g") % LastTickDuration % MsToNextTick % MaxTickDuration ) );
-
 			Module::Get()->DebugString(str(format("FPS [%s]") % Module::Get()->GetName()),
 										str(format("%.1g")%TickCounter));
 
 			Module::Get()->DebugString("Events [%s] " + Module::Get()->GetName(),
 										str( format("%d") % (Module::Get()->useEventQueue ?	Module::Get()->GetEventQueue()->GetEventCount() : Core::EvtCore->GetEventCount() ) ));
+
 
 			Lag = (LastStatsLog.getElapsedTime() - sf::seconds(1)).asMilliseconds();
 			TickCounter = 0;
