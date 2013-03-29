@@ -6,8 +6,8 @@
 */
 
 #include "sbe/geom/Point.hpp"
-#include <SFMl/System/Vector2.hpp>
-#include <SFMl/Graphics/Rect.hpp>
+#include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/Rect.hpp>
 
 namespace sbe
 {
@@ -82,4 +82,3 @@ namespace sbe
 } // namespace sbe
 
 #endif // SFMLHELPERS_HPP
-
