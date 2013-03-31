@@ -132,10 +132,10 @@ namespace sbe
 			template<class T, class Iter>
 			bool saveObjects( Iter start, Iter end, bool overwrite = false );
 
-		private:
-
 			/// returns a plugin for the given type_index or an empty shared_ptr
 			std::shared_ptr<IOPlugin> getPlugin( const std::type_index& ti );
+
+		private:
 
 			/// returns an ofstream for a given plugin, name+path
 			std::pair<std::shared_ptr<fs::ofstream>, std::string> getOfstream( std::shared_ptr<IOPlugin>& IOP, const std::string& name, const std::string& path, bool overwrite );
