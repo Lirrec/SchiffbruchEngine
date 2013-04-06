@@ -10,10 +10,7 @@ set( CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/SFGUI/extlibs/SFML/cmake/Modules" 
 #############################################################
 
 
-#option( SBE_DEBUG "Enable build in debug mode" ON)
-#if (CMAKE_BUILD_TYPE MATCHES Release)
-#	set(SBE_DEBUG FALSE)
-#endif()
+option( PROFILE "" OFF)
 option( USE_CUSTOM_BOOST "" OFF)
 option( USE_CUSTOM_SFML "" ON)
 set( CUSTOM_BOOST_ROOT "" CACHE PATH "custom boost build root dir")
@@ -22,10 +19,82 @@ set( CUSTOM_SFML_ROOT "${PROJECT_SOURCE_DIR}/SFGUI/extlibs/SFML" CACHE PATH "cus
 
 SET( CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
+if (NOT CMAKE_BUILD_TYPE)
+	set( CMAKE_BUILD_TYPE "Release")
+endif()
+message( "-- CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 
-#######################################################
-# compiler version detection                          #
-#######################################################
+#############################################################
+#################### External Libraries #####################
+#############################################################
+
+# set external windows and linux libs
+if( CMAKE_SYSTEM_NAME MATCHES Windows )
+  set( GENERIC_LIBS pthread jpeg GLEW freetype openal32 sndfile winmm)
+else()
+  set( GENERIC_LIBS pthread jpeg GLEW X11 Xrandr freetype rt openal sndfile)
+endif()
+
+if( USE_CUSTOM_BOOST)
+	message("-- Using custom boost...")
+	set(BOOST_ROOT "${CUSTOM_BOOST_ROOT}")
+endif()
+
+if( USE_CUSTOM_SFML)
+	message("-- Using custom SFML...")
+	set(SFML_ROOT "${CUSTOM_SFML_ROOT}/build")
+	set(SFML_INCLUDE_DIR "${CUSTOM_SFML_ROOT}/include")
+endif(USE_CUSTOM_SFML)
+
+find_package(Boost 1.46 REQUIRED thread system filesystem)# regex)
+
+#only audio required, the others are pulled in by sfgui
+find_package(SFML 2 REQUIRED audio)
+#find_package(SFML 2 COMPONENTS graphics window system audio)
+
+foreach(LIB ${GENERIC_LIBS})
+	find_library(FOUND_${LIB} ${LIB} )
+endforeach()
+
+
+
+########################################################
+######################## SFGUI #########################
+########################################################
+
+set( SFGUI_BUILD_EXAMPLES false CACHE BOOL "Do or dont build examples)")
+set( BUILD_SHARED_LIBS false CACHE BOOL "Build dynamic library." )
+set( SFML_STATIC_LIBRARIES true CACHE BOOL "Was SFML built as a static library?" )
+
+#just make sure those two are not empty, as in that case sfgui will add unwanted compile flags
+if( NOT CMAKE_CXX_FLAGS )
+	set( CMAKE_CXX_FLAGS  " " CACHE STRING "C++ compiler flags" FORCE )
+endif()
+if( NOT CMAKE_CXX_FLAGS_DEBUG )
+	set( CMAKE_CXX_FLAGS_DEBUG  " " CACHE STRING "C++ compiler flags (debug)" FORCE )
+endif()
+
+add_subdirectory(SFGUI)
+
+########################################################
+############## Check for Boost and SFML ################
+########################################################
+
+if(NOT Boost_FOUND)
+	set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+else()
+	include_directories(${Boost_INCLUDE_DIR})
+endif()
+
+if(NOT SFML_FOUND)
+	message( FATAL_ERROR "Please build SFML in '${CUSTOM_SFML_ROOT}/build' first!")
+else()
+	include_directories(${SFML_INCLUDE_DIR})
+endif()
+
+########################################################
+############ compiler version detection ################
+########################################################
 
 if (CMAKE_COMPILER_IS_GNUCXX  AND NOT VERSION_CHECK_DONE)
 	# get gcc compiler version if not set
@@ -64,65 +133,6 @@ endif()
 
 
 #############################################################
-#################### External Libraries #####################
-#############################################################
-
-# set external windows and linux libs
-if( CMAKE_SYSTEM_NAME MATCHES Windows )
-  set( GENERIC_LIBS pthread jpeg GLEW freetype openal32 sndfile winmm)
-else()
-  set( GENERIC_LIBS pthread jpeg GLEW X11 Xrandr freetype rt openal sndfile)
-endif()
-
-if( USE_CUSTOM_BOOST)
-	message("-- Using custom boost...")
-	set(BOOST_ROOT "${CUSTOM_BOOST_ROOT}")
-endif()
-
-if( USE_CUSTOM_SFML)
-	message("-- Using custom SFML...")
-	set(SFML_ROOT "${CUSTOM_SFML_ROOT}/build")
-	set(SFML_INCLUDE_DIR "${CUSTOM_SFML_ROOT}/include")
-endif(USE_CUSTOM_SFML)
-
-find_package(Boost 1.46 REQUIRED thread system filesystem)# regex)
-
-#only audio required, the others are pulled in by sfgui
-find_package(SFML 2 REQUIRED audio)
-#find_package(SFML 2 COMPONENTS graphics window system audio)
-
-foreach(LIB ${GENERIC_LIBS})
-	find_library(FOUND_${LIB} ${LIB} )
-endforeach()
-
-
-
-if(NOT Boost_FOUND)
-	set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
-else()
-	include_directories(${Boost_INCLUDE_DIR})
-endif()
-
-if(NOT SFML_FOUND)
-	message( FATAL_ERROR "Please build SFML in '${CUSTOM_SFML_ROOT}/build' first!")
-else()
-	include_directories(${SFML_INCLUDE_DIR})
-endif()
-
-#
-# SFGUI
-#
-
-set( SFGUI_BUILD_EXAMPLES false CACHE BOOL "Do or dont build examples)")
-set( BUILD_SHARED_LIBS false CACHE BOOL "Build dynamic library." )
-set( SFML_STATIC_LIBRARIES true CACHE BOOL "Was SFML built as a static library?" )
-
-add_subdirectory(SFGUI)
-
-
-
-
-#############################################################
 #################### File inclusion #########################
 #############################################################
 
@@ -146,14 +156,18 @@ add_definitions( -DBOOST_THREAD_USE_LIB )
 
 if (CMAKE_BUILD_TYPE MATCHES Debug)
 	add_definitions(-DCOUNT_EVENTS)
-	#override those, usually not set but SFGUI adds a bunch of additional warnings we dont want
-	set( CMAKE_CXX_FLAGS_DEBUG "-Wall -g -O0" CACHE STRING "C++ compiler flags" FORCE )
-	set( CMAKE_C_FLAGS_DEBUG   "-Wall -g -O0" CACHE STRING "C compiler flags" FORCE )
-else()
-	add_definitions(-fomit-frame-pointer -fexpensive-optimizations -O3 )
-	#override those, usually not set but SFGUI adds a bunch of additional warnings we dont want
-	set( CMAKE_CXX_FLAGS_RELEASE "-O3" CACHE STRING "C++ compiler flags" FORCE )
-	set( CMAKE_C_FLAGS_RELEASE   "-O3" CACHE STRING "C compiler flags" FORCE )
+	add_definitions( -Wall -g )
+elseif(CMAKE_BUILD_TYPE MATCHES Release)
+	if( PROFILE )
+		add_definitions( -O1 )
+	else()
+		add_definitions( -fomit-frame-pointer -fexpensive-optimizations -O3 )
+	endif()
+
+endif()
+
+if( PROFILE )
+	add_definitions( -pg )
 endif()
 
 link_directories(${SFML_ROOT})
