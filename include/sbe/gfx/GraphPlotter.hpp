@@ -43,8 +43,8 @@ namespace sbe
 		 : Size( 512,512),
 		 AxisSize( 1000, 1000),
 		 //AxisStart ( 0, 0 ),
-		 PointsToDraw( 50 ),
-		 AxesPoints ( 10, 10),
+		 PointsToDraw( 400 ),
+		 AxesPoints ( 5, 5),
 		 drawLegend(true),
 		 textSize( 15 ),
 		 drawAxes(true)

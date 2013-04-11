@@ -122,7 +122,7 @@ namespace sbe
 			x = (float)p*PointDistance;
 			y = g.Size.y - (p%5==0?10:5);
 			drawText( sf::Vector2f(x, y - spacing), boost::lexical_cast<std::string>( g.AxisSize.x/g.AxesPoints.x * p ), true );
-			Engine::out(Engine::SPAM) << " Label " << g.AxisSize.x/g.AxesPoints.x * p << " - at: " << x << "," << y-spacing << std::endl;
+			//Engine::out(Engine::SPAM) << " Label " << g.AxisSize.x/g.AxesPoints.x * p << " - at: " << x << "," << y-spacing << std::endl;
 		}
 
 		PointDistance = (float)g.Size.y / g.AxesPoints.y;
@@ -132,7 +132,7 @@ namespace sbe
 			x = p%5==0?10:5;
 
 			drawText( sf::Vector2f(x+border+ spacing, y), boost::lexical_cast<std::string>( g.AxisSize.y/g.AxesPoints.y * p ), false );
-			Engine::out(Engine::SPAM) << " Label " << g.AxisSize.y/g.AxesPoints.y * p << " - at: " << x+border+ spacing << "," << y << std::endl;
+			//Engine::out(Engine::SPAM) << " Label " << g.AxisSize.y/g.AxesPoints.y * p << " - at: " << x+border+ spacing << "," << y << std::endl;
 		}
 	}
 
@@ -185,15 +185,16 @@ namespace sbe
 	void GraphPlotter::drawCurve ( const Curve& c, sf::VertexArray& vA )
 	{
 		/// distance between each Datapoint
-		float PointDistance = (float)g.Size.x / g.PointsToDraw;
+		float PointDistance = (float)g.Size.x / (float)g.PointsToDraw;
 
 		// calculate the first point
-		Geom::Point last(0, 0);
-		Geom::Point current;
+		Geom::Pointf last(0, 0);
+		Geom::Pointf current;
 
 		for ( int p = 0; p < g.PointsToDraw; ++p)
 		{
 			current.x = last.x + PointDistance ;
+			if ( current.x > g.Size.x ) current.x = g.Size.x;
 			float x_percentage = current.x / (float)g.Size.x;
 			float y_percentage = interpolatedCurveData( c, x_percentage  ) / (float)g.AxisSize.y;
 			// invert for opengls top-left origin
