@@ -42,7 +42,7 @@ namespace sbe
 		Graph()
 		 : Size( 512,512),
 		 AxisSize( 1000, 1000),
-		 //AxisStart ( 0, 0 ),
+		 AxisStart ( 0, 0 ),
 		 PointsToDraw( 400 ),
 		 AxesPoints ( 5, 5),
 		 drawLegend(true),
@@ -56,6 +56,8 @@ namespace sbe
 			@return false if the curve is empty, true if it was added
 		*/
 		bool addCurve ( const Curve& c );
+		
+		std::vector< Curve > getCurves() { return Curves; }
 
 		/**
 			The Size of the final image to which this graph should be rendered
@@ -69,7 +71,7 @@ namespace sbe
 		/**
 			Determines the first point on each axis to show ( usually 0,0 )
 		*/
-		//Geom::Vec2 AxisStart;
+		Geom::Vec2 AxisStart;
 
 		// determines the granularity of the graph or how many points should be rendered ( default 50 )
 		unsigned int PointsToDraw;
@@ -135,7 +137,7 @@ namespace sbe
 		void drawCurve( const Curve& c, sf::VertexArray& vA  );
 
 		int interpolatedCurveData( const Curve& c, float percentage);
-
+		
 		bool valid;
 		Graph g;
 

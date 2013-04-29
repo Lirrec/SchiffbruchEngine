@@ -55,9 +55,15 @@ namespace sbe
 			Engine::out(Engine::ERROR) << "[GraphPlotter] no valid graph set!" << std::endl;
 			return;
 		}
-
+		
 		for ( int i = 0; i < g.Curves.size(); ++i)
 		{
+			for(int j = 0; j < g.Curves[i].data.size(); j++)
+			{
+				if(g.Curves[i].data[j] > g.AxisSize.y) g.AxisSize.y = g.Curves[i].data[j];
+				std::cout << "yo bro" << std::endl;
+			}
+			
 			if ( g.Curves[i].name == name )
 			{
 				g.Curves[i] = C;
@@ -192,10 +198,13 @@ namespace sbe
 		Geom::Pointf current;
 
 		for ( int p = 0; p < g.PointsToDraw; ++p)
-		{
+		{	
 			current.x = last.x + PointDistance ;
 			if ( current.x > g.Size.x ) current.x = g.Size.x;
+			
 			float x_percentage = current.x / (float)g.Size.x;
+			if ( g.AxisStart.x != -1 ) x_percentage = (g.AxisStart.x +  x_percentage * (g.AxisSize.x)) / c.data.size();
+			
 			float y_percentage = interpolatedCurveData( c, x_percentage  ) / (float)g.AxisSize.y;
 			// invert for opengls top-left origin
 			current.y = g.Size.y* (1 - y_percentage);
@@ -215,7 +224,7 @@ namespace sbe
 	int GraphPlotter::interpolatedCurveData( const Curve& c, float percentage)
 	{
 
-		if ( percentage > 1.0 ) percentage = 1;
+		if ( percentage >= 1.0 ) return ( c.data.empty() ? 0 : c.data.back() );
 		if ( percentage < 0 ) percentage = 0;
 
 		// determine matching indizes
