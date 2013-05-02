@@ -59,7 +59,7 @@ namespace sbe
 			sfg::SharedPtr<sfg::Box>	LogBox;
 			sfg::SharedPtr<sfg::Window> Win;
 			sfg::SharedPtr<sfg::ScrolledWindow> scrolledwindow;
-            sfg::SharedPtr<sfg::Entry> ConsoleInput;
+			sfg::SharedPtr<sfg::Entry> ConsoleInput;
 			unsigned int currentlabeltext;
 			unsigned int updateCounter;
 

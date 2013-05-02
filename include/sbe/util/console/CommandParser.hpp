@@ -2,6 +2,9 @@
 #define COMMAND_PARSER
 
 #include <string>
+#include <memory>
+#include <vector>
+#include "Node.hpp"
 
 namespace sbe
 {
@@ -15,10 +18,22 @@ namespace sbe
 			CommandParser();
 			~CommandParser() {}
 
-			void Execute( std::string c );
-			std::string Complete( std::string c );
+			void        Execute(  std::string s );
+			std::string Complete( std::string s );
+
 		private:
-			std::string CommandString;
+			void MakeCommandTree();
+			void switchToNextPossibility();
+			void interpretNew();
+			std::vector<std::string> split( std::string s, char c );
+			std::string recievedCommand;
+			std::string sentCommand;
+			std::shared_ptr<Node> currentNode;
+			std::list<std::shared_ptr<Node>> Possibilities;
+			bool commandNotFound;
+			std::vector<std::string> CommandVec;
+			///CommandTree
+			std::shared_ptr<Node> ct;
 	};
 } // namespace sbe
 #endif // COMMAND_PARSER

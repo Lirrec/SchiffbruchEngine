@@ -109,20 +109,24 @@ namespace sbe
 		}
 		else if ( e.Is( "KEY_PRESSED_TAB" ) && ListenToActionKeys )
 		{
-			std::string text = ConsoleInput->GetText().toAnsiString();
-			if ( text != "" )
+			std::string displayedCommandText = ConsoleInput->GetText().toAnsiString();
+			if ( displayedCommandText != "" ) //if text exists
 			{
-				text = Engine::GetCmdParser()->Complete( text );
-				ConsoleInput->SetText( text );
-				ConsoleInput->SetCursorPosition( text.length() );
+				// send text to parser
+				displayedCommandText = Engine::GetCmdParser()->Complete( displayedCommandText );
+				// fill into sfg::entry
+				ConsoleInput->SetText( displayedCommandText );
+				ConsoleInput->SetCursorPosition( displayedCommandText.length() );
 			}
 		}
 		else if ( e.Is( "KEY_PRESSED_ENTER" ) && ListenToActionKeys )
 		{
-			std::string text = ((std::string)( ConsoleInput->GetText() ));
-			if ( text != "" )
+			std::string displayedCommandText = ((std::string)( ConsoleInput->GetText() ));
+			if ( displayedCommandText != "" ) //if text exists
 			{
-				Engine::GetCmdParser()->Execute( text );
+				// send text to parser
+				Engine::GetCmdParser()->Execute( displayedCommandText );
+				// clear sfg::entry
 				ConsoleInput->SetCursorPosition( 0 );
 				ConsoleInput->SetText( "" );
 			}

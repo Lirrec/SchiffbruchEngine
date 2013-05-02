@@ -2,6 +2,7 @@
 #define COMMAND_NODE
 
 #include "Node.hpp"
+#include <string>
 
 namespace sbe
 {
@@ -12,10 +13,13 @@ namespace sbe
 	{
 		public:
 
-			CommandNode();
+			CommandNode( std::string command_name );
 			~CommandNode() {}
 
-		private:
+
+
+		protected:
+
 	};
 } // namespace sbe
 #endif // COMMAND_NODE
