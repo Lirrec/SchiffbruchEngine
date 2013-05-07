@@ -20,8 +20,8 @@ namespace sbe
 		*/
 		template <class T>
 		class point
-			: boost::operators< point<T> >// note: private inheritance is OK here!
-			, boost::operators2< point<T>, T >// note: private inheritance is OK here!
+			: private boost::operators< point<T> >// note: private inheritance is OK here!
+			, private boost::operators2< point<T>, T >// note: private inheritance is OK here!
 	/*		: boost::addable< 		point<T>     // point + point
 			: boost::addable< 		point<T>, T  // point + point
 			, boost::subtractable< 	point<T>     // point - point
@@ -92,11 +92,12 @@ namespace sbe
 		  return stream;
 		}
 
+#ifndef SWIG
 		extern template class point<int>;
 		extern template class point<point<int>>;
 		extern template class point<float>;
 		extern template class point<point<float>>;
-
+#endif
 
 	}
 } // namespace sbe
