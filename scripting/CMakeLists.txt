@@ -16,5 +16,10 @@ swig_link_libraries(sbeGeom ${PYTHON_LIBRARIES})
 
 set_source_files_properties(Event.i PROPERTIES CPLUSPLUS ON)
 #set_source_files_properties(Event.i PROPERTIES SWIG_FLAGS "-includeall")
-swig_add_module(sbeEvent python Event.i ../include/sbe/event/Event.hpp ../src/event/Event.cpp ../include/sbe/event/EventUser.hpp)
+swig_add_module(sbeEvent python 
+Event.i 
+../include/sbe/event/Event.hpp
+../src/event/EventQueue.hpp  
+../include/sbe/event/EventUser.hpp
+../include/sbe/Module.hpp)
 swig_link_libraries(sbeEvent ${PYTHON_LIBRARIES})

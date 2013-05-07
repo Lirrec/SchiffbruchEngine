@@ -22,6 +22,8 @@ namespace sbe
 
 		PySys_SetPath( L".:res/scripting:/usr/lib64/python3.3" );
 		PyObject *module = PyImport_Import(PyUnicode_FromString("sbeEvent"));
+
+		RunFile("res/scripting/__init__.py");
 	}
 
 
