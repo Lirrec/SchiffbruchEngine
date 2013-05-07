@@ -1,7 +1,5 @@
 #include "sbe/Module.hpp"
 
-#include <boost/uuid/uuid_generators.hpp>
-
 // local includes
 #include "event/EventCore.hpp"
 #include "modules/Core.hpp"
@@ -16,7 +14,6 @@ namespace sbe
 	boost::thread_specific_ptr<Module> Module::Instance;
 	std::list< Module* > Module::RunningModules;
 	boost::mutex Module::ModulesMutex;
-//	boost::mutex Module::UUIDsMutex;
 
 
 	Module::Module()
@@ -120,13 +117,6 @@ namespace sbe
 		{
 			TC->Tick();
 		}
-	}
-
-
-	boost::uuids::uuid Module::NewUUID()
-	{
-		boost::lock_guard<boost::mutex> lock(UUIDsMutex);
-		return  boost::uuids::random_generator()();
 	}
 
 } // namespace sbe
