@@ -1,5 +1,6 @@
 #include "sbe/util/console/CommandParser.hpp"
 
+#include "sbe/Engine.hpp"
 #include "sbe/Module.hpp"
 #include "sbe/util/console/CommandNode.hpp"
 

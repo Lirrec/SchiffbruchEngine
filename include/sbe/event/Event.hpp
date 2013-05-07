@@ -1,8 +1,7 @@
 #ifndef EVENT_H
 #define EVENT_H
 
-//~ #include <boost/uuid/uuid.hpp>
-//~ #include <boost/uuid/uuid_generators.hpp>
+#include <boost/uuid/uuid.hpp>
 #include <boost/any.hpp>
 
 #include "sbe/util/HashedString.hpp"
@@ -95,6 +94,8 @@ namespace sbe
 
 		The second one is the eventsystem supplied by SFML for receiving mostly hardware events about input.
 	*/
+
+
 
 	class Event
 	{

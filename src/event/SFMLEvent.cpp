@@ -2,6 +2,7 @@
 #include "sbe/event/SFMLKeys.hpp"
 
 #include "sbe/Config.hpp"
+#include "EventQueue.hpp"
 
 #include <boost/optional.hpp>
 #include <boost/property_tree/ptree.hpp>

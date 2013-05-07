@@ -9,6 +9,7 @@
 
 namespace sbe
 {
+
 	class EventUser;
 
 	/** A lokal EventQueue, one of those exists per thread
@@ -69,5 +70,6 @@ namespace sbe
 			std::list< Event > 			LocalEventQueue;
 			ConcurrentQueue< Event > 	ThreadedEventQueue;
 	};
+
 } // namespace sbe
 #endif // EVENT_QUEUE_H
