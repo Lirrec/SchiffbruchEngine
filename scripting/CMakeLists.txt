@@ -22,4 +22,4 @@ Event.i
 ../src/event/EventQueue.hpp  
 ../include/sbe/event/EventUser.hpp
 ../include/sbe/Module.hpp)
-swig_link_libraries(sbeEvent ${PYTHON_LIBRARIES})
+swig_link_libraries(sbeEvent sbe ${PYTHON_LIBRARIES})

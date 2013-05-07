@@ -28,7 +28,7 @@ namespace sbe
 			/// Handle an event
 			virtual void HandleEvent( Event& ) {};
 
-		protected:
+		public:
 
 			/**
 				Register for an Event by Type.
