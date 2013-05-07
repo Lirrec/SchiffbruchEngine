@@ -52,7 +52,7 @@ namespace sbe
 
 		ResMgr->init();
 
-		Engine:out(Engine::INFO) << "[Engine] CommandParser..." << std::endl;
+		Engine::out(Engine::INFO) << "[Engine] CommandParser..." << std::endl;
 		CmdPrs.reset(new sbe::CommandParser);
 
 		Engine::out(Engine::INFO) << "[Engine] Config..." << std::endl;

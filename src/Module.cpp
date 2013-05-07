@@ -1,9 +1,14 @@
 #include "sbe/Module.hpp"
 
+#include <boost/uuid/uuid_generators.hpp>
+
 // local includes
 #include "event/EventCore.hpp"
 #include "modules/Core.hpp"
 #include "util/TickControl.hpp"
+#include "../src/event/EventQueue.hpp"
+
+
 
 namespace sbe
 {
@@ -11,7 +16,7 @@ namespace sbe
 	boost::thread_specific_ptr<Module> Module::Instance;
 	std::list< Module* > Module::RunningModules;
 	boost::mutex Module::ModulesMutex;
-	boost::mutex Module::UUIDsMutex;
+//	boost::mutex Module::UUIDsMutex;
 
 
 	Module::Module()
@@ -64,6 +69,22 @@ namespace sbe
 		//MyThread->detach();
 	}
 
+	EventQueue* Module::GetEventQueue() { return EvtQ.get(); };
+
+	void Module::PostEvent( Event &e )
+	{
+		EvtQ->PostEvent( e );
+	}
+
+	void Module::QueueEvent( const Event& e, bool global)
+	{
+		EvtQ->QueueEvent( e, global );
+	}
+
+	void Module::QueueEvent( const std::string& EvtName, bool global)
+	{
+		EvtQ->QueueEvent( EvtName, global );
+	}
 
 
 	void Module::SetTPS( int TPS )
@@ -99,6 +120,13 @@ namespace sbe
 		{
 			TC->Tick();
 		}
+	}
+
+
+	boost::uuids::uuid Module::NewUUID()
+	{
+		boost::lock_guard<boost::mutex> lock(UUIDsMutex);
+		return  boost::uuids::random_generator()();
 	}
 
 } // namespace sbe

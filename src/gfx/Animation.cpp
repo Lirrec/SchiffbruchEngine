@@ -1,5 +1,6 @@
 #include "sbe/gfx/Animation.hpp"
 
+#include "sbe/event/Event.hpp"
 #include "sbe/Engine.hpp"
 #include "sbe/Module.hpp"
 #include "sbe/geom/Point.hpp"

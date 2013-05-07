@@ -2,17 +2,22 @@
 #define MODULE_H
 
 #include <boost/thread.hpp>
-#include "../src/event/EventQueue.hpp"
+#include <boost/uuid/uuid.hpp>
 
 #include <SFML/System/Clock.hpp>
+#include <SFML/System/NonCopyable.hpp>
 
 #include <memory>
 #include <string>
-#include <forward_list>
+#include <list>
+
+namespace boost { class thread; }
 
 namespace sbe
 {
 	class TickControl;
+	class EventQueue;
+	class Event;
 
 	/**
 		This class contains configuration parameters for the behaviour and default settings of a module.
@@ -105,7 +110,7 @@ namespace sbe
 			//virtual std::forward_list<std::string> ReturnDesiredEvents() = 0;
 
 			/// return evtq non-static
-			EventQueue* GetEventQueue() { return EvtQ.get(); };
+			EventQueue* GetEventQueue();
 
 			/// return the ID of the Eventqueue
 			size_t GetQueueID() { return QueueID; }
@@ -113,30 +118,21 @@ namespace sbe
 			/**
 				Immediatly send an Event to all (local) listeners.
 			*/
-			void PostEvent( Event &e )
-			{
-				EvtQ->PostEvent( e );
-			}
+			void PostEvent( Event &e );
 
 			/**
 				Add an Event to the Eventqueue to be fired on the next frame.
 				@param e the Event to send
 				@param global if set to true the event will also be sent to all other modules
 			*/
-			void QueueEvent( const Event& e, bool global = false)
-			{
-				EvtQ->QueueEvent( e, global );
-			}
+			void QueueEvent( const Event& e, bool global = false);
 
 			/**
 				Add an Event to the Eventqueue to be fired on the next frame.
 				@param EvtName the name of the Event to send
 				@param global if set to true the event will also be sent to all other modules
 			*/
-			void QueueEvent( const std::string& EvtName, bool global = false)
-			{
-				EvtQ->QueueEvent( EvtName, global );
-			}
+			void QueueEvent( const std::string& EvtName, bool global = false);
 
 			/**
 				Send a key/value pair as debugging information.
@@ -155,13 +151,8 @@ namespace sbe
 			/// returns the time this module is already running
 			sf::Time GetModuleTime() { return ModuleTime.getElapsedTime(); }
 
-
 			/// Thread-safe way to generate a new UUID ( used in the event system and some other places).
-			static boost::uuids::uuid NewUUID()
-			{
-				boost::lock_guard<boost::mutex> lock(UUIDsMutex);
-				return  boost::uuids::random_generator()();
-			}
+			static boost::uuids::uuid NewUUID();
 
 			/**
 				Change the target TicksPerSecond at runtime.
@@ -223,8 +214,6 @@ namespace sbe
 			static boost::thread_specific_ptr<Module> Instance;
 			/// mutex for module access
 			static boost::mutex ModulesMutex;
-			/// mutex for UUID generation
-			static boost::mutex UUIDsMutex;
 
 			/// List of existing Modules
 			static std::list< Module* > RunningModules;
@@ -255,4 +244,3 @@ namespace sbe
 typedef sbe::Module Module;
 
 #endif // MODULE_H
-
