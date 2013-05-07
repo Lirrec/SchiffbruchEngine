@@ -56,7 +56,8 @@ foreach(LIB ${GENERIC_LIBS})
 	find_library(FOUND_${LIB} ${LIB} )
 endforeach()
 
-
+find_package(PythonLibs)
+include_directories(${PYTHON_INCLUDE_PATH})
 
 ########################################################
 ######################## SFGUI #########################
@@ -186,7 +187,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/SFGUI/include)
 
-target_link_libraries(sbe sfgui ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${GENERIC_LIBS})
+target_link_libraries(sbe sfgui ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} ${GENERIC_LIBS})
 
 #############################################################
 #################### Scripting / Swig #######################
