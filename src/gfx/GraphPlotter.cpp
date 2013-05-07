@@ -79,13 +79,39 @@ namespace sbe
 		{
 			Engine::out(Engine::ERROR) << "[GraphPlotter] no valid graph set!" << std::endl;
 			return;
-		}
+		}	
+		
+		dynScaleAxes();
+		
 		if ( g.drawLegend ) drawLegend();
 		if ( g.drawAxes ) drawAxes();
 
 		for ( int i = 0; i < g.Curves.size(); ++i)
 		{
 			drawCurve( g.Curves[i], RenderArrays[i]);
+		}
+	}
+	
+	void GraphPlotter::dynScaleAxes()
+	{
+		std::vector<Curve> cs = g.Curves;
+		if(g.dynX) 
+		{
+			float maxX = 0;
+			for(int i = 0; i<cs.size(); i++)
+			{
+				if(cs[i].data.size() > maxX) maxX = cs[i].data.size();
+			}
+			g.AxisSize.x = maxX-g.AxisStart.x;
+		}
+		if(g.dynY) 
+		{
+			float maxY = 0;
+			for(int i = 0; i<cs.size(); i++)
+			{
+				maxY = *std::max_element(cs[i].data.begin(), cs[i].data.end());
+			}
+			g.AxisSize.y = maxY-g.AxisStart.y;
 		}
 	}
 
@@ -96,7 +122,6 @@ namespace sbe
 			Engine::out(Engine::ERROR) << "[GraphPlotter] no valid graph set!" << std::endl;
 			return;
 		}
-
 
 		Target.clear( sf::Color::White );
 

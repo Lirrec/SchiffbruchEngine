@@ -47,7 +47,8 @@ namespace sbe
 		 AxesPoints ( 5, 5),
 		 drawLegend(true),
 		 textSize( 15 ),
-		 drawAxes(true)
+		 drawAxes(true),
+		 dynX(true), dynY(true)
 		{
 
 		}
@@ -87,6 +88,8 @@ namespace sbe
 		int textSize;
 		/// wether to draw the axes
 		bool drawAxes;
+		/// whether axes should scale
+		bool dynX, dynY;
 
 		friend class GraphPlotter;
 	private:
@@ -124,8 +127,10 @@ namespace sbe
 			As you cant set a relative origin on the rendertarget yet, this works best with a sf::RenderTexture  of appropriate size or with a sf::View
 		*/
 		void draw( sf::RenderTarget& Target );
-
-
+		/**
+			Check if dynamic axes are needed and adjust accordingly
+		*/
+		void dynScaleAxes();
 
 		private:
 		/**
