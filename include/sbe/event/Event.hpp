@@ -1,8 +1,8 @@
 #ifndef EVENT_H
 #define EVENT_H
 
-#include <boost/uuid/uuid.hpp>
-#include <boost/uuid/uuid_generators.hpp>
+//~ #include <boost/uuid/uuid.hpp>
+//~ #include <boost/uuid/uuid_generators.hpp>
 #include <boost/any.hpp>
 
 #include "sbe/util/HashedString.hpp"
@@ -103,13 +103,12 @@ namespace sbe
 			/**
 				Constructor. Takes the Name of the Event as String and an optional source uuid ( currently not used ).
 			*/
-			Event( const std::string& EventName, const boost::uuids::uuid& Source = invalid_source_id );
+			Event( const std::string& EventName);
 			Event( const std::string& EventName, const boost::any& _Data );
 
 			template < class T >
 			Event( const std::string& EventName, const T& _Data )
 			{
-				initIDs();
 				init( EventName, boost::any(_Data) );
 			}
 
@@ -117,8 +116,6 @@ namespace sbe
 
 			typedef boost::any EventData;
 			typedef HashedString::HashType EventType;
-
-			static const  boost::uuids::uuid invalid_source_id;
 
 			/// Sets an arbitrary Type as data
 			template < class T >
@@ -148,11 +145,8 @@ namespace sbe
 		private:
 
 			void init( const std::string& EventName, const boost::any& _data);
-			void initIDs( const boost::uuids::uuid& Source = invalid_source_id );
 
 			EventType Type;
-			boost::uuids::uuid SourceID;
-			boost::uuids::uuid EventID;
 			EventData EvtData;
 	};
 
@@ -161,4 +155,3 @@ namespace sbe
 typedef sbe::Event Event;
 
 #endif // EVENT_H
-

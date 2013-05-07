@@ -28,10 +28,7 @@ namespace sbe
 			/// Handle an event
 			virtual void HandleEvent( Event& ) {};
 
-			const boost::uuids::uuid& GetID() { return ID; };
-
 		protected:
-			boost::uuids::uuid ID;
 
 			/**
 				Register for an Event by Type.
@@ -55,7 +52,3 @@ namespace sbe
 	};
 } // namespace sbe
 #endif // EVTLISTENER_H
-
-
-
-

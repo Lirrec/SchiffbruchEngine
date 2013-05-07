@@ -11,7 +11,7 @@ namespace sbe
 	boost::thread_specific_ptr<Module> Module::Instance;
 	std::list< Module* > Module::RunningModules;
 	boost::mutex Module::ModulesMutex;
-	boost::mutex Module::UUIDsMutex;
+//	boost::mutex Module::UUIDsMutex;
 
 
 	Module::Module()

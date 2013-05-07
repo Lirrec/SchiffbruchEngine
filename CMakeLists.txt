@@ -22,7 +22,7 @@ SET( CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 if (NOT CMAKE_BUILD_TYPE)
 	set( CMAKE_BUILD_TYPE "Release")
 endif()
-message( "-- CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 
 #############################################################
 #################### External Libraries #####################
