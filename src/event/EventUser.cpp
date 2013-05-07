@@ -8,7 +8,7 @@
 namespace sbe
 {
 	// EventUser
-	EventUser::EventUser() : ID(Module::NewUUID())
+	EventUser::EventUser()
 	{
 		Module::Get()->GetEventQueue()->AddEventUser( this );
 	}

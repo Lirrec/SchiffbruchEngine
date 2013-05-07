@@ -155,14 +155,6 @@ namespace sbe
 			/// returns the time this module is already running
 			sf::Time GetModuleTime() { return ModuleTime.getElapsedTime(); }
 
-
-			/// Thread-safe way to generate a new UUID ( used in the event system and some other places).
-			static boost::uuids::uuid NewUUID()
-			{
-				boost::lock_guard<boost::mutex> lock(UUIDsMutex);
-				return  boost::uuids::random_generator()();
-			}
-
 			/**
 				Change the target TicksPerSecond at runtime.
 				@see TickControl::SetTargetTicksPerSecond
@@ -223,8 +215,6 @@ namespace sbe
 			static boost::thread_specific_ptr<Module> Instance;
 			/// mutex for module access
 			static boost::mutex ModulesMutex;
-			/// mutex for UUID generation
-			static boost::mutex UUIDsMutex;
 
 			/// List of existing Modules
 			static std::list< Module* > RunningModules;
@@ -255,4 +245,3 @@ namespace sbe
 typedef sbe::Module Module;
 
 #endif // MODULE_H
-

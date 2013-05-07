@@ -16,28 +16,16 @@
 
 namespace sbe
 {
-	const boost::uuids::uuid Event::invalid_source_id = Module::NewUUID();
 
-	Event::Event(const std::string& EventName,
-				const boost::uuids::uuid& Source
-				 )
+	Event::Event(const std::string& EventName )
 	{
-		initIDs( Source );
 		init ( EventName, 0 );
 	}
 
 	Event::Event( const std::string& EventName, const boost::any& _Data )
 	{
-		initIDs();
 		init ( EventName, _Data );
 	}
-
-	void Event::initIDs( const boost::uuids::uuid& Source)
-	{
-		SourceID = Source;
-		EventID = Module::NewUUID();
-	}
-
 
 	void Event::init( const std::string& EventName, const boost::any& _Data)
 	{
