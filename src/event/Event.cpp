@@ -45,11 +45,11 @@ namespace sbe
 	}
 
 
-	bool Event::Is(const std::string& Name) {
+	bool Event::Is(const std::string& Name) const {
 		 return Type == Core::EvtCore->GetEventHash( Name );
 	}
 
-	bool Event::Is(const std::string& Name, const std::type_info &type )
+	bool Event::Is(const std::string& Name, const std::type_info &type ) const
 	{
 		if (!Is(Name)) return false;
 		if ( EvtData.type() != type )

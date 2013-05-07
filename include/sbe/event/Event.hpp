@@ -134,13 +134,13 @@ namespace sbe
 			std::string getDebugName();
 
 			/// check if the event is of the given type (string-name)
-			bool Is(const std::string& Name);
+			bool Is(const std::string& Name) const;
 
 			/// check if the event is of the given string-name and the data is of the given type
-			bool Is(const std::string& Name, const std::type_info &type );
+			bool Is(const std::string& Name, const std::type_info &type ) const ;
 
 			/// check if the event is of the given type (EventType / string-hash)
-			bool Is(const EventType& otherType) { return Type == otherType; };
+			bool Is(const EventType& otherType) const { return Type == otherType; };
 
 		private:
 
