@@ -2,7 +2,6 @@
 #define MODULE_H
 
 #include <boost/thread.hpp>
-#include <boost/uuid/uuid.hpp>
 
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/NonCopyable.hpp>
@@ -150,9 +149,6 @@ namespace sbe
 
 			/// returns the time this module is already running
 			sf::Time GetModuleTime() { return ModuleTime.getElapsedTime(); }
-
-			/// Thread-safe way to generate a new UUID ( used in the event system and some other places).
-			static boost::uuids::uuid NewUUID();
 
 			/**
 				Change the target TicksPerSecond at runtime.
