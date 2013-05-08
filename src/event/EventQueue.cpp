@@ -77,7 +77,7 @@ namespace sbe
 		if ( Listener != 0 )
 		{
 			EventListeners[EvtType].insert ( std::make_pair ( priority, Listener ) );
-			EventUsers[Listener->GetID()] = Listener;
+			//EventUsers[Listener->GetID()] = Listener;
 
 			Engine::out(Engine::SPAM) << "[EventQueue] New listener: " << Core::EvtCore->GetEventName( EvtType) << std::endl;
 		}
@@ -134,7 +134,7 @@ namespace sbe
 			return;
 		}
 
-		EventUsers[User->GetID()] = User;
+		//EventUsers[User->GetID()] = User;
 	}
 
 	void EventQueue::RemoveEventUser ( EventUser* Listener )
@@ -146,7 +146,7 @@ namespace sbe
 		}
 
 		// Hes probably only inthe EventUsers list, no listener
-		EventUsers.erase (Listener->GetID());
+		//EventUsers.erase (Listener->GetID());
 
 		for ( auto & EventVec : EventListeners )
 		{

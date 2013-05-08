@@ -2,7 +2,6 @@
 #define EVENT_H
 
 #include <boost/uuid/uuid.hpp>
-#include <boost/uuid/uuid_generators.hpp>
 #include <boost/any.hpp>
 
 #include "sbe/util/HashedString.hpp"
@@ -96,6 +95,8 @@ namespace sbe
 		The second one is the eventsystem supplied by SFML for receiving mostly hardware events about input.
 	*/
 
+
+
 	class Event
 	{
 		public:
@@ -103,13 +104,12 @@ namespace sbe
 			/**
 				Constructor. Takes the Name of the Event as String and an optional source uuid ( currently not used ).
 			*/
-			Event( const std::string& EventName, const boost::uuids::uuid& Source = invalid_source_id );
+			Event( const std::string& EventName);
 			Event( const std::string& EventName, const boost::any& _Data );
 
 			template < class T >
 			Event( const std::string& EventName, const T& _Data )
 			{
-				initIDs();
 				init( EventName, boost::any(_Data) );
 			}
 
@@ -117,8 +117,6 @@ namespace sbe
 
 			typedef boost::any EventData;
 			typedef HashedString::HashType EventType;
-
-			static const  boost::uuids::uuid invalid_source_id;
 
 			/// Sets an arbitrary Type as data
 			template < class T >
@@ -137,22 +135,19 @@ namespace sbe
 			std::string getDebugName();
 
 			/// check if the event is of the given type (string-name)
-			bool Is(const std::string& Name);
+			bool Is(const std::string& Name) const;
 
 			/// check if the event is of the given string-name and the data is of the given type
-			bool Is(const std::string& Name, const std::type_info &type );
+			bool Is(const std::string& Name, const std::type_info &type ) const ;
 
 			/// check if the event is of the given type (EventType / string-hash)
-			bool Is(const EventType& otherType) { return Type == otherType; };
+			bool Is(const EventType& otherType) const { return Type == otherType; };
 
 		private:
 
 			void init( const std::string& EventName, const boost::any& _data);
-			void initIDs( const boost::uuids::uuid& Source = invalid_source_id );
 
 			EventType Type;
-			boost::uuids::uuid SourceID;
-			boost::uuids::uuid EventID;
 			EventData EvtData;
 	};
 
@@ -161,4 +156,3 @@ namespace sbe
 typedef sbe::Event Event;
 
 #endif // EVENT_H
-

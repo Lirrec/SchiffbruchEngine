@@ -16,28 +16,16 @@
 
 namespace sbe
 {
-	const boost::uuids::uuid Event::invalid_source_id = Module::NewUUID();
 
-	Event::Event(const std::string& EventName,
-				const boost::uuids::uuid& Source
-				 )
+	Event::Event(const std::string& EventName )
 	{
-		initIDs( Source );
 		init ( EventName, 0 );
 	}
 
 	Event::Event( const std::string& EventName, const boost::any& _Data )
 	{
-		initIDs();
 		init ( EventName, _Data );
 	}
-
-	void Event::initIDs( const boost::uuids::uuid& Source)
-	{
-		SourceID = Source;
-		EventID = Module::NewUUID();
-	}
-
 
 	void Event::init( const std::string& EventName, const boost::any& _Data)
 	{
@@ -57,11 +45,11 @@ namespace sbe
 	}
 
 
-	bool Event::Is(const std::string& Name) {
+	bool Event::Is(const std::string& Name) const {
 		 return Type == Core::EvtCore->GetEventHash( Name );
 	}
 
-	bool Event::Is(const std::string& Name, const std::type_info &type )
+	bool Event::Is(const std::string& Name, const std::type_info &type ) const
 	{
 		if (!Is(Name)) return false;
 		if ( EvtData.type() != type )

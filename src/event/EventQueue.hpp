@@ -9,6 +9,7 @@
 
 namespace sbe
 {
+
 	class EventUser;
 
 	/** A lokal EventQueue, one of those exists per thread
@@ -60,14 +61,15 @@ namespace sbe
 			void RegisterEventUser( EventUser* Listener, Event::EventType EvtType, int priority = 0);
 			void RegisterEventUser( EventUser* Listener, const std::string& EvtName, int priority = 0);
 
-			typedef std::map< boost::uuids::uuid, EventUser*>						EventUserMap;
+			//typedef std::map< boost::uuids::uuid, EventUser*>						EventUserMap;
 			typedef std::map< Event::EventType , std::multimap<int, EventUser* >> 	EventListenerMap;
 
-			EventUserMap 			EventUsers;
+			//EventUserMap 			EventUsers;
 			EventListenerMap	EventListeners;
 
 			std::list< Event > 			LocalEventQueue;
 			ConcurrentQueue< Event > 	ThreadedEventQueue;
 	};
+
 } // namespace sbe
 #endif // EVENT_QUEUE_H
