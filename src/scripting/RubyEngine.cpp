@@ -17,33 +17,21 @@ namespace sbe
 
 	void RubyEngine::init()
 	{
-
 		Engine::out(Engine::ERROR) << "[rbScript] init:" << std::endl;
-		ruby_init();
 
+		ruby_init();
 		ruby_init_loadpath();
 		ruby_script( "sbeRuby" );
-		first = false;
 
-		//PySys_SetPath( L".:res/scripting:/usr/lib64/python3.3" );
-		int err;
-		auto lambda = [](VALUE)->VALUE { rb_require("sbe"); };
-		rb_protect( lambda, (VALUE)0, &err);
-		if ( err )
-		{
-			backtrace();
-			Engine::out(Engine::ERROR) << "[rbScript] Error loading SBE module!" << std::endl;
-			return;
-		}
+		RunString("$:.unshift(\"./res/scripting\")");
 
-		auto lambda2 = [](VALUE)->VALUE { rb_load_file("res/scripting/__init__.rb"); };
-		rb_protect( lambda2, (VALUE)0, &err);
-		if ( err )
-		{
-			backtrace();
-			Engine::out(Engine::ERROR) << "[rbScript] Error loading __init__.rb!" << std::endl;
+		if (!protectedCall(
+							[](VALUE)->VALUE { rb_require("SBE.so"); },
+							 "Error loading SBE module!" ))
 			return;
-		}
+
+		RunString("require '__init__.rb'");
+
 		Engine::out(Engine::ERROR) << "[rbScript] initialized." << std::endl;
 	}
 
@@ -56,36 +44,34 @@ namespace sbe
 
 	bool RubyEngine::RunString(const std::string& code)
 	{
-		int re;
-		rb_eval_string_protect( code.c_str(), &re );
-		if ( re ) backtrace();
-		return (re == 0);
+		return protectedCall( [](VALUE arg)->VALUE { rb_eval_string( ((std::string*)arg)->c_str()); }, "Error executing string: "+code, (VALUE)&code);
 	}
 
 	bool RubyEngine::RunFile(const std::string& path)
 	{
-		int err = 0;
+		return protectedCall( [](VALUE arg)->VALUE { rb_load_file( ((std::string*)arg)->c_str() ); }, "Error executing file: "+path, (VALUE)&path );
+	}
 
-		rb_load_file( path.c_str() );
-
-		//VALUE v;
-		//auto l = [path](VALUE)->VALUE { return rb_load_file( path.c_str() ); };
-		//rb_protect( l, v, &err);
-
+	bool RubyEngine::protectedCall( VALUE(*fn)(VALUE), const std::string& msg, VALUE arg, VALUE* out)
+	{
+		int err;
+		VALUE re = rb_protect( fn, arg, &err);
 		if ( err )
 		{
 			backtrace();
-			Engine::out(Engine::ERROR) << "[RbScript] Error opening file: " << path << std::endl;
-			return false;
+			if ( msg != "" ) Engine::out(Engine::ERROR) << "[RbScript] " << msg << std::endl;
+		}
+		else
+		{
+			if ( out != nullptr ) *out = re;
 		}
 
-		return true;
+		return err == 0;
 	}
 
 	void RubyEngine::backtrace()
 	{
-		int error;
-		rb_eval_string_protect("if (e = $!) then STDERR.puts(\"#{e.class}:\n#{e.message}\", e.backtrace.map {|s| \"\tfrom #{s}\" }) end", &error);
+		rb_eval_string_protect("if (e = $!) then STDERR.puts(\"#{e.class}:\n#{e.message}\", e.backtrace.map {|s| \"\tfrom #{s}\" }) end", nullptr);
 	}
 
 } // namespace sbe

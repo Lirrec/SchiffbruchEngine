@@ -28,7 +28,7 @@ namespace sbe
 		}
 		else if ( e.Is( "SCRIPT_HELLO"))
 		{
-			RunString("print ( \"hello, world\" )");
+			RunString( "print ( \"hello, world\" )\0");
 		}
 		else if ( e.Is( "RESTART_SCRIPTING"))
 		{

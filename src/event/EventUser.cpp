@@ -35,6 +35,10 @@ namespace sbe
 	{
 		Module::Get()->GetEventQueue()->RegisterEventUser(this, EvtName, priority);
 	}
+	void EventUser::RegisterForEventS(const std::string& EvtName)
+	{
+		Module::Get()->GetEventQueue()->RegisterEventUser(this, EvtName, 0);
+	}
 
 	void EventUser::UnregisterThis()
 	{

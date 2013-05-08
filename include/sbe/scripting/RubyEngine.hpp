@@ -38,6 +38,8 @@ namespace sbe
 
 		private:
 			void backtrace();
+			typedef long unsigned int VALUE;
+			bool protectedCall( VALUE(*fn)(VALUE), const std::string& msg = "", VALUE arg = 0, VALUE* out = nullptr );
 
 	};
 
