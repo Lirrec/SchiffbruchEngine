@@ -17,6 +17,7 @@ namespace sbe
 
 	void PythonEngine::init()
 	{
+		Engine::out(Engine::ERROR) << "[PyScript] init:" << std::endl;
 		//Py_SetProgramName(argv[0]);
 		Py_Initialize();
 
@@ -24,12 +25,14 @@ namespace sbe
 		PyObject *module = PyImport_Import(PyUnicode_FromString("SBE"));
 
 		RunFile("res/scripting/__init__.py");
+		Engine::out(Engine::ERROR) << "[PyScript] initialized." << std::endl;
 	}
 
 
 	void PythonEngine::deinit()
 	{
 		Py_Finalize();
+		Engine::out(Engine::ERROR) << "[PyScript] finalized." << std::endl;
 	}
 
 	bool PythonEngine::RunString(const std::string& code)
