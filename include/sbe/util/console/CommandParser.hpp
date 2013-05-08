@@ -18,7 +18,13 @@ namespace sbe
 			CommandParser();
 			~CommandParser() {}
 
-			void        Execute(  std::string s );
+			///Tries to execute the given Command
+			void Execute( std::string s );
+
+			///return the last of history
+			std::string FetchHistory( std::string s, int x );
+
+			///Tries to complete the given Command
 			std::string Complete( std::string s );
 
 		private:
@@ -32,8 +38,15 @@ namespace sbe
 			std::list<std::shared_ptr<Node>> Possibilities;
 			bool commandNotFound;
 			std::vector<std::string> CommandVec;
-			///CommandTree
+
+			///root of CommandTree
 			std::shared_ptr<Node> ct;
+
+			///history of successfully executed commands
+			std::list<std::string> history;
+
+			///accessiterator of history
+			std::list<std::string>::iterator historyAccess;
 	};
 } // namespace sbe
 #endif // COMMAND_PARSER

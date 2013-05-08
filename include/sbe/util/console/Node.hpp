@@ -24,6 +24,9 @@ namespace sbe
 			///returns true if given string is identic to node's command.
 			virtual bool Is( std::string s );
 
+			///overloaded by Commandnode which has an Event
+			virtual bool IsExecutable() { return false; }
+
 			///returns true if Node has subnode/s beginning with given string
 			virtual bool HasWith( std::string s );
 
@@ -33,8 +36,8 @@ namespace sbe
 			///returns the name of the Node
 			std::string Name();
 
-			///returns the name of the event-string
-			virtual std::string Event();
+			///returns the helptext
+			std::string Help();
 
 			///adds a subNode and sorts them alphabeticaly again
 			virtual void AddSub( std::shared_ptr<Node> sub );
@@ -47,8 +50,8 @@ namespace sbe
 			///contains the name of the node
 			std::string name;
 
-			///contains the event-string
-			std::string event;
+			///contains the helptext
+			std::string help;
 
 			///contains the list with subnodes
 			std::list<std::shared_ptr<Node>> subNodes;

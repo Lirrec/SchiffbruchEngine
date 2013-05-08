@@ -49,9 +49,9 @@ namespace sbe
 		return name;
 	}
 
-	std::string Node::Event()
+	std::string Node::Help()
 	{
-
+		return help;
 	}
 
 	void Node::AddSub( std::shared_ptr<Node> sub )

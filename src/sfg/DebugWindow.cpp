@@ -18,6 +18,8 @@ namespace sbe
 		RegisterForEvent( "TOGGLE_SHOW_DBGWIN" );
 		RegisterForEvent( "KEY_PRESSED_ENTER" );
 		RegisterForEvent( "KEY_PRESSED_TAB" );
+		RegisterForEvent( "KEY_PRESSED_ARROW_UP" );
+		RegisterForEvent( "KEY_PRESSED_ARROW_DOWN" );
 
 		updateCounter = 0;
 		currentlabeltext = 0;
@@ -130,6 +132,20 @@ namespace sbe
 				ConsoleInput->SetCursorPosition( 0 );
 				ConsoleInput->SetText( "" );
 			}
+		}
+		else if ( e.Is( "KEY_PRESSED_ARROW_UP" ) && ListenToActionKeys )
+		{
+			std::string displayedCommandText = ConsoleInput->GetText().toAnsiString();
+			displayedCommandText = Engine::GetCmdParser()->FetchHistory( displayedCommandText, 1 );
+			ConsoleInput->SetText( displayedCommandText );
+			ConsoleInput->SetCursorPosition( displayedCommandText.length() );
+		}
+		else if ( e.Is( "KEY_PRESSED_ARROW_DOWN" ) && ListenToActionKeys )
+		{
+			std::string displayedCommandText = ConsoleInput->GetText().toAnsiString();
+			displayedCommandText = Engine::GetCmdParser()->FetchHistory( displayedCommandText, -1 );
+			ConsoleInput->SetText( displayedCommandText );
+			ConsoleInput->SetCursorPosition( displayedCommandText.length() );
 		}
 	}
 
