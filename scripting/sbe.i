@@ -1,8 +1,10 @@
-%module sbeEvent
+%module SBE
 
 %include stl.i
+%include std_string.i
 %naturalvar;
 using std;
+using std::string;
 
 %{
 #include "sbe/event/Event.hpp"
