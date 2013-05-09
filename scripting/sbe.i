@@ -4,6 +4,8 @@
 %naturalvar;
 using std;
 
+%feature("director");
+
 %{
 #include "sbe/event/Event.hpp"
 #include "sbe/event/EventUser.hpp"
