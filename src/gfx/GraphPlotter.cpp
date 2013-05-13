@@ -55,7 +55,7 @@ namespace sbe
 			Engine::out(Engine::ERROR) << "[GraphPlotter] no valid graph set!" << std::endl;
 			return;
 		}
-		
+
 		for ( int i = 0; i < g.Curves.size(); ++i)
 		{
 			for(int j = 0; j < g.Curves[i].data.size(); j++)
@@ -63,7 +63,7 @@ namespace sbe
 				if(g.Curves[i].data[j] > g.AxisSize.y) g.AxisSize.y = g.Curves[i].data[j];
 				std::cout << "yo bro" << std::endl;
 			}
-			
+
 			if ( g.Curves[i].name == name )
 			{
 				g.Curves[i] = C;
@@ -79,10 +79,10 @@ namespace sbe
 		{
 			Engine::out(Engine::ERROR) << "[GraphPlotter] no valid graph set!" << std::endl;
 			return;
-		}	
-		
+		}
+
 		dynScaleAxes();
-		
+
 		if ( g.drawLegend ) drawLegend();
 		if ( g.drawAxes ) drawAxes();
 
@@ -91,25 +91,25 @@ namespace sbe
 			drawCurve( g.Curves[i], RenderArrays[i]);
 		}
 	}
-	
+
 	void GraphPlotter::dynScaleAxes()
 	{
 		std::vector<Curve> cs = g.Curves;
-		if(g.dynX) 
+		if(g.dynX)
 		{
 			float maxX = 0;
 			for(int i = 0; i<cs.size(); i++)
-			{
 				if(cs[i].data.size() > maxX) maxX = cs[i].data.size();
-			}
+
 			g.AxisSize.x = maxX-g.AxisStart.x;
 		}
-		if(g.dynY) 
+		if(g.dynY)
 		{
 			float maxY = 0;
 			for(int i = 0; i<cs.size(); i++)
 			{
-				maxY = *std::max_element(cs[i].data.begin(), cs[i].data.end());
+				float tmp = *std::max_element(cs[i].data.begin(), cs[i].data.end());
+				if (tmp > maxY) maxY = tmp;
 			}
 			g.AxisSize.y = maxY-g.AxisStart.y;
 		}
@@ -223,13 +223,13 @@ namespace sbe
 		Geom::Pointf current;
 
 		for ( int p = 0; p < g.PointsToDraw; ++p)
-		{	
+		{
 			current.x = last.x + PointDistance ;
 			if ( current.x > g.Size.x ) current.x = g.Size.x;
-			
+
 			float x_percentage = current.x / (float)g.Size.x;
 			if ( g.AxisStart.x != -1 ) x_percentage = (g.AxisStart.x +  x_percentage * (g.AxisSize.x)) / c.data.size();
-			
+
 			float y_percentage = interpolatedCurveData( c, x_percentage  ) / (float)g.AxisSize.y;
 			// invert for opengls top-left origin
 			current.y = g.Size.y* (1 - y_percentage);
