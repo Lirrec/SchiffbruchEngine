@@ -3,7 +3,7 @@
 #include "sbe/Engine.hpp"
 #include "sbe/Module.hpp"
 #include "sbe/util/console/CommandNode.hpp"
-#include "sbe/util/console/ArgumentsCommandNode.hpp"
+//#include "sbe/util/console/ArgumentsCommandNode.hpp"
 
 using namespace std;
 
@@ -14,10 +14,12 @@ namespace sbe
 		ct.reset( new Node( "/" ) );
 		/******/ct->AddSub( shared_ptr<Node>( new Node( "conf" ) ) );
 		/******/ct->Get( "conf" )->AddSub( shared_ptr<Node>( new Node( "set" ) ) );
+		/******/ct->AddSub( shared_ptr<Node>( new Node( "debug" ) ) );
+		/******/ct->Get( "debug" )->AddSub( shared_ptr<Node>( new CommandNode( "reload_graph", "debug_reload_graph" ) ) );
 		/******/ct->AddSub( shared_ptr<Node>( new Node( "hide" ) ) );
 		/******/ct->Get( "hide" )->AddSub( shared_ptr<Node>( new CommandNode( "alloverlays", "EVT_COMMAND_HIDE_ALL_OVERLAYS" ) ) );
 		/******/ct->Get( "hide" )->AddSub( shared_ptr<Node>( new Node( "overlay" ) ) );
-		/******/ct->Get( "hide" )->AddSub( shared_ptr<Node>( new ArgumentsCommandNode( "window", "EVT_COMMAND_HIDE_WINDOW" ) ) );
+		/******/ct->Get( "hide" )->AddSub( shared_ptr<Node>( new CommandNode( "window", "EVT_COMMAND_HIDE_WINDOW" ) ) );
 		/******/ct->AddSub( shared_ptr<Node>( new Node( "kill" ) ) );
 		/******/ct->Get( "kill" )->AddSub( shared_ptr<Node>( new Node( "carnivore" ) ) );
 		/******/ct->Get( "kill" )->AddSub( shared_ptr<Node>( new Node( "herbivore" ) ) );
