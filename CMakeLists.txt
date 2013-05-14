@@ -12,6 +12,8 @@ set( CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/SFGUI/extlibs/SFML/cmake/Modules" 
 
 option( PROFILE "" OFF)
 option( USE_CUSTOM_BOOST "" OFF)
+option( USE_PYTHON "" OFF)
+option( USE_RUBY "" OFF)
 option( USE_CUSTOM_SFML "" ON)
 set( CUSTOM_BOOST_ROOT "" CACHE PATH "custom boost build root dir")
 set( CUSTOM_SFML_ROOT "${PROJECT_SOURCE_DIR}/SFGUI/extlibs/SFML" CACHE PATH "custom SFML build root dir")
@@ -55,7 +57,6 @@ find_package(SFML 2 REQUIRED audio)
 foreach(LIB ${GENERIC_LIBS})
 	find_library(FOUND_${LIB} ${LIB} )
 endforeach()
-
 
 
 ########################################################
@@ -148,11 +149,13 @@ if (false)
 	message( "-- Found the following SRCHDRS:\n ${sbe_SRCHDRS}" )
 endif()
 
+
+
 #############################################################
 #################### Compiler Options #######################
 #############################################################
 
-add_definitions( -DBOOST_THREAD_USE_LIB )
+add_definitions( -fPIC -DBOOST_THREAD_USE_LIB )
 
 if (CMAKE_BUILD_TYPE MATCHES Debug)
 	add_definitions(-DCOUNT_EVENTS)
@@ -172,13 +175,6 @@ endif()
 
 link_directories(${SFML_ROOT})
 
-if(SHARED)
-    add_library(sbe SHARED ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS})
-else()
-    add_library(sbe STATIC ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS})
-    add_definitions(-DSFML_STATIC -DSFGUI_STATIC)
-endif()
-
 set_property(GLOBAL PROPERTY SBE_LINK_LIBS "${Boost_LIBRARIES};${SFML_LIBRARIES};${GENERIC_LIBS}")
 set_property(GLOBAL PROPERTY SBE_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include;${PROJECT_SOURCE_DIR}/SFGUI/include;${Boost_INCLUDE_DIR};${SFML_INCLUDE_DIR}")
 
@@ -186,4 +182,23 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/SFGUI/include)
 
-target_link_libraries(sbe sfgui ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${GENERIC_LIBS})
+#############################################################
+#################### Scripting / Swig #######################
+#############################################################
+
+add_subdirectory( scripting )
+# set by the scripting CMakelists
+include_directories( ${SBE_SCRIPT_INCLUDES} )
+
+#################### Final lib ##############################
+
+if(SHARED)
+    add_library(sbe SHARED ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS})
+else()
+    add_library(sbe STATIC ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS})
+    add_definitions(-DSFML_STATIC -DSFGUI_STATIC)
+endif()
+
+target_link_libraries(sbe sfgui ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${SBE_SCRIPT_LIBS} ${GENERIC_LIBS})
+
+

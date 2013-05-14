@@ -35,4 +35,9 @@ namespace sbe
 	{
 		Module::Get()->GetEventQueue()->RegisterEventUser(this, EvtName, priority);
 	}
+
+	void EventUser::UnregisterThis()
+	{
+		// not implemented
+	}
 } // namespace sbe
