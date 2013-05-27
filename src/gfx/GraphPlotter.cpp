@@ -4,17 +4,18 @@
 #include "sbe/Engine.hpp"
 #include "sbe/ResourceManager.hpp"
 
+#include <boost/thread.hpp>
+
 #include <cmath>
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
 namespace sbe
 {
+
 	bool Graph::addCurve( const Curve& c)
 	{
-		if ( c.data.empty() ) return false;
 		Curves.push_back ( c );
-
 		return true;
 	}
 
@@ -35,6 +36,7 @@ namespace sbe
 			return false;
 		}
 
+		boost::mutex::scoped_lock data_mutex_lock(data_mutex);
 
 		valid = true;
 		g = _g;
@@ -48,25 +50,81 @@ namespace sbe
 		return true;
 	}
 
-	void GraphPlotter::updateCurve ( std::string& name, Curve& C )
+	void GraphPlotter::updateCurve ( const std::string& name, Curve& C )
 	{
 		if (!valid)
 		{
 			Engine::out(Engine::ERROR) << "[GraphPlotter] no valid graph set!" << std::endl;
 			return;
 		}
+		boost::mutex::scoped_lock data_mutex_lock(data_mutex);
 
 		for ( int i = 0; i < g.Curves.size(); ++i)
 		{
-			for(int j = 0; j < g.Curves[i].data.size(); j++)
-			{
-				if(g.Curves[i].data[j] > g.AxisSize.y) g.AxisSize.y = g.Curves[i].data[j];
-				std::cout << "yo bro" << std::endl;
-			}
-
 			if ( g.Curves[i].name == name )
 			{
 				g.Curves[i] = C;
+				// update the corresponding vertexarray
+				drawCurve( g.Curves[i], RenderArrays[i] );
+			}
+		}
+	}
+
+	void GraphPlotter::updateCurveData( const std::string& name, std::vector<int>& Data )
+	{
+		if (!valid)
+		{
+			Engine::out(Engine::ERROR) << "[GraphPlotter] no valid graph set!" << std::endl;
+			return;
+		}
+		boost::mutex::scoped_lock data_mutex_lock(data_mutex);
+
+		for ( int i = 0; i < g.Curves.size(); ++i)
+		{
+
+			if ( g.Curves[i].name == name )
+			{
+				g.Curves[i].data = Data;
+				// update the corresponding vertexarray
+				drawCurve( g.Curves[i], RenderArrays[i] );
+			}
+		}
+	}
+
+	void GraphPlotter::extendCurve( const std::string& name, std::vector<int>& Data )
+	{
+		if (!valid)
+		{
+			Engine::out(Engine::ERROR) << "[GraphPlotter] no valid graph set!" << std::endl;
+			return;
+		}
+		boost::mutex::scoped_lock data_mutex_lock(data_mutex);
+
+		for ( int i = 0; i < g.Curves.size(); ++i)
+		{
+			if ( g.Curves[i].name == name )
+			{
+				g.Curves[i].data.insert( g.Curves[i].data.end(), Data.begin(), Data.end() );
+				// update the corresponding vertexarray
+				drawCurve( g.Curves[i], RenderArrays[i] );
+			}
+		}
+	}
+
+	void GraphPlotter::extendCurve( const std::string& name, int D )
+	{
+		if (!valid)
+		{
+			Engine::out(Engine::ERROR) << "[GraphPlotter] no valid graph set!" << std::endl;
+			return;
+		}
+		boost::mutex::scoped_lock data_mutex_lock(data_mutex);
+
+		for ( int i = 0; i < g.Curves.size(); ++i)
+		{
+			if ( g.Curves[i].name == name )
+			{
+				g.Curves[i].data.push_back(D);
 				// update the corresponding vertexarray
 				drawCurve( g.Curves[i], RenderArrays[i] );
 			}
@@ -81,6 +139,8 @@ namespace sbe
 			return;
 		}
 
+		boost::mutex::scoped_lock data_mutex_lock(data_mutex);
+
 		dynScaleAxes();
 
 		if ( g.drawLegend ) drawLegend();
@@ -94,6 +154,7 @@ namespace sbe
 
 	void GraphPlotter::dynScaleAxes()
 	{
+
 		std::vector<Curve> cs = g.Curves;
 		if(g.dynX)
 		{

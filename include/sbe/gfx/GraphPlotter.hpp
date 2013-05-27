@@ -7,6 +7,8 @@
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/Graphics/Text.hpp>
 
+#include <boost/thread/mutex.hpp>
+
 #include <string>
 #include <vector>
 #include <list>
@@ -57,7 +59,7 @@ namespace sbe
 			@return false if the curve is empty, true if it was added
 		*/
 		bool addCurve ( const Curve& c );
-		
+
 		std::vector< Curve > getCurves() { return Curves; }
 
 		/**
@@ -114,9 +116,18 @@ namespace sbe
 		bool isValid() const { return valid; }
 
 		/**
-			Update a single curve of the Graph
+			Update a curve of the Graph
 		*/
-		void updateCurve( std::string& name, Curve& C );
+		void updateCurve( const std::string& name, Curve& C );
+		/**
+			Update the data of a curve of the Graph
+		*/
+		void updateCurveData( const std::string& name, std::vector<int>& Data );
+		/**
+			Add data to a curve of the Graph
+		*/
+		void extendCurve( const std::string& name, std::vector<int>& Data );
+		void extendCurve( const std::string& name, int D );
 
 		/**
 			Create the vertexarrays and sprites needed for rendering, has to be called before draw()
@@ -127,12 +138,15 @@ namespace sbe
 			As you cant set a relative origin on the rendertarget yet, this works best with a sf::RenderTexture  of appropriate size or with a sf::View
 		*/
 		void draw( sf::RenderTarget& Target );
+
+
+		private:
+
 		/**
 			Check if dynamic axes are needed and adjust accordingly
 		*/
 		void dynScaleAxes();
 
-		private:
 		/**
 			draw a legend on the graph, not yet implemented
 		*/
@@ -142,7 +156,7 @@ namespace sbe
 		void drawCurve( const Curve& c, sf::VertexArray& vA  );
 
 		int interpolatedCurveData( const Curve& c, float percentage);
-		
+
 		bool valid;
 		Graph g;
 
@@ -152,7 +166,7 @@ namespace sbe
 		std::vector<sf::VertexArray> RenderArrays;
 		std::list<sf::Text> Legend;
 
-
+		boost::mutex data_mutex;
 	};
 } // namespace sbe
 #endif // GRAPHPLOT_HPP
