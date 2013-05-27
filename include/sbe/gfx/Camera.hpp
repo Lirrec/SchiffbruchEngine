@@ -64,7 +64,8 @@ namespace sbe
 				@param dontsmooth set to true to disable the smoothing and set the new size instantly
 			*/
 			void setTargetSize ( sf::Vector2f size, bool dontsmooth = false  );
-					/**
+
+			/**
 				Set the center of the rectangle which should be shown by the Camera.
 				The camera will smooth the transition to the new value over several frames.
 				@param c the new center
@@ -72,8 +73,17 @@ namespace sbe
 			*/
 			void setTargetCenter ( sf::Vector2f c, bool dontsmooth = false );
 
+			/**
+				Set minimum and maximum limits, which the viewport of the camera may contain
+				@param min the minimum limits
+				@param max the maximum limits
+			*/
 			void setZoomLimits( const sf::Vector2f& min, const sf::Vector2f& max);
 
+			/**
+				Set the rectangle which limits the camera movement
+				@param f rectangle containing an area in which the camera may scroll
+			*/
 			void setCamLimits( const sf::FloatRect& f ) { CamLimits = f; }
 
 			void zoom( float zoomFactor ) { TargetSize *= zoomFactor; }

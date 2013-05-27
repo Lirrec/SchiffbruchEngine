@@ -29,7 +29,7 @@ namespace sbe
 
 	void DebugWindow::CreateWindow( const Geom::Point& RelativePosition, const Geom::Vec2 Size )
 	{
-		Win = Window::Create( Window::Style::BACKGROUND | Window::Style::TITLEBAR | Window::Style::SHADOW  | Window::Style::RESIZE );
+		Win = Window::Create( Window::Style::TOPLEVEL | Window::Style::SHADOW );
 
 		//DbgText and DbgLabels are different, so it looks like two columns.
 		DbgText = Label::Create();
