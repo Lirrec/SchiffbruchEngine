@@ -64,6 +64,9 @@ namespace sbe
 			if ( g.Curves[i].name == name )
 			{
 				g.Curves[i] = C;
+
+				dynScaleAxes();
+				if ( g.AxisSize.x <= 0 || g.AxisSize.y <= 0) return;
 				// update the corresponding vertexarray
 				drawCurve( g.Curves[i], RenderArrays[i] );
 			}
@@ -85,6 +88,9 @@ namespace sbe
 			if ( g.Curves[i].name == name )
 			{
 				g.Curves[i].data = Data;
+
+				dynScaleAxes();
+				if ( g.AxisSize.x <= 0 || g.AxisSize.y <= 0) return;
 				// update the corresponding vertexarray
 				drawCurve( g.Curves[i], RenderArrays[i] );
 			}
@@ -105,8 +111,12 @@ namespace sbe
 			if ( g.Curves[i].name == name )
 			{
 				g.Curves[i].data.insert( g.Curves[i].data.end(), Data.begin(), Data.end() );
+
+				dynScaleAxes();
+				if ( g.AxisSize.x <= 0 || g.AxisSize.y <= 0) return;
 				// update the corresponding vertexarray
 				drawCurve( g.Curves[i], RenderArrays[i] );
+
 			}
 		}
 	}
@@ -125,6 +135,9 @@ namespace sbe
 			if ( g.Curves[i].name == name )
 			{
 				g.Curves[i].data.push_back(D);
+
+				dynScaleAxes();
+				if ( g.AxisSize.x <= 0 || g.AxisSize.y <= 0) return;
 				// update the corresponding vertexarray
 				drawCurve( g.Curves[i], RenderArrays[i] );
 			}
@@ -189,7 +202,7 @@ namespace sbe
 
 		for( int i = 0; i<cs.size(); i++ )
 		{
-			if ( cs[i].data.empty() ) break;
+			if ( cs[i].data.empty() ) continue;
 			if(cs[i].data.size() > maxX) maxX = cs[i].data.size();
 			float tmp = *std::max_element(cs[i].data.begin(), cs[i].data.end());
 			if (tmp > maxY) maxY = tmp;
@@ -306,7 +319,7 @@ namespace sbe
 		float validwidth = ((float)c.data.size() / (float)g.AxisSize.x) * g.Size.x;
 		if ( validwidth > g.Size.x ) validwidth = g.Size.x;
 
-		int PointsToDraw = validwidth / g.MinPointDist;
+		int PointsToDraw = (validwidth / g.MinPointDist) + 1;
 
 		// calculate the first point
 		Geom::Pointf last(0, 0);
@@ -314,8 +327,16 @@ namespace sbe
 
 		for ( int p = 0; p < PointsToDraw; ++p)
 		{
-			current.x = last.x + g.MinPointDist ;
+			current.x = last.x + g.MinPointDist;
 			if ( current.x > validwidth ) current.x = validwidth;
+//
+//			Engine::out() << "points:" << p << "/" << PointsToDraw << std::endl;
+//			Engine::out() << "current X:" << current.x << std::endl;
+//			Engine::out() << "size X:" << g.Size.x << std::endl;
+//			Engine::out() << "validwidth:" << validwidth << std::endl;
+//			Engine::out() << "g.AxisStart.x:" <<  g.AxisStart.x << std::endl;
+//			Engine::out() << "g.AxisSize.x:" <<  g.AxisSize.x << std::endl;
+//			Engine::out() << "c.data.size():" <<  c.data.size() << std::endl;
 
 			float x_percentage = current.x / (float)g.AxisSize.x;
 			x_percentage = ((float)g.AxisStart.x +  x_percentage * (float)g.AxisSize.x) / c.data.size();
@@ -324,12 +345,7 @@ namespace sbe
 			// invert for opengls top-left origin
 			current.y = g.Size.y * (1 - y_percentage);
 
-//			Engine::out() << "current X:" << current.x << std::endl;
-//			Engine::out() << "size X:" << g.Size.x << std::endl;
-//			Engine::out() << "validwidth:" << validwidth << std::endl;
-//			Engine::out() << "g.AxisStart.x:" <<  g.AxisStart.x << std::endl;
-//			Engine::out() << "g.AxisSize.x:" <<  g.AxisSize.x << std::endl;
-//			Engine::out() << "c.data.size():" <<  c.data.size() << std::endl;
+
 //			Engine::out() << "Percentage X:" <<  x_percentage << std::endl;
 //			Engine::out() << "Percentage Y:" <<  y_percentage << std::endl;
 //			Engine::out() << "Drawing datapoint " << last.x << "/" << last.y << " -- " << current.x << "/" << current.y  << std::endl;
@@ -337,7 +353,7 @@ namespace sbe
 
 			if (last.x == 0 && last.y == 0) last = current;
 
-			if ( y_percentage > 1 || x_percentage > 1 ) break;
+			if ( y_percentage > 1 || x_percentage > 1 ) continue;
 			gfx::AppendLine( vA, sf::Vector2f(last.x, last.y), sf::Vector2f(current.x, current.y), c.color);
 			last = current;
 		}
