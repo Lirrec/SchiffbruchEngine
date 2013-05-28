@@ -207,7 +207,7 @@ namespace sbe
 	{
 		vector<string> results;
 		int mark = 0;
-		for ( int i = 0; i < s.size(); i++ )
+		for ( size_t i = 0; i < s.size(); i++ )
 		{
 			if ( s.at( i ) == c )
 			{
