@@ -131,6 +131,7 @@ namespace sbe
 		}
 	}
 
+
 	void GraphPlotter::updateVertexArrays()
 	{
 		if (!valid)
@@ -139,9 +140,34 @@ namespace sbe
 			return;
 		}
 
+		if ( g.AxisSize.x <= 0 || g.AxisSize.y <= 0
+			|| g.AxisStart.x < 0 || g.AxisStart.y < 0
+			|| g.AxesPoints.x <= 0 || g.AxesPoints.y <= 0
+			|| g.MinPointDist <= 0
+			|| g.Size.x <= 0 || g.Size.y <= 0  )
+		{
+			Engine::out(Engine::ERROR) << "[GraphPlotter] INVALID SETTINGS!" << std::endl;
+			printSettings();
+			return;
+		}
+
+		RenderArrays.clear();
+		Legend.clear();
+		Axes.clear();
+		Axes.setPrimitiveType(sf::Lines );
+		RenderArrays.insert( RenderArrays.end(), 2 + g.Curves.size(), sf::VertexArray() );
+		for ( sf::VertexArray& vA : RenderArrays) { vA.clear(); vA.setPrimitiveType(sf::Lines); }
+
 		boost::mutex::scoped_lock data_mutex_lock(data_mutex);
 
 		dynScaleAxes();
+
+		if ( g.AxisSize.x <= 0 || g.AxisSize.y <= 0)
+		{
+			Engine::out(Engine::ERROR) << "[GraphPlotter] INVALID SETTINGS!" << std::endl;
+			printSettings();
+			return;
+		}
 
 		if ( g.drawLegend ) drawLegend();
 		if ( g.drawAxes ) drawAxes();
@@ -154,26 +180,23 @@ namespace sbe
 
 	void GraphPlotter::dynScaleAxes()
 	{
+		if(!g.dynX && !g.dynY) return;
 
-		std::vector<Curve> cs = g.Curves;
-		if(g.dynX)
-		{
-			float maxX = 0;
-			for(int i = 0; i<cs.size(); i++)
-				if(cs[i].data.size() > maxX) maxX = cs[i].data.size();
+		std::vector<Curve>& cs = g.Curves;
 
-			g.AxisSize.x = maxX-g.AxisStart.x;
-		}
-		if(g.dynY)
+		float maxY = 0;
+		float maxX = 0;
+
+		for( int i = 0; i<cs.size(); i++ )
 		{
-			float maxY = 0;
-			for(int i = 0; i<cs.size(); i++)
-			{
-				float tmp = *std::max_element(cs[i].data.begin(), cs[i].data.end());
-				if (tmp > maxY) maxY = tmp;
-			}
-			g.AxisSize.y = maxY-g.AxisStart.y;
+			if ( cs[i].data.empty() ) break;
+			if(cs[i].data.size() > maxX) maxX = cs[i].data.size();
+			float tmp = *std::max_element(cs[i].data.begin(), cs[i].data.end());
+			if (tmp > maxY) maxY = tmp;
 		}
+
+		if ( g.dynX ) g.AxisSize.x = maxX-g.AxisStart.x;
+		if ( g.dynY ) g.AxisSize.y = maxY-g.AxisStart.y;
 	}
 
 	void GraphPlotter::draw ( sf::RenderTarget& Target )
@@ -185,6 +208,7 @@ namespace sbe
 		}
 
 		Target.clear( sf::Color::White );
+		dynScaleAxes();
 
 		if ( g.drawAxes ) Target.draw( Axes );
 
@@ -276,32 +300,44 @@ namespace sbe
 
 	void GraphPlotter::drawCurve ( const Curve& c, sf::VertexArray& vA )
 	{
+		if ( c.data.empty() ) return;
+
 		/// distance between each Datapoint
-		float PointDistance = (float)g.Size.x / (float)g.PointsToDraw;
+		float validwidth = ((float)c.data.size() / (float)g.AxisSize.x) * g.Size.x;
+		if ( validwidth > g.Size.x ) validwidth = g.Size.x;
+
+		int PointsToDraw = validwidth / g.MinPointDist;
 
 		// calculate the first point
 		Geom::Pointf last(0, 0);
 		Geom::Pointf current;
 
-		for ( int p = 0; p < g.PointsToDraw; ++p)
+		for ( int p = 0; p < PointsToDraw; ++p)
 		{
-			current.x = last.x + PointDistance ;
-			if ( current.x > g.Size.x ) current.x = g.Size.x;
+			current.x = last.x + g.MinPointDist ;
+			if ( current.x > validwidth ) current.x = validwidth;
 
-			float x_percentage = current.x / (float)g.Size.x;
-			if ( g.AxisStart.x != -1 ) x_percentage = (g.AxisStart.x +  x_percentage * (g.AxisSize.x)) / c.data.size();
+			float x_percentage = current.x / (float)g.AxisSize.x;
+			x_percentage = ((float)g.AxisStart.x +  x_percentage * (float)g.AxisSize.x) / c.data.size();
 
 			float y_percentage = interpolatedCurveData( c, x_percentage  ) / (float)g.AxisSize.y;
 			// invert for opengls top-left origin
-			current.y = g.Size.y* (1 - y_percentage);
+			current.y = g.Size.y * (1 - y_percentage);
 
-			//Engine::out() << "Percentage X:" <<  x_percentage << std::endl;
-			//Engine::out() << "Percentage Y:" <<  y_percentage << std::endl;
-			//Engine::out() << "Drawing datapoint " << last.x << "/" << last.y << " -- " << current.x << "/" << current.y  << std::endl;
-			//Engine::out() << "Value is: " << interpolatedCurveData( c, x_percentage ) << std::endl;
+//			Engine::out() << "current X:" << current.x << std::endl;
+//			Engine::out() << "size X:" << g.Size.x << std::endl;
+//			Engine::out() << "validwidth:" << validwidth << std::endl;
+//			Engine::out() << "g.AxisStart.x:" <<  g.AxisStart.x << std::endl;
+//			Engine::out() << "g.AxisSize.x:" <<  g.AxisSize.x << std::endl;
+//			Engine::out() << "c.data.size():" <<  c.data.size() << std::endl;
+//			Engine::out() << "Percentage X:" <<  x_percentage << std::endl;
+//			Engine::out() << "Percentage Y:" <<  y_percentage << std::endl;
+//			Engine::out() << "Drawing datapoint " << last.x << "/" << last.y << " -- " << current.x << "/" << current.y  << std::endl;
+//			Engine::out() << "Value is: " << interpolatedCurveData( c, x_percentage ) << std::endl;
 
 			if (last.x == 0 && last.y == 0) last = current;
 
+			if ( y_percentage > 1 || x_percentage > 1 ) break;
 			gfx::AppendLine( vA, sf::Vector2f(last.x, last.y), sf::Vector2f(current.x, current.y), c.color);
 			last = current;
 		}
@@ -309,8 +345,8 @@ namespace sbe
 
 	int GraphPlotter::interpolatedCurveData( const Curve& c, float percentage)
 	{
-
-		if ( percentage >= 1.0 ) return ( c.data.empty() ? 0 : c.data.back() );
+		if ( c.data.empty() ) return 0;
+		if ( percentage >= 1.0 ) return c.data.back();
 		if ( percentage < 0 ) percentage = 0;
 
 		// determine matching indizes
@@ -327,5 +363,14 @@ namespace sbe
 
 		return c.data[from] + ( c.data[to] - c.data[from] )*per;
 
+	}
+
+	void GraphPlotter::printSettings()
+	{
+		Engine::out(Engine::INFO) << "[GraphPlotter] Settings:" << std::endl;
+		Engine::out(Engine::INFO) << "[GraphPlotter] AxisSize: " << g.AxisSize << std::endl;
+		Engine::out(Engine::INFO) << "[GraphPlotter] AxisStart: " << g.AxisStart << std::endl;
+		Engine::out(Engine::INFO) << "[GraphPlotter] AxesPoints: " << g.AxesPoints << std::endl;
+		Engine::out(Engine::INFO) << "[GraphPlotter] Size: " << g.Size << std::endl;
 	}
 } // namespace sbe

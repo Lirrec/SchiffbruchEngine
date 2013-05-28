@@ -45,7 +45,7 @@ namespace sbe
 		 : Size( 512,512),
 		 AxisSize( 1000, 1000),
 		 AxisStart ( 0, 0 ),
-		 PointsToDraw( 400 ),
+		 MinPointDist( 2 ),
 		 AxesPoints ( 5, 5),
 		 drawLegend(true),
 		 textSize( 15 ),
@@ -76,8 +76,8 @@ namespace sbe
 		*/
 		Geom::Vec2 AxisStart;
 
-		// determines the granularity of the graph or how many points should be rendered ( default 50 )
-		unsigned int PointsToDraw;
+		/// determines the granularity of the graph or how many points should be rendered ( default 2px distance between each rendered point )
+		float MinPointDist;
 
 		/**
 			how many visual markers should be placed on the axes ( x/y) (defautl: 10/10)
@@ -92,9 +92,10 @@ namespace sbe
 		bool drawAxes;
 		/// whether axes should scale
 		bool dynX, dynY;
-
 		friend class GraphPlotter;
+
 	private:
+
 		std::vector< Curve > Curves;
 	};
 	/**
@@ -139,6 +140,10 @@ namespace sbe
 		*/
 		void draw( sf::RenderTarget& Target );
 
+		/**
+			Prints current Graph settings to INFO log.
+		*/
+		void printSettings();
 
 		private:
 
