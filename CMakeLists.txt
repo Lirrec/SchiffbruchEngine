@@ -114,7 +114,12 @@ if(NOT VERSION_CHECK_DONE)
 	    add_definitions ( -std=c++11 )
 
 			if(GCC_VERSION VERSION_EQUAL 4.8 OR GCC_VERSION VERSION_GREATER 4.8)
-				add_definitions ( -D__GCC_4_8__ )
+				if(GCC_VERSION VERSION_EQUAL 4.9 OR GCC_VERSION VERSION_GREATER 4.9)
+					add_definitions( -D__GCC_4_9__ )
+				else()
+					add_definitions ( -D__GCC_4_8__ )
+				endif()
+
 				if(CMAKE_BUILD_TYPE MATCHES Debug)
 					add_definitions( -Og )
 				endif()
@@ -155,11 +160,11 @@ endif()
 #################### Compiler Options #######################
 #############################################################
 
-add_definitions( -fPIC -DBOOST_THREAD_USE_LIB )
+add_definitions( -fPIC -DBOOST_THREAD_USE_LIB -pipe )
 
 if (CMAKE_BUILD_TYPE MATCHES Debug)
 	add_definitions(-DCOUNT_EVENTS)
-	add_definitions( -Wall -g )
+	add_definitions( -Wall -g -fstack-protector --param=ssp-buffer-size=4 )
 elseif(CMAKE_BUILD_TYPE MATCHES Release)
 	if( PROFILE )
 		add_definitions( -O1 )
