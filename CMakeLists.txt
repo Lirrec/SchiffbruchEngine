@@ -17,7 +17,7 @@ option( USE_RUBY "" OFF)
 option( USE_CUSTOM_SFML "" ON)
 set( CUSTOM_BOOST_ROOT "" CACHE PATH "custom boost build root dir")
 set( CUSTOM_SFML_ROOT "${PROJECT_SOURCE_DIR}/SFGUI/extlibs/SFML" CACHE PATH "custom SFML build root dir")
-
+option(ENABLE_LTO "enable lto, if ya dont know what this is, ya dont need it!" OFF)
 
 SET( CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
@@ -177,6 +177,10 @@ endif()
 if( PROFILE )
 	add_definitions( -pg )
 endif()
+if(ENABLE_LTO)
+	add_definitions( -flto )
+endif()
+
 
 link_directories(${SFML_ROOT})
 
