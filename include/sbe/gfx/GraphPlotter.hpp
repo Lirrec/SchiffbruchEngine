@@ -62,6 +62,18 @@ namespace sbe
 
 		std::vector< Curve > getCurves() { return Curves; }
 
+		Geom::Point getMaximas() {
+			Geom::Point max;
+			for( auto& C : Curves )
+			{
+				if ( C.data.empty() ) continue;
+				if ( C.data.size() > max.x ) max.x = C.data.size();
+				float tmp = *std::max_element( C.data.begin(), C.data.end() );
+				if ( tmp > max.y ) max.y = tmp;
+			}
+			return max;
+		}
+
 		/**
 			The Size of the final image to which this graph should be rendered
 		*/
@@ -150,7 +162,7 @@ namespace sbe
 		/**
 			Check if dynamic axes are needed and adjust accordingly
 		*/
-		void dynScaleAxes();
+		void dynScaleAxes( const Geom::Point& max);
 
 		/**
 			draw a legend on the graph, not yet implemented

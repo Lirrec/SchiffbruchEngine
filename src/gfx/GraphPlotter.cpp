@@ -65,8 +65,7 @@ namespace sbe
 			{
 				g.Curves[i] = C;
 
-				dynScaleAxes();
-				if ( g.AxisSize.x <= 0 || g.AxisSize.y <= 0) return;
+				dynScaleAxes( g.getMaximas() );
 				// update the corresponding vertexarray
 				drawCurve( g.Curves[i], RenderArrays[i] );
 			}
@@ -89,8 +88,7 @@ namespace sbe
 			{
 				g.Curves[i].data = Data;
 
-				dynScaleAxes();
-				if ( g.AxisSize.x <= 0 || g.AxisSize.y <= 0) return;
+				dynScaleAxes(g.getMaximas());
 				// update the corresponding vertexarray
 				drawCurve( g.Curves[i], RenderArrays[i] );
 			}
@@ -112,8 +110,7 @@ namespace sbe
 			{
 				g.Curves[i].data.insert( g.Curves[i].data.end(), Data.begin(), Data.end() );
 
-				dynScaleAxes();
-				if ( g.AxisSize.x <= 0 || g.AxisSize.y <= 0) return;
+				dynScaleAxes(g.getMaximas());
 				// update the corresponding vertexarray
 				drawCurve( g.Curves[i], RenderArrays[i] );
 
@@ -136,8 +133,7 @@ namespace sbe
 			{
 				g.Curves[i].data.push_back(D);
 
-				dynScaleAxes();
-				if ( g.AxisSize.x <= 0 || g.AxisSize.y <= 0) return;
+				dynScaleAxes(g.getMaximas());
 				// update the corresponding vertexarray
 				drawCurve( g.Curves[i], RenderArrays[i] );
 			}
@@ -173,7 +169,12 @@ namespace sbe
 
 		boost::mutex::scoped_lock data_mutex_lock(data_mutex);
 
-		dynScaleAxes();
+		Geom::Point maximas = g.getMaximas();
+
+		dynScaleAxes( maximas );
+		if ( g.AxisStart.x > maximas.x) g.AxisStart.x = maximas.x;
+		if ( g.AxisStart.y > maximas.y) g.AxisStart.y = maximas.y;
+
 
 		if ( g.AxisSize.x <= 0 || g.AxisSize.y <= 0)
 		{
@@ -191,25 +192,22 @@ namespace sbe
 		}
 	}
 
-	void GraphPlotter::dynScaleAxes()
+	void GraphPlotter::dynScaleAxes( const Geom::Point& max)
 	{
 		if(!g.dynX && !g.dynY) return;
 
 		std::vector<Curve>& cs = g.Curves;
 
-		float maxY = 0;
-		float maxX = 0;
-
-		for( int i = 0; i<cs.size(); i++ )
+		if ( g.dynX )
 		{
-			if ( cs[i].data.empty() ) continue;
-			if(cs[i].data.size() > maxX) maxX = cs[i].data.size();
-			float tmp = *std::max_element(cs[i].data.begin(), cs[i].data.end());
-			if (tmp > maxY) maxY = tmp;
+			g.AxisStart.x = 0;
+			g.AxisSize.x = max.x-g.AxisStart.x;
 		}
-
-		if ( g.dynX ) g.AxisSize.x = maxX-g.AxisStart.x;
-		if ( g.dynY ) g.AxisSize.y = maxY-g.AxisStart.y;
+		if ( g.dynY )
+		{
+			g.AxisStart.y = 0;
+			g.AxisSize.y = max.y-g.AxisStart.y;
+		}
 	}
 
 	void GraphPlotter::draw ( sf::RenderTarget& Target )
@@ -221,7 +219,7 @@ namespace sbe
 		}
 
 		Target.clear( sf::Color::White );
-		dynScaleAxes();
+		dynScaleAxes( g.getMaximas() );
 
 		if ( g.drawAxes ) Target.draw( Axes );
 
@@ -250,7 +248,8 @@ namespace sbe
 		{
 			x = (float)p*PointDistance;
 			y = g.Size.y - (p%5==0?10:5);
-			drawText( sf::Vector2f(x, y - spacing), boost::lexical_cast<std::string>( g.AxisSize.x/g.AxesPoints.x * p ), true );
+			int label = g.AxisStart.x + (g.AxisSize.x/g.AxesPoints.x * p);
+			drawText( sf::Vector2f(x, y - spacing), boost::lexical_cast<std::string>( label ), true );
 			//Engine::out(Engine::SPAM) << " Label " << g.AxisSize.x/g.AxesPoints.x * p << " - at: " << x << "," << y-spacing << std::endl;
 		}
 
@@ -259,8 +258,8 @@ namespace sbe
 		{
 			y = g.Size.y - (float)p*PointDistance;
 			x = p%5==0?10:5;
-
-			drawText( sf::Vector2f(x+border+ spacing, y), boost::lexical_cast<std::string>( g.AxisSize.y/g.AxesPoints.y * p ), false );
+			int label = g.AxisStart.y + (g.AxisSize.y/g.AxesPoints.y * p);
+			drawText( sf::Vector2f(x+border+ spacing, y), boost::lexical_cast<std::string>( label ), false );
 			//Engine::out(Engine::SPAM) << " Label " << g.AxisSize.y/g.AxesPoints.y * p << " - at: " << x+border+ spacing << "," << y << std::endl;
 		}
 	}
@@ -313,7 +312,7 @@ namespace sbe
 
 	void GraphPlotter::drawCurve ( const Curve& c, sf::VertexArray& vA )
 	{
-		if ( c.data.empty() ) return;
+		if ( c.data.empty() || g.AxisSize.x <= 0 || g.AxisSize.y <= 0 ) return;
 
 		/// distance between each Datapoint
 		float validwidth = ((float)c.data.size() / (float)g.AxisSize.x) * g.Size.x;
@@ -384,6 +383,7 @@ namespace sbe
 	void GraphPlotter::printSettings()
 	{
 		Engine::out(Engine::INFO) << "[GraphPlotter] Settings:" << std::endl;
+		Engine::out(Engine::INFO) << "[GraphPlotter] Dynamic x/y:" << g.dynX << "/" << g.dynY << std::endl;
 		Engine::out(Engine::INFO) << "[GraphPlotter] AxisSize: " << g.AxisSize << std::endl;
 		Engine::out(Engine::INFO) << "[GraphPlotter] AxisStart: " << g.AxisStart << std::endl;
 		Engine::out(Engine::INFO) << "[GraphPlotter] AxesPoints: " << g.AxesPoints << std::endl;
