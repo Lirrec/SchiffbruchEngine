@@ -78,7 +78,14 @@ namespace sbe
 
 	void Renderer::drawLayer(const RenderLayer& L, sf::RenderTarget& t)
 	{
-		if ( L.Cam ) t.setView( L.Cam->getView() );
+		if ( L.Cam )
+		{
+			t.setView( L.Cam->getView() );
+		}
+		else
+		{
+			t.setView( t.getDefaultView() );
+		}
 
 		for ( const std::shared_ptr<Actor>& A : L.RenderList)
 		{
