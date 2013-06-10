@@ -44,5 +44,6 @@ namespace sbe
 
 	bool ShaderIOPlugin::saveObject( const std::string& name, const sf::Shader &o, boost::property_tree::ptree &root){
 		Engine::out(Engine::ERROR) << "[ShaderIOPlugin] Saving shaders not possible!";
+		return false;
 	}
 } // namespace sbe
