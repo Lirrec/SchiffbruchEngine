@@ -63,6 +63,13 @@ namespace sbe
 		}
 	}
 
+	void sfgList::clear()
+	{
+		ItemBox->RemoveAll();
+		Items.clear();
+		selectedItems = 0;
+	}
+
 	std::string sfgList::getSelectedItem()
 	{
 		for ( auto it = Items.begin(); it != Items.end(); ++it)

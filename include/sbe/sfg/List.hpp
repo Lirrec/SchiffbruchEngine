@@ -39,6 +39,9 @@ namespace sbe
 		/// remove an item from the list
 		void removeItem( std::string name);
 
+		/// remove all Items
+		void clear();
+
 		/// return the selected item or the first selected item if multiselect is allowed
 		std::string getSelectedItem();
 		/// return all selected items ( only makes sense in multi mode )
