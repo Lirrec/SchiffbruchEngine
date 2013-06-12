@@ -150,7 +150,6 @@ namespace sbe
 		}
 
 		if ( g.AxisSize.x <= 0 || g.AxisSize.y <= 0
-			|| g.AxisStart.x < 0 || g.AxisStart.y < 0
 			|| g.AxesPoints.x <= 0 || g.AxesPoints.y <= 0
 			|| g.MinPointDist <= 0
 			|| g.Size.x <= 0 || g.Size.y <= 0  )
@@ -173,7 +172,10 @@ namespace sbe
 
 		dynScaleAxes( maximas );
 		if ( g.AxisStart.x > maximas.x) g.AxisStart.x = maximas.x;
+		if ( g.AxisStart.x < 0) g.AxisStart.x = maximas.x + g.AxisStart.x;
+
 		if ( g.AxisStart.y > maximas.y) g.AxisStart.y = maximas.y;
+		if ( g.AxisStart.y < 0) g.AxisStart.y = maximas.y + g.AxisStart.y;
 
 
 		if ( g.AxisSize.x <= 0 || g.AxisSize.y <= 0)
@@ -328,28 +330,28 @@ namespace sbe
 		{
 			current.x = last.x + g.MinPointDist;
 			if ( current.x > validwidth ) current.x = validwidth;
-//
-//			Engine::out() << "points:" << p << "/" << PointsToDraw << std::endl;
-//			Engine::out() << "current X:" << current.x << std::endl;
-//			Engine::out() << "size X:" << g.Size.x << std::endl;
-//			Engine::out() << "validwidth:" << validwidth << std::endl;
-//			Engine::out() << "g.AxisStart.x:" <<  g.AxisStart.x << std::endl;
-//			Engine::out() << "g.AxisSize.x:" <<  g.AxisSize.x << std::endl;
-//			Engine::out() << "c.data.size():" <<  c.data.size() << std::endl;
-
-			float x_percentage = current.x / (float)g.AxisSize.x;
+/*
+			Engine::out() << "points:" << p << "/" << PointsToDraw << std::endl;
+			Engine::out() << "current X:" << current.x << std::endl;
+			Engine::out() << "size X:" << g.Size.x << std::endl;
+			Engine::out() << "validwidth:" << validwidth << std::endl;
+			Engine::out() << "g.AxisStart.x:" <<  g.AxisStart.x << std::endl;
+			Engine::out() << "g.AxisSize.x:" <<  g.AxisSize.x << std::endl;
+			Engine::out() << "c.data.size():" <<  c.data.size() << std::endl;
+*/
+			float x_percentage = current.x / (float)g.Size.x;
 			x_percentage = ((float)g.AxisStart.x +  x_percentage * (float)g.AxisSize.x) / c.data.size();
 
 			float y_percentage = interpolatedCurveData( c, x_percentage  ) / (float)g.AxisSize.y;
 			// invert for opengls top-left origin
 			current.y = g.Size.y * (1 - y_percentage);
 
-
-//			Engine::out() << "Percentage X:" <<  x_percentage << std::endl;
-//			Engine::out() << "Percentage Y:" <<  y_percentage << std::endl;
-//			Engine::out() << "Drawing datapoint " << last.x << "/" << last.y << " -- " << current.x << "/" << current.y  << std::endl;
-//			Engine::out() << "Value is: " << interpolatedCurveData( c, x_percentage ) << std::endl;
-
+/*
+			Engine::out() << "Percentage X:" <<  x_percentage << std::endl;
+			Engine::out() << "Percentage Y:" <<  y_percentage << std::endl;
+			Engine::out() << "Drawing datapoint " << last.x << "/" << last.y << " -- " << current.x << "/" << current.y  << std::endl;
+			Engine::out() << "Value is: " << interpolatedCurveData( c, x_percentage ) << std::endl;
+*/
 			if (last.x == 0 && last.y == 0) last = current;
 
 			if ( y_percentage > 1 || x_percentage > 1 ) continue;
