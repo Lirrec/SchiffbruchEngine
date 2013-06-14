@@ -109,7 +109,7 @@ namespace sbe
 		/// wether Y Axis should scale logarithmic
 		bool logScale;
 		/// to which base should the y axis scale if logarithmic scaling is enabled
-		int logBase;
+		float logBase;
 		friend class GraphPlotter;
 
 	private:
