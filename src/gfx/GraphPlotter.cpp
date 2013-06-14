@@ -260,7 +260,19 @@ namespace sbe
 		{
 			y = g.Size.y - (float)p*PointDistance;
 			x = p%5==0?10:5;
-			int label = g.AxisStart.y + (g.AxisSize.y/g.AxesPoints.y * p);
+
+			int label;
+			if ( !g.logScale ) label =  g.AxisStart.y + (g.AxisSize.y/g.AxesPoints.y * p);
+			else
+			{
+				/**
+					percentage = log10( Y ) / log10( g.AxisSize.y );
+					=> percentage * log10( g.AxisSize.y ) = log10( Y );
+					=> std::pow( 10, percentage * log10( g.AxisSize.y )) = Y;
+				*/
+				label = std::pow( g.logBase, ( p / (float)g.AxesPoints.y ) * (std::log( g.AxisSize.y ) / std::log(g.logBase) ) );
+			}
+
 			drawText( sf::Vector2f(x+border+ spacing, y), boost::lexical_cast<std::string>( label ), false );
 			//Engine::out(Engine::SPAM) << " Label " << g.AxisSize.y/g.AxesPoints.y * p << " - at: " << x+border+ spacing << "," << y << std::endl;
 		}
@@ -342,7 +354,9 @@ namespace sbe
 			float x_percentage = current.x / (float)g.Size.x;
 			x_percentage = ((float)g.AxisStart.x +  x_percentage * (float)g.AxisSize.x) / c.data.size();
 
-			float y_percentage = interpolatedCurveData( c, x_percentage  ) / (float)g.AxisSize.y;
+			float y_percentage;
+			if ( !g.logScale ) y_percentage = interpolatedCurveData( c, x_percentage  ) / (float)g.AxisSize.y;
+			else y_percentage = (std::log(interpolatedCurveData( c, x_percentage  )) / std::log(g.logBase) ) / (std::log((float)g.AxisSize.y) / std::log(g.logBase) );
 			// invert for opengls top-left origin
 			current.y = g.Size.y * (1 - y_percentage);
 

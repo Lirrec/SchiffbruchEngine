@@ -50,7 +50,9 @@ namespace sbe
 		 drawLegend(true),
 		 textSize( 15 ),
 		 drawAxes(true),
-		 dynX(true), dynY(true)
+		 dynX(true), dynY(true),
+		 logScale(true),
+		 logBase(10)
 		{
 
 		}
@@ -102,8 +104,12 @@ namespace sbe
 		int textSize;
 		/// wether to draw the axes
 		bool drawAxes;
-		/// whether axes should scale
+		/// wether axes should scale
 		bool dynX, dynY;
+		/// wether Y Axis should scale logarithmic
+		bool logScale;
+		/// to which base should the y axis scale if logarithmic scaling is enabled
+		int logBase;
 		friend class GraphPlotter;
 
 	private:
