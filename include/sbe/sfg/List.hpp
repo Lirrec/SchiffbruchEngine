@@ -41,6 +41,8 @@ namespace sbe
 
 		/// remove all Items
 		void clear();
+		/// select or deselect an item, sends "selected" event
+		void select( int idx );
 
 		/// return the selected item or the first selected item if multiselect is allowed
 		std::string getSelectedItem();

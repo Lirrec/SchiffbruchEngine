@@ -70,6 +70,46 @@ namespace sbe
 		selectedItems = 0;
 	}
 
+	void sfgList::select( int idx )
+	{
+		if ( idx >= Items.size() ) return;
+
+		auto it = Items.begin()+idx;
+
+		if ( (*it)->active )
+		{
+			(*it)->active = false;
+			(*it)->label->SetText((*it)->text);
+			selectedItems--;
+		}
+		else
+		{
+
+			if ( !MultiSelect )
+			{
+				// deselect others
+				for ( auto it = Items.begin(); it != Items.end(); ++it)
+				{
+					if ( (*it)->active )
+					{
+						(*it)->active = false;
+						(*it)->label->SetText((*it)->text);
+						selectedItems--;
+					}
+				}
+			}
+
+			(*it)->active = true;
+			(*it)->label->SetText( "* " + (*it)->text);
+			selectedItems++;
+
+			if (EvTName != "")
+			{
+				Module::Get()->QueueEvent( Event(EvTName, (*it)->text) );
+			}
+		}
+	}
+
 	std::string sfgList::getSelectedItem()
 	{
 		for ( auto it = Items.begin(); it != Items.end(); ++it)
