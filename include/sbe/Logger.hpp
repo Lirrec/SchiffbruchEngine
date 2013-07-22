@@ -6,7 +6,7 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include <boost/thread.hpp>
+#include <boost/thread/mutex.hpp>
 #include <iostream>
 
 namespace sbe

@@ -45,13 +45,13 @@ namespace sbe
 		/// calculates the distance between two points (just simple and not optimized)
 		inline float distance(const Point& from, const Point& to)
 		{
-			return std::sqrt( squaredist(from,to) );
+			return std::hypot( from.x - to.x, from.y - to.y );
 		}
 
 		/// Compute the distance between two points ( floating point version )
 		inline float distance(const Pointf& from, const Pointf& to)
 		{
-			return std::sqrt( squaredist( from,to ) );
+			return std::hypot( from.x - to.x, from.y - to.y );
 		}
 
 		/// Compute the length of a vector

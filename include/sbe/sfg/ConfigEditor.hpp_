@@ -1,0 +1,33 @@
+#ifndef CONFIG_EDIT_HPP
+#define CONFIG_EDIT_HPP
+
+#include "sbe/event/EventUser.hpp"
+
+#include <SFGUI/SharedPtr.hpp>
+namespace sfg {
+		class Label;
+		class Box;
+		class Window;
+		class Entry;
+}
+
+#include <string>
+
+class ConfigEditor : public EventUser
+{
+	public:
+		ConfigEditor();
+		void HandleEvent(Event& e);
+	private:
+		void CreateWindow(const std::string& rootpath = "");
+		void LoadPath( const std::string& path );
+
+		sfg::SharedPtr<sfg::Box> main;
+		sfg::SharedPtr<sfg::Window> Win;
+		sfg::SharedPtr<sfg::Entry> Root;
+		sfg::SharedPtr<sfg::Widget> createConfigPath( const std::string& path, int spacing = 0 );
+
+};
+
+#endif // CONFIG_EDIT_HPP
+
