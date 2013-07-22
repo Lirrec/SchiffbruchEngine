@@ -1,0 +1,80 @@
+#include "sbe/sfg/ConfigEditor.hpp"
+
+#include "sbe/Engine.hpp"
+#include "sbe/Config.hpp"
+
+#include <SFGUI/Window.hpp>
+#include <SFGUI/Box.hpp>
+#include <SFGUI/Label.hpp>
+#include <SFGUI/Entry.hpp>
+#include <SFGUI/Button.hpp>
+//#include <SFGUI/Table.hpp>
+
+using namespace sfg;
+
+ConfigEditor::ConfigEditor()
+{
+	RegisterForEvent("KEY_SHOW_CONFIG_EDITOR");
+}
+
+void ConfigEditor::HandleEvent(Event& e)
+{
+	if ( e.Is("KEY_SHOW_CONFIG_EDITOR", typeid(std::string) ))
+	{
+		CreateWindow( boost::any_cast<std::string>(e.Data()) );
+		Module::Get()->QueueEvent( Event( "SCREEN_ADD_WINDOW", Win ) );
+	}
+	else
+	{
+		CreateWindow();
+		Module::Get()->QueueEvent( Event( "SCREEN_ADD_WINDOW", Win ) );
+	}
+}
+
+void ConfigEditor::CreateWindow(const std::string& rootpath)
+{
+	Win = Window::Create();
+	Win->SetPosition( 200, 200 );
+
+	if ( Engine::getCfg()->get<std::string>( rootpath, "###invalid###") == "###invalid###" ) rootpath = "";
+
+	Root = Entry::Create( rootpath );
+
+	Box::Ptr hBox;
+	Box::Ptr vBox = Box::Create( Box::VERTICAL, 2.0f);
+		hBox = Box::Create();
+		hBox->Pack( Label::Create("Root Path: "), false, false );
+		hBox->Pack( Root );
+	vBox->Pack( hBox );
+
+
+
+}
+
+void ConfigEditor::LoadPath(const std::string& path)
+{
+
+}
+
+
+
+sfg::SharedPtr<sfg::Widget> ConfigEditor::createConfigPath(const std::string& path)
+{
+	Box::Ptr hBox = Box::Create();
+		Label::Ptr lbl = Label::Create(path);
+		lbl->SetAlignment( {0.5f, 0.5f} );
+	hBox->Pack( lbl, true, true );
+	hBox->Pack( Entry::Create( Engine::getCfg()->get<std::string>( path ), false, true ) );
+		Button::Ptr btn = Button::Create( "Set", false, true )
+		btn->GetSignal( Button::OnLeftClick )->Connect( &ConfigEditor::btnSetClick, this );
+	hBox->Pack( btn, false, false );
+
+	auto opt = Engine::getCfg()->getPath( path );
+	if ( opt && opt->size() > 0 ) )
+	{
+
+	}
+
+	return hBox;
+}
+

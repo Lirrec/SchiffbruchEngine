@@ -29,7 +29,15 @@ namespace sbe
 		ZoomLimits = sf::FloatRect( 0,0,0,0 );
 	}
 
-	void Camera::showDebugInfo()
+	void Camera::printDebugInfo()
+	{
+	    Engine::out() << "[Camera] View Size " << str(format("%.0f x %.0f") % TargetSize.x % TargetSize.y) << std::endl;
+	    Engine::out() << "[Camera] View Pos " << str(format("%.0f x %.0f") % TargetCenter.x % TargetCenter.y) << std::endl;
+	    Engine::out() << "[Camera] View Limits " << str(format("%.0f/%.0f size: %.0f/%.0f") % CamLimits.left % CamLimits.top % CamLimits.width % CamLimits.height) << std::endl;
+	    Engine::out() << "[Camera] Zoom Limits " << str(format("%.0f/%.0f size: %.0f/%.0f") % ZoomLimits.left % ZoomLimits.top % ZoomLimits.width % ZoomLimits.height ) << std::endl;
+	}
+
+	void Camera::showFrameInfo()
 	{
 		Module::Get()->DebugString("View Size",  str(format("%.0f x %.0f") % TargetSize.x % TargetSize.y));
 		Module::Get()->DebugString("View Pos", str(format("%.0f x %.0f") % TargetCenter.x % TargetCenter.y));
@@ -124,28 +132,30 @@ namespace sbe
 
 	void Camera::HandleEvent( const sf::Event& e)
 	{
+	    float curdelta = delta;
+
 		switch (e.type)
 		{
 			case sf::Event::KeyPressed:
 
-				if (e.key.shift) delta *= 10;
+				if (e.key.shift) curdelta *= 10;
 
 				switch (e.key.code)
 				{
 					case sf::Keyboard::Key::Up:
-						TargetCenter.y += -delta;
+						TargetCenter.y += -curdelta;
 						break;
 
 					case sf::Keyboard::Key::Down:
-						TargetCenter.y += delta;
+						TargetCenter.y += curdelta;
 						break;
 
 					case sf::Keyboard::Key::Left:
-						TargetCenter.x += -delta;
+						TargetCenter.x += -curdelta;
 						break;
 
 					case sf::Keyboard::Key::Right:
-						TargetCenter.x += delta;
+						TargetCenter.x += curdelta;
 						break;
 
 					case sf::Keyboard::Key::PageUp:

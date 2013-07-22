@@ -39,7 +39,7 @@ namespace sbe {
         sfg::Button::Ptr btnOK ( sfg::Button::Create ( "OK" ) );
         sfg::Button::Ptr btnCancel ( sfg::Button::Create ( "Cancel" ) );
         etyLoc = sfg::Entry::Create();
-        etyLoc->SetText ( Engine::getCfg()->get<std::string> ( "sim.debugsavepath" ) );
+        etyLoc->SetText ( boost::filesystem::current_path().string() );
 
         btnOK->GetSignal ( sfg::Button::OnLeftClick ).Connect ( &FileBrowse::onOkClicked, this );
         btnCancel->GetSignal ( sfg::Button::OnLeftClick ).Connect ( &FileBrowse::onCancelClicked, this );

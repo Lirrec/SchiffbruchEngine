@@ -98,10 +98,12 @@ namespace sbe
 			sf::Vector2f&  getTargetSize() { return TargetSize; }
 			sf::FloatRect& getDrawnArea() { return DrawnRectangle; }
 
-			/**
+            /// print camrect/center and view/zoom limits to log
+			void printDebugInfo();
+            /**
 				Sends DEBUG_STRING Events with Camrect and Center.
 			*/
-			void showDebugInfo();
+			void showFrameInfo();
 
 		private:
 

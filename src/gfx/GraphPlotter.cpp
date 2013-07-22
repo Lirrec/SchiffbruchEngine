@@ -154,8 +154,8 @@ namespace sbe
 			|| g.MinPointDist <= 0
 			|| g.Size.x <= 0 || g.Size.y <= 0  )
 		{
-			Engine::out(Engine::ERROR) << "[GraphPlotter] INVALID SETTINGS!" << std::endl;
-			printSettings();
+			Engine::out(Engine::ERROR) << "[GraphPlotter] Invalid Settings!" << std::endl;
+			//printSettings();
 			return;
 		}
 
@@ -180,8 +180,8 @@ namespace sbe
 
 		if ( g.AxisSize.x <= 0 || g.AxisSize.y <= 0)
 		{
-			Engine::out(Engine::ERROR) << "[GraphPlotter] INVALID SETTINGS!" << std::endl;
-			printSettings();
+			Engine::out(Engine::ERROR) << "[GraphPlotter] Invalid Settings!" << std::endl;
+			//printSettings();
 			return;
 		}
 
