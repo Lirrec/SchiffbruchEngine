@@ -24,26 +24,27 @@ namespace sbe
 
 	void EventQueue::Tick()
 	{
-		// create temporary lists
-		std::list<Event> tmp_EventQueue = LocalEventQueue;
+		// create temporary lists, so new events generated won't execute next tick ( avoid possible loop with events generating themselves )
+		std::deque<Event> tmp_EventQueue = LocalEventQueue;
 
 		LocalEventQueue.clear();
 
 		// Add the Events from other Threads to the EventQueue
-		Event e("EVT_TICK");
-		while (ThreadedEventQueue.try_pop(e) )
+		Event e("INVALID_EVENT");
+		while ( ThreadedEventQueue.try_pop(e) )
 		{
-			//Engine::out() << "[FE:"<< Module::MyName() <<"] Found Remote Event: " << e.getDebugName() << std::endl;
-			tmp_EventQueue.push_front( e );
+			//if ( !e.Is( "VIEW_DBG_STRING" ) && !e.Is( "EVT_FRAME") && !e.Is("EVT_TICK") ) Engine::out() << "[FE:"<< Module::Get()->GetName() <<"] Found Remote Event: " << e.getDebugName() << std::endl;
+			tmp_EventQueue.push_back( e );
 
 			// exclude remote origin events
 			LocalEventsThisSecond--;
 		}
 
-		for ( auto event : tmp_EventQueue)
+		for ( auto& e : tmp_EventQueue)
 		{
+
 			LocalEventsThisSecond++;
-			PostEvent(event);
+			PostEvent(e);
 		}
 
 	}
@@ -88,11 +89,11 @@ namespace sbe
 	void EventQueue::PostEvent ( Event& e )
 	{
 
-		//if (!e.Is("EVT_FRAME")) Engine::out() << "[FE:"<< Module::MyName() <<"] " << e.getDebugName() << std::endl;
-
+        //if ( !e.Is( "VIEW_DBG_STRING" ) && !e.Is( "EVT_FRAME") && !e.Is("EVT_TICK") )  Engine::out() << "[FE:"<< Module::Get()->GetName() <<"] Posting Event: " << e.getDebugName() << std::endl;
 
 		for ( auto & EvL : EventListeners[ e.getEventType() ] )
 		{
+		    //if ( !e.Is( "VIEW_DBG_STRING" ) && !e.Is( "EVT_FRAME") && !e.Is("EVT_TICK") )  Engine::out() << "[FE:"<< Module::Get()->GetName() <<"] Posting Event to Handler: " << e.getDebugName() << std::endl;
 			EvL.second->HandleEvent ( e );
 		}
 	}

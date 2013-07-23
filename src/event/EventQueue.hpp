@@ -67,7 +67,7 @@ namespace sbe
 			//EventUserMap 			EventUsers;
 			EventListenerMap	EventListeners;
 
-			std::list< Event > 			LocalEventQueue;
+			std::deque< Event > 			LocalEventQueue;
 			ConcurrentQueue< Event > 	ThreadedEventQueue;
 	};
 
