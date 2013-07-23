@@ -63,6 +63,15 @@ namespace sbe {
     }
 
 
+    void FileBrowse::HandleEvent ( Event& e )
+    {
+        if ( e.Is ( "FB_SEL_CHANGED", typeid ( std::string ) ) )
+            updateFolderList ( boost::any_cast<std::string> ( e.Data() ) );
+        else if ( e.Is ( "KEY_PRESSED_ENTER" ) && Win->IsGloballyVisible() )
+            updateFolderList ( std::string ( etyLoc->GetText() ) );
+    }
+
+
     void FileBrowse::setTitle ( const std::string& t )
     {
         Win->SetTitle ( t );
@@ -107,13 +116,6 @@ namespace sbe {
         hide();
     }
 
-    void FileBrowse::HandleEvent ( Event& e )
-    {
-        if ( e.Is ( "FB_SEL_CHANGED", typeid ( std::string ) ) )
-            updateFolderList ( boost::any_cast<std::string> ( e.Data() ) );
-        else if ( e.Is ( "KEY_PRESSED_ENTER" ) )
-            updateFolderList ( std::string ( etyLoc->GetText() ) );
-    }
 
     void FileBrowse::updateFolderList ( const std::string& p )
     {

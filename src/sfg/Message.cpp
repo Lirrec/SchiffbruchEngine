@@ -67,6 +67,7 @@ namespace sbe
 			spacer->SetRequisition ( sf::Vector2f(10, 10) );
 			buttonBox->Pack ( spacer, true, true );
 		}
+
 		Win->Add( box );
 		Module::Get()->QueueEvent( Event( "SCREEN_ADD_WINDOW", Win ) );
 	}

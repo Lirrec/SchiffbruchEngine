@@ -23,7 +23,7 @@ namespace sbe
     class FileBrowse : public EventUser
     {
         public:
-            FileBrowse( const Geom::Vec2 Size = Geom::Vec2(600, 400), const std::string &title="",
+            FileBrowse( const Geom::Vec2 Size = Geom::Vec2(600, 400), const std::string &title="Select File/Folder",
                         const std::string &okEvent="FB_OK", const std::string &cancelEvent="FB_CANCEL");
             virtual ~FileBrowse() = default;
 
