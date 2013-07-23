@@ -38,7 +38,7 @@ namespace sbe
 		void addItem( std::string name );
 		/// remove an item from the list
 		void removeItem( std::string name);
-
+		int getIndex( std::string name);
 		/// remove all Items
 		void clear();
 		/// select or deselect an item, sends "selected" event

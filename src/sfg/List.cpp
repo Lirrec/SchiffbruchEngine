@@ -63,6 +63,18 @@ namespace sbe
 		}
 	}
 
+	int sfgList::getIndex(std::string name)
+	{
+		for ( auto it = Items.begin(); it != Items.end(); ++it)
+		{
+			if ( (*it)->text == name )
+			{
+				return std::distance(Items.begin(), it);
+			}
+		}
+		return -1;
+	}
+
 	void sfgList::clear()
 	{
 		ItemBox->RemoveAll();
