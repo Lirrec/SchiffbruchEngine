@@ -34,8 +34,8 @@ namespace sbe
 
 		HashType getHashValue( void ) const
 		{
-
-			return reinterpret_cast<HashType>( m_ident );
+			//return reinterpret_cast<HashType>( m_ident );
+			return m_ident;
 		}
 
 		const std::string & getStr() const
@@ -44,7 +44,7 @@ namespace sbe
 		}
 
 		static
-		void * hash_name( char const *  pIdentStr );
+		HashType hash_name( char const *  pIdentStr );
 
 		bool operator< ( HashedString const & o ) const
 		{
@@ -66,7 +66,7 @@ namespace sbe
 		// we're doing here and makes it easy to allow external code
 		// to assign event types as desired.
 
-		void *             m_ident;
+		HashType             m_ident;
 		std::string		   m_identStr;
 	};
 } // namespace sbe

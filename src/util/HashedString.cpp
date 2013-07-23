@@ -7,7 +7,7 @@ namespace sbe
 
 	const HashedString::HashType HashedString::InvalidHash = 0;
 
-	void *
+	HashedString::HashType
 	HashedString::hash_name( char const * pIdentStr )
 	{
 		// Relatively simple hash of arbitrary text string into a
@@ -69,7 +69,7 @@ namespace sbe
 		}
 
 
-		return reinterpret_cast<void *>( (s2 << 16) | s1 );
+		return reinterpret_cast<HashedString::HashType>( (s2 << 16) | s1 );
 
 	#undef DO1
 	#undef DO2
