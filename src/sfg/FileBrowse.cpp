@@ -82,6 +82,21 @@ namespace sbe {
         okEvt = e;
     }
 
+    void FileBrowse::setCancelEvt ( const std::string& e )
+    {
+        cancelEvt = e;
+    }
+
+    void FileBrowse::setOkAction(const std::function<void(const std::string&)> &f)
+    {
+        okAction = f;
+    }
+
+    void FileBrowse::setCancelAction(const std::function<void()> &f)
+    {
+        cancelAction = f;
+    }
+
     void FileBrowse::show()
     {
         updatePosition();
@@ -106,12 +121,14 @@ namespace sbe {
 
     void FileBrowse::onOkClicked()
     {
+        okAction(etyLoc->GetText());
         Module::Get()->QueueEvent ( Event ( okEvt, std::string ( etyLoc->GetText() ) ), true );
         hide();
     }
 
     void FileBrowse::onCancelClicked()
     {
+        cancelAction();
         Module::Get()->QueueEvent ( Event ( cancelEvt ) );
         hide();
     }

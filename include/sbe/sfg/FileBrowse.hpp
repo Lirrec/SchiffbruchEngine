@@ -4,6 +4,7 @@
 #include "sbe/event/EventUser.hpp"
 #include "sbe/geom/Point.hpp"
 
+#include <functional>
 
 #include <SFGUI/SharedPtr.hpp>
 namespace sfg {
@@ -30,7 +31,13 @@ namespace sbe
             virtual void HandleEvent( Event& e);
 
             void setTitle(const std::string &t);
+
             void setOkEvt(const std::string &e);
+            void setCancelEvt(const std::string &e);
+
+            void setOkAction(const std::function<void(const std::string&)> &f);
+            void setCancelAction(const std::function<void()> &f);
+
             void show();
             void hide();
 
@@ -45,6 +52,9 @@ namespace sbe
             sfg::SharedPtr<sfg::Entry> etyLoc;
             std::string okEvt;
             std::string cancelEvt;
+            std::function<void(const std::string&)> okAction;
+            std::function<void()> cancelAction;
+
 
 
             std::shared_ptr<sfgList> fldrLst;
