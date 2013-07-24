@@ -50,9 +50,9 @@ endif(USE_CUSTOM_SFML)
 
 find_package(Boost 1.46 REQUIRED thread system filesystem)# regex)
 
-#only audio required, the others are pulled in by sfgui
-find_package(SFML 2 REQUIRED audio)
-#find_package(SFML 2 COMPONENTS graphics window system audio)
+#only audio required, the others are pulled in by sfgui,(bp: well, seems it does it no more)
+#find_package(SFML 2 REQUIRED audio)
+find_package(SFML 2 COMPONENTS graphics window system audio)
 
 foreach(LIB ${GENERIC_LIBS})
 	find_library(FOUND_${LIB} ${LIB} )
@@ -209,5 +209,3 @@ else()
 endif()
 
 target_link_libraries(sbe sfgui ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${SBE_SCRIPT_LIBS} ${GENERIC_LIBS})
-
-
