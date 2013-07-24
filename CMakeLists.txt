@@ -50,9 +50,9 @@ endif(USE_CUSTOM_SFML)
 
 find_package(Boost 1.46 REQUIRED thread system filesystem)# regex)
 
-#only audio required, the others are pulled in by sfgui
-find_package(SFML 2 REQUIRED audio)
-#find_package(SFML 2 COMPONENTS graphics window system audio)
+#only audio required, the others are pulled in by sfgui,(bp: well, seems it does it no more)
+#find_package(SFML 2 REQUIRED audio)
+find_package(SFML 2 COMPONENTS graphics window system audio)
 
 foreach(LIB ${GENERIC_LIBS})
 	find_library(FOUND_${LIB} ${LIB} )
@@ -76,6 +76,7 @@ if( NOT CMAKE_CXX_FLAGS_DEBUG )
 endif()
 
 add_subdirectory(SFGUI)
+set( SFGUI_DEP_LIBRARIES ${OPENGL_gl_LIBRARY} ${SFML_LIBRARIES} )
 
 ########################################################
 ############## Check for Boost and SFML ################
@@ -184,7 +185,7 @@ endif()
 
 link_directories(${SFML_ROOT})
 
-set_property(GLOBAL PROPERTY SBE_LINK_LIBS "${Boost_LIBRARIES};${SFML_LIBRARIES};${GENERIC_LIBS}")
+set_property(GLOBAL PROPERTY SBE_LINK_LIBS "${Boost_LIBRARIES};${SFGUI_DEP_LIBRARIES};${GENERIC_LIBS}")
 set_property(GLOBAL PROPERTY SBE_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include;${PROJECT_SOURCE_DIR}/SFGUI/include;${Boost_INCLUDE_DIR};${SFML_INCLUDE_DIR}")
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
@@ -208,6 +209,4 @@ else()
     add_definitions(-DSFML_STATIC -DSFGUI_STATIC)
 endif()
 
-target_link_libraries(sbe sfgui ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${SBE_SCRIPT_LIBS} ${GENERIC_LIBS})
-
-
+target_link_libraries(sbe sfgui ${SFGUI_DEP_LIBRARIES} ${Boost_LIBRARIES} ${SBE_SCRIPT_LIBS} ${GENERIC_LIBS})
