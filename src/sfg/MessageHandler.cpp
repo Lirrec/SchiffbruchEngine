@@ -1,5 +1,8 @@
 #include "sbe/sfg/MessageHandler.hpp"
+
+
 #include <algorithm>
+#include <string>
 
 namespace sbe
 {
@@ -8,6 +11,7 @@ namespace sbe
 	 : pauseEvent("")
 	{
 		RegisterForEvent( "NEW_MESSAGE" );
+		RegisterForEvent( "CLOSE_MESSAGE" );
 		MessageList = std::list<std::shared_ptr<Message>>();
 	}
 
@@ -17,6 +21,16 @@ namespace sbe
 		{
 			std::shared_ptr<Message> m = boost::any_cast<std::shared_ptr<Message>>( e.Data() );
 			SaveAndShowMessage( m );
+		}
+		else if ( e.Is( "CLOSE_MESSAGE", typeid( std::shared_ptr<Message> ) ))
+		{
+		    std::shared_ptr<Message> m = boost::any_cast<std::shared_ptr<Message>>( e.Data() );
+		    RemoveAndDestroyMessage( m.get() );
+		}
+		else if ( e.Is( "CLOSE_MESSAGE", typeid( std::string )))
+		{
+            std::string title = boost::any_cast<std::string>( e.Data() );
+		    RemoveAndDestroyMessage( title );
 		}
 	}
 
@@ -33,6 +47,17 @@ namespace sbe
 		auto it = std::find_if( MessageList.begin(), MessageList.end(), [m]( const std::shared_ptr<Message>& p ){ return p.get() == m; } );
 		if ( it != MessageList.end() )
 		{
+		    (*it)->Close();
+			MessageList.erase( it );
+		}
+	}
+
+	void MessageHandler::RemoveAndDestroyMessage( const std::string& title )
+	{
+		auto it = std::find_if( MessageList.begin(), MessageList.end(), [title]( const std::shared_ptr<Message>& p ){ return p->getTitle() == title; } );
+		if ( it != MessageList.end() )
+		{
+		    (*it)->Close();
 			MessageList.erase( it );
 		}
 	}

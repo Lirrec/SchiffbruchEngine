@@ -30,6 +30,7 @@ namespace sbe
 		RegisterForEvent( "EVT_QUIT" );
 		RegisterForEvent( "WINDOW_RESIZE" );
 		RegisterForEvent( "SCREEN_ADD_WINDOW" );
+		RegisterForEvent( "SCREEN_REMOVE_WINDOW" );
 		RegisterForEvent( "TOGGLE_FULLSCREEN" );
 
 		// load keybindings from default config
@@ -162,6 +163,13 @@ namespace sbe
 
 			Engine::out() << "[Screen] Adding Window " << P->GetTitle().toAnsiString() << std::endl;
 			Desktop->Add(P);
+		}
+        else if (e.Is("SCREEN_REMOVE_WINDOW", typeid( sfg::Window::Ptr )))
+		{
+			sfg::Window::Ptr P = boost::any_cast<sfg::Window::Ptr>(e.Data());
+
+			Engine::out() << "[Screen] Removing Window " << P->GetTitle().toAnsiString() << std::endl;
+			Desktop->Remove(P);
 		}
 		else if (e.Is("EVT_QUIT"))
 		{

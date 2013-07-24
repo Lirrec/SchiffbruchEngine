@@ -6,7 +6,11 @@
 
 namespace sbe
 {
-
+    /**
+        TODO: document this
+        This class handles new message events and adds/removes them from the screen.
+        An instantiation of this class is required to show messages.
+    */
 	class MessageHandler : public EventUser
 	{
 		public:
@@ -14,6 +18,7 @@ namespace sbe
 			~MessageHandler() {}
 
 			void RemoveAndDestroyMessage( const Message* m );
+			void RemoveAndDestroyMessage( const std::string& title );
 			void HandleEvent( Event& e);
 			void setPauseEvent( const std::string& _pauseEvent) { pauseEvent = _pauseEvent;}
 		private:

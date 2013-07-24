@@ -32,12 +32,22 @@ namespace sbe
 		{
 			MakeOkMessage();
 		}
+        else if ( Type_ == Type::MODAL )
+		{
+			MakeModalMessage();
+		}
 		else if ( Type_ == Type::CHOICE )
 		{
 			MakeChoiceMessage();
 		}
 		updatePosition();
 	}
+
+    void Message::Close()
+    {
+        Win->Show(false);
+        Module::Get()->QueueEvent( Event( "SCREEN_ADD_WINDOW", Win ) );
+    }
 
 	void Message::HandleEvent( Event& e )
 	{
@@ -71,6 +81,18 @@ namespace sbe
 		Win->Add( box );
 		Module::Get()->QueueEvent( Event( "SCREEN_ADD_WINDOW", Win ) );
 	}
+
+    void Message::MakeModalMessage()
+    {
+		Box::Ptr box = Box::Create( Box::VERTICAL, 0 );
+		box->Pack( Label::Create( Message_ ));
+        Box::Ptr spacer = Box::Create();
+        spacer->SetRequisition ( sf::Vector2f(10, 10) );
+        box->Pack ( spacer, true, true );
+
+		Win->Add( box );
+		Module::Get()->QueueEvent( Event( "SCREEN_ADD_WINDOW", Win ) );
+    }
 
 	void Message::MakeChoiceMessage()
 	{

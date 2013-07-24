@@ -50,6 +50,7 @@ namespace sbe
 				 - EVT_FRAME: draws and updates the desktop
 				 - EVT_QUIT: stopps the renderthread
 				 - SCREEN_ADD_WINDOW (Data: sfg::Window::Ptr): Adds a new Window to the Desktop, use this to add your own Widgets
+				 - SCREEN_REMOVE_WINDOW (Data: sfg::Window::Ptr): Removes a Window from the Desktop
 				 - TOGGLE_FULLSCREEN: recreate the RenderWindow in fullscreen Mode
 				 - WINDOW_RESIZE: adapts the Camera to the new window size
 			*/
