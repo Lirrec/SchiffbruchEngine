@@ -34,7 +34,7 @@ message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 if( CMAKE_SYSTEM_NAME MATCHES Windows )
   set( GENERIC_LIBS pthread jpeg GLEW freetype openal32 opengl32 sndfile winmm)
 else()
-  set( GENERIC_LIBS pthread jpeg GLEW X11 Xrandr freetype rt openal sndfile)
+	set( GENERIC_LIBS pthread jpeg GLEW X11 Xrandr freetype rt openal GL sndfile)
 endif()
 
 if( USE_CUSTOM_BOOST)
@@ -76,6 +76,7 @@ if( NOT CMAKE_CXX_FLAGS_DEBUG )
 endif()
 
 add_subdirectory(SFGUI)
+#message("${OPENGL_gl_LIBRARY}")
 set( SFGUI_DEP_LIBRARIES ${SFML_LIBRARIES} )
 
 ########################################################
