@@ -47,6 +47,7 @@ namespace sbe
 		 AxisStart ( 0, 0 ),
 		 MinPointDist( 2 ),
 		 AxesPoints ( 5, 5),
+		 drawAxisLabels(true),
 		 drawLegend(true),
 		 textSize( 15 ),
 		 drawAxes(true),
@@ -98,6 +99,8 @@ namespace sbe
 		*/
 		Geom::Vec2 AxesPoints;
 
+		/// wether to draw the labels on the axes
+		bool drawAxisLabels;
 		/// wether to draw a legend
 		bool drawLegend;
 		/// character size of the legend text in pixels
@@ -171,9 +174,13 @@ namespace sbe
 		void dynScaleAxes( const Geom::Point& max);
 
 		/**
-			draw a legend on the graph, not yet implemented
+			draw the names of the curves on the graph
 		*/
 		void drawLegend();
+		/**
+			draw labels on the axes
+		*/
+		void drawAxisLabels();
 		void drawText( const sf::Vector2f& pos, const std::string& text, bool xAxis);
 		void drawAxes();
 		void drawCurve( const Curve& c, sf::VertexArray& vA  );
@@ -187,6 +194,7 @@ namespace sbe
 
 		/// contains vertices for drawing the indiviual curves
 		std::vector<sf::VertexArray> RenderArrays;
+		std::list<sf::Text> AxisLabels;
 		std::list<sf::Text> Legend;
 
 		boost::mutex data_mutex;

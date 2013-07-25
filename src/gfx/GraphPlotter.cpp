@@ -42,6 +42,7 @@ namespace sbe
 		g = _g;
 		RenderArrays.clear();
 		Legend.clear();
+		AxisLabels.clear();
 		Axes.clear();
 		Axes.setPrimitiveType(sf::Lines );
 		RenderArrays.insert( RenderArrays.end(), 2 + g.Curves.size(), sf::VertexArray() );
@@ -160,6 +161,7 @@ namespace sbe
 		}
 
 		RenderArrays.clear();
+		AxisLabels.clear();
 		Legend.clear();
 		Axes.clear();
 		Axes.setPrimitiveType(sf::Lines );
@@ -186,6 +188,7 @@ namespace sbe
 		}
 
 		if ( g.drawLegend ) drawLegend();
+		if ( g.drawAxisLabels ) drawAxisLabels();
 		if ( g.drawAxes ) drawAxes();
 
 		for ( int i = 0; i < g.Curves.size(); ++i)
@@ -228,16 +231,16 @@ namespace sbe
 		for ( sf::VertexArray& v : RenderArrays )
 			Target.draw(v);
 
-		if ( g.drawLegend )
-		{
-			for ( sf::Text& t : Legend)
-			{
+		if ( g.drawAxisLabels )
+			for ( sf::Text& t : AxisLabels)
 				Target.draw(t);
-			}
-		}
+
+		if ( g.drawLegend )
+			for ( sf::Text& t : Legend)
+				Target.draw(t);
 	}
 
-	void GraphPlotter::drawLegend()
+	void GraphPlotter::drawAxisLabels()
 	{
 		const int border = 1;
 		/// spacing between the end of the marker on the axis and the position of the text
@@ -278,6 +281,30 @@ namespace sbe
 		}
 	}
 
+	void GraphPlotter::drawLegend()
+	{
+		/// spacing between each label
+		const int spacing = 5;
+
+		int x = .8 * g.Size.x;
+		int y = 5;
+
+		for ( Curve& c : g.Curves )
+		{
+			sf::Text t;
+			t.setColor( c.color );
+			t.setString( c.name );
+			t.setFont( *(Engine::GetResMgr()->get<sf::Font>("default")) );
+			t.setCharacterSize( g.textSize );
+			sf::FloatRect bounds = t.getLocalBounds();
+			t.setOrigin( 0, 0 );
+			y += spacing + bounds.height;
+			t.setPosition( x, y );
+			Legend.push_back( t );
+
+		}
+	}
+
 	void GraphPlotter::drawText( const sf::Vector2f& pos, const std::string& text, bool xAxis)
 	{
 		sf::Text t;
@@ -291,7 +318,7 @@ namespace sbe
 		if ( xAxis) t.setOrigin( bounds.width/2, bounds.height );
 		else		t.setOrigin( 0, bounds.height/2 );
 		t.setPosition( pos );
-		Legend.push_back( t );
+		AxisLabels.push_back( t );
 	}
 
 	void GraphPlotter::drawAxes()

@@ -45,6 +45,7 @@ namespace sbe
 		void select( int idx );
 
 		/// return the selected item or the first selected item if multiselect is allowed
+		/// @return the label of the item oder an empty string
 		std::string getSelectedItem();
 		/// return all selected items ( only makes sense in multi mode )
 		std::vector<std::string> getSelectedItems();
