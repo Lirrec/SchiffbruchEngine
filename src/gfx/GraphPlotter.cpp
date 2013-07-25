@@ -90,8 +90,6 @@ namespace sbe
 				g.Curves[i].data = Data;
 
 				dynScaleAxes(g.getMaximas());
-				// update the corresponding vertexarray
-				drawCurve( g.Curves[i], RenderArrays[i] );
 			}
 		}
 	}
@@ -112,9 +110,6 @@ namespace sbe
 				g.Curves[i].data.insert( g.Curves[i].data.end(), Data.begin(), Data.end() );
 
 				dynScaleAxes(g.getMaximas());
-				// update the corresponding vertexarray
-				drawCurve( g.Curves[i], RenderArrays[i] );
-
 			}
 		}
 	}
@@ -135,8 +130,6 @@ namespace sbe
 				g.Curves[i].data.push_back(D);
 
 				dynScaleAxes(g.getMaximas());
-				// update the corresponding vertexarray
-				drawCurve( g.Curves[i], RenderArrays[i] );
 			}
 		}
 	}
