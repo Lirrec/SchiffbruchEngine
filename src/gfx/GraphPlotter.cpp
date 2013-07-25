@@ -278,9 +278,9 @@ namespace sbe
 	{
 		/// spacing between each label
 		const int spacing = 5;
-
-		int x = .8 * g.Size.x;
 		int y = 5;
+		int maxwidth = 0;
+
 
 		for ( Curve& c : g.Curves )
 		{
@@ -292,10 +292,13 @@ namespace sbe
 			sf::FloatRect bounds = t.getLocalBounds();
 			t.setOrigin( 0, 0 );
 			y += spacing + bounds.height;
-			t.setPosition( x, y );
+			if ( bounds.width > maxwidth ) maxwidth = bounds.width;
+			t.setPosition( 0, y );
 			Legend.push_back( t );
-
 		}
+
+		for ( sf::Text& t : Legend)
+			t.setPosition( g.Size.x - maxwidth - 5, t.getPosition().y );
 	}
 
 	void GraphPlotter::drawText( const sf::Vector2f& pos, const std::string& text, bool xAxis)

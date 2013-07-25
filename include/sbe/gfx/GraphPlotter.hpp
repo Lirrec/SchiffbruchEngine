@@ -45,7 +45,7 @@ namespace sbe
 		 : Size( 512,512),
 		 AxisSize( 1000, 1000),
 		 AxisStart ( 0, 0 ),
-		 MinPointDist( 2 ),
+		 MinPointDist( 1 ),
 		 AxesPoints ( 5, 5),
 		 drawAxisLabels(true),
 		 drawLegend(true),
