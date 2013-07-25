@@ -32,7 +32,7 @@ message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 
 # set external windows and linux libs
 if( CMAKE_SYSTEM_NAME MATCHES Windows )
-  set( GENERIC_LIBS pthread jpeg GLEW freetype openal32 sndfile winmm)
+  set( GENERIC_LIBS pthread jpeg GLEW freetype openal32 opengl32 sndfile winmm)
 else()
   set( GENERIC_LIBS pthread jpeg GLEW X11 Xrandr freetype rt openal sndfile)
 endif()
@@ -52,7 +52,7 @@ find_package(Boost 1.46 REQUIRED thread system filesystem)# regex)
 
 #only audio required, the others are pulled in by sfgui,(bp: well, seems it does it no more)
 #find_package(SFML 2 REQUIRED audio)
-find_package(SFML 2 COMPONENTS graphics window system audio)
+find_package(SFML 2 COMPONENTS audio graphics window system)
 
 foreach(LIB ${GENERIC_LIBS})
 	find_library(FOUND_${LIB} ${LIB} )
@@ -76,7 +76,7 @@ if( NOT CMAKE_CXX_FLAGS_DEBUG )
 endif()
 
 add_subdirectory(SFGUI)
-set( SFGUI_DEP_LIBRARIES ${OPENGL_gl_LIBRARY} ${SFML_LIBRARIES} )
+set( SFGUI_DEP_LIBRARIES ${SFML_LIBRARIES} )
 
 ########################################################
 ############## Check for Boost and SFML ################
