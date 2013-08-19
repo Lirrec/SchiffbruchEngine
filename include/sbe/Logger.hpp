@@ -6,8 +6,13 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include <boost/thread/mutex.hpp>
+
 #include <iostream>
+#include <sstream>
+
+namespace boost {
+	class mutex;
+}
 
 namespace sbe
 {
@@ -18,7 +23,7 @@ namespace sbe
 	{
 	public:
 
-		Logger( std::ostream& _out ) :out(_out) {}
+		Logger( std::ostream& _out );
 		virtual ~Logger() {}
 
 		template <typename T>
@@ -26,18 +31,20 @@ namespace sbe
 		{
 			/* Takes any data type and stores in a stringstream
 			 */
-			boost::mutex::scoped_lock io_mutex_lock(io_mutex);
+			lock();
 			oss << data;
 			out << data;
+			unlock();
 			return *this;
 		}
 
 		Logger & operator<<(std::ostream& (*pf)(std::ostream&))
 		{
 			// for stream manipulators
-			boost::mutex::scoped_lock io_mutex_lock(io_mutex);
+			lock();
 			oss << pf;
 			out << pf;
+			unlock();
 			return *this;
 		}
 
@@ -69,7 +76,10 @@ namespace sbe
 
 	private:
 
-		static boost::mutex io_mutex;
+		void lock();
+		void unlock();
+
+		static boost::mutex* io_mutex;
 		std::stringstream oss;
 		std::ostream& out;
 
