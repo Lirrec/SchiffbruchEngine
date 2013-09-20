@@ -143,15 +143,17 @@ namespace sbe
 			return;
 		}
 
-		if ( g.AxisSize.x <= 0 || g.AxisSize.y <= 0
-			|| g.AxesPoints.x <= 0 || g.AxesPoints.y <= 0
-			|| g.MinPointDist <= 0
-			|| g.Size.x <= 0 || g.Size.y <= 0  )
-		{
-			Engine::out(Engine::ERROR) << "[GraphPlotter] Invalid Settings!" << std::endl;
-			//printSettings();
-			return;
-		}
+		if ( g.AxisSize.x <= 0 || g.AxisSize.y <= 0)
+		{ Engine::out(Engine::ERROR) << "[GraphPlotter] Invalid Settings ( AxisSize < 0 ) !" << std::endl; return; }
+
+		if ( g.AxesPoints.x <= 0 || g.AxesPoints.y <= 0 )
+		{ Engine::out(Engine::ERROR) << "[GraphPlotter] Invalid Settings ( AxesPoints < 0 ) !" << std::endl; return; }
+
+		if ( g.MinPointDist <= 0 )
+		{ Engine::out(Engine::ERROR) << "[GraphPlotter] Invalid Settings ( MinPointDist < 0 ) !" << std::endl; return; }
+
+		if ( g.Size.x <= 0 || g.Size.y <= 0  )
+		{ Engine::out(Engine::ERROR) << "[GraphPlotter] Invalid Settings ( Size < 0 ) !" << std::endl; return; }
 
 		RenderArrays.clear();
 		AxisLabels.clear();
@@ -175,7 +177,7 @@ namespace sbe
 
 		if ( g.AxisSize.x <= 0 || g.AxisSize.y <= 0)
 		{
-			Engine::out(Engine::ERROR) << "[GraphPlotter] Invalid Settings!" << std::endl;
+			Engine::out(Engine::ERROR) << "[GraphPlotter] Invalid Settings ( AxisSize < 0 ) !" << std::endl;
 			//printSettings();
 			return;
 		}
@@ -378,8 +380,8 @@ namespace sbe
 			x_percentage = ((float)g.AxisStart.x +  x_percentage * (float)g.AxisSize.x) / c.data.size();
 
 			float y_percentage;
-			if ( !g.logScale ) y_percentage = interpolatedCurveData( c, x_percentage  ) / (float)g.AxisSize.y;
-			else y_percentage = (std::log(interpolatedCurveData( c, x_percentage  )) / std::log(g.logBase) ) / (std::log((float)g.AxisSize.y) / std::log(g.logBase) );
+			if ( !g.logScale ) y_percentage = (interpolatedCurveData( c, x_percentage  ) - g.AxisStart.y) / (float)g.AxisSize.y;
+			else y_percentage = (std::log( (interpolatedCurveData( c, x_percentage  ) - g.AxisStart.y) ) / std::log(g.logBase) ) / (std::log((float)g.AxisSize.y) / std::log(g.logBase) );
 			// invert for opengls top-left origin
 			current.y = g.Size.y * (1 - y_percentage);
 
