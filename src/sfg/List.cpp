@@ -16,7 +16,7 @@ namespace sbe
 {
 
 	sfgList::sfgList(std::string ClickEventName)
-	 : selectedItems(0), EvTName ( ClickEventName ), MultiSelect(false)
+	 : selectedItems(0), EvtName ( ClickEventName ), MultiSelect(false)
 	{
 		Frame = sfg::ScrolledWindow::Create();
 		ItemBox = sfg::Box::Create(sfg::Box::VERTICAL);
@@ -25,6 +25,11 @@ namespace sbe
 		Frame->SetRequisition( sf::Vector2f( 100.f, 200.f ) );
 		Frame->SetPlacement( sfg::ScrolledWindow::Placement::TOP_LEFT );
 		Frame->SetScrollbarPolicy ( sfg::ScrolledWindow::VERTICAL_AUTOMATIC | sfg::ScrolledWindow::HORIZONTAL_NEVER );
+	}
+
+	void sfgList::setClickEventName( const std::string& cEvtName )
+	{
+		EvtName = cEvtName;
 	}
 
 	sfg::SharedPtr<sfg::Widget> sfgList::getList()
@@ -115,9 +120,9 @@ namespace sbe
 			(*it)->label->SetText( "* " + (*it)->text);
 			selectedItems++;
 
-			if (EvTName != "")
+			if (EvtName != "")
 			{
-				Module::Get()->QueueEvent( Event(EvTName, (*it)->text) );
+				Module::Get()->QueueEvent( Event(EvtName, (*it)->text) );
 			}
 		}
 	}
@@ -178,9 +183,9 @@ namespace sbe
 					(*it)->label->SetText( "* " + (*it)->text);
 					selectedItems++;
 
-					if (EvTName != "")
+					if (EvtName != "")
 					{
-						Module::Get()->QueueEvent( Event(EvTName, (*it)->text) );
+						Module::Get()->QueueEvent( Event(EvtName, (*it)->text) );
 					}
 				}
 				break;

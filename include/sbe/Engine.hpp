@@ -25,7 +25,7 @@ namespace sbe
 		Just use the out() method like std::cout. The parameter defines the loglevel/severity of the message.
 		Default is LogLevel::SPAM ( not shown in the ingame DebugWindow, only on the console ).
 		@code
-			Engine::out(Engine::ERROR) << "Error!! " << i << std::cout;
+			Engine::out(Engine::ERROR) << "Error!! " << i << std::endl;
 		@endcode
 
 	*/

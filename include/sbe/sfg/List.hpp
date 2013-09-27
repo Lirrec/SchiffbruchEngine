@@ -31,6 +31,8 @@ namespace sbe
 
 		sfg::SharedPtr<sfg::Widget> getList();
 
+		/// change the event sent on click
+		void setClickEventName( const std::string& cEvtName );
 		/// set single or multiple selects
 		void setMultiSelect( bool multi ) { MultiSelect = multi; }
 		bool isMultiSelect() { return MultiSelect; }
@@ -68,7 +70,7 @@ namespace sbe
 		std::vector<std::shared_ptr<item>> Items;
 		unsigned int selectedItems;
 
-		std::string EvTName;
+		std::string EvtName;
 
 		sfg::SharedPtr<sfg::ScrolledWindow> Frame;
 		sfg::SharedPtr<sfg::Box> ItemBox;

@@ -49,10 +49,32 @@ namespace sbe
 
 		bgColor = sf::Color(180,180,180);
 
+		std::string Icon = "res/" + Engine::getCfg()->get<std::string>("system.renderer.icon", "");
+		std::string Title = Engine::getCfg()->get<std::string>("system.renderer.title", "SchiffbruchEngine powered.");
+
 		// create the renderwindow
 		Engine::GetApp().create( sf::VideoMode ( Engine::getCfg()->get<int>("system.renderer.windowsize.x"),
 												Engine::getCfg()->get<int>("system.renderer.windowsize.y") ),
-												"SchiffbruchEngine powered." );
+												Title );
+
+		if ( Icon != "")
+		{
+			Engine::out(Engine::INFO) << "[Screen] Loading Icon 'res/" << Icon << "'." << std::endl;
+			sf::Image IconImage;
+			if ( !IconImage.loadFromFile( Icon ) )
+			{
+				Engine::out(Engine::ERROR) << "[Screen] Error Loading Icon 'res/" << Icon << "' ( not found/corrupted )." << std::endl;
+			}
+			else
+			{
+				if ( IconImage.getSize().x <=256 && IconImage.getSize().y <= 256 )
+					Engine::GetApp().setIcon( IconImage.getSize().x, IconImage.getSize().y, IconImage.getPixelsPtr() );
+				else
+					Engine::out(Engine::ERROR) << "[Screen] Icon 'res/" << Icon << "' is larger than 256x256!" << std::endl;
+			}
+
+		}
+
 
 		// must be created before using SFGUI
 		SFG.reset ( new sfg::SFGUI );
@@ -149,7 +171,7 @@ namespace sbe
 			{
 				Engine::GetApp().create( sf::VideoMode ( Engine::getCfg()->get<int>("system.renderer.windowsize.x"),
 															Engine::getCfg()->get<int>("system.renderer.windowsize.y") ),
-															"Maximum-Fish!" );
+															Engine::getCfg()->get<std::string>("system.renderer.title", "SchiffbruchEngine powered.") );
 				Fullscreen = false;
 			}
 
@@ -161,14 +183,14 @@ namespace sbe
 			sfg::Window::Ptr P = boost::any_cast<sfg::Window::Ptr>(e.Data());
 			P->GetSignal( sfg::Window::OnMouseEnter ).Connect( &Screen::OnHandledEvent, this );
 
-			Engine::out() << "[Screen] Adding Window " << P->GetTitle().toAnsiString() << std::endl;
+			Engine::out() << "[Screen] Adding Window '" << P->GetTitle().toAnsiString() << "'" << std::endl;
 			Desktop->Add(P);
 		}
         else if (e.Is("SCREEN_REMOVE_WINDOW", typeid( sfg::Window::Ptr )))
 		{
 			sfg::Window::Ptr P = boost::any_cast<sfg::Window::Ptr>(e.Data());
 
-			Engine::out() << "[Screen] Removing Window " << P->GetTitle().toAnsiString() << std::endl;
+			Engine::out() << "[Screen] Removing Window '" << P->GetTitle().toAnsiString() << "'" << std::endl;
 			Desktop->Remove(P);
 		}
 		else if (e.Is("EVT_QUIT"))

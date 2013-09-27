@@ -46,7 +46,7 @@ namespace sbe
     void Message::Close()
     {
         Win->Show(false);
-        Module::Get()->QueueEvent( Event( "SCREEN_ADD_WINDOW", Win ) );
+        Module::Get()->QueueEvent( Event( "SCREEN_REMOVE_WINDOW", Win ) );
     }
 
 	void Message::HandleEvent( Event& e )

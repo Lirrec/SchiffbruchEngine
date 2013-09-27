@@ -102,13 +102,13 @@ namespace sbe {
         updatePosition();
         Win->Show ( true );
         Win->GrabFocus();
-        Engine::out() << "[fb] show" << std::endl;
+        //Engine::out() << "[FileBrowser] show" << std::endl;
     }
 
     void FileBrowse::hide()
     {
         Win->Show ( false );
-        Engine::out() << "[fb] hide" << std::endl;
+        //Engine::out() << "[FileBrowser] hide" << std::endl;
     }
 
 
@@ -156,7 +156,7 @@ namespace sbe {
                 bp = lastPath / bp;
             }
         }
-        Engine::out() << "[fb] new path is »" << bp.string() << "«"<< std::endl;
+        //Engine::out() << "[FileBrowser] new path is »" << bp.string() << "«"<< std::endl;
 
         if ( exists ( bp ) && is_directory ( bp ) )
         {
@@ -175,7 +175,7 @@ namespace sbe {
         }
         else
         {
-            Engine::out() << "[fb] " << bp.string() << " exists: " << exists ( bp ) << ", is_dir: "<< is_directory ( bp ) << std::endl;
+            //Engine::out() << "[FileBrowser] " << bp.string() << " exists: " << exists ( bp ) << ", is_dir: "<< is_directory ( bp ) << std::endl;
             fldrLst->addItem ( "This folder doesn't exist. Click to create... (nyi!!)" );
         }
     }
