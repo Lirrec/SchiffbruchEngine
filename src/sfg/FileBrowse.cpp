@@ -17,7 +17,7 @@ namespace sbe {
 
     FileBrowse::FileBrowse ( const Geom::Vec2 Size, const std::string& title,
                              const std::string& okEvent, const std::string& cancelEvent )
-        : okEvt ( okEvent ), cancelEvt ( cancelEvent )
+        : okEvt ( okEvent ), cancelEvt ( cancelEvent ), okAction(  [](const std::string&){} ), cancelAction( []{} )
     {
         RegisterForEvent ( "FB_SEL_CHANGED" );
         RegisterForEvent ( "KEY_PRESSED_ENTER" );

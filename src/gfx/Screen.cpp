@@ -59,18 +59,18 @@ namespace sbe
 
 		if ( Icon != "")
 		{
-			Engine::out(Engine::INFO) << "[Screen] Loading Icon 'res/" << Icon << "'." << std::endl;
+			Engine::out(Engine::INFO) << "[Screen] Loading Icon '" << Icon << "'." << std::endl;
 			sf::Image IconImage;
 			if ( !IconImage.loadFromFile( Icon ) )
 			{
-				Engine::out(Engine::ERROR) << "[Screen] Error Loading Icon 'res/" << Icon << "' ( not found/corrupted )." << std::endl;
+				Engine::out(Engine::ERROR) << "[Screen] Error Loading Icon '" << Icon << "' ( not found/corrupted )." << std::endl;
 			}
 			else
 			{
 				if ( IconImage.getSize().x <=256 && IconImage.getSize().y <= 256 )
 					Engine::GetApp().setIcon( IconImage.getSize().x, IconImage.getSize().y, IconImage.getPixelsPtr() );
 				else
-					Engine::out(Engine::ERROR) << "[Screen] Icon 'res/" << Icon << "' is larger than 256x256!" << std::endl;
+					Engine::out(Engine::ERROR) << "[Screen] Icon '" << Icon << "' is larger than 256x256!" << std::endl;
 			}
 
 		}
