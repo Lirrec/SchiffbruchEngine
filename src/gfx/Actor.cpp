@@ -29,4 +29,9 @@ namespace sbe
 	{
 		return Anim.getSprite();
 	}
+
+	sf::Drawable& ShapeActor::getDrawable()
+	{
+		return *Shape;
+	}
 } // namespace sbe

@@ -67,6 +67,15 @@ namespace sbe
 			AnimatedSprite Anim;
 	};
 
+	/**
+		An Actor holding an AnimatedSprite
+	*/
+	class ShapeActor : public Actor {
+		public:
+			sf::Drawable& getDrawable();
+			std::shared_ptr<sf::Shape> Shape;
+	};
+
 	//class VertexAnimationActor : public Actor {
 	//	public:
 	//		void draw( sf::RenderTarget& t) { t.draw ( arr ); }
