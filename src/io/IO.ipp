@@ -127,7 +127,7 @@ namespace sbe
 
 		Engine::out(Engine::INFO) << "[IO] Loading " << p << " (" << ti.name() << ") ... " ;
 
-		std::ifstream in( p), std::ios::in | std::ios::binary );
+		std::ifstream in( p, std::ios::in | std::ios::binary );
 
 		if (IOP->loader_type == IOPlugin::loader::BINARY )
 		{
