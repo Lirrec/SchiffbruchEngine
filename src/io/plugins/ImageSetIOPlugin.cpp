@@ -38,6 +38,9 @@ namespace sbe
 
 			re->FrameCount.x = pt.get<int>("FrameCount.x");
 			re->FrameCount.y = pt.get<int>("FrameCount.y");
+
+			re->FramesPerSecond = pt.get<int>("FramesPerSecond");
+
 		}
 		catch ( boost::property_tree::ptree_error )
 		{
@@ -70,7 +73,7 @@ namespace sbe
 			pt.put("FrameCount.y", object.FrameCount.y);
 
 			pt.put("FramesPerSecond", object.FramesPerSecond);
-			pt.put("NumFrames", object.NumFrames);
+			//pt.put("NumFrames", object.NumFrames);
 
 			root.add_child("ImageSet", pt);
 			return true;

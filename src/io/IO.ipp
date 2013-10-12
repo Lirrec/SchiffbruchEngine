@@ -6,6 +6,8 @@
 
 #include "sbe/Engine.hpp"
 
+#include <fstream>
+
 namespace sbe
 {
 
@@ -125,7 +127,7 @@ namespace sbe
 
 		Engine::out(Engine::INFO) << "[IO] Loading " << p << " (" << ti.name() << ") ... " ;
 
-		fs::ifstream in(p);
+		std::ifstream in( p), std::ios::in | std::ios::binary );
 
 		if (IOP->loader_type == IOPlugin::loader::BINARY )
 		{
