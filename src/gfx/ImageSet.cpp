@@ -141,11 +141,11 @@ namespace sbe
 
 			if (Tex->loadFromImage( *img ))
 			{
+				Engine::GetResMgr()->add<sf::Texture>(Tex, ImageName );
 				Engine::out(Engine::INFO) << "[ImageSet] Created texture for ImageSet " << Name << ", from Image with name " << ImageName << std::endl;
 			}
 			else
 			{
-				Engine::GetResMgr()->add<sf::Texture>(Tex, ImageName );
 				Engine::out(Engine::ERROR) << "[ImageSet] ERROR creating texture for ImageSet " << Name << ", from Image with name " << ImageName << std::endl;
 				Tex.reset();
 			}
