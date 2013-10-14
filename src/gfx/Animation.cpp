@@ -24,6 +24,11 @@ namespace sbe
 	void Animation::setImageSet( ImageSet& A)
 	{
 		AnimData = A;
+
+		if ( A.NumFrames == 0 )
+		{
+			Engine::out() << "Animation: got invalid ImageSet '" << A.Name << "'" << std::endl;
+		}
 	}
 
 	void Animation::reset( const sf::Time& GameTime )
@@ -54,7 +59,7 @@ namespace sbe
 	{
 		//if (from < 1) from = 1;
 
-		if (from == to || from < 1 || to > AnimData.NumFrames)
+		if (from == to || from < 1 || to > AnimData.NumFrames || AnimData.NumFrames <= 0)
 		{
 			Engine::out(Engine::ERROR) << "Animation::Play() # Can't play Animation, requested index out of range!" << std::endl;
 			return;
@@ -70,6 +75,12 @@ namespace sbe
 
 	void Animation::playRandomized( const sf::Time& GameTime )
 	{
+		if ( AnimData.NumFrames <= 0 )
+		{
+			Engine::out(Engine::ERROR) << "Animation::Play() # Can't play Animation '" << AnimData.Name << "', no Frames!" << std::endl;
+			return;
+		}
+
 		int from = rand() % AnimData.NumFrames;
 		from ++; // this yields a frame-number from 1 to numFrames+1
 
@@ -175,6 +186,8 @@ namespace sbe
 
 	void Animation::update( const sf::Time& GameTime )
 	{
+		if (AnimData.FramesPerSecond == 0 || AnimData.NumFrames == 0 || !playing) return;
+
 		sf::Time diff = GameTime - LastUpdate;
 		sf::Time FrameTime = sf::seconds(1.0f/(float)AnimData.FramesPerSecond);
 
@@ -189,7 +202,7 @@ namespace sbe
 
 			while (diff > FrameTime)
 			{
-				//Engine::out() << "Diff: " << diff << std::endl;
+				//Engine::out() << "Franetime: " << FrameTime.asMilliseconds() << " - Diff: " << diff.asMilliseconds() << std::endl;
 				reverse?rAdvance():advance();
 				diff -= FrameTime;
 			}

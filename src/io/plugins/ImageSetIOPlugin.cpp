@@ -41,6 +41,8 @@ namespace sbe
 
 			re->FramesPerSecond = pt.get<int>("FramesPerSecond");
 
+			re->calcNumFrames();
+
 		}
 		catch ( boost::property_tree::ptree_error )
 		{

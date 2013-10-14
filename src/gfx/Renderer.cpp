@@ -44,12 +44,19 @@ namespace sbe
 
 	void Renderer::render(sf::RenderTarget& t)
 	{
+		//int i = 0;
 		for ( RenderLayer& L : Layers)
 		{
+			//Engine::out() << "Updating Layer " << ++i << std::endl;
 			if ( L.isActive ) updateLayer( L );
+
+			//Engine::out() << "Culling Layer " << i << std::endl;
 			if ( L.cull && L.changed ) cullLayer( L );
+
+			//Engine::out() << "Drawing Layer " << i << std::endl;
 			if ( L.isActive ) drawLayer( L, t );
 		}
+		//Engine::out() << "Done drawing" << std::endl;
 	}
 
 
@@ -63,8 +70,10 @@ namespace sbe
 
 	void Renderer::updateLayer(RenderLayer& L)
 	{
+		//int i = 0;
 		for ( std::shared_ptr<Actor>& A : L.RenderList)
 		{
+			//Engine::out() << "Updating Actor " << ++i << std::endl;
 			A->update( RenderTime.getElapsedTime() );
 		}
 	}
@@ -89,6 +98,7 @@ namespace sbe
 
 		for ( const std::shared_ptr<Actor>& A : L.RenderList)
 		{
+			//Engine::out() << "Drawing: " << std::endl;
 			t.draw( A->getDrawable(), L.States );
 		}
 	}

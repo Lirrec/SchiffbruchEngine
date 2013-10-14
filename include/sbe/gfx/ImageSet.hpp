@@ -78,6 +78,9 @@ namespace sbe
 			/// access the texture managed by the ImageSet
 			std::shared_ptr<sf::Texture> getTexture();
 
+			/// calculate the number of frames from the framecount member
+			void calcNumFrames();
+
 			//## DATA members ##
 
 

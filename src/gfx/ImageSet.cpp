@@ -7,6 +7,8 @@
 #include "sbe/ResourceManager.hpp"
 #include "sbe/gfx/VertexUtils.hpp"
 
+#include <cmath>
+
 namespace sbe
 {
 	ImageSet::ImageSet()
@@ -42,14 +44,16 @@ namespace sbe
 
 
 
+	void ImageSet::calcNumFrames()
+	{
+		NumFrames = FrameCount.x * FrameCount.y;
+	}
+
 	Geom::Vec2 ImageSet::CalcFramePos(const int index) const
 	{
 		Geom::Vec2 FPos;
-
-		int tmp = (int)std::floor((float)index / (float)FrameCount.x);
-
-		FPos.x = index % FrameCount.x;
-		FPos.y = tmp ;
+		FPos.x = (index-1) % FrameCount.x;
+		FPos.y = (int)((float)(index-1) / (float)FrameCount.x);
 		return FPos;
 	}
 
@@ -159,6 +163,7 @@ namespace sbe
 		updateTexture();
 		return Tex;
 	}
+
 
 	void ImageSet::CreateQuad( const int index, sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex, const sf::Color& _color)
 	{
