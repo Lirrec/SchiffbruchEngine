@@ -20,6 +20,11 @@ namespace sbe
 		return arr;
 	}
 
+	AnimationActor::AnimationActor( ImageSet& ImgSet)
+	 : Anim( ImgSet )
+	{
+	}
+
 	void AnimationActor::update( const sf::Time& RenderTime )
 	{
 		Anim.update ( RenderTime );

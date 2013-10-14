@@ -126,7 +126,7 @@ void Renderer::clearLayer(int index)
 }
 
 
-void Renderer::addActor(std::shared_ptr<Actor>& A, int Layer)
+void Renderer::addActor(const std::shared_ptr<Actor>& A, int Layer)
 {
 	if ( Layer >= 0 && Layer < Layers.size() )
 	{

@@ -18,6 +18,9 @@ namespace sbe
 
 			/// update the associated sprite/vertexarray to show the correct sub-rect/frame of the image
 			void updateDrawable();
+
+			void setImageSet( ImageSet& _A);
+
 			/// return the managed Sprite
 			sf::Sprite& getSprite();
 		private:

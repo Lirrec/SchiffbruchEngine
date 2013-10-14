@@ -25,8 +25,8 @@ namespace sbe
 		delta = Engine::getCfg()->get<float>("system.camera.delta");
 		WheelZoomFactor = Engine::getCfg()->get<float>("system.camera.wheelZoomFactor");
 
-		CamLimits = sf::FloatRect( 0,0,0,0 );
-		ZoomLimits = sf::FloatRect( 0,0,0,0 );
+		CamLimits = sf::FloatRect( 0,0,10000,10000 );
+		ZoomLimits = sf::FloatRect( 0,0,10000,10000 );
 	}
 
 	void Camera::printDebugInfo()
@@ -87,6 +87,7 @@ namespace sbe
 
 	void Camera::update()
 	{
+
 		// minimum difference between Target and current position to be smoothed
 		const int minDiff = 2;
 		sf::Vector2f CurrentSize = view.getSize();
@@ -176,7 +177,6 @@ namespace sbe
 
 			case sf::Event::MouseWheelMoved:
 			{
-
 				sf::Vector2f NewSize;
 				for (int i = 0; i < std::abs(e.mouseWheel.delta); ++i)
 				{

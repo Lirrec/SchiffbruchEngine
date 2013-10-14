@@ -30,7 +30,7 @@ namespace sbe
 
 		virtual void update( const sf::Time& RenderTime ) {};
 		virtual sf::Drawable& getDrawable() = 0;
-		ActorID getID() { return ID; }
+		ActorID getID() const { return ID; }
 
 		private:
 			const ActorID ID;
@@ -62,6 +62,8 @@ namespace sbe
 	*/
 	class AnimationActor : public Actor {
 		public:
+			AnimationActor( ImageSet& ImgSet);
+
 			void update( const sf::Time& RenderTime );
 			sf::Drawable& getDrawable();
 			AnimatedSprite Anim;

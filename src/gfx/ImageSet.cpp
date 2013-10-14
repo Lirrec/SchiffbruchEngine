@@ -145,6 +145,7 @@ namespace sbe
 			}
 			else
 			{
+				Engine::GetResMgr()->add<sf::Texture>(Tex, ImageName );
 				Engine::out(Engine::ERROR) << "[ImageSet] ERROR creating texture for ImageSet " << Name << ", from Image with name " << ImageName << std::endl;
 				Tex.reset();
 			}
@@ -155,6 +156,7 @@ namespace sbe
 
 	std::shared_ptr<sf::Texture> ImageSet::getTexture()
 	{
+		updateTexture();
 		return Tex;
 	}
 

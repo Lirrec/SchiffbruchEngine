@@ -14,11 +14,16 @@
 namespace sbe
 {
 
-	Animation::Animation( ImageSet& _A) : AnimData(_A)
+	Animation::Animation( ImageSet& _A) : AnimData( _A )
 	{
 
 		reset( sf::Time() );
 	//	Engine::out() << "Animation(" << this << ")" << std::endl;
+	}
+
+	void Animation::setImageSet( ImageSet& A)
+	{
+		AnimData = A;
 	}
 
 	void Animation::reset( const sf::Time& GameTime )
@@ -180,12 +185,17 @@ namespace sbe
 	//		Engine::out() << "AnimData: " << AnimData.ImageName << std::endl;
 	//		Engine::out() << "AnimData.fps: " << AnimData.FramesPerSecond << std::endl;
 
+			int oldframe = CurFrame;
+
 			while (diff > FrameTime)
 			{
 				//Engine::out() << "Diff: " << diff << std::endl;
 				reverse?rAdvance():advance();
 				diff -= FrameTime;
 			}
+
+			if ( oldframe != CurFrame )
+				updateDrawable();
 		}
 
 

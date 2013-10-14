@@ -149,7 +149,7 @@ namespace sbe
 				@param A the actor
 				@param Layer which layer should the actor be rendered on
 			*/
-			void addActor( std::shared_ptr<Actor>& A, int Layer );
+			void addActor( const std::shared_ptr<Actor>& A, int Layer );
 
 			/**
 				Update an Actor.

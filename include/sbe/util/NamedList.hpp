@@ -44,7 +44,7 @@ namespace sbe
 					return elem->second;
 				}
 
-				::sbe::Engine::out() << "NamedList, Item not found: '" << name << "';" << std::endl;
+				//::sbe::Engine::out() << "NamedList, Item not found: '" << name << "';" << std::endl;
 
 				// elem not found, return an invalid smart-pointer
 				return ptr_type();

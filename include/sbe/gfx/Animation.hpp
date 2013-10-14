@@ -27,6 +27,9 @@ namespace sbe
 			/// Reset the animation. Sets the current frame to 1 and stops.
 			void reset( const sf::Time& GameTime );
 
+			/// set the underlying ImageSet ( lazy construction )
+			void setImageSet( ImageSet& A);
+
 			void setScreenPosition( Geom::Point p );
 
 			/// Set the animation to a specific Frame
@@ -77,7 +80,7 @@ namespace sbe
 			/// called once the animation is finished, send an EVT_ANIM_FINISCH event if requested
 			void finish();
 
-			const ImageSet& AnimData;
+			ImageSet& AnimData;
 			Geom::Point Screen_Position;
 
 			bool playing;
