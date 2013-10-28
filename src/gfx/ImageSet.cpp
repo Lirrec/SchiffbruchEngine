@@ -52,8 +52,8 @@ namespace sbe
 	Geom::Vec2 ImageSet::CalcFramePos(const int index) const
 	{
 		Geom::Vec2 FPos;
-		FPos.x = (index-1) % FrameCount.x;
-		FPos.y = (int)((float)(index-1) / (float)FrameCount.x);
+		FPos.x = index % FrameCount.x;
+		FPos.y = (int)((float)index / (float)FrameCount.x);
 		return FPos;
 	}
 

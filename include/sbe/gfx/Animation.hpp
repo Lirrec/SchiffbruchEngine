@@ -14,7 +14,8 @@ namespace sbe
 	/**
 		A base class for animations.
 		It supports restarting, pausing, setting the current frame, playing forwards/backwards etc.
-		To get a smooth Animation update() should be called in regular intervalls with a timer which represents the time passed ingame
+		To get a smooth Animation update() should be called in regular intervalls with a timer which represents the time passed ingame.
+		The frame numbering starts at zero.
 		@see AnimatedSprite, AnimatedVertexArray
 	*/
 	class Animation
@@ -24,7 +25,7 @@ namespace sbe
 			Animation( ImageSet& _A);
 			virtual ~Animation() {}
 
-			/// Reset the animation. Sets the current frame to 1 and stops.
+			/// Reset the animation. Sets the current frame to 0 and stops.
 			void reset( const sf::Time& GameTime );
 
 			/// set the underlying ImageSet ( lazy construction )
