@@ -2,8 +2,6 @@ project( SchiffbruchEngine )
 
 cmake_minimum_required( VERSION 2.8 )
 
-set( CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/SFGUI/extlibs/SFML/cmake/Modules" ${CMAKE_MODULE_PATH} )
-
 
 #############################################################
 ################### Cmake Options ###########################
@@ -11,20 +9,37 @@ set( CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/SFGUI/extlibs/SFML/cmake/Modules" 
 
 
 option( PROFILE "" OFF)
-option( USE_CUSTOM_BOOST "" OFF)
 option( USE_PYTHON "" OFF)
 option( USE_RUBY "" OFF)
-option( USE_CUSTOM_SFML "" ON)
-set( CUSTOM_BOOST_ROOT "" CACHE PATH "custom boost build root dir")
-set( CUSTOM_SFML_ROOT "${PROJECT_SOURCE_DIR}/SFGUI/extlibs/SFML" CACHE PATH "custom SFML build root dir")
+option( BUILD_SHARED_LIBS "" ON)
 option(ENABLE_LTO "enable lto, if ya dont know what this is, ya dont need it!" OFF)
 
+set( CMAKE_MODULE_PATH "${SFML_DIR}/cmake/Modules" ${CMAKE_MODULE_PATH} )
 SET( CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
 if (NOT CMAKE_BUILD_TYPE)
 	set( CMAKE_BUILD_TYPE "Release")
 endif()
 message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+
+#############################################################
+#################### External Libraries Configuration #####################
+#############################################################
+
+set( SFGUI_BUILD_EXAMPLES false CACHE BOOL "Do or dont build examples)")
+if ( ${BUILD_SHARED_LIBS})
+	set( SFML_STATIC_LIBRARIES false)
+else()
+	set( SFML_STATIC_LIBRARIES true)
+endif()
+
+#just make sure those two are not empty, as in that case sfgui will add unwanted compile flags
+if( NOT CMAKE_CXX_FLAGS )
+	set( CMAKE_CXX_FLAGS  " " CACHE STRING "C++ compiler flags" FORCE )
+endif()
+if( NOT CMAKE_CXX_FLAGS_DEBUG )
+	set( CMAKE_CXX_FLAGS_DEBUG  " " CACHE STRING "C++ compiler flags (debug)" FORCE )
+endif()
 
 #############################################################
 #################### External Libraries #####################
@@ -37,63 +52,14 @@ else()
 	set( GENERIC_LIBS pthread jpeg GLEW X11 Xrandr freetype rt openal GL sndfile)
 endif()
 
-if( USE_CUSTOM_BOOST)
-	message("-- Using custom boost...")
-	set(BOOST_ROOT "${CUSTOM_BOOST_ROOT}")
-endif()
-
-if( USE_CUSTOM_SFML)
-	message("-- Using custom SFML...")
-	set(SFML_ROOT "${CUSTOM_SFML_ROOT}/build")
-	set(SFML_INCLUDE_DIR "${CUSTOM_SFML_ROOT}/include")
-endif(USE_CUSTOM_SFML)
-
+set( SFML_FIND_REQUIRED true )
 find_package(Boost 1.46 REQUIRED thread system filesystem)# regex)
-
-#only audio required, the others are pulled in by sfgui,(bp: well, seems it does it no more)
-#find_package(SFML 2 REQUIRED audio)
 find_package(SFML 2 COMPONENTS audio graphics window system)
+find_package( SFGUI REQUIRED )
 
-foreach(LIB ${GENERIC_LIBS})
-	find_library(FOUND_${LIB} ${LIB} )
-endforeach()
-
-
-########################################################
-######################## SFGUI #########################
-########################################################
-
-set( SFGUI_BUILD_EXAMPLES false CACHE BOOL "Do or dont build examples)")
-set( BUILD_SHARED_LIBS false CACHE BOOL "Build dynamic library." )
-set( SFML_STATIC_LIBRARIES true CACHE BOOL "Was SFML built as a static library?" )
-
-#just make sure those two are not empty, as in that case sfgui will add unwanted compile flags
-if( NOT CMAKE_CXX_FLAGS )
-	set( CMAKE_CXX_FLAGS  " " CACHE STRING "C++ compiler flags" FORCE )
-endif()
-if( NOT CMAKE_CXX_FLAGS_DEBUG )
-	set( CMAKE_CXX_FLAGS_DEBUG  " " CACHE STRING "C++ compiler flags (debug)" FORCE )
-endif()
-
-add_subdirectory(SFGUI)
-#message("${OPENGL_gl_LIBRARY}")
-set( SFGUI_DEP_LIBRARIES ${SFML_LIBRARIES} )
-
-########################################################
-############## Check for Boost and SFML ################
-########################################################
-
-if(NOT Boost_FOUND)
-	set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
-else()
-	include_directories(${Boost_INCLUDE_DIR})
-endif()
-
-if(NOT SFML_FOUND)
-	message( FATAL_ERROR "Please build SFML in '${CUSTOM_SFML_ROOT}/build' first!")
-else()
-	include_directories(${SFML_INCLUDE_DIR})
-endif()
+include_directories(${Boost_INCLUDE_DIR})
+include_directories(${SFML_INCLUDE_DIR})
+include_directories(${SFGUI_INCLUDE_DIR})
 
 ########################################################
 ############ compiler version detection ################
@@ -151,9 +117,23 @@ file( GLOB_RECURSE sbe_HDRS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_D
 
 #left here for debugging purposes
 if (false)
-	message( "-- Found the following SRCS:\n ${sbe_SRCS}" )
-	message( "-- Found the following HDRS:\n ${sbe_HDRS}" )
-	message( "-- Found the following SRCHDRS:\n ${sbe_SRCHDRS}" )
+	message( "-- INFO --")
+	message( "-- SHARED:\n ${SHARED}")
+	message( "-- BUILD_SHARED_LIBS:\n ${BUILD_SHARED_LIBS}" )
+	message( "-- CMAKE_BUILD_TYPE:\n ${CMAKE_BUILD_TYPE}" )
+	message( "-- INCLUDES --")
+	message( "-- sfml libs:\n ${SFML_LIBRARIES}" )
+	message( "-- sfml includes:\n ${SFML_INCLUDE_DIR}" )
+	message( "-- sfml deps:\n ${SFML_DEPENDENCIES}" )
+	message( "-- sfguil includes:\n ${SFGUI_LIBRARY}" )
+	message( "-- sfguil includes:\n ${SFGUI_INCLUDE_DIR}" )
+	message( "-- boost includes:\n ${Boost_INCLUDE_DIR}" )
+	
+#	message( "-- FILES --" )
+#	message( "-- Found the following SRCS:\n ${sbe_SRCS}" )
+#	message( "-- Found the following SRCS:\n ${sbe_SRCS}" )
+#	message( "-- Found the following HDRS:\n ${sbe_HDRS}" )
+#	message( "-- Found the following SRCHDRS:\n ${sbe_SRCHDRS}" )
 endif()
 
 
@@ -186,12 +166,11 @@ endif()
 
 link_directories(${SFML_ROOT})
 
-set_property(GLOBAL PROPERTY SBE_LINK_LIBS "${Boost_LIBRARIES};${SFGUI_DEP_LIBRARIES};${GENERIC_LIBS}")
-set_property(GLOBAL PROPERTY SBE_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include;${PROJECT_SOURCE_DIR}/SFGUI/include;${Boost_INCLUDE_DIR};${SFML_INCLUDE_DIR}")
+set_property(GLOBAL PROPERTY SBE_LINK_LIBS "${Boost_LIBRARIES};${SFGUI_LIBRARY};${SFML_LIBRARIES};${GENERIC_LIBS}")
+set_property(GLOBAL PROPERTY SBE_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include;${SFGUI_INCLUDE_DIR};${Boost_INCLUDE_DIR};${SFML_INCLUDE_DIR}")
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/src)
-include_directories(${PROJECT_SOURCE_DIR}/SFGUI/include)
 
 #############################################################
 #################### Scripting / Swig #######################
@@ -203,11 +182,9 @@ include_directories( ${SBE_SCRIPT_INCLUDES} )
 
 #################### Final lib ##############################
 
-if(SHARED)
-    add_library(sbe SHARED ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS})
-else()
-    add_library(sbe STATIC ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS})
-    add_definitions(-DSFML_STATIC -DSFGUI_STATIC)
+if(BUILD_SHARED_LIBS)
+	add_definitions(-Wl,-rdynamic)
 endif()
 
-target_link_libraries(sbe sfgui ${SFGUI_DEP_LIBRARIES} ${Boost_LIBRARIES} ${SBE_SCRIPT_LIBS} ${GENERIC_LIBS})
+add_library(sbe ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS})
+target_link_libraries(sbe ${SFGUI_LIBRARY} ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${SBE_SCRIPT_LIBS} ${GENERIC_LIBS})
