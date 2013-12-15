@@ -43,8 +43,8 @@ namespace sbe
 		// create Inputbox for console commands.
 		ConsoleInput = Entry::Create();
 
-		ConsoleInput->GetSignal( Entry::OnGainFocus ).Connect( &DebugWindow::EntryGainFocus , this );
-		ConsoleInput->GetSignal( Entry::OnLostFocus ).Connect( &DebugWindow::EntryLostFocus , this );
+		ConsoleInput->GetSignal( Entry::OnGainFocus ).Connect( std::bind( &DebugWindow::EntryGainFocus , this) );
+		ConsoleInput->GetSignal( Entry::OnLostFocus ).Connect( std::bind(  &DebugWindow::EntryLostFocus , this) );
 
 		//ConsoleInput->AppendText( "Not yet implemented." );
 		///ConsoleInput->SetState( Widget::State::INSENSITIVE );
@@ -53,15 +53,15 @@ namespace sbe
 		//Win->SetRequisition( sf::Vector2f(Size.x, Size.y ) );
 
 		// main box, vertical
-		Box::Ptr wholeBox( Box::Create( Box::VERTICAL, 3.0f ) );
+		Box::Ptr wholeBox( Box::Create( Box::Orientation::VERTICAL, 3.0f ) );
 		// topbox, horizontal
-		Box::Ptr topBox( Box::Create( Box::HORIZONTAL, 3.0f ) );
-			Box::Ptr boxInfo( Box::Create( Box::HORIZONTAL, 3.0f ) );
+		Box::Ptr topBox( Box::Create( Box::Orientation::HORIZONTAL, 3.0f ) );
+			Box::Ptr boxInfo( Box::Create( Box::Orientation::HORIZONTAL, 3.0f ) );
 			boxInfo->Pack( DbgLabels, false, false);
 			boxInfo->Pack( DbgText, false, false);
 		topBox->Pack(boxInfo, false, false);
 
-			LogBox = Box::Create( Box::VERTICAL );
+			LogBox = Box::Create( Box::Orientation::VERTICAL );
 			LogBox->Pack(LogText, true, true);
 
 			scrolledwindow = ScrolledWindow::Create();

@@ -181,7 +181,7 @@ namespace sbe
 		else if (e.Is("SCREEN_ADD_WINDOW", typeid( sfg::Window::Ptr )))
 		{
 			sfg::Window::Ptr P = boost::any_cast<sfg::Window::Ptr>(e.Data());
-			P->GetSignal( sfg::Window::OnMouseEnter ).Connect( &Screen::OnHandledEvent, this );
+			P->GetSignal( sfg::Window::OnMouseEnter ).Connect( std::bind(&Screen::OnHandledEvent, this) );
 
 			Engine::out() << "[Screen] Adding Window '" << P->GetTitle().toAnsiString() << "'" << std::endl;
 			Desktop->Add(P);

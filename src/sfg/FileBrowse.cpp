@@ -33,16 +33,16 @@ namespace sbe {
         Win = sfg::Window::Create ( sfg::Window::Style::BACKGROUND | sfg::Window::Style::TITLEBAR | sfg::Window::Style::SHADOW );
 
         fldrLst = std::make_shared<sbe::sfgList> ( "FB_SEL_CHANGED" );
-        sfg::Box::Ptr    box ( sfg::Box::Create ( sfg::Box::VERTICAL, 3.0f ) );
-        sfg::Box::Ptr    btnBox ( sfg::Box::Create ( sfg::Box::HORIZONTAL, 3.0f ) );
-        sfg::Box::Ptr    emptyBox ( sfg::Box::Create ( sfg::Box::HORIZONTAL, 3.0f ) );
+        sfg::Box::Ptr    box ( sfg::Box::Create ( sfg::Box::Orientation::VERTICAL, 3.0f ) );
+        sfg::Box::Ptr    btnBox ( sfg::Box::Create ( sfg::Box::Orientation::HORIZONTAL, 3.0f ) );
+        sfg::Box::Ptr    emptyBox ( sfg::Box::Create ( sfg::Box::Orientation::HORIZONTAL, 3.0f ) );
         sfg::Button::Ptr btnOK ( sfg::Button::Create ( "OK" ) );
         sfg::Button::Ptr btnCancel ( sfg::Button::Create ( "Cancel" ) );
         etyLoc = sfg::Entry::Create();
         etyLoc->SetText ( boost::filesystem::current_path().string() );
 
-        btnOK->GetSignal ( sfg::Button::OnLeftClick ).Connect ( &FileBrowse::onOkClicked, this );
-        btnCancel->GetSignal ( sfg::Button::OnLeftClick ).Connect ( &FileBrowse::onCancelClicked, this );
+        btnOK->GetSignal ( sfg::Button::OnLeftClick ).Connect ( std::bind( &FileBrowse::onOkClicked, this) );
+        btnCancel->GetSignal ( sfg::Button::OnLeftClick ).Connect ( std::bind( &FileBrowse::onCancelClicked, this) );
 
         Win->SetRequisition ( sf::Vector2f ( Size.x,Size.y ) );
         emptyBox->SetRequisition ( { 20, 1} );

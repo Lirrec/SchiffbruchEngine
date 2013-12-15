@@ -59,16 +59,16 @@ namespace sbe
 
 	void Message::MakeOkMessage()
 	{
-		Box::Ptr box = Box::Create( Box::VERTICAL, 0 );
+		Box::Ptr box = Box::Create( Box::Orientation::VERTICAL, 0 );
 		box->Pack( Label::Create( Message_ ));
-		Box::Ptr buttonBox = Box::Create( Box::HORIZONTAL, 0 );
+		Box::Ptr buttonBox = Box::Create( Box::Orientation::HORIZONTAL, 0 );
 		{
 			Box::Ptr spacer = Box::Create();
 			spacer->SetRequisition ( sf::Vector2f(10, 10) );
 			buttonBox->Pack ( spacer, true, true );
 		}
 		Button::Ptr ok = Button::Create( "OK" );
-		ok->GetSignal( Button::OnLeftClick ).Connect( &Message::Ok, this );
+		ok->GetSignal( Button::OnLeftClick ).Connect( std::bind( &Message::Ok, this) );
 		ok->SetRequisition ( sf::Vector2f(50, 10) );
 		buttonBox->Pack ( ok, false, false );
 		box->Pack( buttonBox, false, false );
@@ -84,7 +84,7 @@ namespace sbe
 
     void Message::MakeModalMessage()
     {
-		Box::Ptr box = Box::Create( Box::VERTICAL, 0 );
+		Box::Ptr box = Box::Create( Box::Orientation::VERTICAL, 0 );
 		box->Pack( Label::Create( Message_ ));
         Box::Ptr spacer = Box::Create();
         spacer->SetRequisition ( sf::Vector2f(10, 10) );
@@ -96,9 +96,9 @@ namespace sbe
 
 	void Message::MakeChoiceMessage()
 	{
-		Box::Ptr box = Box::Create( Box::VERTICAL, 0 );
+		Box::Ptr box = Box::Create( Box::Orientation::VERTICAL, 0 );
 		box->Pack( Label::Create( Message_ ) );
-		Box::Ptr buttonBox = Box::Create( Box::HORIZONTAL, 0 );
+		Box::Ptr buttonBox = Box::Create( Box::Orientation::HORIZONTAL, 0 );
 		{
 			Box::Ptr spacer = Box::Create();
 			spacer->SetRequisition ( sf::Vector2f(10, 10) );
@@ -106,11 +106,11 @@ namespace sbe
 		}
 		Button::Ptr abort = Button::Create( "Abort" );
 		abort->SetRequisition ( sf::Vector2f(50, 10) );
-		abort->GetSignal( Button::OnLeftClick ).Connect( &Message::Abort, this );
+		abort->GetSignal( Button::OnLeftClick ).Connect( std::bind( &Message::Abort, this) );
 		buttonBox->Pack( abort, false, false );
 		Button::Ptr confirm = Button::Create( "Confirm" );
 		confirm->SetRequisition ( sf::Vector2f(50, 10) );
-		confirm->GetSignal( Button::OnLeftClick ).Connect( &Message::Confirm, this );
+		confirm->GetSignal( Button::OnLeftClick ).Connect( std::bind( &Message::Confirm, this) );
 		buttonBox->Pack( confirm, false, false );
 		{
 			Box::Ptr spacer = Box::Create();

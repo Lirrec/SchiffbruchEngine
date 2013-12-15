@@ -4,7 +4,6 @@
 #include "sbe/event/EventUser.hpp"
 #include <memory>
 
-#include <SFGUI/SharedPtr.hpp>
 namespace sfg {
 		class Label;
 		class Box;
@@ -53,13 +52,13 @@ namespace sbe
 			void UpdateText(FilterLevel level = FilterLevel::VERBOSE);
 			void AddLogText( std::string& newtext, int labelTextLimit );
 
-			sfg::SharedPtr<sfg::Label> LogText;
-			sfg::SharedPtr<sfg::Label> DbgText;
-			sfg::SharedPtr<sfg::Label> DbgLabels;
-			sfg::SharedPtr<sfg::Box>	LogBox;
-			sfg::SharedPtr<sfg::Window> Win;
-			sfg::SharedPtr<sfg::ScrolledWindow> scrolledwindow;
-			sfg::SharedPtr<sfg::Entry> ConsoleInput;
+			std::shared_ptr<sfg::Label> LogText;
+			std::shared_ptr<sfg::Label> DbgText;
+			std::shared_ptr<sfg::Label> DbgLabels;
+			std::shared_ptr<sfg::Box>	LogBox;
+			std::shared_ptr<sfg::Window> Win;
+			std::shared_ptr<sfg::ScrolledWindow> scrolledwindow;
+			std::shared_ptr<sfg::Entry> ConsoleInput;
 			unsigned int currentlabeltext;
 			unsigned int updateCounter;
 

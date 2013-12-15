@@ -6,7 +6,7 @@
 
 #include <functional>
 
-#include <SFGUI/SharedPtr.hpp>
+
 namespace sfg {
         class Window;
         class Entry;
@@ -48,8 +48,8 @@ namespace sbe
             void updatePosition();
             void updateFolderList(const std::string &path);
 
-            sfg::SharedPtr<sfg::Window> Win;
-            sfg::SharedPtr<sfg::Entry> etyLoc;
+            std::shared_ptr<sfg::Window> Win;
+            std::shared_ptr<sfg::Entry> etyLoc;
             std::string okEvt;
             std::string cancelEvt;
             std::function<void(const std::string&)> okAction;

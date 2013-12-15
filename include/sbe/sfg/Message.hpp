@@ -2,7 +2,7 @@
 #define MESSAGE_H
 
 #include "sbe/event/EventUser.hpp"
-#include <SFGUI/SharedPtr.hpp>
+
 namespace sfg { class Window; }
 #include "sbe/geom/Point.hpp"
 
@@ -63,7 +63,7 @@ namespace sbe
 			std::string AnswerEventName_;
 			bool pause;
 
-			sfg::SharedPtr<sfg::Window> Win;
+			std::shared_ptr<sfg::Window> Win;
 
 			MessageHandler* Handler;
 	};

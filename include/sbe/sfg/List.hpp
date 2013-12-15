@@ -2,7 +2,7 @@
 #define SFGLIST_HPP
 
 
-#include <SFGUI/SharedPtr.hpp>
+
 namespace sfg {
 		class Widget;
 		class Label;
@@ -29,7 +29,7 @@ namespace sbe
 		*/
 		sfgList ( std::string ClickEventName = "" );
 
-		sfg::SharedPtr<sfg::Widget> getList();
+		std::shared_ptr<sfg::Widget> getList();
 
 		/// change the event sent on click
 		void setClickEventName( const std::string& cEvtName );
@@ -58,11 +58,11 @@ namespace sbe
 
 		struct item
 		{
-			item ( sfgList& l, std::string t, bool b, sfg::SharedPtr<sfg::Label> p )
+			item ( sfgList& l, std::string t, bool b, std::shared_ptr<sfg::Label> p )
 			: text(t), active(b), list(l), label(p) {}
 			std::string text;
 			bool active;
-			sfg::SharedPtr<sfg::Label> label;
+			std::shared_ptr<sfg::Label> label;
 			sfgList& list;
 			void click() { list.LabelClicked(text); }
 		};
@@ -72,8 +72,8 @@ namespace sbe
 
 		std::string EvtName;
 
-		sfg::SharedPtr<sfg::ScrolledWindow> Frame;
-		sfg::SharedPtr<sfg::Box> ItemBox;
+		std::shared_ptr<sfg::ScrolledWindow> Frame;
+		std::shared_ptr<sfg::Box> ItemBox;
 		bool MultiSelect;
 	};
 

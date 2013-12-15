@@ -19,7 +19,7 @@ namespace sbe
 	 : selectedItems(0), EvtName ( ClickEventName ), MultiSelect(false)
 	{
 		Frame = sfg::ScrolledWindow::Create();
-		ItemBox = sfg::Box::Create(sfg::Box::VERTICAL);
+		ItemBox = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
 
 		Frame->AddWithViewport( ItemBox );
 		Frame->SetRequisition( sf::Vector2f( 100.f, 200.f ) );
@@ -32,7 +32,7 @@ namespace sbe
 		EvtName = cEvtName;
 	}
 
-	sfg::SharedPtr<sfg::Widget> sfgList::getList()
+	std::shared_ptr<sfg::Widget> sfgList::getList()
 	{
 		return Frame;
 	}
@@ -49,7 +49,7 @@ namespace sbe
 
 		sfg::Label::Ptr L = sfg::Label::Create( name );
 		std::shared_ptr<sfgList::item> I( new sfgList::item( *this, name, false, L ) );
-		L->GetSignal( sfg::Label::OnLeftClick ).Connect( &item::click, I.get() );
+		L->GetSignal( sfg::Label::OnLeftClick ).Connect( std::bind( &item::click, I.get()) );
 		L->SetAlignment( sf::Vector2f( 0, 0 ) );
 		ItemBox->Pack( L, false, false );
 		Items.push_back(I);
