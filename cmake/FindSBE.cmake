@@ -35,21 +35,17 @@
 set( SBE_FOUND false )
 
 if( SBE_STATIC_LIBRARIES )
-	set( SBE_SUFFIX "" )
+	set( SBE_SUFFIX "-s" )
 	add_definitions( -DSBE_STATIC )
 else()
 	set( SBE_SUFFIX "" )
 endif()
-
-message( "sberoot ${SBE_ROOT}")
 
 set( FIND_SBE_PATHS
 		${SBEDIR}
 		${SBE_ROOT}
 		$ENV{SBEDIR}
 		$ENV{SBE_ROOT})
-
-message( "FIND_SBE_PATHS ${FIND_SBE_PATHS}" )
 		
 find_path(
 	SBE_INCLUDE_DIR
@@ -86,10 +82,6 @@ find_library(
 		${FIND_SBE_PATHS}
 	NO_DEFAULT_PATH
 )
-
-message( "sberls ${SBE_LIBRARY_RELEASE}")
-message( "sbedbg ${SBE_LIBRARY_DEBUG}")
-message( "sbeinc ${SBE_INCLUDE_DIR}")
 
 if( SBE_LIBRARY_RELEASE AND SBE_LIBRARY_DEBUG )
 	set( SBE_LIBRARY debug ${SBE_LIBRARY_DEBUG} optimized ${SBE_LIBRARY_RELEASE} )
