@@ -17,7 +17,7 @@ if ( USE_RUBY )
 	set(SBE_SCRIPT_INCLUDES "${SBE_SCRIPT_INCLUDES};${RUBY_INCLUDE_DIR};${RUBY_CONFIG_INCLUDE_DIR}")
 	include_directories( ${SBE_SCRIPT_INCLUDES} )
 
-	message("-- Compiling Ruby scripting bindings")
+	message(STATUS "Compiling Ruby scripting bindings")
 	swig_add_module(SBE ruby
 		sbe.i 
 		../include/sbe/geom/Point.hpp
@@ -42,7 +42,7 @@ if( USE_PYTHON )
 	set(SBE_SCRIPT_INCLUDES "${SBE_SCRIPT_INCLUDES};${PYTHON_INCLUDE_PATH}")
 	include_directories( ${SBE_SCRIPT_INCLUDES} )
 	
-	message("-- Compiling Python scripting bindings")
+	message(STATUS "Compiling Python scripting bindings")
 	swig_add_module(SBE python
 		sbe.i 
 		../include/sbe/geom/Point.hpp
@@ -60,7 +60,7 @@ else()
 	list(REMOVE_ITEM sbe_HDRS "include/scripting/PythonEngine.hpp")
 endif()
 
-message( "-- ${SBE_SCRIPT_INCLUDES}:${PYTHON_INCLUDE_PATH}" )
+message(STATUS "${SBE_SCRIPT_INCLUDES}:${PYTHON_INCLUDE_PATH}" )
 
 set( SBE_SCRIPT_INCLUDES ${SBE_SCRIPT_INCLUDES} PARENT_SCOPE)
 set( SBE_SCRIPT_SOURCES ${SBE_SCRIPT_SOURCES} PARENT_SCOPE)

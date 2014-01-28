@@ -59,7 +59,7 @@ find_path(
 
 find_library(
 	SBE_LIBRARY_RELEASE
-	SBE${SBE_SUFFIX}
+	sbe${SBE_SUFFIX}
 	PATH_SUFFIXES
 		lib
 		lib64
@@ -72,7 +72,7 @@ find_library(
 
 find_library(
 	SBE_LIBRARY_DEBUG
-	SBE${SBE_SUFFIX}-d
+	sbe${SBE_SUFFIX}-d
 	PATH_SUFFIXES
 		lib
 		lib64

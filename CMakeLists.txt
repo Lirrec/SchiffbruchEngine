@@ -11,11 +11,13 @@ cmake_minimum_required( VERSION 2.8 )
 option( PROFILE "" OFF)
 option( USE_PYTHON "" OFF)
 option( USE_RUBY "" OFF)
+option( BUILD_SHARED_LIBS "" ON )
 option(ENABLE_LTO "enable lto, if ya dont know what this is, ya dont need it!" OFF)
+
+set( SFGUI_ROOT "" CACHE PATH "Path to where SFGUI is located.")
 
 set( CMAKE_MODULE_PATH "${SFML_ROOT}/cmake/Modules" ${CMAKE_MODULE_PATH} )
 set( CMAKE_MODULE_PATH "${SFGUI_ROOT}/cmake" ${CMAKE_MODULE_PATH} )
-
 
 SET( CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
@@ -55,9 +57,13 @@ endif()
 #	set( GENERIC_LIBS pthread jpeg GLEW X11 Xrandr freetype rt openal GL sndfile)
 #endif()
 
+if(CMAKE_SYSTEM_NAME MATCHES Windows)
+	set( ADD_SFML_MAIN "main")
+endif()
+
 set( SFML_FIND_REQUIRED true )
 find_package(Boost 1.46 REQUIRED thread system filesystem)# regex)
-find_package(SFML 2 COMPONENTS audio graphics window system main)
+find_package(SFML 2 COMPONENTS audio graphics window system ${ADD_SFML_MAIN})
 find_package(SFGUI REQUIRED )
 
 include_directories(${Boost_INCLUDE_DIR})
@@ -75,17 +81,17 @@ file( GLOB_RECURSE sbe_HDRS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_D
 
 #left here for debugging purposes
 if (true)
-	message( "-- INFO --")
-	message( "-- SHARED:\n ${SHARED}")
-	message( "-- BUILD_SHARED_LIBS:\n ${BUILD_SHARED_LIBS}" )
-	message( "-- CMAKE_BUILD_TYPE:\n ${CMAKE_BUILD_TYPE}" )
-	message( "-- INCLUDES --")
-	message( "-- sfml libs:\n ${SFML_LIBRARIES}" )
-	message( "-- sfml includes:\n ${SFML_INCLUDE_DIR}" )
-	message( "-- sfml deps:\n ${SFML_DEPENDENCIES}" )
-	message( "-- sfguil includes:\n ${SFGUI_LIBRARY}" )
-	message( "-- sfguil includes:\n ${SFGUI_INCLUDE_DIR}" )
-	message( "-- boost includes:\n ${Boost_INCLUDE_DIR}" )
+	message(STATUS "INFO --")
+	message(STATUS "SHARED:\n ${SHARED}")
+	message(STATUS "BUILD_SHARED_LIBS:\n ${BUILD_SHARED_LIBS}" )
+	message(STATUS "CMAKE_BUILD_TYPE:\n ${CMAKE_BUILD_TYPE}" )
+	message(STATUS "INCLUDES --")
+	message(STATUS "sfml libs:\n ${SFML_LIBRARIES}" )
+	message(STATUS "sfml includes:\n ${SFML_INCLUDE_DIR}" )
+	message(STATUS "sfml deps:\n ${SFML_DEPENDENCIES}" )
+	message(STATUS "sfguil includes:\n ${SFGUI_LIBRARY}" )
+	message(STATUS "sfguil includes:\n ${SFGUI_INCLUDE_DIR}" )
+	message(STATUS "boost includes:\n ${Boost_INCLUDE_DIR}" )
 	
 #	message( "-- FILES --" )
 #	message( "-- Found the following SRCS:\n ${sbe_SRCS}" )
