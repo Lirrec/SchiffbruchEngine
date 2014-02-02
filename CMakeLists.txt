@@ -134,7 +134,7 @@ include_directories( ${SBE_SCRIPT_INCLUDES} )
 
 #################### Final lib ##############################
 # Add the library.
-if( SFGUI_BUILD_SHARED_LIBS )
+if( BUILD_SHARED_LIBS )
 	add_library( sbe SHARED ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS} )
 
 	set_target_properties( sbe PROPERTIES DEBUG_POSTFIX -d )
