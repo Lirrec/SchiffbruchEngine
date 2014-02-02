@@ -33,28 +33,18 @@ message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 if (BUILD_SHARED_LIBS)
 	set(SFML_STATIC_LIBRARIES false)
 	set(SFGUI_STATIC_LIBRARIES false)
-else()	
+else()
 	set(SFML_STATIC_LIBRARIES true)
 	set(SFGUI_STATIC_LIBRARIES true)
+	set( ADD_SFML_MAIN "main")
 endif()
 
 #############################################################
 #################### External Libraries #####################
 #############################################################
 
-# set external windows and linux libs
-#if( CMAKE_SYSTEM_NAME MATCHES Windows )
-#  set( GENERIC_LIBS pthread jpeg GLEW freetype openal32 opengl32 sndfile winmm)
-#else()
-#	set( GENERIC_LIBS pthread jpeg GLEW X11 Xrandr freetype rt openal GL sndfile)
-#endif()
-
-if(CMAKE_SYSTEM_NAME MATCHES Windows)
-	set( ADD_SFML_MAIN "main")
-endif()
-
 set( SFML_FIND_REQUIRED true )
-find_package(Boost 1.46 REQUIRED thread system filesystem)# regex)
+find_package(Boost 1.46 REQUIRED thread system filesystem)
 find_package(SFML 2 COMPONENTS audio graphics window system ${ADD_SFML_MAIN})
 find_package(SFGUI REQUIRED )
 
@@ -84,7 +74,7 @@ if (true)
 	message(STATUS "sfguil includes:\n ${SFGUI_LIBRARY}" )
 	message(STATUS "sfguil includes:\n ${SFGUI_INCLUDE_DIR}" )
 	message(STATUS "boost includes:\n ${Boost_INCLUDE_DIR}" )
-	
+
 #	message( "-- FILES --" )
 #	message( "-- Found the following SRCS:\n ${sbe_SRCS}" )
 #	message( "-- Found the following SRCS:\n ${sbe_SRCS}" )
@@ -127,9 +117,6 @@ if(ENABLE_LTO)
 	add_definitions( -flto )
 endif()
 
-
-#link_directories(${SFML_ROOT})
-
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
@@ -142,17 +129,20 @@ add_subdirectory( scripting )
 include_directories( ${SBE_SCRIPT_INCLUDES} )
 
 #################### Final lib ##############################
-
-if (BUILD_SHARED_LIBS)
-	set(sbe "sbe")
-else()	
-	set(sbe "sbe-s")
-endif()
-add_library(${sbe} ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS})
-
+# Add the library.
 if( BUILD_SHARED_LIBS )
+	add_library( sbe SHARED ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS} )
+
+	set_target_properties( sbe PROPERTIES DEBUG_POSTFIX -d )
+
 	add_definitions(-Wl,-rdynamic)
+else()
+	add_definitions( -DSBE_STATIC )
+	add_library( sbe ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS} )
+
+	set_target_properties( sbe PROPERTIES DEBUG_POSTFIX -s-d )
+	set_target_properties( sbe PROPERTIES RELEASE_POSTFIX -s )
+	set_target_properties( sbe PROPERTIES MINSIZEREL_POSTFIX -s )
 endif()
 
-
-target_link_libraries(${sbe} ${SFGUI_LIBRARY} ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${SBE_SCRIPT_LIBS} ${SFML_DEPENDENCIES} ${GENERIC_LIBS})
+target_link_libraries(sbe ${SFGUI_LIBRARY} ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${SBE_SCRIPT_LIBS} ${SFML_DEPENDENCIES})
