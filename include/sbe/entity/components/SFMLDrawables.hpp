@@ -8,7 +8,10 @@ namespace sbe
 		namespace {
 			std::vector<ComponentInfo> getSFMLComponents()
 			{
-				return { {"Sprite", makeComponentFactory<sf::Sprite>()} };
+				return {
+					{"Sprite", makeComponentFactory<sf::Sprite>()},
+					{"RenderLayer", makeComponentFactory<int>()}
+				};
 			}
 		}
 	}

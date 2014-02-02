@@ -6,7 +6,7 @@
 
 namespace sbe
 {
-	class Actor;
+	class SpriteActor;
 	class Entity;
 
 //	namespace systems
@@ -27,7 +27,7 @@ namespace sbe
 				void onDetach(Entity& E) override;
 
 			private:
-				std::shared_ptr<Actor> A;
+				std::shared_ptr<SpriteActor> A;
 		};
 
 	} // namespace systems

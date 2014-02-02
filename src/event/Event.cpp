@@ -54,7 +54,7 @@ namespace sbe
 		if (!Is(Name)) return false;
 		if ( EvtData.type() != type )
 		{
-			Engine::out(Engine::ERROR) << "[Event] " << Name << " has wrong Datatype!" <<std::endl;
+			Engine::out(Engine::ERROR) << "[Event] " << Name << " has wrong Datatype (has: " << EvtData.type().name() << ", wants: " << type.name() << ") !" <<std::endl;
 			return false;
 		}
 

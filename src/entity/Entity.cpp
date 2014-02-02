@@ -16,6 +16,8 @@ namespace sbe
 
 	Entity::~Entity()
 	{
+		for ( auto S : Systems )
+			S.second->onDetach(*this);
 	}
 
 	bool Entity::Register()
@@ -89,7 +91,11 @@ namespace sbe
 	void Entity::addSystem(const sbeID sID)
 	{
 		auto S = Engine::GetEntityMgr()->createSystem(sID);
-		if (S) Systems[sID] = S;
+		if (S)
+		{
+			Systems[sID] = S;
+			S->onAttach(*this);
+		}
 	}
 
 	void Entity::addSystem(const std::string& name)
@@ -113,10 +119,14 @@ namespace sbe
 	void Entity::addSystem(std::shared_ptr<System> S)
 	{
 		Systems[S->getID()] = S;
+		S->onAttach(*this);
 	}
 
 	bool Entity::removeSystem(const sbeID sID)
 	{
+		auto S = getSystem(sID);
+		if ( S ) S->onDetach(*this);
+
 		return Systems.erase(sID);
 	}
 
