@@ -22,7 +22,6 @@ namespace sbe
 	class RealFactory : public Factory<T>
 	{
 		public:
-			virtual T createCopy() { return T(); }
 			std::shared_ptr<T> create() { return std::make_shared<T>(); }
 			virtual std::type_index type() {return std::type_index(typeid(T));}
 	};

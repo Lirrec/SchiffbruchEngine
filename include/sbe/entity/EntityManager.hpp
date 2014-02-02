@@ -12,6 +12,7 @@
 #include <list>
 #include <memory>
 
+#include <boost/uuid/uuid.hpp>
 #include <boost/uuid/string_generator.hpp>
 
 namespace sbe
@@ -45,9 +46,23 @@ namespace sbe
 
 			void registerComponent( const ComponentInfo& C );
 
-			void registerComponents( std::vector<ComponentInfo>& Cs);
+			void registerComponents( const std::vector<ComponentInfo>& Cs);
 
-			void registerSystem( System& S );
+			template<class T>
+			void registerSystem()
+			{
+				registerSystem(std::make_shared<T>());
+			}
+
+			void registerSystem( std::shared_ptr<System> S );
+
+			const boost::uuids::uuid lookupSystemID( const std::string& name ) const;
+			const boost::uuids::uuid lookupComponentID( const std::string& name ) const;
+			const std::string lookupSystemName( boost::uuids::uuid sID ) const;
+			const std::string lookupComponentName( boost::uuids::uuid cID ) const;
+
+			std::shared_ptr<System> createSystem( boost::uuids::uuid sID );
+			boost::optional<boost::any> createComponent( boost::uuids::uuid cID );
 
 		private:
 
