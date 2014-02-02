@@ -147,11 +147,16 @@ include_directories( ${SBE_SCRIPT_INCLUDES} )
 
 #################### Final lib ##############################
 
-add_library(sbe ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS})
+if (BUILD_SHARED_LIBS)
+	set(sbe "sbe")
+else()	
+	set(sbe "sbe-s")
+endif()
+add_library(${sbe} ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS})
 
 if( BUILD_SHARED_LIBS )
 	add_definitions(-Wl,-rdynamic)
 endif()
 
 
-target_link_libraries(sbe ${SFGUI_LIBRARY} ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${SBE_SCRIPT_LIBS} ${SFML_DEPENDENCIES} ${GENERIC_LIBS})
+target_link_libraries(${sbe} ${SFGUI_LIBRARY} ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${SBE_SCRIPT_LIBS} ${SFML_DEPENDENCIES} ${GENERIC_LIBS})
