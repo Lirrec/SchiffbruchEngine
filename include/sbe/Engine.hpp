@@ -11,6 +11,7 @@ namespace sbe
 
 	class SoundSystem;
 	class ResourceManager;
+	class EntityManager;
 	class Graphics;
 	class AssetManager;
 	class SFMLEventConverter;
@@ -91,6 +92,8 @@ namespace sbe
 			static std::shared_ptr<SoundSystem> 	GetSndSys ();
 			/// static access to the ResourceManager
 			static std::shared_ptr<ResourceManager> GetResMgr ();
+			/// static access to the EntityManager
+			static std::shared_ptr<EntityManager> GetEntityMgr ();
 			/// static access to the sf::RenderWindow
 			static sf::RenderWindow&                GetApp    ();
 			/// static access to the IO
@@ -112,6 +115,7 @@ namespace sbe
 
 			std::shared_ptr<SoundSystem>     SndSys;
 			std::shared_ptr<ResourceManager> ResMgr;
+			std::shared_ptr<EntityManager> EntityMgr;
 			std::shared_ptr<IO>              Io;
 			std::shared_ptr<Config>	_config;
 			std::shared_ptr<CommandParser>   CmdPrs;

@@ -14,6 +14,8 @@
 #include "sbe/ResourceManager.hpp"
 #include "sbe/util/console/CommandParser.hpp"
 
+#include "sbe/entity/EntityManager.hpp"
+
 #include <memory>
 #include <iostream>
 #include <chrono>
@@ -60,6 +62,9 @@ namespace sbe
 
 		Engine::out(Engine::INFO) << "[Engine] SoundSys..." << std::endl;
 		SndSys.reset 	( new SoundSystem );
+
+		Engine::out(Engine::INFO) << "[Engine] EntityManager..." << std::endl;
+		EntityMgr.reset 	( new EntityManager );
 
 		Engine::out(Engine::INFO) << "[Engine] Window..." << std::endl;
 		App.reset 	( new sf::RenderWindow );
@@ -111,6 +116,7 @@ namespace sbe
 
 	std::shared_ptr<SoundSystem>     Engine::GetSndSys()    { return Instance->SndSys; }
 	std::shared_ptr<ResourceManager> Engine::GetResMgr()    { return Instance->ResMgr; }
+	std::shared_ptr<EntityManager> Engine::GetEntityMgr () { return Instance->EntityMgr; }
 	std::shared_ptr<IO>	             Engine::GetIO()        { return Instance->Io; }
 	std::shared_ptr<Config>	         Engine::getCfg()       { return Instance->_config; }
 	std::shared_ptr<CommandParser>   Engine::GetCmdParser() { return Instance->CmdPrs; }
