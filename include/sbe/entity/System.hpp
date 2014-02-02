@@ -1,8 +1,9 @@
 #ifndef SYSTEM_HPP
 #define SYSTEM_HPP
 
-#include <boost/uuid/uuid.hpp>
-#include <boost/uuid/string_generator.hpp>
+
+#include "sbe/entity/EntityID.hpp"
+#include <boost/uuid/name_generator.hpp>
 
 #include <SFML/System/Time.hpp>
 
@@ -57,11 +58,11 @@ namespace sbe
 			virtual void onDetach(Entity& E) = 0;
 
 			/// overridden in SystemBuilder<T>
-			virtual const boost::uuids::uuid getID() const = 0;
+			virtual const sbeID getID() const = 0;
 			/// overridden in SystemBuilder<T>
 			virtual const std::string getName() const = 0;
 			/// overridden in SystemBuilder<T>
-			virtual const std::vector<boost::uuids::uuid> getRequirements() const = 0;
+			virtual const std::vector<sbeID> getRequirements() const = 0;
 			/// overridden in SystemBuilder<T>
 			virtual const std::vector<std::string> getRequirementsPlain() const = 0;
 
@@ -88,28 +89,28 @@ namespace sbe
 	{
 		public:
 
-			const boost::uuids::uuid getID() const override  { return ID; }
+			const sbeID getID() const override  { return ID; }
 
 			void generateID()  const override  {
-				boost::uuids::string_generator gen;
+				boost::uuids::name_generator gen(sbeID_namespace);
 				ID = gen(Name);
 				for ( auto& s : RequirementsPlain )
 					Requirements.push_back( gen(s) );
 			 }
 
-			static const boost::uuids::uuid sID(){ return ID; }
+			static const sbeID sID(){ return ID; }
 			static const std::string sName(){ return Name; }
 
-			static const std::vector<boost::uuids::uuid> sRequirements(){ return Requirements; }
+			static const std::vector<sbeID> sRequirements(){ return Requirements; }
 			static const std::vector<std::string> sRequirementsPlain(){ return RequirementsPlain; }
 
 			const std::string getName() const override { return Name; }
-			const std::vector<boost::uuids::uuid> getRequirements() const override { return Requirements; }
+			const std::vector<sbeID> getRequirements() const override { return Requirements; }
 			const std::vector<std::string> getRequirementsPlain() const override { return RequirementsPlain; }
-			std::shared_ptr<Factory<System>> createFactory() const override { new FactoryWithBase<T, System>();  }
+			std::shared_ptr<Factory<System>> createFactory() const override { return std::dynamic_pointer_cast<Factory<System>>( std::make_shared<FactoryWithBase<T, System>>());  }
 
-			static boost::uuids::uuid ID;
-			static std::vector<boost::uuids::uuid> Requirements;
+			static sbeID ID;
+			static std::vector<sbeID> Requirements;
 
 			static std::string Name;
 			static std::vector<std::string> RequirementsPlain;
@@ -127,9 +128,9 @@ namespace sbe
 //	std::vector<std::string> SystemBuilder<T>::RequirementsPlain;
 
 	template<class T>
-	boost::uuids::uuid SystemBuilder<T>::ID;
+	sbeID SystemBuilder<T>::ID;
 	template<class T>
-	std::vector<boost::uuids::uuid> SystemBuilder<T>::Requirements;
+	std::vector<sbeID> SystemBuilder<T>::Requirements;
 
 } // namespace sbe
 #endif // SYSTEM_HPP

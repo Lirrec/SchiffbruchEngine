@@ -1,6 +1,7 @@
 #include "sbe/entity/EntityManager.hpp"
 
 #include <boost/uuid/nil_generator.hpp>
+#include <boost/uuid/name_generator.hpp>
 
 #include "sbe/entity/components/Position.hpp"
 #include "sbe/entity/components/SFMLDrawables.hpp"
@@ -38,7 +39,7 @@ namespace sbe
 
 	void EntityManager::registerComponent( const ComponentInfo& C )
 	{
-		boost::uuids::string_generator gen;
+		boost::uuids::name_generator gen(sbeID_namespace);
 		auto ID = gen(C.first);
 		ComponentMappings[C.first] = ID;
 		ComponentNames[ID] = C.first;
@@ -54,52 +55,53 @@ namespace sbe
 	}
 
 
-	void EntityManager::onEntityChanged(boost::uuids::uuid eID)
+	void EntityManager::onEntityChanged(sbeID eID)
 	{
 
 	}
 
-	bool EntityManager::addEntity(Entity* E)
+	bool EntityManager::addEntity(std::shared_ptr<Entity> E)
 	{
-		Entities[E->getID()] = std::shared_ptr<Entity>(E);
+		Entities[E->getID()] = E;
+		return true;
 	}
 
-	bool EntityManager::removeEntity(const boost::uuids::uuid eID)
+	bool EntityManager::removeEntity(const sbeID eID)
 	{
 		return Entities.erase(eID);
 	}
 
-	const boost::uuids::uuid EntityManager::lookupSystemID( const std::string& name ) const
+	const sbeID EntityManager::lookupSystemID( const std::string& name ) const
 	{
 		if ( !SystemMappings.count(name) ) return boost::uuids::nil_uuid();
 		return SystemMappings.at(name);
 	}
 
-	const boost::uuids::uuid EntityManager::lookupComponentID( const std::string& name ) const
+	const sbeID EntityManager::lookupComponentID( const std::string& name ) const
 	{
 		if ( !ComponentMappings.count(name) ) return boost::uuids::nil_uuid();
 		return ComponentMappings.at(name);
 	}
 
-	const std::string EntityManager::lookupSystemName( boost::uuids::uuid sID ) const
+	const std::string EntityManager::lookupSystemName( sbeID sID ) const
 	{
 		if ( !Systems.count(sID) ) return "system_not_found";
 		return Systems.at(sID)->getName();
 	}
 
-	const std::string EntityManager::lookupComponentName( boost::uuids::uuid cID ) const
+	const std::string EntityManager::lookupComponentName( sbeID cID ) const
 	{
 		if ( !ComponentNames.count(cID) ) return "component_not_found";
 		return ComponentNames.at(cID);
 	}
 
-	std::shared_ptr<System> EntityManager::createSystem(boost::uuids::uuid sID)
+	std::shared_ptr<System> EntityManager::createSystem(sbeID sID)
 	{
 		if ( !SystemFactories.count(sID) ) return std::shared_ptr<System>();
 		return SystemFactories[sID]->create();
 	}
 
-	boost::optional<boost::any> EntityManager::createComponent(boost::uuids::uuid cID)
+	boost::optional<boost::any> EntityManager::createComponent(sbeID cID)
 	{
 		if ( !ComponentFactories.count(cID) ) return boost::optional<boost::any>();
 		return boost::make_optional(ComponentFactories[cID]->createCopy());

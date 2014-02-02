@@ -12,8 +12,7 @@
 #include <list>
 #include <memory>
 
-#include <boost/uuid/uuid.hpp>
-#include <boost/uuid/string_generator.hpp>
+#include "sbe/entity/EntityID.hpp"
 
 namespace sbe
 {
@@ -33,10 +32,10 @@ namespace sbe
 			*/
 			void update(const sf::Time& delta);
 
-			void onEntityChanged( const boost::uuids::uuid eID );
+			void onEntityChanged( const sbeID eID );
 
-			bool addEntity( Entity* E );
-			bool removeEntity( const boost::uuids::uuid eID );
+			bool addEntity( std::shared_ptr<Entity> E );
+			bool removeEntity( const sbeID eID );
 
 			template <class T>
 			void registerComponent( const std::string& Name)
@@ -56,25 +55,25 @@ namespace sbe
 
 			void registerSystem( std::shared_ptr<System> S );
 
-			const boost::uuids::uuid lookupSystemID( const std::string& name ) const;
-			const boost::uuids::uuid lookupComponentID( const std::string& name ) const;
-			const std::string lookupSystemName( boost::uuids::uuid sID ) const;
-			const std::string lookupComponentName( boost::uuids::uuid cID ) const;
+			const sbeID lookupSystemID( const std::string& name ) const;
+			const sbeID lookupComponentID( const std::string& name ) const;
+			const std::string lookupSystemName( sbeID sID ) const;
+			const std::string lookupComponentName( sbeID cID ) const;
 
-			std::shared_ptr<System> createSystem( boost::uuids::uuid sID );
-			boost::optional<boost::any> createComponent( boost::uuids::uuid cID );
+			std::shared_ptr<System> createSystem( sbeID sID );
+			boost::optional<boost::any> createComponent( sbeID cID );
 
 		private:
 
-			std::map<std::string, boost::uuids::uuid> ComponentMappings;
-			std::map<boost::uuids::uuid, std::string> ComponentNames;
-			std::map<boost::uuids::uuid, std::shared_ptr< CopyFactory<boost::any> >> ComponentFactories;
+			std::map<std::string, sbeID> ComponentMappings;
+			std::map<sbeID, std::string> ComponentNames;
+			std::map<sbeID, std::shared_ptr< CopyFactory<boost::any> >> ComponentFactories;
 
-			std::map<boost::uuids::uuid, std::shared_ptr<Entity> > Entities;
+			std::map<sbeID, std::shared_ptr<Entity> > Entities;
 
-			std::map<boost::uuids::uuid, std::shared_ptr<System>> Systems;
-			std::map<std::string, boost::uuids::uuid> SystemMappings;
-			std::map<boost::uuids::uuid, std::shared_ptr< Factory<System> >> SystemFactories;
+			std::map<sbeID, std::shared_ptr<System>> Systems;
+			std::map<std::string, sbeID> SystemMappings;
+			std::map<sbeID, std::shared_ptr< Factory<System> >> SystemFactories;
 
 	};
 

@@ -63,6 +63,9 @@ namespace sbe
 	template<class T>
 	std::vector<std::shared_ptr<T>> IO::loadPath(  std::shared_ptr<IOPlugin>& IOP, const std::string& current_path, const std::string& filename)
 	{
+	    Engine::out() << "currentpath: " << current_path << std::endl;
+	    Engine::out() << "filename: " << filename << std::endl;
+
 		fs::path cp(current_path);
 
 		if ( !fs::exists( cp ) )
