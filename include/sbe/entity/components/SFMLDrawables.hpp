@@ -1,11 +1,15 @@
 #include <SFML/Graphics/Sprite.hpp>
 
+#include "sbe/entity/Component.hpp"
+
 namespace sbe
 {
-	namespace components
-	{
-		char spritename[] = "Sprite";
-		typedef ComponentBuilder<spritename, sf::Sprite> Sprite;
-		extern template class Sprite;
+	namespace components {
+		namespace {
+			std::vector<ComponentInfo> getSFMLComponents()
+			{
+				return { {"Sprite", makeComponentFactory<sf::Sprite>()} };
+			}
+		}
 	}
 }

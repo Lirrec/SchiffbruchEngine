@@ -1,5 +1,5 @@
-#ifndef POSITION_HPP
-#define POSITION_HPP
+#ifndef C_POSITION_HPP
+#define C_POSITION_HPP
 
 #include "sbe/geom/Point.hpp"
 #include "sbe/entity/Component.hpp"
@@ -10,13 +10,16 @@
 
 namespace sbe {
 	namespace components {
-
-		std::vector<ComponentInfo> PositionComponents
-		{
-			{ "Position2D", std::shared_ptr<CopyFactory<boost::any>>( (CopyFactory<boost::any>*)  new AssignmentConversionFactory<Geom::Point, boost::any>() ) },
-			{ "TargetPosition2D", std::shared_ptr<CopyFactory<boost::any>>( (CopyFactory<boost::any>*)  new AssignmentConversionFactory<Geom::Point, boost::any>() ) }
-		};
+		namespace {
+			std::vector<ComponentInfo> getPositionComponents()
+			{
+				return {
+					{ "Position2D", makeComponentFactory<Geom::Point>() },
+					{ "TargetPosition2D", makeComponentFactory<Geom::Point>() }
+				};
+			}
+		}
 	}
 }
 
-#endif // POSITION_HPP
+#endif // C_POSITION_HPP

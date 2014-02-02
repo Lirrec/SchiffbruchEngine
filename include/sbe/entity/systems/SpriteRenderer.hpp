@@ -3,12 +3,18 @@
 
 #include "sbe/entity/System.hpp"
 
-#include "sbe/entity/systems/SpriteRenderer.hpp"
-#include "sbe/gfx/Actor.hpp"
-#include <SFML/Graphics/Sprite.hpp>
 
 namespace sbe
 {
+	class Actor;
+	class Entity;
+
+//	namespace systems
+//	{
+//		class SpriteRenderer;
+//	} // namespace systems
+//
+//	extern template class SystemBuilder<systems::SpriteRenderer>;
 
 	namespace systems
 	{
@@ -16,20 +22,28 @@ namespace sbe
 		class SpriteRenderer : public SystemBuilder<SpriteRenderer>
 		{
 			public:
-				virtual void update(const Entity& E, const sf::Time& delta) ;
-				virtual void onAttach(const Entity& E);
-				virtual void onDetach(const Entity& E);
+				void update(Entity& E, const sf::Time& delta) override;
+				void onAttach(Entity& E) override;
+				void onDetach(Entity& E) override;
 
 			private:
-				ActorID ID;
+				std::shared_ptr<Actor> A;
 		};
 
-		template<>
-		const std::vector<std::string> SystemBuilder<SpriteRenderer>::RequirementsPlain = { "Sprite", "Position2" };
-		template<>
-		const std::string SystemBuilder<SpriteRenderer>::Name = "SpriteRenderer";
-
 	} // namespace systems
+
+//	template<>
+//	std::vector<std::string> SystemBuilder<systems::SpriteRenderer>::RequirementsPlain { "Sprite", "Position2" };
+//	template<>
+//	std::string SystemBuilder<systems::SpriteRenderer>::Name = "SpriteRenderer";
+
+//	template<>
+//	std::vector<std::string> SystemBuilder<systems::SpriteRenderer>::RequirementsPlain;
+//	extern template std::vector<std::string> SystemBuilder<systems::SpriteRenderer>::RequirementsPlain;
+
+	//extern template const std::string SystemBuilder<systems::SpriteRenderer>::Name;
+	//template<>
+	//const std::string SystemBuilder<systems::SpriteRenderer>::Name;
 
 } // namespace sbe
 

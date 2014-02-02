@@ -149,4 +149,4 @@ else()
 	set_target_properties( sbe PROPERTIES MINSIZEREL_POSTFIX -s )
 endif()
 
-target_link_libraries(sbe ${SFGUI_LIBRARY} ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${SBE_SCRIPT_LIBS} ${SFML_DEPENDENCIES} ${GENERIC_LIBS})
+target_link_libraries(${sbe} ${SFGUI_LIBRARY} ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${SBE_SCRIPT_LIBS} ${SFML_DEPENDENCIES} ${GENERIC_LIBS})
