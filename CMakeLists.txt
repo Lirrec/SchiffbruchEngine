@@ -38,14 +38,6 @@ else()
 	set(SFGUI_STATIC_LIBRARIES true)
 endif()
 
-#just make sure those two are not empty, as in that case sfgui will add unwanted compile flags
-if( NOT CMAKE_CXX_FLAGS )
-	set( CMAKE_CXX_FLAGS  " " CACHE STRING "C++ compiler flags" FORCE )
-endif()
-if( NOT CMAKE_CXX_FLAGS_DEBUG )
-	set( CMAKE_CXX_FLAGS_DEBUG  " " CACHE STRING "C++ compiler flags (debug)" FORCE )
-endif()
-
 #############################################################
 #################### External Libraries #####################
 #############################################################
@@ -114,7 +106,11 @@ add_definitions( -std=c++11 -DBOOST_THREAD_USE_LIB -pipe )
 
 if (CMAKE_BUILD_TYPE MATCHES Debug)
 	add_definitions(-DCOUNT_EVENTS)
-	add_definitions( -Wall -g -fstack-protector --param=ssp-buffer-size=4 )
+	add_definitions( -Wall -g )
+	if(NOT CMAKE_SYSTEM_NAME MATCHES Windows)
+		add_definitions( -fstack-protector --param=ssp-buffer-size=4 )
+	endif()
+	
 elseif(CMAKE_BUILD_TYPE MATCHES Release)
 	if( PROFILE )
 		add_definitions( -O1 )
