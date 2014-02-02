@@ -45,7 +45,7 @@ namespace sbe
 	class AssignmentConversionFactory : public CopyFactory<U>
 	{
 		public:
-			virtual U createCopy() override { return U(); }
+			virtual U createCopy() override { return T(); }
 	};
 
 

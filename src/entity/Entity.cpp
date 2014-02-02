@@ -16,7 +16,6 @@ namespace sbe
 
 	Entity::~Entity()
 	{
-		Engine::GetEntityMgr()->removeEntity( ID );
 	}
 
 	bool Entity::Register()
@@ -42,12 +41,20 @@ namespace sbe
 
 	void Entity::addComponent(const sbeID cID)
 	{
-		Components[cID] = Engine::GetEntityMgr()->createComponent( cID );
+		auto c = Engine::GetEntityMgr()->createComponent( cID );
+		if ( !c ) return;
+		Components[cID] = *c;
 		Engine::GetEntityMgr()->onEntityChanged( ID );
 	}
 
 
-
+	bool Entity::setComponentData( const sbeID cID, const boost::any& data )
+	{
+		auto c = getComponent(cID);
+		if ( !c ) return false;
+		Components[cID] = data;
+		return true;
+	}
 
 
 	bool Entity::removeComponent(const sbeID cID)
@@ -57,14 +64,14 @@ namespace sbe
 		return re;
 	}
 
-	boost::optional<boost::any> Entity::getComponent(const sbeID cID)
+	boost::optional<boost::any&> Entity::getComponent(const sbeID cID)
 	{
 		auto it = Components.find(cID);
-		if ( it != Components.end() ) return boost::optional<boost::any>(it->second);
-		return boost::optional<boost::any>();
+		if ( it != Components.end() ) return boost::optional<boost::any&>(it->second);
+		return boost::optional<boost::any&>();
 	}
 
-	boost::optional<boost::any> Entity::getComponent(const std::string& name)
+	boost::optional<boost::any&> Entity::getComponent(const std::string& name)
 	{
 		return getComponent( lookupComponentID( name ));
 	}

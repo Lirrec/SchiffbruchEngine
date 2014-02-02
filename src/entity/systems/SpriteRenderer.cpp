@@ -32,10 +32,8 @@ namespace sbe
 
 		void SpriteRenderer::onAttach(Entity& E)
 		{
-			boost::optional<sf::Sprite&> s = E.getComponentData<sf::Sprite>( "Sprite" );
-
 			SpriteActor* sa = new SpriteActor();
-			sa->sprite = *s;
+			sa->sprite = E.C<sf::Sprite>("Sprite");
 
 			A.reset( (Actor*) sa );
 			Module::Get()->QueueEvent( Event("ADD_ACTOR", A), true );

@@ -35,18 +35,42 @@ namespace sbe
 
 
 			template <class T>
-			boost::optional<T&> getComponentData( const std::string& name )
+			boost::optional<T> getComponentData( const std::string& name )
 			{
 				return getComponentData<T>( lookupComponentID(name) );
 			}
 
 			template <class T>
-			boost::optional<T&> getComponentData( const sbeID cID )
+			boost::optional<T> getComponentData( const sbeID cID )
 			{
 				auto c = getComponent(cID);
-				if ( !c ) return boost::optional<T&>();
-				return boost::make_optional<T&>(boost::any_cast<T&>(*c));
+				if ( !c ) return boost::optional<T>();
+				return boost::make_optional<T>(boost::any_cast<T>(*c));
 			}
+
+			boost::any& operator[](const sbeID cID)
+			{
+				return Components[cID];
+			}
+
+			boost::any& operator[](const std::string& name)
+			{
+				return Components[lookupComponentID(name)];
+			}
+
+			template<class T>
+			T& C(const std::string& name)
+			{
+				return boost::any_cast<T&>(Components[lookupComponentID(name)]);
+			}
+
+			template<class T>
+			T& C(const sbeID cID)
+			{
+				return boost::any_cast<T&>(Components[cID]);
+			}
+
+			bool setComponentData( const sbeID cID, const boost::any& data );
 
 			/** Adds a new component to the Entity, this will overwrite any existing component with the same id.
 				@param cID the ID of the new Component. */
@@ -80,11 +104,11 @@ namespace sbe
 			/**
 				get a component by ID
 			*/
-			boost::optional<boost::any> getComponent( const sbeID sID );
+			boost::optional<boost::any&> getComponent( const sbeID sID );
 			/**
 				get a component by Name
 			*/
-			boost::optional<boost::any> getComponent( const std::string& name );
+			boost::optional<boost::any&> getComponent( const std::string& name );
 
 			/**
 				get a System by ID

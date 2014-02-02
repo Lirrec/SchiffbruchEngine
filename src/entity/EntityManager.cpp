@@ -2,11 +2,14 @@
 
 #include <boost/uuid/nil_generator.hpp>
 #include <boost/uuid/name_generator.hpp>
-
+#include <boost/uuid/uuid_io.hpp>
 #include "sbe/entity/components/Position.hpp"
 #include "sbe/entity/components/SFMLDrawables.hpp"
 
 #include "sbe/entity/systems/SpriteRenderer.hpp"
+
+#include "sbe/Engine.hpp"
+#include <iostream>
 
 namespace sbe
 {
@@ -79,19 +82,31 @@ namespace sbe
 
 	const sbeID EntityManager::lookupComponentID( const std::string& name ) const
 	{
-		if ( !ComponentMappings.count(name) ) return boost::uuids::nil_uuid();
+		if ( !ComponentMappings.count(name) )
+		{
+			Engine::out(Engine::ERROR) << "ComponentID lookup failed for '" << name << "'" << std::endl;
+			return boost::uuids::nil_uuid();
+		}
 		return ComponentMappings.at(name);
 	}
 
 	const std::string EntityManager::lookupSystemName( sbeID sID ) const
 	{
-		if ( !Systems.count(sID) ) return "system_not_found";
+		if ( !Systems.count(sID) )
+		{
+			Engine::out(Engine::ERROR) << "SystemName lookup failed for ID '" << sID << "'" << std::endl;
+			return "system_not_found";
+		}
 		return Systems.at(sID)->getName();
 	}
 
 	const std::string EntityManager::lookupComponentName( sbeID cID ) const
 	{
-		if ( !ComponentNames.count(cID) ) return "component_not_found";
+		if ( !ComponentNames.count(cID) )
+		{
+			Engine::out(Engine::ERROR) << "ComponentName lookup failed for ID'" << cID << "'" << std::endl;
+			return "component_not_found";
+		}
 		return ComponentNames.at(cID);
 	}
 
