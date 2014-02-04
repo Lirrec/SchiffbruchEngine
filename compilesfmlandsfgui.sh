@@ -6,7 +6,7 @@ sfmllibs="window system graphics audio network"
 sfguidir=/d/libs/SFGUI
 sbedir=/d/libs/SchiffbruchEngine
 boostdir=/d/libs/boost_1_55_0
-clean=false
+clean=true
 static=false
 
 dlldir=/d/lib/
@@ -145,7 +145,7 @@ echo
 cmake -G"MSYS Makefiles" -DSFML_STATIC_LIBRARIES=$static -DCMAKE_MODULE_PATH="$sfmldir/cmake/Modules/" -DSFML_ROOT="$sfmldir" -DSFGUI_BUILD_EXAMPLES=false -DSFGUI_BUILD_SHARED_LIBS=$shared ..
 echo "---------------------------"
 make -j8
-#sfgui is to dump to name its output library in such a way that findsfgui would find it
+#sfgui doesn't seem to name the static .a correctly
 [ $static = "true" ] && cp sfgui.a sfgui-s.a
 createsfguisymlinks
 
