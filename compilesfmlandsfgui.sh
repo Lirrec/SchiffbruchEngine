@@ -11,6 +11,22 @@ static=false
 
 dlldir=/d/lib/
 
+if [ $# -ge 1 ]; then
+	if [[ $1 != "false" && $1 != "true" ]]; then
+		echo " - Parameter 1 ( build static libs ) should be either 'true' or 'false'"
+	else
+		static=$1
+	fi
+fi;
+
+if [ $# -ge 2 ]; then
+	if [[ $2 != "false" && $2 != "true" ]]; then
+		echo " - Parameter 2 ( clean build directories ) should be either 'true' or 'false'"
+	else
+		clean=$2
+	fi
+fi;
+
 if [ $static = "true" ]; then
 	shared=false
 else
