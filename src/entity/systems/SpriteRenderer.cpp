@@ -6,6 +6,7 @@
 #include "sbe/gfx/Actor.hpp"
 #include "sbe/event/Event.hpp"
 #include "sbe/Module.hpp"
+#include "sbe/geom/Point.hpp"
 
 #include <vector>
 #include <string>
@@ -18,7 +19,7 @@
 namespace sbe
 {
 	template<>
-	std::vector<std::string> SystemBuilder<systems::SpriteRenderer>::RequirementsPlain { "Sprite", "Position2", "RenderLayer" };
+	std::vector<std::string> SystemBuilder<systems::SpriteRenderer>::RequirementsPlain { "Sprite", "Position2D", "RenderLayer" };
 	template<>
 	std::string SystemBuilder<systems::SpriteRenderer>::Name = "SpriteRenderer";
 
@@ -39,6 +40,8 @@ namespace sbe
 
 			A.reset( new SpriteActor );
 			A->sprite = E.C<sf::Sprite>("Sprite");
+			Geom::Point& p = E.C<Geom::Point>("Position2D");
+			A->sprite.setPosition( { p.x, p.y } );
 			Module::Get()->QueueEvent( Event("ADD_ACTOR", std::make_pair(std::dynamic_pointer_cast<Actor>(A), E.C<int>("RenderLayer"))), true 	);
 		}
 
