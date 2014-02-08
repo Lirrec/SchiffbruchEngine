@@ -1,6 +1,7 @@
 #include "sbe/entity/systems/SpriteRenderer.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
+#include "sbe/util/Transformable.hpp"
 
 #include "sbe/entity/Entity.hpp"
 #include "sbe/gfx/Actor.hpp"
@@ -26,22 +27,17 @@ namespace sbe
 
 	namespace systems
 	{
-
-
-
-		void SpriteRenderer::update(Entity& E, const sf::Time& delta)
+		void SpriteRenderer::onEntityUpdate(Entity& E)
 		{
-			//Engine::out() << "SpriteRenderer update " << delta.asMilliseconds() << std::endl;
+			A->sprite = E.C<sf::Sprite>("Sprite");
+			copyTransformable( E.C<sf::Transformable&>("Transformable"), A->sprite);
 		}
 
 		void SpriteRenderer::onAttach(Entity& E)
 		{
-			Engine::out() << "SpriteRenderer onAttach " << E.getID() << std::endl;
-
 			A.reset( new SpriteActor );
 			A->sprite = E.C<sf::Sprite>("Sprite");
-			Geom::Point& p = E.C<Geom::Point>("Position2D");
-			A->sprite.setPosition( { p.x, p.y } );
+			copyTransformable( E.C<sf::Transformable&>("Transformable"), A->sprite);
 			Module::Get()->QueueEvent( Event("ADD_ACTOR", std::make_pair(std::dynamic_pointer_cast<Actor>(A), E.C<int>("RenderLayer"))), true 	);
 		}
 

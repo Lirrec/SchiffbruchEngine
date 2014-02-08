@@ -9,20 +9,13 @@ namespace sbe
 	class SpriteActor;
 	class Entity;
 
-//	namespace systems
-//	{
-//		class SpriteRenderer;
-//	} // namespace systems
-//
-//	extern template class SystemBuilder<systems::SpriteRenderer>;
-
 	namespace systems
 	{
 
 		class SpriteRenderer : public SystemBuilder<SpriteRenderer>
 		{
 			public:
-				void update(Entity& E, const sf::Time& delta) override;
+				void onEntityUpdate(Entity& E) override;
 				void onAttach(Entity& E) override;
 				void onDetach(Entity& E) override;
 
@@ -31,19 +24,6 @@ namespace sbe
 		};
 
 	} // namespace systems
-
-//	template<>
-//	std::vector<std::string> SystemBuilder<systems::SpriteRenderer>::RequirementsPlain { "Sprite", "Position2" };
-//	template<>
-//	std::string SystemBuilder<systems::SpriteRenderer>::Name = "SpriteRenderer";
-
-//	template<>
-//	std::vector<std::string> SystemBuilder<systems::SpriteRenderer>::RequirementsPlain;
-//	extern template std::vector<std::string> SystemBuilder<systems::SpriteRenderer>::RequirementsPlain;
-
-	//extern template const std::string SystemBuilder<systems::SpriteRenderer>::Name;
-	//template<>
-	//const std::string SystemBuilder<systems::SpriteRenderer>::Name;
 
 } // namespace sbe
 

@@ -7,6 +7,7 @@
 #include "sbe/entity/components/SFMLDrawables.hpp"
 
 #include "sbe/entity/systems/SpriteRenderer.hpp"
+#include "sbe/entity/systems/LinearMovement.hpp"
 
 #include "sbe/Engine.hpp"
 #include <iostream>
@@ -19,6 +20,7 @@ namespace sbe
 		registerComponents( sbe::components::getPositionComponents() );
 		registerComponents( sbe::components::getSFMLComponents() );
 		registerSystem<systems::SpriteRenderer>();
+		registerSystem<systems::LinearMovement>();
 	}
 
 	EntityManager::~EntityManager()
@@ -30,8 +32,16 @@ namespace sbe
 	{
 		for ( auto& E : Entities )
 		{
-			for( auto& p : E.second->Systems ) p.second->update(*(E.second), delta);
+			for( auto& p : E.second->Systems )
+			{
+				p.second->update(*(E.second), delta);
+				if ( E.second->changed )
+					p.second->onEntityUpdate(*(E.second));
+			}
+
+			E.second->changed = false;
 		}
+
 	}
 
 	void EntityManager::registerComponents( const std::vector<ComponentInfo>& Cs)
@@ -76,7 +86,11 @@ namespace sbe
 
 	const sbeID EntityManager::lookupSystemID( const std::string& name ) const
 	{
-		if ( !SystemMappings.count(name) ) return boost::uuids::nil_uuid();
+		if ( !SystemMappings.count(name) )
+		{
+			Engine::out(Engine::ERROR) << "SystemID lookup failed for '" << name << "'" << std::endl;
+			return boost::uuids::nil_uuid();
+		}
 		return SystemMappings.at(name);
 	}
 
@@ -112,7 +126,11 @@ namespace sbe
 
 	std::shared_ptr<System> EntityManager::createSystem(sbeID sID)
 	{
-		if ( !SystemFactories.count(sID) ) return std::shared_ptr<System>();
+		if ( !SystemFactories.count(sID) )
+		{
+			Engine::out(Engine::ERROR) << "No Factory for System '" << sID << "' found" << std::endl;
+			return std::shared_ptr<System>();
+		}
 		return SystemFactories[sID]->create();
 	}
 

@@ -4,7 +4,8 @@
 #include "sbe/geom/Point.hpp"
 #include "sbe/entity/Component.hpp"
 
-#include <string>
+#include <SFML/Graphics/Transformable.hpp>
+
 #include <vector>
 #include <memory>
 
@@ -14,7 +15,7 @@ namespace sbe {
 			std::vector<ComponentInfo> getPositionComponents()
 			{
 				return {
-					{ "Position2D", makeComponentFactory<Geom::Point>() },
+					{ "Transformable", makeComponentFactory<sf::Transformable>() },
 					{ "TargetPosition2D", makeComponentFactory<Geom::Point>() }
 				};
 			}

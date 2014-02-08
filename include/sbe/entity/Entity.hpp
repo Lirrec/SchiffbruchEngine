@@ -61,12 +61,14 @@ namespace sbe
 			template<class T>
 			T& C(const std::string& name)
 			{
+				changed = true;
 				return boost::any_cast<T&>(Components[lookupComponentID(name)]);
 			}
 
 			template<class T>
 			T& C(const sbeID cID)
 			{
+				changed = true;
 				return boost::any_cast<T&>(Components[cID]);
 			}
 
@@ -152,6 +154,9 @@ namespace sbe
 			const sbeID getID() const { return ID; }
 
 		private:
+
+			// set to true if a component has been accessed, or a component/system is added/removed
+			bool changed;
 
 			sbeID lookupComponentID( const std::string& name ) const;
 			sbeID lookupSystemID( const std::string& name ) const;

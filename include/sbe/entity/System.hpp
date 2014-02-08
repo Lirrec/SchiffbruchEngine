@@ -43,19 +43,26 @@ namespace sbe
 				Entry point for the logic of each System, called for each Entity
 				@param delta the elapsed GameTime
 			*/
-			virtual void update(Entity& E, const sf::Time& delta) = 0;
+			virtual void update(Entity& E, const sf::Time& delta) {};
+
+
+			/**
+				called for each Entity if any component has been accessed or once components are attached/detached
+				@param delta the elapsed GameTime
+			*/
+			virtual void onEntityUpdate(Entity& E) {};
 
 			/**
 				Called once after a system has been Attached to an Entity
 				@param E the entity
 			*/
-			virtual void onAttach(Entity& E) = 0;
+			virtual void onAttach(Entity& E) {};
 
 			/**
 				Called once after a system has been Attached to an Entity
 				@param E the entity
 			*/
-			virtual void onDetach(Entity& E) = 0;
+			virtual void onDetach(Entity& E) {};
 
 			/// overridden in SystemBuilder<T>
 			virtual const sbeID getID() const = 0;

@@ -39,6 +39,7 @@ namespace sbe
 	{
 		Engine::GetEntityMgr()->onEntityChanged( ID );
 		Components[cID] = value;
+		changed = true;
 	}
 
 	void Entity::addComponent(const sbeID cID)
@@ -46,6 +47,7 @@ namespace sbe
 		auto c = Engine::GetEntityMgr()->createComponent( cID );
 		if ( !c ) return;
 		Components[cID] = *c;
+		changed = true;
 		Engine::GetEntityMgr()->onEntityChanged( ID );
 	}
 
@@ -55,6 +57,7 @@ namespace sbe
 		auto c = getComponent(cID);
 		if ( !c ) return false;
 		Components[cID] = data;
+		changed = true;
 		return true;
 	}
 
@@ -62,7 +65,12 @@ namespace sbe
 	bool Entity::removeComponent(const sbeID cID)
 	{
 		bool re =  Components.erase(cID);
-		if ( re ) Engine::GetEntityMgr()->onEntityChanged( ID );
+		if ( re )
+		{
+			Engine::GetEntityMgr()->onEntityChanged( ID );
+			changed = true;
+		}
+
 		return re;
 	}
 
@@ -70,6 +78,7 @@ namespace sbe
 	{
 		auto it = Components.find(cID);
 		if ( it != Components.end() ) return boost::optional<boost::any&>(it->second);
+		changed = true;
 		return boost::optional<boost::any&>();
 	}
 
@@ -95,6 +104,7 @@ namespace sbe
 		{
 			Systems[sID] = S;
 			S->onAttach(*this);
+			changed = true;
 		}
 	}
 
@@ -120,13 +130,14 @@ namespace sbe
 	{
 		Systems[S->getID()] = S;
 		S->onAttach(*this);
+		changed = true;
 	}
 
 	bool Entity::removeSystem(const sbeID sID)
 	{
 		auto S = getSystem(sID);
 		if ( S ) S->onDetach(*this);
-
+		changed = true;
 		return Systems.erase(sID);
 	}
 
