@@ -25,8 +25,8 @@ namespace sbe
 
 		By default the following Events from SFML are converted:
 			sf::Event::Closed to EVT_QUIT ( global )
-			sf::Event::Resized to WINDOW_RESIZE ( lokal )
-			sf::Event::MouseButtonReleased to WINDOW_RESIZE ( lokal )
+			sf::Event::Resized to WINDOW_RESIZE ( local )
+			sf::Event::MouseButtonReleased to WINDOW_RESIZE ( local )
 
 		Config values used:
 			system.renderer.windowsize
@@ -84,7 +84,7 @@ namespace sbe
 			void setClear( bool c = true ) { clear = c; };
 			/// set the color which is used to clear the screen
 			/// default is sf::Color(180,180,180)
-			void setClearColor ( sf::Color& c ) { bgColor = c; }
+			void setClearColor ( const sf::Color& c ) { bgColor = c; }
 			/// check clear status
 			bool isCleared() { return clear; }
 			/// get current clear color
