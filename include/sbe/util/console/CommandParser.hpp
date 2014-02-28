@@ -19,25 +19,34 @@ namespace sbe
 			~CommandParser() {}
 
 			///Tries to execute the given Command
-			void Execute( std::string s );
+			void Execute( const std::string& s );
 
 			///return the last of history
-			std::string FetchHistory( std::string s, int x );
+			std::string FetchHistory( const std::string& s, int x );
 
 			///Tries to complete the given Command
-			std::string Complete( std::string s );
+			std::string Complete( const std::string& s );
 
 		private:
+
+			class Command
+			{	public:
+				std::vector<std::string> CommandVec;
+				std::shared_ptr<Node> currentNode;
+				bool valid = true;
+
+				void NextCompletion();
+				std::string ToString();
+			};
+
 			void MakeCommandTree();
-			void switchToNextPossibility();
-			void interpretNew();
-			std::vector<std::string> split( std::string s, char c );
-			std::string recievedCommand;
-			std::string sentCommand;
-			std::shared_ptr<Node> currentNode;
-			std::list<std::shared_ptr<Node>> Possibilities;
-			bool commandNotFound;
-			std::vector<std::string> CommandVec;
+
+
+			/**
+				Parses a string into a command object
+			*/
+			Command parseCommandString( const std::string& receivedCommand );
+			std::vector<std::string> split( const std::string& s, char c );
 
 			///root of CommandTree
 			std::shared_ptr<Node> ct;

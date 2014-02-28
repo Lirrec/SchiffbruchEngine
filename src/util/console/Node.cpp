@@ -1,46 +1,48 @@
 #include "sbe/util/console/Node.hpp"
 
+#include "sbe/Engine.hpp"
+#include <iostream>
+
 namespace sbe
 {
-	Node::Node( std::string command_name )
-	: name( command_name )
+	Node::Node( const std::string& command_name )
+	: name( command_name ), parent( nullptr )
 	{
 
 	}
 
-	std::list<std::shared_ptr<Node>> Node::GetAll( std::string s )
+	std::list<std::shared_ptr<Node>> Node::GetAll( const std::string& s )
 	{
 		std::list<std::shared_ptr<Node>> results;
-		for ( auto it = subNodes.begin(); it != subNodes.end(); it++ )
-		{
-			if ( ( *it )->beginsWith( s ) )
-				results.push_back( *it );
-		}
+
+		if ( s == "" ) return subNodes;
+
+		for ( std::shared_ptr<Node>& N : subNodes )
+			if ( beginsWith(N->Name(), s) )
+				results.push_back( N );
+
 		return results;
 	}
 
-	bool Node::Is( std::string s )
+	bool Node::Is( const std::string& s )
 	{
-		return ( name.compare( s ) == 0 ? true : false );
+		return name == s;
 	}
 
-	bool Node::HasWith( std::string s )
+	bool Node::HasWith( const std::string& s )
 	{
-		bool r = false;
-		for ( auto it = subNodes.begin(); it != subNodes.end(); it++ )
-		{
-			if ( ( *it )->Name().compare( 0, s.length(), s ) )
-				r = true;
-		}
-		return r;
+		for ( std::shared_ptr<Node>& N : subNodes )
+			if ( beginsWith(N->Name(), s) )
+				return true;
+
+		return false;
 	}
-	std::shared_ptr<Node> Node::Get( std::string s )
+	std::shared_ptr<Node> Node::Get( const std::string& s )
 	{
-		for ( auto it = subNodes.begin(); it != subNodes.end(); it++ )
-		{
-			if ( ( *it )->name == s )
-				return *it;
-		}
+		for ( std::shared_ptr<Node>& N : subNodes )
+			if ( N->Name() == s )
+				return N;
+
 		return nullptr;
 	}
 
@@ -57,10 +59,11 @@ namespace sbe
 	void Node::AddSub( std::shared_ptr<Node> sub )
 	{
 		subNodes.push_back( sub );
+		sub->setParent( this );
 	}
 
-	bool Node::beginsWith( std::string s )
+	bool Node::beginsWith( const std::string& s, const std::string& prefix )
 	{
-		return !name.compare( 0, s.length(), s );
+		return !s.compare( 0, prefix.length(), prefix );
 	}
 }

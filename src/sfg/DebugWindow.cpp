@@ -123,15 +123,16 @@ namespace sbe
 		}
 		else if ( e.Is( "KEY_PRESSED_ENTER" ) && ListenToActionKeys )
 		{
-			std::string displayedCommandText = ((std::string)( ConsoleInput->GetText() ));
-			if ( displayedCommandText != "" ) //if text exists
-			{
-				// send text to parser
-				Engine::GetCmdParser()->Execute( displayedCommandText );
-				// clear sfg::entry
-				ConsoleInput->SetCursorPosition( 0 );
-				ConsoleInput->SetText( "" );
-			}
+			std::string displayedCommandText = ConsoleInput->GetText().toAnsiString();
+			if ( displayedCommandText.empty() )
+				return;
+
+			// send text to parser
+			Engine::GetCmdParser()->Execute( displayedCommandText );
+			// clear sfg::entry
+			ConsoleInput->SetCursorPosition( 0 );
+			ConsoleInput->SetText( "" );
+
 		}
 		else if ( e.Is( "KEY_PRESSED_ARROW_UP" ) && ListenToActionKeys )
 		{

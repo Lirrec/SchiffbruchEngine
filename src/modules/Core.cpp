@@ -15,6 +15,7 @@ namespace sbe
 	Core::~Core()
 	{
 		delete EvtCore;
+		EvtCore = nullptr;
 	}
 
 } // namespace sbe

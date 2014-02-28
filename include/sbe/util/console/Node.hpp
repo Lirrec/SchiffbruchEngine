@@ -15,23 +15,23 @@ namespace sbe
 	{
 		public:
 
-			Node( std::string command_name );
+			Node( const std::string& command_name );
 			virtual ~Node() {}
 
 			///returns a list with subnodes beginning with a given string
-			virtual std::list<std::shared_ptr<Node>> GetAll( std::string s );
+			virtual std::list<std::shared_ptr<Node>> GetAll( const std::string& s = "" );
 
 			///returns true if given string is identic to node's command.
-			virtual bool Is( std::string s );
+			virtual bool Is( const std::string& s );
 
 			///overloaded by Commandnode which has an Event
 			virtual bool IsExecutable() { return false; }
 
 			///returns true if Node has subnode/s beginning with given string
-			virtual bool HasWith( std::string s );
+			virtual bool HasWith( const std::string& s );
 
 			///returns the child node with given command
-			virtual std::shared_ptr<Node> Get( std::string s );
+			virtual std::shared_ptr<Node> Get( const std::string& s );
 
 			///returns the name of the Node
 			std::string Name();
@@ -39,19 +39,25 @@ namespace sbe
 			///returns the helptext
 			std::string Help();
 
+			void setParent( Node* N ) { parent = N; }
+
+			Node* Parent() { return parent; }
+
 			///adds a subNode and sorts them alphabeticaly again
 			virtual void AddSub( std::shared_ptr<Node> sub );
 
 		protected:
 
-			///returns true if name begins with given string
-			bool beginsWith( std::string s );
+			///returns true if s begins with prefix
+			bool beginsWith( const std::string& s, const std::string& prefix );
 
 			///contains the name of the node
 			std::string name;
 
 			///contains the helptext
 			std::string help;
+
+			Node* parent;
 
 			///contains the list with subnodes
 			std::list<std::shared_ptr<Node>> subNodes;

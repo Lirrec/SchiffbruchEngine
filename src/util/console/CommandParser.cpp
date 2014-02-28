@@ -5,207 +5,196 @@
 #include "sbe/util/console/CommandNode.hpp"
 //#include "sbe/util/console/ArgumentsCommandNode.hpp"
 
-using namespace std;
+#include <algorithm>
 
 namespace sbe
 {
 	CommandParser::CommandParser()
 	{
 		ct.reset( new Node( "/" ) );
-		/******/ct->AddSub( shared_ptr<Node>( new Node( "conf" ) ) );
-		/******/ct->Get( "conf" )->AddSub( shared_ptr<Node>( new Node( "set" ) ) );
-		/******/ct->AddSub( shared_ptr<Node>( new Node( "debug" ) ) );
-		/******/ct->Get( "debug" )->AddSub( shared_ptr<Node>( new CommandNode( "reload_graph", "debug_reload_graph" ) ) );
-		/******/ct->AddSub( shared_ptr<Node>( new Node( "hide" ) ) );
-		/******/ct->Get( "hide" )->AddSub( shared_ptr<Node>( new CommandNode( "alloverlays", "EVT_COMMAND_HIDE_ALL_OVERLAYS" ) ) );
-		/******/ct->Get( "hide" )->AddSub( shared_ptr<Node>( new Node( "overlay" ) ) );
-		/******/ct->Get( "hide" )->AddSub( shared_ptr<Node>( new CommandNode( "window", "EVT_COMMAND_HIDE_WINDOW" ) ) );
-		/******/ct->AddSub( shared_ptr<Node>( new Node( "kill" ) ) );
-		/******/ct->Get( "kill" )->AddSub( shared_ptr<Node>( new Node( "carnivore" ) ) );
-		/******/ct->Get( "kill" )->AddSub( shared_ptr<Node>( new Node( "herbivore" ) ) );
-		/******/ct->Get( "kill" )->AddSub( shared_ptr<Node>( new Node( "plant" ) ) );
-		/******/ct->AddSub( shared_ptr<Node>( new Node( "show" ) ) );
-		/******/ct->Get( "show" )->AddSub( shared_ptr<Node>( new Node( "overlay" ) ) );
-		/******/ct->Get( "show" )->AddSub( shared_ptr<Node>( new Node( "window" ) ) );
-		/******/ct->AddSub( shared_ptr<Node>( new Node( "sim" ) ) );
-		/******/ct->Get( "sim" )->AddSub( shared_ptr<Node>( new Node( "restart" ) ) );
-		/******/ct->Get( "sim" )->AddSub( shared_ptr<Node>( new CommandNode( "run", "KEY_SIM_PAUSE" ) ) );
-		/******/ct->Get( "sim" )->Get( "run" )->AddSub( shared_ptr<Node>( new Node( "ticks" ) ) );
-		/******/ct->Get( "sim" )->Get( "run" )->AddSub( shared_ptr<Node>( new Node( "untildeathof" ) ) );
-		/******/ct->Get( "sim" )->Get( "run" )->Get( "untildeathof" )->AddSub( shared_ptr<Node>( new Node( "carnivore" ) ) );
-		/******/ct->Get( "sim" )->Get( "run" )->Get( "untildeathof" )->AddSub( shared_ptr<Node>( new Node( "herbivore" ) ) );
-		/******/ct->Get( "sim" )->Get( "run" )->Get( "untildeathof" )->AddSub( shared_ptr<Node>( new Node( "plant" ) ) );
-		/******/ct->Get( "sim" )->AddSub( shared_ptr<Node>( new Node( "stop" ) ) );
-		/******/ct->Get( "sim" )->Get( "stop" )->AddSub( shared_ptr<Node>( new Node( "ontick" ) ) );
-		/******/ct->AddSub( shared_ptr<Node>( new Node( "toggle" ) ) );
-		/******/ct->Get( "toggle" )->AddSub( shared_ptr<Node>( new Node( "window" ) ) );
-		/******/ct->Get( "toggle" )->Get( "window" )->AddSub( shared_ptr<Node>( new CommandNode( "console", "KEY_SHOW_CONSOLE" ) ) );
-		/******/ct->Get( "toggle" )->Get( "window" )->AddSub( shared_ptr<Node>( new CommandNode( "infopanel", "KEY_SHOW_INFOPANEL" ) ) );
-		/******/ct->Get( "toggle" )->Get( "window" )->AddSub( shared_ptr<Node>( new CommandNode( "graphbook", "KEY_SHOW_GRAPHBOOK" ) ) );
-		/******/ct->Get( "toggle" )->Get( "window" )->AddSub( shared_ptr<Node>( new CommandNode( "mainmenu", "KEY_SHOW_MAINMENU" ) ) );
-		sentCommand = "";
-		recievedCommand = "";
-		currentNode = ct;
-		commandNotFound = false;
+		/******/ct->AddSub( std::shared_ptr<Node>( new Node( "conf" ) ) );
+		/******/ct->Get( "conf" )->AddSub( std::shared_ptr<Node>( new Node( "set" ) ) );
+		/******/ct->AddSub( std::shared_ptr<Node>( new Node( "debug" ) ) );
+		/******/ct->Get( "debug" )->AddSub( std::shared_ptr<Node>( new CommandNode( "reload_graph", "debug_reload_graph" ) ) );
+		/******/ct->AddSub( std::shared_ptr<Node>( new Node( "hide" ) ) );
+		/******/ct->Get( "hide" )->AddSub( std::shared_ptr<Node>( new CommandNode( "alloverlays", "EVT_COMMAND_HIDE_ALL_OVERLAYS" ) ) );
+		/******/ct->Get( "hide" )->AddSub( std::shared_ptr<Node>( new Node( "overlay" ) ) );
+		/******/ct->Get( "hide" )->AddSub( std::shared_ptr<Node>( new CommandNode( "window", "EVT_COMMAND_HIDE_WINDOW" ) ) );
+		/******/ct->AddSub( std::shared_ptr<Node>( new Node( "kill" ) ) );
+		/******/ct->Get( "kill" )->AddSub( std::shared_ptr<Node>( new Node( "carnivore" ) ) );
+		/******/ct->Get( "kill" )->AddSub( std::shared_ptr<Node>( new Node( "herbivore" ) ) );
+		/******/ct->Get( "kill" )->AddSub( std::shared_ptr<Node>( new Node( "plant" ) ) );
+		/******/ct->AddSub( std::shared_ptr<Node>( new Node( "show" ) ) );
+		/******/ct->Get( "show" )->AddSub( std::shared_ptr<Node>( new Node( "overlay" ) ) );
+		/******/ct->Get( "show" )->AddSub( std::shared_ptr<Node>( new Node( "window" ) ) );
+		/******/ct->AddSub( std::shared_ptr<Node>( new Node( "sim" ) ) );
+		/******/ct->Get( "sim" )->AddSub( std::shared_ptr<Node>( new Node( "restart" ) ) );
+		/******/ct->Get( "sim" )->AddSub( std::shared_ptr<Node>( new CommandNode( "run", "KEY_SIM_PAUSE" ) ) );
+		/******/ct->Get( "sim" )->Get( "run" )->AddSub( std::shared_ptr<Node>( new Node( "ticks" ) ) );
+		/******/ct->Get( "sim" )->Get( "run" )->AddSub( std::shared_ptr<Node>( new Node( "untildeathof" ) ) );
+		/******/ct->Get( "sim" )->Get( "run" )->Get( "untildeathof" )->AddSub( std::shared_ptr<Node>( new Node( "carnivore" ) ) );
+		/******/ct->Get( "sim" )->Get( "run" )->Get( "untildeathof" )->AddSub( std::shared_ptr<Node>( new Node( "herbivore" ) ) );
+		/******/ct->Get( "sim" )->Get( "run" )->Get( "untildeathof" )->AddSub( std::shared_ptr<Node>( new Node( "plant" ) ) );
+		/******/ct->Get( "sim" )->AddSub( std::shared_ptr<Node>( new Node( "stop" ) ) );
+		/******/ct->Get( "sim" )->Get( "stop" )->AddSub( std::shared_ptr<Node>( new Node( "ontick" ) ) );
+		/******/ct->AddSub( std::shared_ptr<Node>( new Node( "toggle" ) ) );
+		/******/ct->Get( "toggle" )->AddSub( std::shared_ptr<Node>( new Node( "window" ) ) );
+		/******/ct->Get( "toggle" )->Get( "window" )->AddSub( std::shared_ptr<Node>( new CommandNode( "console", "KEY_SHOW_CONSOLE" ) ) );
+		/******/ct->Get( "toggle" )->Get( "window" )->AddSub( std::shared_ptr<Node>( new CommandNode( "infopanel", "KEY_SHOW_INFOPANEL" ) ) );
+		/******/ct->Get( "toggle" )->Get( "window" )->AddSub( std::shared_ptr<Node>( new CommandNode( "graphbook", "KEY_SHOW_GRAPHBOOK" ) ) );
+		/******/ct->Get( "toggle" )->Get( "window" )->AddSub( std::shared_ptr<Node>( new CommandNode( "mainmenu", "KEY_SHOW_MAINMENU" ) ) );
+
 		historyAccess = history.end();
 	}
 
-	void CommandParser::Execute( string s )
+	void CommandParser::Execute( const std::string& s )
 	{
-		///@TODO
-		/******/	if ( s == "pause" )
-		/******/		{ Module::Get()->QueueEvent( "KEY_SIM_PAUSE", true ); }
-		/******/	else if ( s == "graph" )
-		/******/		{ Module::Get()->QueueEvent( "KEY_SHOW_GRAPHBOOK", true ); }
+		auto cmd = parseCommandString( s );
 
-		recievedCommand = s;
-//		//mkhistory
-//		auto it = history.begin();
-//		for ( ; it != history.end(); it++ )
-//		{
-//			if ( *it == recievedCommand )
-//				break;
-//		}
-//		if ( it != history.end() )
-//			history.erase( it );
-		history.push_back( recievedCommand );
+
+		if ( !history.empty() && history.back() != s )
+			history.push_back( s );
 		//reset history-access
 		historyAccess = history.end();
-		//execute
-		CommandVec = split( recievedCommand, ' ' );
-		currentNode = ct;
-		for ( auto it = CommandVec.begin(); it != CommandVec.end(); it++ )
+
+		if ( !cmd.valid )
 		{
-			if ( currentNode->Get( *it ) )
-				currentNode = currentNode->Get( *it );
-			else
+			if ( cmd.CommandVec.back() != "" )
 			{
-				commandNotFound = true;
-				sentCommand = "";
-				recievedCommand = "";
-				Engine::out( Engine::INFO ) << "Command not found, no execution possible!" << endl;
+				Engine::out( Engine::INFO ) << "Command '" << cmd.ToString() << "' not found!" << std::endl;
 				return;
 			}
 		}
-		if ( currentNode->IsExecutable() )
+
+		if (  cmd.currentNode->IsExecutable() )
 		{
-			shared_ptr<CommandNode> x = dynamic_pointer_cast<CommandNode> ( currentNode );
+			std::shared_ptr<CommandNode> x = std::dynamic_pointer_cast<CommandNode> ( cmd.currentNode );
 			Module::Get()->QueueEvent( x->Event(), true );
-			Engine::out( Engine::INFO ) << recievedCommand << endl;
+			Engine::out( Engine::INFO ) << s << std::endl;
 		}
 	}
 
-	string CommandParser::FetchHistory( string s, int x )
+	std::string CommandParser::Complete( const std::string& s )
 	{
-		if (( sentCommand != s && s != "" ) || ( x == 0 ) || (history.size() == 0 ))
+		//reset history-access
+		historyAccess = history.end();
+
+		auto cmd = parseCommandString( s );
+		cmd.NextCompletion();
+
+		return cmd.ToString();
+	}
+
+
+	std::string CommandParser::FetchHistory( const std::string& s, int x )
+	{
+		if ( x==0 || history.size() == 0 )
 			return s;
+
 		if ( s == "" )
 			historyAccess = history.end();
-		sentCommand = "";
-		// UP  the first try
-		if      ( x > 0 && historyAccess == history.end() )
-			sentCommand = *(--historyAccess);
-		// UP  the last one is already called (will come again)
-		else if ( x > 0 && historyAccess == history.begin() )
-			sentCommand = *historyAccess;
-		// UP this is the last one
-		else if ( x > 0 && --historyAccess == history.begin() )
-			sentCommand = *historyAccess;
-		// UP else
-		else if ( x > 0 )
-			sentCommand = *historyAccess; //no -- because allready in if one above
-		// DOWN the first try
-		else if ( x < 0 && historyAccess == history.end() )
-			{}
-		// DOWN return to end
-		else if ( x < 0 && ++historyAccess == history.end() )
-			{}
-		// DOWN everytimes else
+
+		// back in time
+		if ( x > 0 )
+		{
+			if ( historyAccess != history.begin() ) --historyAccess;
+		}
+		// back to the future!
 		else if ( x < 0 )
-			sentCommand = *(historyAccess); //no ++ because already in if one above done
-		return sentCommand;
+		{
+			if ( historyAccess != history.end() ) historyAccess++;
+		}
+
+		return historyAccess == history.end() ? "" : *historyAccess;
 	}
 
-	string CommandParser::Complete( string s )
+	CommandParser::Command CommandParser::parseCommandString( const std::string& receivedCommand )
 	{
-		//reset history-access
-		historyAccess = history.end();
-		if ( s == sentCommand && !commandNotFound )
-		{
-			switchToNextPossibility();
-		}
-		else
-		{
-			commandNotFound = false;
-			recievedCommand = s;
-			interpretNew();
-		}
-		if ( commandNotFound )
-		{
-			Engine::out( Engine::INFO ) << "Command not found, no completion possible!" << endl;
-		}
+		Command C;
+		C.CommandVec = split( receivedCommand, ' ' );
 
-		return sentCommand;
-	}
-
-	void CommandParser::interpretNew()
-	{
-		CommandVec = split( recievedCommand, ' ' );
-		currentNode = ct;
-		for ( auto it = CommandVec.begin(); it != CommandVec.end() - 1; it++ )
+		C.currentNode = ct;
+		for ( auto it = C.CommandVec.begin(); it != C.CommandVec.end(); it++ )
 		{
-			if ( currentNode->Get( *it ) )
-			{
-				currentNode = currentNode->Get( *it );
-			}
+			if ( C.currentNode->Get( *it ) )
+				C.currentNode = C.currentNode->Get( *it );
 			else
 			{
-				commandNotFound = true;
-				sentCommand = recievedCommand;
-				return;
+				C.valid = false;
+				// remove trailing elements
+				if ( (it+1) != C.CommandVec.end() ) C.CommandVec.erase( it+1, C.CommandVec.end() );
+				break;
 			}
 		}
 
-		Possibilities = currentNode->GetAll( CommandVec.back() );
-		sentCommand = "";
-		for ( auto it = CommandVec.begin(); it != CommandVec.end() - 1; it++ )
+		//Engine::out( Engine::INFO ) << "valid? " << C.valid << std::endl;
+		//for ( auto s : C.CommandVec) Engine::out(Engine::INFO) << s << std::endl;
+		//Engine::out( Engine::INFO ) << "Currentnode: " << C.currentNode->Name() << std::endl;
+
+		return C;
+	}
+
+	void CommandParser::Command::NextCompletion()
+	{
+		std::list<std::shared_ptr<Node>> PossibleCompletions;
+
+		if ( CommandVec.empty() ) return;
+		std::string& lastpart = CommandVec.back();
+
+		if ( valid )
 		{
-			sentCommand += *it;
-			sentCommand += " ";
-		}
-		if ( !Possibilities.size() )
-		{
-			commandNotFound = true;
-			sentCommand = recievedCommand;
-			return;
+			PossibleCompletions = currentNode->Parent()->GetAll();
 		}
 		else
 		{
-			sentCommand += Possibilities.front()->Name();
+			PossibleCompletions = currentNode->GetAll( lastpart );
+			if ( PossibleCompletions.empty()) PossibleCompletions = currentNode->GetAll();
 		}
-		return;
-	}
 
-	void CommandParser::switchToNextPossibility()
-	{
-		string topic = split( sentCommand, ' ' ).back();
-		sentCommand = sentCommand.substr( 0, sentCommand.length() - topic.length() );
-		auto it = Possibilities.begin();
-		for ( ; it != --(Possibilities.end()); it++ )
+
+		if ( PossibleCompletions.empty() )
 		{
-			if ( ( *it )->Is( topic ) )
-			{
-				sentCommand += ( *( ++it ) )->Name();
-				return;
-			}
+			Engine::out( Engine::INFO ) << "No completion found!" << std::endl;
+			return;
 		}
-		sentCommand += Possibilities.front()->Name();
-		return;
+
+		//for ( auto& Node : PossibleCompletions ) Engine::out(Engine::INFO) << Node->Name() << std::endl;
+		//Engine::out(Engine::INFO) << "lastpart: '" << lastpart << "'" << std::endl;
+
+		auto it = std::find_if(PossibleCompletions.begin(), PossibleCompletions.end(), [lastpart](std::shared_ptr<Node>& n){ return n->Is(lastpart); } );
+
+		if ( it == PossibleCompletions.end() )
+		{
+			lastpart = PossibleCompletions.front()->Name();
+			//Engine::out(Engine::INFO) << ": '" << lastpart << "'" << std::endl;
+			return;
+		}
+
+		auto next = ++it;
+		--it;
+		if ( next == PossibleCompletions.end())
+			lastpart = PossibleCompletions.front()->Name();
+		else
+			lastpart = (*next)->Name();
 	}
 
-	vector<string> CommandParser::split( string s, char c )
+	std::string CommandParser::Command::ToString()
 	{
-		vector<string> results;
+		std::string re;
+
+		for ( auto s : CommandVec ) {
+			re += s;
+			re += ' ';
+		}
+
+		if (re.back() == ' ') re.pop_back();
+
+		return re;
+	}
+
+	std::vector<std::string> CommandParser::split( const std::string& s, char c )
+	{
+		std::vector<std::string> results;
 		int mark = 0;
 		for ( size_t i = 0; i < s.size(); i++ )
 		{
