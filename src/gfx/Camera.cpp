@@ -18,7 +18,8 @@ namespace sbe
 	const sf::Vector2f Camera::nullVector = sf::Vector2f(0,0);
 
 	Camera::Camera()
-	 : Scrolling( false )
+	 : Scrolling( false ),
+	 ScrollEnabled( true )
 	{
 		ZoomFactor = Engine::getCfg()->get<float>("system.camera.zoomFactor");
 		ScrollFactor = Engine::getCfg()->get<float>("system.camera.scrollFactor");
@@ -131,8 +132,16 @@ namespace sbe
 		DrawnRectangle.height = view.getSize().y;
 	}
 
+	void Camera::enableScrolling(bool enable)
+	{
+		ScrollEnabled = enable;
+	}
+
+
 	void Camera::HandleEvent( const sf::Event& e)
 	{
+	    if (!ScrollEnabled) return;
+
 	    float curdelta = delta;
 
 		switch (e.type)
