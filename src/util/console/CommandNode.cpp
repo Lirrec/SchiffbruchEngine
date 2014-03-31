@@ -1,5 +1,7 @@
 #include "sbe/util/console/CommandNode.hpp"
 
+#include "sbe/Module.hpp"
+
 namespace sbe
 {
 	CommandNode::CommandNode( std::string command_name, std::string command_event )
@@ -9,9 +11,9 @@ namespace sbe
 
 	}
 
-	std::string CommandNode::Event()
+	void CommandNode::Execute( std::vector<std::string> Parameters )
 	{
-		return event;
+		Module::Get()->QueueEvent( event, true );
 	}
 
 }

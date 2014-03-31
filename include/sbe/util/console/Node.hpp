@@ -1,9 +1,10 @@
 #ifndef NODE
 #define NODE
 
-#include <list>
 #include <memory>
 #include <string>
+#include <vector>
+#include <list>
 
 namespace sbe
 {
@@ -24,8 +25,13 @@ namespace sbe
 			///returns true if given string is identic to node's command.
 			virtual bool Is( const std::string& s );
 
+			/// returns true if the node begins with a given string ( can be overloaded for some special node types, e.g. parameters )
+			virtual bool startsWith( const std::string& prefix ) { return beginsWith( name, prefix ); }
+
 			///overloaded by Commandnode which has an Event
 			virtual bool IsExecutable() { return false; }
+
+			virtual void Execute( std::vector<std::string> Parameters ) {};
 
 			///returns true if Node has subnode/s beginning with given string
 			virtual bool HasWith( const std::string& s );

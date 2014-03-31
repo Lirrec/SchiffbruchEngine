@@ -66,10 +66,14 @@ namespace sbe
 			}
 		}
 
+		std::vector<std::string> Params;
+
+		//while ( cmd.currentNode)
+		///TODO: parse params
+
 		if (  cmd.currentNode->IsExecutable() )
 		{
-			std::shared_ptr<CommandNode> x = std::dynamic_pointer_cast<CommandNode> ( cmd.currentNode );
-			Module::Get()->QueueEvent( x->Event(), true );
+			cmd.currentNode->Execute( Params );
 			Engine::out( Engine::INFO ) << s << std::endl;
 		}
 	}

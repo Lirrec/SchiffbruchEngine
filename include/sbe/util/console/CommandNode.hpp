@@ -17,10 +17,10 @@ namespace sbe
 			~CommandNode() {}
 
 			///returns the name of the event-string
-			virtual std::string Event();
+			void Execute( std::vector<std::string> Parameters ) override;
 
 			///returns true if event is not empty
-			virtual bool IsExecutable() { return event.length() != 0; }
+			bool IsExecutable() override { return event.length() != 0; }
 
 		protected:
 

@@ -92,6 +92,7 @@ namespace sbe
 
 		guiclock.restart();
 
+		Module::Get()->QueueEvent( "SCREEN_CREATED" , true);
 	}
 
 
@@ -159,7 +160,7 @@ namespace sbe
 
 				if (modes.size() > 0)
 				{
-					Engine::GetApp().create(modes[0], "Maximum-Fish (fullscreen)", sf::Style::Fullscreen);
+					Engine::GetApp().create(modes[0], "SchiffbruchEngine powered (fullscreen)", sf::Style::Fullscreen);
 					Fullscreen = true;
 				}
 				else

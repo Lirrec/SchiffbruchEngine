@@ -1,5 +1,7 @@
 #include "sbe/Module.hpp"
 
+#include <boost/thread.hpp>
+
 // local includes
 #include "event/EventCore.hpp"
 #include "modules/Core.hpp"

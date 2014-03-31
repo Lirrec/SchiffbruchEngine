@@ -18,7 +18,7 @@ namespace sbe
 		if ( s == "" ) return subNodes;
 
 		for ( std::shared_ptr<Node>& N : subNodes )
-			if ( beginsWith(N->Name(), s) )
+			if ( N->startsWith(s) )
 				results.push_back( N );
 
 		return results;
@@ -32,7 +32,7 @@ namespace sbe
 	bool Node::HasWith( const std::string& s )
 	{
 		for ( std::shared_ptr<Node>& N : subNodes )
-			if ( beginsWith(N->Name(), s) )
+			if ( N->startsWith(s) )
 				return true;
 
 		return false;

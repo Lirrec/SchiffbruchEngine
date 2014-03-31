@@ -1,7 +1,7 @@
 #ifndef MODULE_H
 #define MODULE_H
 
-#include <boost/thread.hpp>
+
 
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/NonCopyable.hpp>
@@ -9,6 +9,9 @@
 #include <memory>
 #include <string>
 #include <list>
+
+#include <boost/thread/tss.hpp>
+#include <boost/thread/mutex.hpp>
 
 namespace boost { class thread; }
 
