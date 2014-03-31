@@ -27,11 +27,11 @@ namespace sbe
 			/// performs a collision with a bounding box
 			void collideBoxed(Particle& P,  float delta, Geom::Vec2f limits);
 			/// performs a collision with a bounding box ( bouncy )
-			void collideBoxedBouncy(Particle& P,  float delta, Geom::Vec2f limits);
+			void collideBoxedBouncy(Particle& P,  float delta, Geom::Vec2f limits, float forceloss, float min);
 			/// performs a warp to the other side of the particle system if a particle leaves one side
 			void collideWarped(Particle& P,  float delta, Geom::Vec2f limits);
 			/// apply a gravitation if the left mouse button is clicked
-			void applyMouseGravitation( Particle& P,  float delta );
+			void applyMouseGravitation( Particle& P,  float delta, float mass);
 		}
 
 		namespace renderers {

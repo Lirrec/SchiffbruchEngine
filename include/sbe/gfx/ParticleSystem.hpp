@@ -27,6 +27,8 @@ namespace sbe
 			ParticleSystem( Renderer R );
 			~ParticleSystem();
 
+			void setFps( int f ) { fps = f; }
+
 			void addAffector( Affector A );
 			void generateParticles( Generator G );
 

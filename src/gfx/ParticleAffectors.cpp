@@ -71,31 +71,61 @@ namespace sbe
 				}
 			}
 
-			void collideBoxedBouncy(Particle& P, float delta, Geom::Vec2f limits)
+			void collideBoxedBouncy(Particle& P, float delta, Geom::Vec2f limits, float forceloss, float min)
 			{
-				float forceloss = 0.8;
-				float min = 1.0;
-
 				if ( P.position.x > limits.x+min)
 				{
-					P.position.x = limits.x - (P.position.x - limits.x);
-					P.velocity.x *= -forceloss;
+					if ( P.velocity.x > min)
+					{
+						P.position.x = limits.x -( P.position.x - limits.x);
+						P.velocity.x *= -forceloss;
+					}
+					else
+					{
+						P.position.x = limits.x;
+						P.velocity.x = 0;
+					}
 				}
-				else if ( P.position.x < 0-min )
+				else if ( P.position.x < 0 )
 				{
-					P.position.x = -P.position.x;
-					P.velocity.x *= -forceloss;
+					if ( P.velocity.x > min )
+					{
+						P.position.x = -P.position.x;
+						P.velocity.x *= -forceloss;
+					}
+					else
+					{
+						P.position.x = 0;
+						P.velocity.x = 0;
+					}
 				}
 
-				if ( P.position.y > limits.y+min)
+				if ( P.position.y > limits.y)
 				{
-					P.position.y = limits.y -( P.position.y - limits.y);
-					P.velocity.y *= -forceloss;
+					if ( P.velocity.y > min)
+					{
+						P.position.y = limits.y -( P.position.y - limits.y);
+						P.velocity.y *= -forceloss;
+					}
+					else
+					{
+						P.position.y = limits.y;
+						P.velocity.y = 0;
+					}
+
 				}
-				else if ( P.position.y < 0-min )
+				else if ( P.position.y < 0 )
 				{
-					P.position.y = -P.position.y;
-					P.velocity.y *= -forceloss;
+					if ( P.velocity.x > min )
+					{
+						P.position.y = -P.position.y;
+						P.velocity.y *= -forceloss;
+					}
+					else
+					{
+						P.position.y = 0;
+						P.velocity.y = 0;
+					}
 				}
 			}
 
@@ -105,7 +135,7 @@ namespace sbe
 				P.position.y = P.position.y > 0 ? std::fmod(P.position.y, limits.y) : limits.y +P.position.y;
 			}
 
-			void applyMouseGravitation(Particle& P, float delta)
+			void applyMouseGravitation(Particle& P, float delta, float mass)
 			{
 				if ( sf::Mouse::isButtonPressed(sf::Mouse::Left))
 				{
@@ -113,7 +143,7 @@ namespace sbe
 					auto vpos = Engine::GetApp().mapPixelToCoords( pos, sbe::Screen::sRndr()->getLayer(1)->Cam->getView());
 					//Engine::out() << "mouseinwinPos: " << pos.x << "/" << pos.y << " - vpos: " << vpos.x << "/" << vpos.y << std::endl;
 
-					applyGravitation( P, delta, {vpos.x,vpos.y}, 1);
+					applyGravitation( P, delta, {vpos.x,vpos.y}, mass);
 				}
 			}
 
