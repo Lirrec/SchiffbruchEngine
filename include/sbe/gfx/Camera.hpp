@@ -48,6 +48,11 @@ namespace sbe
 			void HandleEvent( const sf::Event& e);
 
 			/**
+				Enable or disable middle-mouse scrolling and mouse-wheel-zoom
+			*/
+			void enableScrolling(bool enable = true);
+
+			/**
 				Set the current viewport of the Camera.
 				From sfml doc:
 				The viewport is the rectangle into which the contents of the view are displayed, expressed as a factor (between 0 and 1) of the size of the RenderTarget to which the view is applied.
@@ -130,6 +135,8 @@ namespace sbe
 			/// how fast should we zoom
 			float ZoomFactor;
 
+
+			bool ScrollEnabled;
 			/// are we currently scrolling? tracks mousedown and up events
 			bool Scrolling;
 			sf::Vector2i lastMousePos;
