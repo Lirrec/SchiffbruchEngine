@@ -1,0 +1,31 @@
+# Maintainer: oi_wtf aka. brainpower <brainpower at gulli dot com>
+pkgname=schiffbruchengine
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="The Schiffbruch Engine"
+arch=('i686' 'x86_64')
+url="https://github.com/Lirrec/SchiffbruchEngine"
+license=('GPL')
+depends=('sfml' 'sfgui')
+makedepends=('cmake')
+
+source=("sbe-${pkgver}.tar.gz::https://github.com/Lirrec/SchiffbruchEngine/archive/${pkgver}.tar.gz")
+sha256sums=('58715117e6299dcbb98a43bbbe5e5a0f93f4570bb8bd10f0ba568d69bbb97b4a')
+
+options=(!ccache)
+
+build() {
+  cd "$srcdir/SchiffbruchEngine-${pkgver}"
+
+  cmake -DCMAKE_INSTALL_PREFIX=/usr . 
+  make
+}
+
+package() {
+  cd "$srcdir/SchiffbruchEngine-${pkgver}"
+
+  make DESTDIR="$pkgdir/" install
+
+}
+
+# vim:set ts=2 sw=2 et:

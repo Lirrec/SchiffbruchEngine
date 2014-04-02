@@ -2,6 +2,9 @@ project( SchiffbruchEngine )
 
 cmake_minimum_required( VERSION 2.8 )
 
+# set sbe version
+set(VER_MAJOR 0)
+set(VER_MINOR 1)
 
 #############################################################
 ################### Cmake Options ###########################
@@ -64,16 +67,15 @@ file( GLOB_RECURSE sbe_HDRS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_D
 #left here for debugging purposes
 if (true)
 	message(STATUS "INFO --")
-	message(STATUS "SHARED:\n ${SHARED}")
-	message(STATUS "BUILD_SHARED_LIBS:\n ${BUILD_SHARED_LIBS}" )
-	message(STATUS "CMAKE_BUILD_TYPE:\n ${CMAKE_BUILD_TYPE}" )
+	message(STATUS "BUILD_SHARED_LIBS: ${BUILD_SHARED_LIBS}" )
+	message(STATUS "CMAKE_BUILD_TYPE:  ${CMAKE_BUILD_TYPE}" )
 	message(STATUS "INCLUDES --")
-	message(STATUS "sfml libs:\n ${SFML_LIBRARIES}" )
-	message(STATUS "sfml includes:\n ${SFML_INCLUDE_DIR}" )
-	message(STATUS "sfml deps:\n ${SFML_DEPENDENCIES}" )
-	message(STATUS "sfguil includes:\n ${SFGUI_LIBRARY}" )
-	message(STATUS "sfguil includes:\n ${SFGUI_INCLUDE_DIR}" )
-	message(STATUS "boost includes:\n ${Boost_INCLUDE_DIR}" )
+	message(STATUS "sfml libs:      ${SFML_LIBRARIES}" )
+	message(STATUS "sfml includes:  ${SFML_INCLUDE_DIR}" )
+	message(STATUS "sfml deps:      ${SFML_DEPENDENCIES}" )
+	message(STATUS "sfgui lib:      ${SFGUI_LIBRARY}" )
+	message(STATUS "sfgui includes: ${SFGUI_INCLUDE_DIR}" )
+	message(STATUS "boost includes: ${Boost_INCLUDE_DIR}" )
 
 #	message( "-- FILES --" )
 #	message( "-- Found the following SRCS:\n ${sbe_SRCS}" )
@@ -100,7 +102,7 @@ if (CMAKE_BUILD_TYPE MATCHES Debug)
 	if(NOT CMAKE_SYSTEM_NAME MATCHES Windows)
 		add_definitions( -fstack-protector --param=ssp-buffer-size=4 )
 	endif()
-	
+
 elseif(CMAKE_BUILD_TYPE MATCHES Release)
 	if( PROFILE )
 		add_definitions( -O1 )
@@ -146,3 +148,16 @@ else()
 endif()
 
 target_link_libraries(sbe ${SFGUI_LIBRARY} ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${SBE_SCRIPT_LIBS} ${SFML_DEPENDENCIES})
+
+set_target_properties(sbe PROPERTIES SOVERSION ${VER_MAJOR})
+set_target_properties(sbe PROPERTIES VERSION ${VER_MAJOR}.${VER_MINOR})
+
+install(DIRECTORY include DESTINATION . COMPONENT devel)
+
+install(TARGETS sbe
+	RUNTIME DESTINATION bin
+	LIBRARY DESTINATION lib
+	ARCHIVE DESTINATION lib )
+install(FILES cmake/FindSBE.cmake DESTINATION share/cmake-2.8/Modules)
+
+

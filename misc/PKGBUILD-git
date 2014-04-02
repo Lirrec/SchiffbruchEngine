@@ -1,0 +1,38 @@
+# Maintainer: oi_wtf aka. brainpower <brainpower at gulli dot com>
+pkgname=schiffbruchengine-git
+pkgver=0.1.0.r1.gd418158
+pkgrel=1
+pkgdesc="The Schiffbruch Engine"
+arch=('i686' 'x86_64')
+url="https://github.com/Lirrec/SchiffbruchEngine"
+license=('GPL')
+depends=('sfml-git' 'sfgui-git')
+makedepends=('cmake' 'git')
+provides=('schiffbruchengine')
+conflicts=('schiffbruchengine')
+replaces=('schiffbruchengine')
+
+source=("git+https://github.com/Lirrec/SchiffbruchEngine.git")
+md5sums=('SKIP')
+options=(!ccache)
+
+pkgver() {
+  cd "${srcdir}/SchiffbruchEngine"
+  git describe --long --tags | sed -r 's/([^-]*-g)/r\1/;s/-/./g'
+}
+
+build() {
+  cd "$srcdir/SchiffbruchEngine"
+
+  cmake -DCMAKE_INSTALL_PREFIX=/usr . 
+  make
+}
+
+package() {
+  cd "$srcdir/SchiffbruchEngine"
+
+  make DESTDIR="$pkgdir/" install
+
+}
+
+# vim:set ts=2 sw=2 et:
