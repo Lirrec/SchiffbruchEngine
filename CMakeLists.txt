@@ -158,6 +158,6 @@ install(TARGETS sbe
 	RUNTIME DESTINATION bin
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib )
-install(FILES cmake/FindSBE.cmake DESTINATION share/cmake/Modules)
+install(FILES cmake/FindSBE.cmake DESTINATION share/cmake-2.8/Modules)
 
 
