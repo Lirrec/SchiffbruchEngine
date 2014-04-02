@@ -10,6 +10,11 @@ namespace sbe {
 		Affectors.push_back( A );
 	}
 
+	void ParticleSystem::addGlobalAffector(GlobalAffector GA)
+	{
+		GlobalAffectors.push_back( GA );
+	}
+
 	void ParticleSystem::generateParticles(Generator G)
 	{
 		G( Particles );
@@ -21,9 +26,14 @@ namespace sbe {
 
 		//Engine::out() << "delta: " << delta << std::endl;
 
+        for ( GlobalAffector& G : GlobalAffectors)
+            G(Particles.begin(), Particles.end(), delta);
+
 		for ( Particle& P : Particles)
 			for ( Affector& A : Affectors)
 				A(P, delta);
+
+
 
 		Rendr(Particles, Vertices);
 

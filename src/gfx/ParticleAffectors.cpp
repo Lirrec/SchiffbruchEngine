@@ -135,7 +135,13 @@ namespace sbe
 				P.position.y = P.position.y > 0 ? std::fmod(P.position.y, limits.y) : limits.y +P.position.y;
 			}
 
-			void applyMouseGravitation(Particle& P, float delta, float mass)
+
+
+		}
+
+		namespace globalaffectors
+		{
+			void applyMouseGravitation(Particle::Iterator start, Particle::Iterator end, float delta, float mass)
 			{
 				if ( sf::Mouse::isButtonPressed(sf::Mouse::Left))
 				{
@@ -143,10 +149,10 @@ namespace sbe
 					auto vpos = Engine::GetApp().mapPixelToCoords( pos, sbe::Screen::sRndr()->getLayer(1)->Cam->getView());
 					//Engine::out() << "mouseinwinPos: " << pos.x << "/" << pos.y << " - vpos: " << vpos.x << "/" << vpos.y << std::endl;
 
-					applyGravitation( P, delta, {vpos.x,vpos.y}, mass);
+                    for ( ; start != end; ++start )
+                        affectors::applyGravitation( *start, delta, {vpos.x,vpos.y}, mass);
 				}
 			}
-
 		}
 
 		namespace renderers {

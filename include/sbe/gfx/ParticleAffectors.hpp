@@ -30,9 +30,12 @@ namespace sbe
 			void collideBoxedBouncy(Particle& P,  float delta, Geom::Vec2f limits, float forceloss, float min);
 			/// performs a warp to the other side of the particle system if a particle leaves one side
 			void collideWarped(Particle& P,  float delta, Geom::Vec2f limits);
-			/// apply a gravitation if the left mouse button is clicked
-			void applyMouseGravitation( Particle& P,  float delta, float mass);
 		}
+
+        namespace globalaffectors {
+			/// apply a gravitation if the left mouse button is clicked
+			void applyMouseGravitation( Particle::Iterator start, Particle::Iterator end,  float delta, float mass);
+        }
 
 		namespace renderers {
 			/// renders a particlesystem as points
