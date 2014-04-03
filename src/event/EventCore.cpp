@@ -14,6 +14,7 @@ namespace sbe
 	{
 		RemoteEventsThisSecond = 0;
 		Instance = this;
+		justStarted = true;
 		idcount = 0;
 	}
 
@@ -77,7 +78,7 @@ namespace sbe
 	{
 		Event e("EVT_TEMP");
 
-		if (ModulesById.empty())
+		if (!justStarted && ModulesById.empty())
 		{
 			Engine::out(Engine::INFO) << "[EC] No more modules connected, shutting down, " << Module::Get()->GetName() << std::endl;
 			Module::Get()->RequestQuit();
@@ -149,6 +150,8 @@ namespace sbe
 
 		ModulesById[ newID ] 		 = m_p;
 		ModulesByName[ M.GetName() ] = m_p;
+
+        justStarted = false;
 
 		return newID;
 	}

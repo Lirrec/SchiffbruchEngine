@@ -103,7 +103,7 @@ namespace sbe
 			size_t GetQueueID( const std::string& Name);
 			void RouteEvent(size_t QueueID, const Event& e);
 			size_t idcount;
-
+            bool justStarted;
 
 			boost::shared_mutex HashMutex;
 			boost::shared_mutex QueueMutex;
