@@ -11,6 +11,7 @@ namespace sbe	{
 
 	class Particle {
 		public:
+			Particle() {};
 			Particle( Geom::Vec2f _p) : position(_p) {}
 
 			typedef std::vector<Particle>::iterator Iterator;
@@ -31,7 +32,7 @@ namespace sbe	{
 			/// the age of the particle in a range from 0 to 1
 			float age = 0;
 			/// the mass/size of the particle
-			float mass = 1;
+			float size = 1;
 	};
 
 

@@ -76,6 +76,33 @@ namespace sbe
 			vs[3].color = c; // top-right
 		}
 
+		inline sf::Vector2f rot( const sf::Vector2f in, const float r, const sf::Vector2f center = {0.f, 0.f})
+		{
+			auto cos = std::cos(r);
+			auto sin = std::sin(r);
+			auto x = in.x-center.x;
+			auto y = in.y-center.y;
+			return sf::Vector2f(x*cos + y*sin, -x*sin + y*cos) + center;
+		}
+
+		/**
+			Set the position of a quad.
+			@param coords a sf::FloatRect containing the new texture coordinates
+		*/
+		inline void rotateQuad( sf::Vertex* vs, const float radians, const sf::Vector2f center = {0.f, 0.f} )
+		{
+			// Order is important here ( vertices are added counterclockwise in opengl )
+			vs[0].position = rot( vs[0].position, radians, center );
+			vs[1].position = rot( vs[1].position, radians, center );
+			vs[2].position = rot( vs[2].position, radians, center );
+			vs[3].position = rot( vs[3].position, radians, center );
+
+			//	Engine::out() << "vs[0] " << Pos.left << " - " << Pos.top << std::endl;
+			//	Engine::out() << "vs[1] " << Pos.left+Pos.width << " - " << Pos.top << std::endl;
+			//	Engine::out() << "vs[2] " << Pos.left+Pos.width << " - " <<  Pos.top+Pos.height << std::endl;
+			//	Engine::out() << "vs[3] " << Pos.left << " - " <<  Pos.top+Pos.height << std::endl;
+		}
+
 		/**
 			Append a quad to a vertexarray. This version takes Texturecoordinates
 		*/
