@@ -95,13 +95,12 @@ namespace sbe
 
 			~Renderer() {};
 
-			/**
-				Events handled:
+			/**	Events handled:
 				Event			| 	Data
-				----------------|---------------------------------------------
-				ADD_ACTOR		|	std::shared_ptr<Actor>
-				UPDATE_ACTOR	|	std::pair<ActorID, std::shared_ptr<Actor>>
-				REMOVE_ACTOR	|	std::pair<ActorID, std::shared_ptr<Actor>>
+				----------------+---------------------------------------------
+				ADD_ACTOR		|	std::pair<std::shared_ptr<Actor>, int>
+				UPDATE_ACTOR	|	std::shared_ptr<Actor>
+				REMOVE_ACTOR	|	ActorID
 			*/
 			void HandleEvent( Event& e );
 

@@ -91,11 +91,12 @@ namespace sbe
 	{
 		if (LastStatsLog.getElapsedTime() > sf::seconds(1))
 		{
-			Module::Get()->DebugString( str(format("Tick [%s]") % Module::Get()->GetName()) , str(format(" %.2g+%.2g / %.2g") % LastTickDuration % MsToNextTick % MaxTickDuration ) );
-			Module::Get()->DebugString(str(format("FPS [%s]") % Module::Get()->GetName()),
-										str(format("%.1g")%TickCounter));
+			Module::Get()->DebugString( str(format("Tick [%s]") 		% Module::Get()->GetName()) ,
+										str(format(" %.2g+%.2g / %.2g") % LastTickDuration % MsToNextTick % MaxTickDuration ) );
+			Module::Get()->DebugString( str(format("FPS [%s]") 			% Module::Get()->GetName()),
+										str(format("%.1g")				% TickCounter));
 
-			Module::Get()->DebugString("Events [%s] " + Module::Get()->GetName(),
+			Module::Get()->DebugString( "Events [%s] " + Module::Get()->GetName(),
 										str( format("%d") % (Module::Get()->useEventQueue ?	Module::Get()->GetEventQueue()->GetEventCount() : Core::EvtCore->GetEventCount() ) ));
 
 

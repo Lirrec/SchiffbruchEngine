@@ -3,6 +3,8 @@
 
 #include "sbe/geom/Point.hpp"
 
+#include <SFML/Graphics/Color.hpp>
+
 #include <iterator>
 
 namespace sbe	{
@@ -13,9 +15,22 @@ namespace sbe	{
 
 			typedef std::vector<Particle>::iterator Iterator;
 
+			/// current velocity/speed
 			Geom::Vec2f velocity = {0,0};
+			/// current position
 			Geom::Vec2f position = {0,0};
+
+			/// the rotation of the particel in degress/radian ( not yet decided )
 			float rotation = 0;
+			/// angular velocity
+			float avelocity = 0;
+
+
+			/// the color of the particle
+			sf::Color color = sf::Color::White;
+			/// the age of the particle in a range from 0 to 1
+			float age = 0;
+			/// the mass/size of the particle
 			float mass = 1;
 	};
 

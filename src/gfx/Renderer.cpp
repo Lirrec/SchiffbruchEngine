@@ -16,13 +16,7 @@ namespace sbe
 		RegisterForEvent( "REMOVE_ACTOR" );
 	}
 
-	/*	Events handled:
-		Event			| 	Data
-		----------------+---------------------------------------------
-		ADD_ACTOR		|	std::pair<std::shared_ptr<Actor>, int>
-		UPDATE_ACTOR	|	std::shared_ptr<Actor>
-		REMOVE_ACTOR	|	ActorID
-	*/
+
 	void Renderer::HandleEvent(Event& e)
 	{
 		if ( e.Is ("ADD_ACTOR", typeid ( std::pair<std::shared_ptr<Actor>, int> )) )
