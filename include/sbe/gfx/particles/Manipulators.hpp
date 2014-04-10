@@ -2,6 +2,7 @@
 #define MANIPULATORS_HPP
 
 
+#include <sbe/Engine.hpp>
 #include <sbe/geom/PointHelpers.hpp>
 #include <sbe/geom/Point.hpp>
 #include <sbe/gfx/particles/Particle.hpp>
@@ -56,7 +57,8 @@ namespace sbe
 			/// removes all particles with an age > 1
 			void destroyOld(std::vector<Particle>& Particles, float)
 			{
-				std::remove_if(Particles.begin(), Particles.end(), [](Particle& P){ return P.age>1; });
+				auto pend = std::remove_if(Particles.begin(), Particles.end(), [](Particle& P){ return P.age > 1; });
+				Particles.erase(pend, Particles.end());
 			}
 		}
 	} // namespace particles

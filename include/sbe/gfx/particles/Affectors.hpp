@@ -34,17 +34,20 @@ namespace sbe
 			inline void applyGravitation(Particle& P, float delta, Geom::Pointf pos, float m)
 			{
 				Geom::Vec2f dist = pos - P.position;
+				if ( dist.x == 0 && dist.y == 0) return;
 
+				float accel = (P.size*m) / (Geom::length(dist)*Geom::length(dist));
+				P.velocity += Geom::normalize(dist) * (accel * delta);
+			}
+
+			/// applies a gravitational pull with linear falloff to a particle
+			inline void applyLinearGravitation(Particle& P, float delta, Geom::Pointf pos, float m)
+			{
+				Geom::Vec2f dist = pos - P.position;
 				if ( dist.x == 0 && dist.y == 0) return;
 
 				float accel = (P.size*m) / Geom::length(dist);
-				//float accel = (size*m) / (Geom::length(dist)*Geom::length(dist));
 				P.velocity += Geom::normalize(dist) * (accel * delta);
-
-				/*
-				Engine::out() << "pos: " << pos << " pos2: " << position << std::endl;
-				Engine::out() << "M1*m2: " << size << "*" << m << "; dist^2: " << dist*dist << " -- " << velocity << std::endl;
-				*/
 			}
 
 			/// applies a gravity ( down ) to a particle

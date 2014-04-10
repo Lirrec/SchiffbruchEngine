@@ -9,7 +9,7 @@ namespace sbe {
 
 	ParticleSystem::ParticleSystem()
 	{
-		Pool.InitThreads(7);
+		Pool.InitThreads(5);
 	}
 
 	ParticleSystem::~ParticleSystem()
@@ -79,12 +79,12 @@ namespace sbe {
 			Pool.runJobOnVector( Particles, j );
 		}
 
-
-
-
-		Rendr(Particles, Vertices);
-
-		Module::Get()->QueueEvent( sbe::Event("UPDATE_PARTICLE_VERTICES", Vertices), true );
+		if ( RenderTime.getElapsedTime().asSeconds() > 1/35  )
+		{
+			Rendr(Particles, Vertices);
+			Module::Get()->QueueEvent( sbe::Event("UPDATE_PARTICLE_VERTICES", Vertices), true );
+			RenderTime.restart();
+		}
 	}
 
 	sf::VertexArray& ParticleSystem::getVertices() { return Vertices; }

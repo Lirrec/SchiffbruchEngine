@@ -69,6 +69,7 @@ namespace sbe
 		private:
 			Geom::Vec2 Size;
 			sf::Clock Time;
+			sf::Clock RenderTime;
 
 			sbe::ThreadPool Pool;
 			std::vector<Particle> Particles;

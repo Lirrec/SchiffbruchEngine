@@ -9,12 +9,50 @@ namespace sbe
 {
 	namespace particles
 	{
-		/// returns a random float in range limits
-		float randomFloat(Geom::Vec2f limits);
-		/// returns a random point inside limits
-		Geom::Vec2f randomPoint(Geom::Rectf limits);
-		/// returns a random color
-		Geom::Vec2f randomColor();
+		/*template<class T>
+		class IntervallCaller
+		{
+			IntervallCaller(float callspersecond = 1, T& f, V)
+			 : F(f)
+			{
+				interval = 1/callspersecond;
+			}
+
+			void operator()(std::vector<Particle>& V, float delta)
+			{
+				accu += delta;
+				if ( accu > interval )
+				{
+					accu -= interval;
+					F(V, delta)
+				}
+			}
+
+			void operator()(Particle& P, float delta)
+			{
+				accu += delta;
+				if ( accu > interval )
+				{
+					accu -= interval;
+					F(P, delta)
+				}
+			}
+
+			void operator()(float delta)
+			{
+				accu += delta;
+				if ( accu > interval )
+				{
+					accu -= interval;
+					F(delta)
+				}
+			}
+
+			T& F;
+			float interval = 1;
+			float accu = 0;
+		};*/
+
 
 		namespace members {
 			inline Geom::Vec2f& velocity( Particle &P ) { return P.velocity; }

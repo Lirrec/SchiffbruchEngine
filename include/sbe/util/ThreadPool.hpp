@@ -46,12 +46,13 @@ namespace sbe
 		{ range_from };
 
 		/* Use the 'generate' algorithm to create portions. */
-		std::generate(begin(chunks),end(chunks),[&portion_end,portion]()
+		std::generate(begin(chunks),end(chunks),[range_from,&portion_end,portion]()
 		{
 			It portion_start
 			{ portion_end };
 
 			portion_end += portion;
+			//Engine::out() << "Chunk from " << std::distance(range_from, portion_start) << " to " << std::distance(range_from, portion_end) << std::endl;
 			return make_pair(portion_start,portion_end);
 		});
 
