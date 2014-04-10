@@ -169,10 +169,10 @@ namespace sbe
 
 		dynScaleAxes( maximas );
 		if ( g.AxisStart.x > maximas.x) g.AxisStart.x = maximas.x;
-		if ( g.AxisStart.x < 0) g.AxisStart.x = maximas.x + g.AxisStart.x;
+		//if ( g.AxisStart.x < 0) g.AxisStart.x = maximas.x + g.AxisStart.x;
 
 		if ( g.AxisStart.y > maximas.y) g.AxisStart.y = maximas.y;
-		if ( g.AxisStart.y < 0) g.AxisStart.y = maximas.y + g.AxisStart.y;
+		//if ( g.AxisStart.y < 0) g.AxisStart.y = maximas.y + g.AxisStart.y;
 
 
 		if ( g.AxisSize.x <= 0 || g.AxisSize.y <= 0)

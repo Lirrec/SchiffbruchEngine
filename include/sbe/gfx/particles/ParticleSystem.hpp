@@ -1,7 +1,8 @@
 #ifndef PARTICLESYSTEM_HPP
 #define PARTICLESYSTEM_HPP
 
-#include <sbe/gfx/Particle.hpp>
+#include <sbe/gfx/particles/Particle.hpp>
+#include <sbe/util/ThreadPool.hpp>
 
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/System/Clock.hpp>
@@ -69,6 +70,7 @@ namespace sbe
 			Geom::Vec2 Size;
 			sf::Clock Time;
 
+			sbe::ThreadPool Pool;
 			std::vector<Particle> Particles;
 			std::vector<Affector> Affectors;
 			std::vector<GlobalAffector> GlobalAffectors;

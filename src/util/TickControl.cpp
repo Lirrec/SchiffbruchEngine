@@ -64,7 +64,9 @@ namespace sbe
 
 	void TickControl::YieldTickRest()
 	{
+
 		LastTickDuration = Timer.getElapsedTime().asMilliseconds();
+		if ( TicksPerSecond == 0 ) return;
 
 		// check if we wait till next tick
 		if (LastTickDuration < MaxTickDuration)
@@ -82,8 +84,8 @@ namespace sbe
 		{
 			MsToNextTick = 0;
 			Lag += LastTickDuration - MaxTickDuration;
-//			if (LastTickDuration > MaxTickDuration*2 )
-//				Engine::out(Engine::SPAM) << "[" << Module::Get()->GetName() << "] Slow! " << str(format("[ %.2g/%.2gms, %.2gms Lag]")  % LastTickDuration % MaxTickDuration % Lag ) << std::endl;
+			//if (LastTickDuration > MaxTickDuration*2 )
+			//	Engine::out(Engine::SPAM) << "[" << Module::Get()->GetName() << "] Slow! " << str(format("[ %.2g/%.2gms, %.2gms Lag]")  % LastTickDuration % MaxTickDuration % Lag ) << std::endl;
 		}
 	}
 

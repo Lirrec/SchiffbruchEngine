@@ -1,18 +1,19 @@
-#include "sbe/gfx/ParticleSystem.hpp"
+#include "sbe/gfx/particles/ParticleSystem.hpp"
 
 #include <sbe/Module.hpp>
 #include <sbe/event/Event.hpp>
+
+#include <functional>
 
 namespace sbe {
 
 	ParticleSystem::ParticleSystem()
 	{
-
+		Pool.InitThreads(7);
 	}
 
 	ParticleSystem::~ParticleSystem()
 	{
-
 	}
 
 	void ParticleSystem::addAffector(Affector A)
@@ -62,6 +63,8 @@ namespace sbe {
 		float delta = Time.restart().asSeconds();
 
 		//Engine::out() << "delta: " << delta << std::endl;
+		Module::Get()->DebugString( "particles", std::to_string(Particles.size()));
+
 
         for ( Manipulator& E : Manipulators)
             E(Particles, delta);
@@ -69,9 +72,15 @@ namespace sbe {
         for ( GlobalAffector& G : GlobalAffectors)
             G(Particles.begin(), Particles.end(), delta);
 
-		for ( Particle& P : Particles)
-			for ( Affector& A : Affectors)
-				A(P, delta);
+		for ( Affector& A : Affectors)
+		{
+			//Engine::out() << "Affector, delta " << delta << std::endl;
+			std::function<void(Particle&)> j = std::bind(A, std::placeholders::_1, delta);
+			Pool.runJobOnVector( Particles, j );
+		}
+
+
+
 
 		Rendr(Particles, Vertices);
 

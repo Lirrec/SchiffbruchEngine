@@ -60,7 +60,15 @@ namespace sbe
 				return from + ( to - from ) * percentage;
 			}
 
-			sf::Color interpolateColor(const sf::Color from, const sf::Color to, const float percentage);
+			/**
+				Interpolates between to colors, rgb is converted to hsv to create a nicer transition
+			*/
+			sf::Color interpolateColor(const sf::Color from, const sf::Color to, float percentage);
+			/**
+				Interpolates between to colors, this is a raw rgb interpolation, may not look nice in most situations
+				@see interpolateColor()
+			*/
+			sf::Color interpolateColorRGB(const sf::Color from, const sf::Color to, float percentage);
 	}
 }
 

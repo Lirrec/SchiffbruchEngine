@@ -154,14 +154,8 @@ namespace sbe
 		*/
 		inline void UpdateQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, const Geom::Rect& coords, const int ArrayIndex)
 		{
-			sf::Vertex vs[4];
-			SetQuadPos( vs, Pos );
-			SetQuadTex( vs, coords );
-
-			vA[ ArrayIndex ] = vs[0];
-			vA[ ArrayIndex + 1 ] = vs[1];
-			vA[ ArrayIndex + 2 ] = vs[2];
-			vA[ ArrayIndex + 3 ] = vs[3];
+			SetQuadPos( &vA[ArrayIndex], Pos );
+			SetQuadTex( &vA[ArrayIndex], coords );
 		}
 
 		/**
@@ -169,15 +163,9 @@ namespace sbe
 		*/
 		inline void UpdateQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, const Geom::Rect& coords, const int ArrayIndex, sf::Color _color)
 		{
-			sf::Vertex vs[4];
-			SetQuadPos( vs, Pos );
-			SetQuadTex( vs, coords );
-			SetQuadColor( vs, _color);
-
-			vA[ ArrayIndex ] = vs[0];
-			vA[ ArrayIndex + 1 ] = vs[1];
-			vA[ ArrayIndex + 2 ] = vs[2];
-			vA[ ArrayIndex + 3 ] = vs[3];
+			SetQuadPos( &vA[ArrayIndex], Pos );
+			SetQuadTex( &vA[ArrayIndex], coords );
+			SetQuadColor( &vA[ArrayIndex], _color);
 		}
 
 		/**
@@ -185,14 +173,8 @@ namespace sbe
 		*/
 		inline void UpdateQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, const sf::Color& c, const int ArrayIndex)
 		{
-			sf::Vertex vs[4];
-			SetQuadPos( vs, Pos );
-			SetQuadColor( vs, c );
-
-			vA[ ArrayIndex ] = vs[0];
-			vA[ ArrayIndex + 1 ] = vs[1];
-			vA[ ArrayIndex + 2 ] = vs[2];
-			vA[ ArrayIndex + 3 ] = vs[3];
+			SetQuadPos( &vA[ArrayIndex], Pos );
+			SetQuadColor( &vA[ArrayIndex], c );
 		}
 
 		/**

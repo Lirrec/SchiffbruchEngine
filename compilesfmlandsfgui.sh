@@ -1,15 +1,15 @@
 #!/bin/bash
 
-sfmldir=/d/libs/sfml2_git
+sfmldir=/d/dev/libs/sfml2_git
 sfmllibs="window system graphics audio network"
 
-sfguidir=/d/libs/SFGUI
-sbedir=/d/libs/SchiffbruchEngine
-boostdir=/d/libs/boost_1_55_0
-clean=true
-static=false
+sfguidir=/d/dev/libs/SFGUI
+sbedir=/d/dev/libs/SchiffbruchEngine
+boostdir=/d/dev/libs/boost_1_55_0
+clean=false
+static=true
 
-dlldir=/d/lib/
+dlldir=/d/dev/lib/
 
 if [ $# -ge 1 ]; then
 	if [[ $1 != "false" && $1 != "true" ]]; then
@@ -158,7 +158,7 @@ cleanbuild
 echo 
 echo "-- BUILDING SFGUI --"
 echo
-cmake -G"MSYS Makefiles" -DSFML_STATIC_LIBRARIES=$static -DCMAKE_MODULE_PATH="$sfmldir/cmake/Modules/" -DSFML_ROOT="$sfmldir" -DSFGUI_BUILD_EXAMPLES=false -DSFGUI_BUILD_SHARED_LIBS=$shared ..
+cmake -G"MSYS Makefiles" -DSFML_STATIC_LIBRARIES=$static -DCMAKE_MODULE_PATH="$sfmldir/cmake/Modules/" -DSFML_ROOT="$sfmldir" -DSFGUI_BUILD_EXAMPLES=false -DSFGUI_BUILD_SHARED_LIBS=$shared -DGLEW_INCLUDE_PATH=$sfmldir/extlibs/headers -DGLEW_LIBRARY=$sfmldir/extlibs/libs-mingw/x86/libglew.a ..
 echo "---------------------------"
 make -j8
 #sfgui doesn't seem to name the static .a correctly
