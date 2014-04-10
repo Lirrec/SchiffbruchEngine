@@ -22,7 +22,7 @@ namespace sbe
 	{
 		public:
 			/// fills a vertexarray with a graphical representation particles
-			typedef std::function< void(std::vector<Particle>&, sf::VertexArray&) > Renderer;
+			typedef std::function< void(Particle&, sf::Vertex*) > Renderer;
 			/// makes some kind of computation on a Particle
 			typedef std::function< void(Particle&, float) > Affector;
 			/// makes some kind of computation on all Particles ( allows interaction )
@@ -39,8 +39,8 @@ namespace sbe
 			/// indicate to the ParticleSystem how often simulateStep will be called each second
 			void setFps( int f ) { fps = f; }
 
-			/// use the given Renderer  to generate the Vertexarray
-			void setRenderer( Renderer R );
+			/// use the given Renderer  to generate the Vertexarray, the renderer has to use exactly partverts vertices per particle
+			void setRenderer( Renderer R, unsigned int partverts, sf::PrimitiveType primtype );
 			/// add an Affector and run it every frame on all Particles
 			void addAffector( Affector A );
 			/// add a GlobalAffector and run it every frame
@@ -67,6 +67,9 @@ namespace sbe
 			sf::VertexArray& getVertices();
 
 		private:
+
+			void runRenderJob();
+
 			Geom::Vec2 Size;
 			sf::Clock Time;
 			sf::Clock RenderTime;
@@ -77,8 +80,10 @@ namespace sbe
 			std::vector<GlobalAffector> GlobalAffectors;
 			std::vector<Manipulator> Manipulators;
 			Renderer Rendr;
+			unsigned int particleverts = 0;
 
-			int fps = 60;
+			unsigned int fps = 60;
+
 
 			sf::VertexArray Vertices;
 	};

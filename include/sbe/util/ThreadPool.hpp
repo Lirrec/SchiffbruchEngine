@@ -64,6 +64,9 @@ namespace sbe
 		return chunks;
 	}
 
+	std::vector<std::pair<std::ptrdiff_t,std::ptrdiff_t>> chunkInts(const unsigned int total, const std::ptrdiff_t threads);
+
+
 	class ThreadPool
 	{
 		public:
@@ -80,17 +83,22 @@ namespace sbe
 				Set the number of required threads with InitThreads() before calling this.
 			*/
 			template<typename T>
-			void runJobOnVector(std::vector<T>& Objects, std::function<void(T&)>& J)
+			void runVectorJob(std::vector<T>& Objects)
 			{
 				if (numThreads == 0) {
 					Engine::out() << "[ThreadPool] Can't run job, no threads initialized!" << std::endl;
 					return;
 				}
 
+				ranges = chunk(Objects.begin(), Objects.end(), numThreads);
+				runJob();
+			}
+
+			template<typename T>
+			void setVectorJob( std::function<void(T&)>& J )
+			{
 				typedef typename std::vector<T>::iterator It;
 				typedef std::pair<It,It> range_t;
-
-				ranges = chunk(Objects.begin(), Objects.end(), numThreads);
 
 				Job = [this, J]( int tid ) -> void {
 					auto r = boost::any_cast<std::vector<range_t>>(ranges);
@@ -99,10 +107,14 @@ namespace sbe
 						J(*it);
 						//Engine::out() << it->position << std::endl;
 				};
-
-				runJob();
 			}
 
+			void setCustomJob( std::function<void(boost::any&, int)>& J )
+			{
+				Job = std::bind(J, std::ref(ranges), std::placeholders::_1);
+			}
+
+			void runCustomJob(const boost::any& data);
 
 		private:
 

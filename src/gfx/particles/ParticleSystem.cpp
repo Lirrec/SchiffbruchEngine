@@ -21,8 +21,10 @@ namespace sbe {
 		Affectors.push_back( A );
 	}
 
-	void ParticleSystem::setRenderer(Renderer R)
+	void ParticleSystem::setRenderer(Renderer R, unsigned int partverts, sf::PrimitiveType primtype)
 	{
+		Vertices.setPrimitiveType( primtype );
+		particleverts = partverts;
 		Rendr = R;
 	}
 	void ParticleSystem::addManipulator(Manipulator M)
@@ -63,7 +65,6 @@ namespace sbe {
 		float delta = Time.restart().asSeconds();
 
 		//Engine::out() << "delta: " << delta << std::endl;
-		Module::Get()->DebugString( "particles", std::to_string(Particles.size()));
 
 
         for ( Manipulator& E : Manipulators)
@@ -76,15 +77,37 @@ namespace sbe {
 		{
 			//Engine::out() << "Affector, delta " << delta << std::endl;
 			std::function<void(Particle&)> j = std::bind(A, std::placeholders::_1, delta);
-			Pool.runJobOnVector( Particles, j );
+			Pool.setVectorJob( j );
+			Pool.runVectorJob( Particles );
 		}
 
 		if ( RenderTime.getElapsedTime().asSeconds() > 1/35  )
 		{
-			Rendr(Particles, Vertices);
-			Module::Get()->QueueEvent( sbe::Event("UPDATE_PARTICLE_VERTICES", Vertices), true );
-			RenderTime.restart();
+			Module::Get()->DebugString( "particles", std::to_string(Particles.size()));
+			runRenderJob();
 		}
+	}
+
+	void ParticleSystem::runRenderJob()
+	{
+		Vertices.resize( particleverts*Particles.size() );
+
+		std::function<void(boost::any&, int)> Job = [&](boost::any& data, int tid)
+		{
+			auto range = boost::any_cast< std::vector<std::pair<std::ptrdiff_t,std::ptrdiff_t>> >(data);
+			auto from = range[tid].first;
+			auto to = range[tid].second;
+
+			for (unsigned int i = from; i != to; ++i)
+				Rendr( Particles[i], &(Vertices[i*particleverts]) );
+		};
+
+		Pool.setCustomJob( Job );
+		std::vector<std::pair<std::ptrdiff_t,std::ptrdiff_t>> chunks = chunkInts(Particles.size(), 5);
+		Pool.runCustomJob( boost::any(chunks) );
+
+		Module::Get()->QueueEvent( sbe::Event("UPDATE_PARTICLE_VERTICES", Vertices), true );
+		RenderTime.restart();
 	}
 
 	sf::VertexArray& ParticleSystem::getVertices() { return Vertices; }
