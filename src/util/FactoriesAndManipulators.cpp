@@ -127,8 +127,9 @@ namespace sbe
 			hsv.h = interpolateFloat( fromhsv.h, tohsv.h, percentage );
 			hsv.s = interpolateFloat( fromhsv.s, tohsv.s, percentage );
 			hsv.v = interpolateFloat( fromhsv.v, tohsv.v, percentage );
-
-			return HsvToRgb(hsv);
+			sf::Color re = HsvToRgb(hsv);
+			re.a = interpolateInt( from.a, to.a, percentage );
+			return re;
 		}
 
 		sf::Color interpolateColorRGB(const sf::Color from, const sf::Color to, float percentage)
@@ -137,7 +138,8 @@ namespace sbe
 			return sf::Color(
 				interpolateInt( from.r, to.r, percentage ),
 				interpolateInt( from.g, to.g, percentage ),
-				interpolateInt( from.b, to.b, percentage )
+				interpolateInt( from.b, to.b, percentage ),
+				interpolateInt( from.a, to.a, percentage )
 			);
 		}
 
