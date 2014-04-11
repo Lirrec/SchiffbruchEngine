@@ -20,6 +20,11 @@ namespace sbe
 		return arr;
 	}
 
+	sf::Drawable& DrawableActor::getDrawable()
+	{
+		return *d;
+	}
+
 	AnimationActor::AnimationActor( ImageSet& ImgSet)
 	 : Anim( ImgSet )
 	{

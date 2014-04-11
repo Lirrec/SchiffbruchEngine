@@ -1,6 +1,7 @@
 #ifndef PARTICLESYSTEM_HPP
 #define PARTICLESYSTEM_HPP
 
+#include <sbe/event/EventUser.hpp>
 #include <sbe/gfx/particles/Particle.hpp>
 #include <sbe/util/ThreadPool.hpp>
 
@@ -18,9 +19,13 @@ namespace sbe
 		A simple ParticleSystem. It uses functional composition to manage particle generators, particle affectors and a renderer to create and animate a particlesystem
 
 	*/
-	class ParticleSystem
+	class ParticleSystem : public EventUser
 	{
 		public:
+
+			void HandleEvent(Event& e);
+
+
 			/// fills a vertexarray with a graphical representation particles
 			typedef std::function< void(Particle&, sf::Vertex*) > Renderer;
 			/// makes some kind of computation on a Particle
@@ -76,6 +81,8 @@ namespace sbe
 
 			sbe::ThreadPool Pool;
 			std::vector<Particle> Particles;
+
+
 			std::vector<Affector> Affectors;
 			std::vector<GlobalAffector> GlobalAffectors;
 			std::vector<Manipulator> Manipulators;
@@ -85,7 +92,9 @@ namespace sbe
 			unsigned int fps = 60;
 
 
-			sf::VertexArray Vertices;
+			std::shared_ptr<sf::VertexArray> Vertices[2];
+			bool firstverts = false;
+			bool waitingforconfirmation = false;
 	};
 
 }

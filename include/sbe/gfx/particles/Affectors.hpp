@@ -157,7 +157,7 @@ namespace sbe
 			}
 
 			template<typename T>
-			void set( Particle& P, float delta, std::function<T&(Particle&)> member, std::function<T(float)> value )
+			void set( Particle& P, float delta, std::function<T&(Particle&)> member, std::function<T(float)>& value )
 			{
 				member(P) = value(delta);
 			}

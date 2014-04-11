@@ -70,19 +70,33 @@ namespace sbe
 
 	void ThreadPool::StopThreads()
 	{
-		threads->interrupt_all();
-		threads->join_all();
-		numThreads = 0;
+		try {
+			threads->interrupt_all();
+			threads->join_all();
+			numThreads = 0;
+		}
+		catch ( ... )
+		{
+			//Engine::out() << "exception: " << e.what()  <<std::endl;
+			Engine::out() << "exception: " << std::endl;
+		}
 	}
 
 	/// thread entry point
 	void ThreadPool::threadentry(int tid)
 	{
-		while ( !boost::this_thread::interruption_requested() )
+		try {
+			while ( !boost::this_thread::interruption_requested() )
+			{
+				startBarrier->wait();
+				Job(tid);
+				endBarrier->wait();
+			}
+		}
+		catch ( ... )
 		{
-			startBarrier->wait();
-			Job(tid);
-			endBarrier->wait();
+			Engine::out() << "Thread " << tid << " interrupted." << std::endl;
+			return;
 		}
 	}
 

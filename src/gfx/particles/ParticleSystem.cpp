@@ -9,11 +9,25 @@ namespace sbe {
 
 	ParticleSystem::ParticleSystem()
 	{
+		Vertices[0].reset ( new sf::VertexArray );
+		Vertices[1].reset ( new sf::VertexArray );
+
 		Pool.InitThreads(5);
 	}
 
 	ParticleSystem::~ParticleSystem()
 	{
+		Module::Get()->QueueEvent( "DESTROY_PARTICLES", true );
+		Pool.StopThreads();
+	}
+
+	void ParticleSystem::HandleEvent(Event& e)
+	{
+		if ( e.Is("VERTICES_RECEIVED"))
+		{
+			waitingforconfirmation = false;
+			firstverts = !firstverts;
+		}
 	}
 
 	void ParticleSystem::addAffector(Affector A)
@@ -23,10 +37,11 @@ namespace sbe {
 
 	void ParticleSystem::setRenderer(Renderer R, unsigned int partverts, sf::PrimitiveType primtype)
 	{
-		Vertices.setPrimitiveType( primtype );
+		getVertices().setPrimitiveType( primtype );
 		particleverts = partverts;
 		Rendr = R;
 	}
+
 	void ParticleSystem::addManipulator(Manipulator M)
 	{
 		Manipulators.push_back(M);
@@ -81,16 +96,17 @@ namespace sbe {
 			Pool.runVectorJob( Particles );
 		}
 
-		if ( RenderTime.getElapsedTime().asSeconds() > 1/35  )
+		if ( !waitingforconfirmation && RenderTime.getElapsedTime().asSeconds() > 1/35  )
 		{
 			Module::Get()->DebugString( "particles", std::to_string(Particles.size()));
+			RenderTime.restart();
 			runRenderJob();
 		}
 	}
 
 	void ParticleSystem::runRenderJob()
 	{
-		Vertices.resize( particleverts*Particles.size() );
+		getVertices().resize( particleverts*Particles.size() );
 
 		std::function<void(boost::any&, int)> Job = [&](boost::any& data, int tid)
 		{
@@ -99,18 +115,17 @@ namespace sbe {
 			auto to = range[tid].second;
 
 			for (unsigned int i = from; i != to; ++i)
-				Rendr( Particles[i], &(Vertices[i*particleverts]) );
+				Rendr( Particles[i], &(getVertices()[i*particleverts]) );
 		};
 
 		Pool.setCustomJob( Job );
 		std::vector<std::pair<std::ptrdiff_t,std::ptrdiff_t>> chunks = chunkInts(Particles.size(), 5);
 		Pool.runCustomJob( boost::any(chunks) );
 
-		Module::Get()->QueueEvent( sbe::Event("UPDATE_PARTICLE_VERTICES", Vertices), true );
-		RenderTime.restart();
+		Module::Get()->QueueEvent( sbe::Event("UPDATE_PARTICLE_VERTICES", Vertices[firstverts]), true );
 	}
 
-	sf::VertexArray& ParticleSystem::getVertices() { return Vertices; }
+	sf::VertexArray& ParticleSystem::getVertices() { return *(Vertices[firstverts]); }
 
 
 }

@@ -58,6 +58,16 @@ namespace sbe
 	};
 
 	/**
+		An Actor holding a sf::VertexArray
+	*/
+	class DrawableActor : public Actor
+	{
+		public:
+			sf::Drawable& getDrawable();
+			std::shared_ptr<sf::Drawable> d;
+	};
+
+	/**
 		An Actor holding an AnimatedSprite
 	*/
 	class AnimationActor : public Actor {
