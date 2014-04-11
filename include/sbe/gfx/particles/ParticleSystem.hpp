@@ -42,7 +42,8 @@ namespace sbe
 			~ParticleSystem();
 
 			/// indicate to the ParticleSystem how often simulateStep will be called each second
-			void setFps( int f ) { fps = f; }
+			void setFps( unsigned int f ) { fps = f; }
+			void setCores( unsigned int f );
 
 			/// use the given Renderer  to generate the Vertexarray, the renderer has to use exactly partverts vertices per particle
 			void setRenderer( Renderer R, unsigned int partverts, sf::PrimitiveType primtype );
@@ -90,6 +91,7 @@ namespace sbe
 			unsigned int particleverts = 0;
 
 			unsigned int fps = 60;
+			unsigned int cores = 2;
 
 
 			std::shared_ptr<sf::VertexArray> Vertices[2];

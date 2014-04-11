@@ -12,13 +12,19 @@ namespace sbe {
 		Vertices[0].reset ( new sf::VertexArray );
 		Vertices[1].reset ( new sf::VertexArray );
 
-		Pool.InitThreads(5);
+		Pool.InitThreads(cores);
 	}
 
 	ParticleSystem::~ParticleSystem()
 	{
 		Module::Get()->QueueEvent( "DESTROY_PARTICLES", true );
 		Pool.StopThreads();
+	}
+
+	void ParticleSystem::setCores(unsigned int f)
+	{
+		cores = f;
+		Pool.InitThreads(f);
 	}
 
 	void ParticleSystem::HandleEvent(Event& e)
@@ -119,7 +125,7 @@ namespace sbe {
 		};
 
 		Pool.setCustomJob( Job );
-		std::vector<std::pair<std::ptrdiff_t,std::ptrdiff_t>> chunks = chunkInts(Particles.size(), 5);
+		std::vector<std::pair<std::ptrdiff_t,std::ptrdiff_t>> chunks = chunkInts(Particles.size(), cores);
 		Pool.runCustomJob( boost::any(chunks) );
 
 		Module::Get()->QueueEvent( sbe::Event("UPDATE_PARTICLE_VERTICES", Vertices[firstverts]), true );
