@@ -13,4 +13,8 @@
 
 # CMake related files
 build
+build.*
 CMakeFiles
+
+# doc output
+doc
