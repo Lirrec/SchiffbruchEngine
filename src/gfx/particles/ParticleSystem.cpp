@@ -13,6 +13,8 @@ namespace sbe {
 		Vertices[1].reset ( new sf::VertexArray );
 
 		Pool.InitThreads(cores);
+
+		RegisterForEvent("PARTICLES_RECEIVED");
 	}
 
 	ParticleSystem::~ParticleSystem()
