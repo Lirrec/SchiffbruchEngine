@@ -87,8 +87,8 @@ function cleanbuild()
 
 function createsymlink()
 {
-	rm $1
-	cmd /c "mklink $1 $2\\$1"
+	rmdir $1
+	cmd /c "mklink /J $1 $2"
 }
 
 function createsfmlsymlinks()
@@ -96,28 +96,9 @@ function createsfmlsymlinks()
 	echo 
 	echo "-- Symlinking SFML --"
 	echo
-
 	cd $sfmldir
-	
-	if [ $static = "true" ]; then
-		rmdir lib
-		cmd /c 'mklink /D lib extlibs\\libs-mingw\\x86\\ '
-		createsymlink libsfml-main.a build\\lib
-		
-		for lib in $sfmllibs; do
-			createsymlink libsfml-$lib-s.a build\\lib
-		done
-	else
-		rmdir lib
-		cmd /c 'mklink /D lib extlibs\\libs-mingw\\x86\\ '
-		createsymlink libsfml-main.a build\\lib
-		
-		for lib in $sfmllibs; do
-			createsymlink libsfml-$lib.a build\\lib
-			createsymlink sfml-$lib-2.dll build\\lib
-		done
-	fi
-	
+	createsymlink lib "extlibs\\libs-mingw\\x86\\"
+	createsymlink lib64 "build\\lib"
 	echo
 }
 
@@ -126,61 +107,65 @@ function createsfguisymlinks()
 	echo 
 	echo "-- Symlinking SFGUI --"
 	echo
-	
 	cd $sfguidir
-	if [ $static = "true" ]; then
-		rmdir lib
-		cmd /c 'mklink /D lib build '
-		echo
-	else
-		rmdir lib
-		cmd /c 'mklink /D lib build '
-	fi
-	
+	createsymlink lib build
+	echo
 	echo
 }
 
-cd $sfmldir
-echo 
-echo "-- BUILDING SFML --"
-echo 
-cleanbuild
-cmake -G"MSYS Makefiles" -DBUILD_SHARED_LIBS=$shared ..
-echo "---------------------------"
-make -j8
-createsfmlsymlinks
+function buildsfml()
+{
+	cd $sfmldir
+	echo 
+	echo "-- BUILDING SFML --"
+	echo 
+	cleanbuild
+	cmake -G"MSYS Makefiles" -DBUILD_SHARED_LIBS=$shared ..
+	echo "---------------------------"
+	make -j8
+	createsfmlsymlinks
 
-echo
-echo "-- BUILT SFML --"
+	echo
+	echo "-- BUILT SFML --"
+}
 
-cd $sfguidir
-cleanbuild
-echo 
-echo "-- BUILDING SFGUI --"
-echo
-cmake -G"MSYS Makefiles" -DSFML_STATIC_LIBRARIES=$static -DCMAKE_MODULE_PATH="$sfmldir/cmake/Modules/" -DSFML_ROOT="$sfmldir" -DSFGUI_BUILD_EXAMPLES=false -DSFGUI_BUILD_SHARED_LIBS=$shared -DGLEW_INCLUDE_PATH=$sfmldir/extlibs/headers -DGLEW_LIBRARY=$sfmldir/extlibs/libs-mingw/x86/libglew.a ..
-echo "---------------------------"
-make -j8
-#sfgui doesn't seem to name the static .a correctly
-[ $static = "true" ] && cp sfgui.a sfgui-s.a
-createsfguisymlinks
+function buildsfgui()
+{
+	cd $sfguidir
+	cleanbuild
+	echo 
+	echo "-- BUILDING SFGUI --"
+	echo
+	cmake --debug-trycompile -G"MSYS Makefiles" -DSFML_STATIC_LIBRARIES=$static -DCMAKE_MODULE_PATH="$sfmldir/cmake/Modules/" -DSFML_ROOT="$sfmldir" -DSFGUI_BUILD_EXAMPLES=false -DSFGUI_BUILD_SHARED_LIBS=$shared -DGLEW_INCLUDE_PATH=$sfmldir/extlibs/headers -DGLEW_LIBRARY=$sfmldir/extlibs/libs-mingw/x86/libglew.a ..
+	echo "---------------------------"
+	make -j8
+	#sfgui doesn't seem to name the static .a correctly
+	#[ $static = "true" ] && cp sfgui.a sfgui-s.a
+	createsfguisymlinks
 
-echo
-echo "-- BUILT SFGUI --"
+	echo
+	echo "-- BUILT SFGUI --"
+}
 
+function buildsbe()
+{
+	cd $sbedir
+	echo 
+	echo "-- BUILDING SBE --"
+	echo 
+	cleanbuild
+	cmake --debug-trycompile -G"MSYS Makefiles" -DBOOST_ROOT="$boostdir" -DSFGUI_ROOT="$sfguidir" -DSFML_ROOT="$sfmldir" -DBUILD_SHARED_LIBS=$shared -DSFGUI_STATIC_LIBRARIES=$static -DSFML_STATIC_LIBRARIES=$static ..
+	echo "---------------------------"
+	make -j8
 
-cd $sbedir
-echo 
-echo "-- BUILDING SBE --"
-echo 
-cleanbuild
-cmake -G"MSYS Makefiles" -DBOOST_ROOT="$boostdir" -DSFGUI_ROOT="$sfguidir" -DSFML_ROOT="$sfmldir" -DBUILD_SHARED_LIBS=$shared -DSFGUI_STATIC_LIBRARIES=$static -DSFML_STATIC_LIBRARIES=$static ..
-echo "---------------------------"
-make -j8
+	echo
+	echo "-- BUILT SBE --"
+}
 
-echo
-echo "-- BUILT SBE --"
-
+summary
+buildsfml
+buildsfgui
+buildsbe
 [ $shared = "true" ] && collectdlls
 
 summary

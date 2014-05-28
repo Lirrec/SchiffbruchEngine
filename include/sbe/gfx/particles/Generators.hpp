@@ -6,6 +6,8 @@
 #include <sbe/geom/Point.hpp>
 #include <sbe/gfx/particles/Particle.hpp>
 
+#include <sbe/util/FactoriesAndManipulators.hpp>
+
 #include <random>
 #include <vector>
 namespace sbe
@@ -14,13 +16,9 @@ namespace sbe
 	{
 		namespace generators {
 			/// generates particles on a grid
-			void generateGrid( std::vector<Particle>& Particles, Geom::Vec2 Size, Geom::Vec2 Count )
+			void generateGrid( std::vector<Particle>& Particles, Geom::Vec2 Size, Geom::Vec2 Count, Geom::Vec2f particlesizelimits )
 			{
 				Particles.clear();
-
-				std::random_device rd;
-				std::default_random_engine e1(rd());
-				std::uniform_int_distribution<int> uniform_dist(0, 255);
 
 				Geom::Vec2f steps { Size.x/(float)Count.x, Size.y/(float)Count.y };
 
@@ -33,8 +31,8 @@ namespace sbe
 					{
 						pos.y += steps.y;
 						Particle P( pos );
-						P.size = 1.0f + (uniform_dist(e1)/255.0f)/10.0f;
-						P.color = sf::Color( uniform_dist(e1), uniform_dist(e1), uniform_dist(e1) );
+						P.size = factories::randomFloat(particlesizelimits);
+						P.color = sf::Color::White;
 						Particles.push_back( P );
 						//Engine::out() << "Creating particle at: " << x << "," << y << std::endl;
 					}
