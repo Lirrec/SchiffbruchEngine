@@ -64,9 +64,23 @@ namespace sbe
 			Example:
 			@code
 
-			// somewhere in your class' code (constructor/ init)
-			RegisterForEvent("EVT_MY_EVT")
+			// the simple version with lambda callback
+			RegisterForEvent("EVT_MY_EVT1", [](Event& e) {
+								// your handling code here
+			});
 
+			// member function callback,
+			// you have to use two lines so the  compiler will be able to
+			// deduct the correct types ( at least on gcc 4.8 a single line won't work )
+			Eventhandler e = std::bind( &MyClass::member1, this );
+			RegisterForEvent("EVT_MY_EVT2", e );
+
+			// the verbose way, implement the HandleEvent method.
+			// somewhere in your class' code (constructor/ init)
+			RegisterForEvent("EVT_MY_EVT");
+
+
+			// implement the HandleEvent function
 			myClass::HandleEvent( Event& e )
 			{
 				// check event type and data ( second parameter is optional )
@@ -79,9 +93,9 @@ namespace sbe
 			@endcode
 
 			Receiving Events:
-			To receive events a class has to inherit EventUser and implement EventUser::HandleEvent(),
+			To receive events a class has to inherit EventUser,
 			Then register for the Events it is interested in by calling this->RegisterForEvent() ( inherited from EventUser::RegisterForEvent() )
-			Once an Event occurs for which the EventUser is registered its HandleEvent() will be called with the corresponding Event.
+			Once an Event occurs for which the EventUser is registered either the callback given as parameter to RegisterForEvent is called or the HandleEvent() method will be called with the corresponding Event.
 
 
 
