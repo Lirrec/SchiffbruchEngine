@@ -34,7 +34,6 @@ namespace sbe
                         const std::string &okEvent="FB_OK", const std::string &cancelEvent="FB_CANCEL");
             virtual ~FileBrowse() = default;
 
-            virtual void HandleEvent( Event& e);
 
 			/** Set the FileBrowsers window title */
             void setTitle(const std::string &t);
@@ -59,6 +58,11 @@ namespace sbe
             void show();
             /** hide the filebrowsers window */
             void hide();
+
+
+		protected:
+           void HandleEvent( Event& e) override;
+
 
         private:
             void CreateWindow(const Geom::Vec2 Size, const std::string &title);

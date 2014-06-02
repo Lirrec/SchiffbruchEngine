@@ -12,11 +12,11 @@ namespace sbe
 
 	/*
 
-	class SFMLEventBinder : SFMLEventUser
+	class SFMLEventBinder : public SFMLEventUser
 	{
 		public:
 			SFMLEventBinder( sf::Event::EventType trigger, std::function< void(sf::Event&) > action);
-			virtual void HandleEvent ( sf::Event& e );
+			void HandleEvent ( sf::Event& e ) override;
 			virtual ~SFMLEventBinder() {};
 
 		private:
@@ -33,7 +33,6 @@ namespace sbe
 	{
 		public:
 			EventBinder( const std::string& trigger, std::function< void(const Event&) > _action);
-			virtual void HandleEvent ( Event& e );
 			virtual ~EventBinder() {};
 
 		private:

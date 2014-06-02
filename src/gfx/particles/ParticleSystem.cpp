@@ -14,7 +14,10 @@ namespace sbe {
 
 		Pool.InitThreads(cores);
 
-		RegisterForEvent("PARTICLES_RECEIVED");
+		RegisterForEvent("PARTICLES_RECEIVED", [this](Event& e){
+			waitingforconfirmation = false;
+			firstverts = !firstverts;
+		});
 	}
 
 	ParticleSystem::~ParticleSystem()
@@ -27,15 +30,6 @@ namespace sbe {
 	{
 		cores = f;
 		Pool.InitThreads(f);
-	}
-
-	void ParticleSystem::HandleEvent(Event& e)
-	{
-		if ( e.Is("VERTICES_RECEIVED"))
-		{
-			waitingforconfirmation = false;
-			firstverts = !firstverts;
-		}
 	}
 
 	void ParticleSystem::addAffector(Affector A)

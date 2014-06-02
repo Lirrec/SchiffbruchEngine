@@ -33,7 +33,7 @@ namespace sbe
 			 */
 			virtual bool RunFile(const std::string& path) = 0;
 
-			void HandleEvent(Event& e);
+
 
 			/**
 				Shuts the scripting runtime down and cleans up
@@ -41,7 +41,8 @@ namespace sbe
 			virtual void deinit() = 0;
 
 
-
+		protected:
+			void HandleEvent(Event& e) override;
 	};
 
 } // namespace sbe

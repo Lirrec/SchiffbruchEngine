@@ -22,10 +22,6 @@ namespace sbe
 	class ParticleSystem : public EventUser
 	{
 		public:
-
-			void HandleEvent(Event& e);
-
-
 			/// fills a vertexarray with a graphical representation particles
 			typedef std::function< void(Particle&, sf::Vertex*) > Renderer;
 			/// makes some kind of computation on a Particle

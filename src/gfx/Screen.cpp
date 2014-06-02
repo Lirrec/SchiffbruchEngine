@@ -26,8 +26,9 @@ namespace sbe
 		Instance = this;
 
 		EvtConv.reset( new SFMLEventConverter() );
-		RegisterForEvent( "EVT_FRAME" );
-		RegisterForEvent( "EVT_QUIT" );
+		RegisterForEvent( "EVT_FRAME", [this](Event&){  Render();  });
+		RegisterForEvent( "EVT_QUIT", [this](Event&){  Module::Get()->RequestQuit();  });
+
 		RegisterForEvent( "WINDOW_RESIZE" );
 		RegisterForEvent( "SCREEN_ADD_WINDOW" );
 		RegisterForEvent( "SCREEN_REMOVE_WINDOW" );
@@ -141,11 +142,7 @@ namespace sbe
 
 	void Screen::HandleEvent(Event& e)
 	{
-		if (e.Is("EVT_FRAME"))
-		{
-			Render();
-		}
-		else if(e.Is("WINDOW_RESIZE"))
+		if(e.Is("WINDOW_RESIZE"))
 		{
 			float xzoom = Cam->getTargetSize().x / Engine::GetApp().getSize().x;
 			float yzoom = Cam->getTargetSize().y / Engine::GetApp().getSize().y;
@@ -193,10 +190,6 @@ namespace sbe
 
 			Engine::out() << "[Screen] Removing Window '" << P->GetTitle().toAnsiString() << "'" << std::endl;
 			Desktop->Remove(P);
-		}
-		else if (e.Is("EVT_QUIT"))
-		{
-			Module::Get()->RequestQuit();
 		}
 	}
 

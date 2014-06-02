@@ -31,8 +31,6 @@ namespace sbe
 		public:
 			SFMLEventConverter();
 
-			void HandleEvent( Event& e );
-
 			void HandleSfmlEvent ( const sf::Event& e);
 
 			/// This defines the event which is sent, once a conversion matches.
@@ -91,6 +89,9 @@ namespace sbe
 				@return the number of bindings read from the config file
 			*/
 			int LoadKeyBindingsFromConfig(const std::string& root = "keys.KeyEventBindings");
+
+		protected:
+			void HandleEvent( Event& e ) override;
 
 		private:
 			ConvEvt CreateConversion( const std::string& EvtName, bool sendglobal, boost::any Data );

@@ -95,15 +95,6 @@ namespace sbe
 
 			~Renderer() {};
 
-			/**	Events handled:
-				Event			| 	Data
-				----------------+---------------------------------------------
-				ADD_ACTOR		|	std::pair<std::shared_ptr<Actor>, int>
-				UPDATE_ACTOR	|	std::shared_ptr<Actor>
-				REMOVE_ACTOR	|	ActorID
-			*/
-			void HandleEvent( Event& e );
-
 			// - Render Interface -
 			/**
 				Render all active Layers to the given RenderTarget and use Camera C
@@ -169,6 +160,16 @@ namespace sbe
 				@param ID the ID of the Actor to remove
 			*/
 			void removeActor( const ActorID& ID );
+
+		protected:
+			/**	Events handled:
+				Event			| 	Data
+				----------------+---------------------------------------------
+				ADD_ACTOR		|	std::pair<std::shared_ptr<Actor>, int>
+				UPDATE_ACTOR	|	std::shared_ptr<Actor>
+				REMOVE_ACTOR	|	ActorID
+			*/
+			void HandleEvent( Event& e ) override;
 
 		private:
 

@@ -46,8 +46,6 @@ namespace sbe
             const std::string& getTitle() { return Title_; }
 
             void Close();
-
-			void HandleEvent( Event& e);
 		private:
 			void MakeOkMessage();
 			void MakeModalMessage();
