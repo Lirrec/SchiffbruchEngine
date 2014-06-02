@@ -100,13 +100,24 @@ namespace sbe
 	class Event
 	{
 		public:
+			typedef boost::any EventData;
+			typedef HashedString::HashType EventType;
 
 			/**
-				Constructor. Takes the Name of the Event as String and an optional source uuid ( currently not used ).
+				Constructor. Takes the Name of the Event as String
 			*/
 			Event( const std::string& EventName);
+			/**
+				Constructor. Takes the Name of the Event as String and a boost::any as data
+			*/
 			Event( const std::string& EventName, const boost::any& _Data );
 
+			/** returns the Eventtype( = Hash) of a given eventname ( string ) */
+			static Event::EventType hashName( const std::string& EventName);
+
+			/**
+				Constructor. Takes the Name of the Event as String and anything as data
+			*/
 			template < class T >
 			Event( const std::string& EventName, const T& _Data )
 			{
@@ -114,9 +125,6 @@ namespace sbe
 			}
 
 
-
-			typedef boost::any EventData;
-			typedef HashedString::HashType EventType;
 
 			/// Sets an arbitrary Type as data
 			template < class T >

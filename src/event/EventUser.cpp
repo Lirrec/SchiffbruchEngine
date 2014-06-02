@@ -36,8 +36,35 @@ namespace sbe
 		Module::Get()->GetEventQueue()->RegisterEventUser(this, EvtName, priority);
 	}
 
+	void EventUser::RegisterForEvent(const std::string& EvtName, const EventHandler& Handler, int priority)
+	{
+		RegisterForEvent(EvtName, priority);
+		Callbacks[ Event::hashName(EvtName) ] = Handler;
+	}
+
+	void EventUser::RegisterForEvent(const Event::EventType& EvtType, const EventHandler& Handler, int priority)
+	{
+		RegisterForEvent(EvtType, priority);
+		Callbacks[ EvtType ] = Handler;
+	}
+
+	void EventUser::RealHandleEvent(Event& e)
+	{
+		Engine::out() << "Got "  << e.getDebugName() << " hash: " << e.getEventType() << std::endl;
+
+		auto it = Callbacks.find(e.getEventType());
+		if ( it != Callbacks.end() )
+            ((*it).second)(e);
+		else
+			HandleEvent(e);
+	}
+
 	void EventUser::UnregisterThis()
 	{
-		// not implemented
+		if (Module::Get())
+		{
+			Module::Get()->GetEventQueue()->RemoveEventUser(this);
+			Callbacks.clear();
+		}
 	}
 } // namespace sbe
