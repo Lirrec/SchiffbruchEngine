@@ -46,8 +46,6 @@ namespace sbe
 		private:
 			void CreateWindow( const Geom::Point& RelativePosition, const Geom::Vec2 Size );
 
-			void EntryGainFocus();
-			void EntryLostFocus();
 			bool ListenToActionKeys;
 
 			void UpdateText(FilterLevel level = FilterLevel::VERBOSE);
