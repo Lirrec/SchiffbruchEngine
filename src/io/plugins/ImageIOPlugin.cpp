@@ -41,7 +41,7 @@ namespace sbe
 
 	const std::vector<std::string>& ImageIOPlugin::getSupportedFileExtensions()
 	{
-		static std::vector<std::string> fileexts { "png", "jpeg", "jpg", "bmp", "tga"  };
+		static std::vector<std::string> fileexts { "png", "jpeg", "jpg", "bmp", "tga", "gif"  };
 		return fileexts;
 	}
 
