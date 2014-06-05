@@ -50,8 +50,6 @@ namespace sbe
 
 	void EventUser::RealHandleEvent(Event& e)
 	{
-		Engine::out() << "Got "  << e.getDebugName() << " hash: " << e.getEventType() << std::endl;
-
 		auto it = Callbacks.find(e.getEventType());
 		if ( it != Callbacks.end() )
             ((*it).second)(e);

@@ -10,6 +10,9 @@
 
 #include <sbe/util/FactoriesAndManipulators.hpp>
 
+#include<sbe/geom/Geom.hpp>
+#include<sbe/geom/Point.hpp>
+
 #include <random>
 #include <vector>
 
@@ -22,7 +25,7 @@ namespace sbe
 		namespace manipulators
 		{
 			/// Emits particles with random velocities
-			void emitRandom(std::vector<Particle>& Particles, float, Geom::Vec2f Origin, float maxvelocity, Geom::Vec2f sizelimits)
+			inline void emitRandom(std::vector<Particle>& Particles, float, Geom::Vec2f Origin, float maxvelocity, Geom::Vec2f sizelimits)
 			{
 				Particle re;
 				re.position = Origin;
@@ -38,7 +41,7 @@ namespace sbe
 			}
 
 			/// Emits a ray of particles
-			void emitRay(std::vector<Particle>& Particles, float, Geom::Vec2f Origin, float direction, float maxspread, float velocity, Geom::Vec2f sizelimits, Geom::Vec2f agelimits)
+			inline void emitRay(std::vector<Particle>& Particles, float, Geom::Vec2f Origin, float direction, float maxspread, float velocity, Geom::Vec2f sizelimits, Geom::Vec2f agelimits)
 			{
 				Particle re;
 				re.position = Origin;
@@ -55,7 +58,7 @@ namespace sbe
 			}
 
 			/// removes all particles with an age > 1
-			void destroyOld(std::vector<Particle>& Particles, float)
+			inline void destroyOld(std::vector<Particle>& Particles, float)
 			{
 				auto pend = std::remove_if(Particles.begin(), Particles.end(), [](Particle& P){ return P.age > 1; });
 				Particles.erase(pend, Particles.end());

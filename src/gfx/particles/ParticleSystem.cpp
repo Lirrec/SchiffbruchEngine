@@ -3,6 +3,8 @@
 #include <sbe/Module.hpp>
 #include <sbe/event/Event.hpp>
 
+#include <sbe/gfx/particles/Manipulators.hpp>
+
 #include <functional>
 
 namespace sbe {
@@ -32,21 +34,18 @@ namespace sbe {
 		Pool.InitThreads(f);
 	}
 
-	void ParticleSystem::addAffector(Affector A)
+	void ParticleSystem::addEffect(const std::shared_ptr<particles::Effect>& E)
 	{
-		Affectors.push_back( A );
+		E->EffectId = Effects.size();
+		Effects.push_back(E);
 	}
+
 
 	void ParticleSystem::setRenderer(Renderer R, unsigned int partverts, sf::PrimitiveType primtype)
 	{
 		getVertices().setPrimitiveType( primtype );
 		particleverts = partverts;
 		Rendr = R;
-	}
-
-	void ParticleSystem::addManipulator(Manipulator M)
-	{
-		Manipulators.push_back(M);
 	}
 
 	void ParticleSystem::executeManipulator(Manipulator M)
@@ -66,12 +65,6 @@ namespace sbe {
 		G(Particles.begin(), Particles.end(), 0);
 	}
 
-
-	void ParticleSystem::addGlobalAffector(GlobalAffector GA)
-	{
-		GlobalAffectors.push_back( GA );
-	}
-
 	void ParticleSystem::generateParticles(Generator G)
 	{
 		G( Particles );
@@ -79,24 +72,24 @@ namespace sbe {
 
 	void ParticleSystem::simulateStep()
 	{
+		using particles::Effect;
 		float delta = Time.restart().asSeconds();
 
 		//Engine::out() << "delta: " << delta << std::endl;
+        for ( std::shared_ptr<Effect>& E : Effects)
+            E->Manipulator(Particles, delta);
 
+        for ( std::shared_ptr<Effect>& E : Effects )
+            E->GlobalAffector(Particles.begin(), Particles.end(), delta);
 
-        for ( Manipulator& E : Manipulators)
-            E(Particles, delta);
-
-        for ( GlobalAffector& G : GlobalAffectors)
-            G(Particles.begin(), Particles.end(), delta);
-
-		for ( Affector& A : Affectors)
+		std::function<void(Particle&)> j = [this, delta](Particle& P)
 		{
-			//Engine::out() << "Affector, delta " << delta << std::endl;
-			std::function<void(Particle&)> j = std::bind(A, std::placeholders::_1, delta);
-			Pool.setVectorJob( j );
-			Pool.runVectorJob( Particles );
-		}
+			Effects[P.effectindex]->Affector( P, delta );
+		};
+		Pool.setVectorJob( j );
+		Pool.runVectorJob( Particles );
+
+		particles::manipulators::destroyOld(Particles,0);
 
 		if ( !waitingforconfirmation && RenderTime.getElapsedTime().asSeconds() > 1/35  )
 		{
@@ -108,11 +101,14 @@ namespace sbe {
 
 	void ParticleSystem::runRenderJob()
 	{
+		typedef std::pair<std::ptrdiff_t,std::ptrdiff_t> ThreadData;
+		typedef std::vector<ThreadData> ThreadsData;
+
 		getVertices().resize( particleverts*Particles.size() );
 
 		std::function<void(boost::any&, int)> Job = [&](boost::any& data, int tid)
 		{
-			auto range = boost::any_cast< std::vector<std::pair<std::ptrdiff_t,std::ptrdiff_t>> >(data);
+			auto range = boost::any_cast< ThreadsData >(data);
 			auto from = range[tid].first;
 			auto to = range[tid].second;
 
@@ -121,7 +117,7 @@ namespace sbe {
 		};
 
 		Pool.setCustomJob( Job );
-		std::vector<std::pair<std::ptrdiff_t,std::ptrdiff_t>> chunks = chunkInts(Particles.size(), cores);
+		ThreadsData chunks = chunkInts(Particles.size(), cores);
 		Pool.runCustomJob( boost::any(chunks) );
 
 		Module::Get()->QueueEvent( sbe::Event("UPDATE_PARTICLE_VERTICES", Vertices[firstverts]), true );

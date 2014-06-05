@@ -3,6 +3,7 @@
 
 #include <sbe/event/EventUser.hpp>
 #include <sbe/gfx/particles/Particle.hpp>
+#include <sbe/gfx/particles/Effect.hpp>
 #include <sbe/util/ThreadPool.hpp>
 
 #include <SFML/Graphics/VertexArray.hpp>
@@ -10,13 +11,16 @@
 
 #include <functional>
 #include <vector>
+#include <memory>
 
 namespace sbe
 {
 
 	/**
 
-		A simple ParticleSystem. It uses functional composition to manage particle generators, particle affectors and a renderer to create and animate a particlesystem
+		A simple ParticleSystem.
+		It uses functional composition to manage particle generators,
+		particle affectors and a renderer to create and animate a particlesystem.
 
 	*/
 	class ParticleSystem : public EventUser
@@ -43,12 +47,8 @@ namespace sbe
 
 			/// use the given Renderer  to generate the Vertexarray, the renderer has to use exactly partverts vertices per particle
 			void setRenderer( Renderer R, unsigned int partverts, sf::PrimitiveType primtype );
-			/// add an Affector and run it every frame on all Particles
-			void addAffector( Affector A );
-			/// add a GlobalAffector and run it every frame
-			void addGlobalAffector( GlobalAffector GA );
-			/// add an Manipulator and run it every frame
-			void addManipulator( Manipulator E );
+
+			void addEffect(const std::shared_ptr<particles::Effect>& E);
 
 			/// run the given Generator
 			void generateParticles( Generator G );
@@ -70,6 +70,7 @@ namespace sbe
 
 		private:
 
+
 			void runRenderJob();
 
 			Geom::Vec2 Size;
@@ -79,16 +80,13 @@ namespace sbe
 			sbe::ThreadPool Pool;
 			std::vector<Particle> Particles;
 
+			std::vector<std::shared_ptr<particles::Effect>> Effects;
 
-			std::vector<Affector> Affectors;
-			std::vector<GlobalAffector> GlobalAffectors;
-			std::vector<Manipulator> Manipulators;
 			Renderer Rendr;
 			unsigned int particleverts = 0;
 
 			unsigned int fps = 60;
-			unsigned int cores = 2;
-
+			unsigned int cores = 8;
 
 			std::shared_ptr<sf::VertexArray> Vertices[2];
 			bool firstverts = false;

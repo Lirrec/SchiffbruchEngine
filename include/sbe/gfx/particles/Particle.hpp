@@ -33,6 +33,8 @@ namespace sbe	{
 			float age = 0;
 			/// the mass/size of the particle
 			float size = 1;
+			/// which effect should compute this particle
+			short effectindex = 0;
 	};
 
 
