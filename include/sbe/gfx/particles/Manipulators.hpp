@@ -47,7 +47,9 @@ namespace sbe
 				re.position = Origin;
 				re.rotation = factories::randomFloat( {0, 2*Geom::pi() });
 				float spread = factories::randomFloat( {-maxspread, maxspread} );
-				auto tmp = gfx::rot( {0, velocity}, direction + spread );
+				float speed = factories::randomFloat( {velocity- velocity*0.1f, velocity+ velocity*0.1f} );
+				//Engine::out() << "speed: " << speed << std::endl;
+				auto tmp = gfx::rot( {0.0f, speed }, direction + spread );
 				re.velocity = {tmp.x, tmp.y};
 				re.avelocity = factories::randomFloat( {-velocity, velocity});
 				re.color = factories::randomColor();

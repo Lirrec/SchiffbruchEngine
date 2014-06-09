@@ -22,7 +22,7 @@ namespace sbe
 				else if ( age < 0.5)
 					return sbe::interpolate::interpolateColor( sf::Color(255,255,0,100), orange, (age-0.2)/0.5);
 				else
-					return sbe::interpolate::interpolateColorRGB( orange, sf::Color(0xff, 0xa5, 0x0,255), (age-0.7)/0.3);
+					return sbe::interpolate::interpolateColorRGB( orange, sf::Color(0xff, 0xa5, 0x0,0), (age-0.7)/0.3);
 			}
 
 			void Fire::Affector( Particle& P, float delta)
@@ -33,7 +33,7 @@ namespace sbe
 				float tmp = P.age * Geom::pi();
 				P.velocity.x = 0;
 				//float disp = std::sin(tmp*2)*(1/P.age) + std::sin(tmp*5.0f);
-				float disp = std::sin(tmp)*5 + P.avelocity * std::sin(tmp) + std::sin(gametime+(tmp*2))*2;
+				float disp = std::sin(tmp+Geom::pi())*3 + P.avelocity * std::sin(tmp) + std::sin(gametime*2+(tmp*2))*0.4;
 				P.position.x = pos.x + disp;
 
 //				Engine::out() << delta << std::endl;
@@ -52,18 +52,15 @@ namespace sbe
 				{
 					spawntime  -= (1.0f/pps);
 					manipulators::emitRay( Ps,delta, pos, Geom::pi(), spread, speed, sizelimits, agelimits );
-					float tmp = speed * maxage / 2.0f;
-					if ( Ps.size() ) Ps.back().avelocity = factories::randomFloat( {-tmp, tmp} );
+					float tmp = speed * maxage / 4.0f;
+					if ( Ps.size() ) {
+							Ps.back().avelocity = factories::randomFloat( {-tmp, tmp} );
+							Ps.back().effectindex = EffectId;
+					}
 				}
-
-
 			}
-
 		} // namespace effects
-
-
 	} // namespace particles
-
 } // namespace sbe
 
 

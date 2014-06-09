@@ -30,9 +30,9 @@ namespace sbe
 				float maxage 			= 0.2f;
 				Geom::Vec2f sizelimits 	= { 0.5, 1.5 };
 				Geom::Vec2f agelimits 	= { 0, 0.1 };
-				Geom::Vec2f pos 		= {50,50};
+				Geom::Vec2f pos 		= {0,0};
 				float gametime = 0;
-				int pps = 100;
+				int pps = 240;
 				float spawntime = 0;
 			};
 		} // namespace effects

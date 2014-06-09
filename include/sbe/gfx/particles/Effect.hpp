@@ -37,7 +37,7 @@ namespace sbe
 				virtual void Manipulator( std::vector<Particle>&, float ) {};
 
 				friend class ::sbe::ParticleSystem;
-			private:
+			protected:
 				/// set by the particlesystem
 				short EffectId = -1;
 
