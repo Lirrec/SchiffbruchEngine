@@ -47,11 +47,12 @@ namespace sbe
 					break;
 				}
 			}
-
-			tmp = loadPath<T>( IOP, "", filename);
-			if(!tmp.empty()){ found = true; }
-
-
+			if ( !found )
+			{
+				// try an absolute path
+				tmp = loadPath<T>( IOP, "", filename);
+				if(!tmp.empty()){ found = true; }
+			}
 		}
 		catch (fs::filesystem_error& e)
 		{
@@ -61,6 +62,7 @@ namespace sbe
 		if(found){
 			return tmp;
 		}
+
 		return std::vector<std::shared_ptr<T>>();
 	}
 
@@ -79,15 +81,15 @@ namespace sbe
 		}
 		else
 		{
-			if ( !fs::exists( cp ) )
-			{
-				Engine::out(Engine::ERROR) << "[IO] Unable to load path! '" << cp.generic_string() << "' not found!" << std::endl;
-				return std::vector<std::shared_ptr<T>>();
-			}
-
 			if ( fs::is_regular_file(cp / filename)  ) return loadFile<T>( IOP , cp / filename );
 			cp /= IOP->relative_path;
 			cp /= filename;
+
+			if ( !fs::exists( cp ) )
+			{
+				//Engine::out(Engine::ERROR) << "[IO] Unable to load path! '" << cp.generic_string() << "' not found!" << std::endl;
+				return std::vector<std::shared_ptr<T>>();
+			}
 		}
 
 
