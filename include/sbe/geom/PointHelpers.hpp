@@ -11,7 +11,6 @@ namespace sbe
 {
 	namespace Geom
 	{
-
 		/// returns the origin (0,0)
 		inline Point Origin() { return Point(0,0); }
 		/// returns the origin (0.0,0.0)
@@ -28,44 +27,6 @@ namespace sbe
 		{
 			return Point( (int)p.x, (int)p.y );
 		}
-
-
-		/// calculates the squareddistance between two points (avoiding the sqrt, but still fine for comparisions)
-		inline float squaredist(const Point& from, const Point& to)
-		{
-			return std::abs(std::pow(from.x - to.x, 2)
-					+ std::pow(from.y - to.y, 2));
-		}
-
-		inline float squaredist(const Pointf& from, const Pointf& to)
-		{
-			return std::abs(std::pow(from.x - to.x, 2) + std::pow(from.y - to.y, 2));
-		}
-
-		/// calculates the distance between two points (just simple and not optimized)
-		inline float distance(const Point& from, const Point& to)
-		{
-			return std::hypot( from.x - to.x, from.y - to.y );
-		}
-
-		/// Compute the distance between two points ( floating point version )
-		inline float distance(const Pointf& from, const Pointf& to)
-		{
-			return std::hypot( from.x - to.x, from.y - to.y );
-		}
-
-		/// Compute the length of a vector
-		inline float length( Vec2f V )
-		{
-				return distance( Originf(), V );
-		}
-
-		/// Normalize a vector
-		inline Vec2f normalize( Vec2f V )
-		{
-				return V / Vec2f(length(V), length(V));
-		}
-
 	} // namespace Geom
 } // namespace sbe
 

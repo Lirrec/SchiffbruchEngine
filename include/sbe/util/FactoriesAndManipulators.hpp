@@ -19,24 +19,24 @@ namespace sbe
 
 	namespace factories {
 
-			inline float randomInt(const Geom::Vec2 limits)
+			inline float randomInt(const glm::ivec2 limits)
 			{
 				std::uniform_int_distribution<int> uniform_dist(limits.x, limits.y);
 				return uniform_dist(getRNG());
 			}
 
-			inline float randomFloat(const Geom::Vec2f limits)
+			inline float randomFloat(const glm::ivec2f limits)
 			{
 				std::uniform_real_distribution<float> uniform_dist(limits.x, limits.y);
 				return uniform_dist(getRNG());
 			}
 
-			inline Geom::Pointf randomPointf(const Geom::Rectf limits)
+			inline glm::ipoint2f randomPointf(const Geom::irectf limits)
 			{
 				return { randomFloat( {limits.x.x, limits.y.x} ), randomFloat({limits.x.y, limits.y.y}) };
 			}
 
-			inline Geom::Point randomPoint(const Geom::Rect limits)
+			inline glm::ipoint2 randomPoint(const Geom::irect limits)
 			{
 				return { randomInt( {limits.x.x, limits.y.x} ), randomInt({limits.x.y, limits.y.y}) };
 			}

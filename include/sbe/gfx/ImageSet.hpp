@@ -26,19 +26,19 @@ namespace sbe
 			/// constructor
 			ImageSet( const std::string& _name,
 					  const std::string& _imgname,
-					  const Geom::Point& _startpos,
-					  const Geom::Point& _destpos,
-					  const Geom::Vec2&  _fsize,
-					  const Geom::Vec2&  _fcount,
+					  const glm::ipoint2& _startpos,
+					  const glm::ipoint2& _destpos,
+					  const glm::ivec2&  _fsize,
+					  const glm::ivec2&  _fcount,
 					  const int _fps);
 
 			/// calculates the rectangle on the image which contains the given frame ( 2d-framepos )
-			Geom::Rect CalcTexCoords( const Geom::Vec2 FramePos ) const;
+			Geom::irect CalcTexCoords( const glm::ivec2 FramePos ) const;
 			/// calculates the rectangle on the image which contains the given frame ( frame-index )
-			Geom::Rect CalcTexCoords( const int index ) const;
+			Geom::irect CalcTexCoords( const int index ) const;
 
 			/// calculate the frame position in the image from a frame index
-			Geom::Vec2 CalcFramePos( const int index ) const ;
+			glm::ivec2 CalcFramePos( const int index ) const ;
 
 			/// Creates a sprite showing a specific image of the imageset
 			/// @param index the index of the frame the sprite should display
@@ -47,8 +47,8 @@ namespace sbe
 
 			/// Creates a sprite showing a specific image of the imageset
 			/// @param FramePos the Position of the frame the sprite should display
-			sf::Sprite CreateSprite(const Geom::Vec2 FramePos);
-			std::shared_ptr<sf::Sprite> CreateSpritePtr(const Geom::Vec2 FramePos);
+			sf::Sprite CreateSprite(const glm::ivec2 FramePos);
+			std::shared_ptr<sf::Sprite> CreateSpritePtr(const glm::ivec2 FramePos);
 
 			/**
 				Add a given Image from the ImageSet to a VertexArray.
@@ -66,7 +66,7 @@ namespace sbe
 				@param Pos pos
 				@param ArrayIndex the position in the vertexarray which sould be used ( -1/default will append to the array, other values will overwrite existing vertices from the given position on)
 			*/
-			void CreateQuad( const Geom::Vec2 FramePos, sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex = -1, const sf::Color& _color = sf::Color::Black);
+			void CreateQuad( const glm::ivec2 FramePos, sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex = -1, const sf::Color& _color = sf::Color::Black);
 
 			/**
 				Updates the internal pointer to sf::Texture, call to update sprites after the image was changed
@@ -93,18 +93,18 @@ namespace sbe
 			std::string ImageName;
 
 			/// Top left corner of the first frame (in pixels)
-			Geom::Point StartPos;
+			glm::ipoint2 StartPos;
 			/**
 			Top left corner of the destination
 			( actual usage of this varies, some imagesets e.g. for ui elements have target destinations)
 			*/
-			Geom::Point DestPos;
+			glm::ipoint2 DestPos;
 
 			/// the size of each frame (in pixels)
-			Geom::Vec2 FrameSize;
+			glm::ivec2 FrameSize;
 
 			/// how many frames are on the image (x -> columns, y -> rows)
-			Geom::Vec2 FrameCount;
+			glm::ivec2 FrameCount;
 
 			/// after how many Ticks should the next frame be played? (anim only)
 			unsigned int FramesPerSecond;

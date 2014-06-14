@@ -31,7 +31,7 @@ namespace sbe
 			/// set the underlying ImageSet ( lazy construction )
 			void setImageSet( ImageSet& A);
 
-			void setScreenPosition( Geom::Point p );
+			void setScreenPosition( glm::ipoint2 p );
 
 			/// Set the animation to a specific Frame
 			void setFrame(int index);
@@ -82,17 +82,17 @@ namespace sbe
 			void finish();
 
 			ImageSet& AnimData;
-			Geom::Point Screen_Position;
+			glm::ipoint2 Screen_Position;
 
 			bool playing;
 			bool reverse;
 			bool looping;
 			bool sendEndEvent;
 
-			Geom::Vec2 CurFramePos;
+			glm::ivec2 CurFramePos;
 			int CurFrame;
 
-			Geom::Vec2 RangeToPlay;
+			glm::ivec2 RangeToPlay;
 
 			sf::Time LastUpdate;
 

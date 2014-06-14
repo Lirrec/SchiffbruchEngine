@@ -16,7 +16,7 @@ namespace sbe
 
 	}
 
-	void MapPlotter::setData(std::vector<float>& data, Geom::Vec2 _Size, bool normalize)
+	void MapPlotter::setData(std::vector<float>& data, glm::ivec2 _Size, bool normalize)
 	{
 		if ( data.size() != _Size.x * _Size.y || _Size.x == 0 || _Size.y == 0)
 		{

@@ -11,7 +11,7 @@ using namespace sfg;
 
 namespace sbe
 {
-	DebugWindow::DebugWindow( const Geom::Point& RelativePosition, const Geom::Vec2 Size)
+	DebugWindow::DebugWindow( const glm::ipoint2& RelativePosition, const glm::ivec2 Size)
 	{
 		RegisterForEvent( "VIEW_DBG_STRING" );
 		RegisterForEvent( "EVT_FRAME" );
@@ -27,7 +27,7 @@ namespace sbe
 		CreateWindow(RelativePosition, Size);
 	}
 
-	void DebugWindow::CreateWindow( const Geom::Point& RelativePosition, const Geom::Vec2 Size )
+	void DebugWindow::CreateWindow( const glm::ipoint2& RelativePosition, const glm::ivec2 Size )
 	{
 		Win = Window::Create( Window::Style::TOPLEVEL | Window::Style::SHADOW );
 

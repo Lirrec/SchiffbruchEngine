@@ -23,10 +23,10 @@ namespace sbe
 		void LinearMovement::update(Entity& E, const sf::Time& delta)
 		{
 			sf::Transformable& T = E.C<sf::Transformable&>("Transformable");
-			Geom::Point& TargetPosition = E.C<Geom::Point&>("TargetPosition2D");
-			Geom::Pointf Pos = {T.getPosition().x, T.getPosition().y};
+			glm::ipoint2& TargetPosition = E.C<glm::ipoint2&>("TargetPosition2D");
+			glm::ipoint2f Pos = {T.getPosition().x, T.getPosition().y};
 
-            Geom::Pointf Dist = Geom::PIToF(TargetPosition) - Pos;
+            glm::ipoint2f Dist = Geom::PIToF(TargetPosition) - Pos;
 			if ( Geom::length(Dist) < (unitspersecond * delta.asSeconds()) )
 			{
 				T.setPosition( TargetPosition.x, TargetPosition.y );
@@ -35,7 +35,7 @@ namespace sbe
 			}
 
 
-			Geom::Pointf newpos = Pos + Geom::normalize(Dist) * delta.asSeconds() * unitspersecond;
+			glm::ipoint2f newpos = Pos + Geom::normalize(Dist) * delta.asSeconds() * unitspersecond;
 
 			//Engine::out() << "oldpos : " << Pos << " - new: " << newpos << std::endl;
 

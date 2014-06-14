@@ -30,7 +30,7 @@ namespace sbe
         public:
         	enum class select_type { Directory, File } selection_type;
 
-            FileBrowse( const Geom::Vec2 Size = Geom::Vec2(600, 400), const select_type t = select_type::Directory, const std::string &title="Select File/Folder",
+            FileBrowse( const glm::ivec2 Size = glm::ivec2(600, 400), const select_type t = select_type::Directory, const std::string &title="Select File/Folder",
                         const std::string &okEvent="FB_OK", const std::string &cancelEvent="FB_CANCEL");
             virtual ~FileBrowse() = default;
 
@@ -65,7 +65,7 @@ namespace sbe
 
 
         private:
-            void CreateWindow(const Geom::Vec2 Size, const std::string &title);
+            void CreateWindow(const glm::ivec2 Size, const std::string &title);
             void onOkClicked();
             void onCancelClicked();
             void updatePosition();

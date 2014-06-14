@@ -165,7 +165,7 @@ namespace sbe
 
 		boost::mutex::scoped_lock data_mutex_lock(data_mutex);
 
-		Geom::Point maximas = g.getMaximas();
+		glm::ipoint2 maximas = g.getMaximas();
 
 		dynScaleAxes( maximas );
 		if ( g.AxisStart.x > maximas.x) g.AxisStart.x = maximas.x;
@@ -192,7 +192,7 @@ namespace sbe
 		}
 	}
 
-	void GraphPlotter::dynScaleAxes( const Geom::Point& max)
+	void GraphPlotter::dynScaleAxes( const glm::ipoint2& max)
 	{
 		if(!g.dynX && !g.dynY) return;
 
@@ -360,8 +360,8 @@ namespace sbe
 		int PointsToDraw = (validwidth / g.MinPointDist) + 1;
 
 		// calculate the first point
-		Geom::Pointf last(0, 0);
-		Geom::Pointf current;
+		glm::ipoint2f last(0, 0);
+		glm::ipoint2f current;
 
 		for ( int p = 0; p < PointsToDraw; ++p)
 		{

@@ -24,10 +24,10 @@ namespace sbe
 
 	ImageSet::ImageSet(const  std::string& _name,
 					 const std::string& _imgname,
-					 const Geom::Point& _startpos,
-					 const Geom::Point& _destpos,
-					 const Geom::Vec2&  _fsize,
-					 const Geom::Vec2&  _fcount,
+					 const glm::ipoint2& _startpos,
+					 const glm::ipoint2& _destpos,
+					 const glm::ivec2&  _fsize,
+					 const glm::ivec2&  _fcount,
 					 const int 			_fps)
 	: 	Name(_name),
 		ImageName(_imgname),
@@ -49,23 +49,23 @@ namespace sbe
 		NumFrames = FrameCount.x * FrameCount.y;
 	}
 
-	Geom::Vec2 ImageSet::CalcFramePos(const int index) const
+	glm::ivec2 ImageSet::CalcFramePos(const int index) const
 	{
-		Geom::Vec2 FPos;
+		glm::ivec2 FPos;
 		FPos.x = index % FrameCount.x;
 		FPos.y = (int)((float)index / (float)FrameCount.x);
 		return FPos;
 	}
 
-	Geom::Rect ImageSet::CalcTexCoords(const int index) const
+	Geom::irect ImageSet::CalcTexCoords(const int index) const
 	{
 		return CalcTexCoords( CalcFramePos( index ) );
 	}
 
-	Geom::Rect ImageSet::CalcTexCoords(const Geom::Vec2 FramePos) const
+	Geom::irect ImageSet::CalcTexCoords(const glm::ivec2 FramePos) const
 	{
-		Geom::Rect re;
-		Geom::Point topleft, bottomright;
+		Geom::irect re;
+		glm::ipoint2 topleft, bottomright;
 
 		topleft.x = StartPos.x + FramePos.x * FrameSize.x;
 		topleft.y = StartPos.y + FramePos.y * FrameSize.y;
@@ -92,7 +92,7 @@ namespace sbe
 		return CreateSprite(CalcFramePos(index));
 	}
 
-	sf::Sprite ImageSet::CreateSprite(const Geom::Vec2 FramePos)
+	sf::Sprite ImageSet::CreateSprite(const glm::ivec2 FramePos)
 	{
 		//Engine::out() << "CreateSprite: " << FramePos << std::endl;
 		sf::Sprite re;
@@ -111,7 +111,7 @@ namespace sbe
 		return re;
 	}
 
-	std::shared_ptr<sf::Sprite> ImageSet::CreateSpritePtr(const Geom::Vec2 FramePos)
+	std::shared_ptr<sf::Sprite> ImageSet::CreateSpritePtr(const glm::ivec2 FramePos)
 	{
 		//Engine::out() << "CreateSprite: " << FramePos << std::endl;
 		std::shared_ptr<sf::Sprite> re( new sf::Sprite );
@@ -170,10 +170,10 @@ namespace sbe
 		CreateQuad( CalcFramePos(index), vA, Pos, ArrayIndex, _color);
 	}
 
-	void ImageSet::CreateQuad( const Geom::Vec2 FramePos , sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex, const sf::Color& _color)
+	void ImageSet::CreateQuad( const glm::ivec2 FramePos , sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex, const sf::Color& _color)
 	{
 		updateTexture();
-		Geom::Rect coords = CalcTexCoords(FramePos);
+		Geom::irect coords = CalcTexCoords(FramePos);
 		if ( ArrayIndex == -1 )
 			gfx::AppendQuad( vA, Pos, coords, _color);
 		else

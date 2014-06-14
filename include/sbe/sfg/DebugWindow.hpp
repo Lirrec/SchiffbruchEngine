@@ -29,7 +29,7 @@ namespace sbe
 
 		public:
 
-			DebugWindow( const Geom::Point& RelativePosition = Geom::Point(0,0), const Geom::Vec2 Size = Geom::Vec2(600, 280));
+			DebugWindow( const glm::ipoint2& RelativePosition = glm::ipoint2(0,0), const glm::ivec2 Size = glm::ivec2(600, 280));
 			~DebugWindow() {};
 
 		protected:
@@ -44,7 +44,7 @@ namespace sbe
 			void HandleEvent( Event& e ) override;
 
 		private:
-			void CreateWindow( const Geom::Point& RelativePosition, const Geom::Vec2 Size );
+			void CreateWindow( const glm::ipoint2& RelativePosition, const glm::ivec2 Size );
 
 			bool ListenToActionKeys;
 

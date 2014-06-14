@@ -73,7 +73,7 @@ namespace sbe
 
 			void runRenderJob();
 
-			Geom::Vec2 Size;
+			glm::ivec2 Size;
 			sf::Clock Time;
 			sf::Clock RenderTime;
 

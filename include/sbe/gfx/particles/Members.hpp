@@ -55,8 +55,8 @@ namespace sbe
 
 
 		namespace members {
-			inline Geom::Vec2f& velocity( Particle &P ) { return P.velocity; }
-			inline Geom::Vec2f& position( Particle &P ) { return P.position; }
+			inline glm::ivec2f& velocity( Particle &P ) { return P.velocity; }
+			inline glm::ivec2f& position( Particle &P ) { return P.position; }
 			inline float& rotation( Particle &P ) { return P.rotation; }
 			inline float& avelocity( Particle &P ) { return P.avelocity; }
 			inline float& age( Particle &P ) { return P.age; }

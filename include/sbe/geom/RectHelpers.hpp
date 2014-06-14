@@ -13,7 +13,7 @@ namespace sbe
 	namespace Geom
 	{
 		///Converts a rectangle to a human readable string suitable for debugging purposes
-		inline std::string RectToString( const Geom::Rect& r)
+		inline std::string RectToString( const Geom::irect& r)
 		{
 			std::string re("");
 			re += "[";
@@ -57,13 +57,13 @@ namespace sbe
 		/// returns the top right point of a rectangle
 		inline Point rcBLPoint(const Rect& rc)
 		{
-			return Geom::Point(rc.x.x, rc.y.y);
+			return glm::ipoint2(rc.x.x, rc.y.y);
 		}
 
 		/// returns the top right point of a rectangle
 		inline Point rcTRPoint(const Rect& rc)
 		{
-			return Geom::Point(rc.y.x , rc.x.y );
+			return glm::ipoint2(rc.y.x , rc.x.y );
 		}
 
 
@@ -119,6 +119,7 @@ namespace sbe
 			return true;
 		}
 
+		/// clip a point to be inside a given Rectangle
 		template< class T >
 		inline point<T> clip( const point<T> v, const point<point<T>>& limits )
 		{

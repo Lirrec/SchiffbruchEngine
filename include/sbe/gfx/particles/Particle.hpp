@@ -12,14 +12,14 @@ namespace sbe	{
 	class Particle {
 		public:
 			Particle() {};
-			Particle( Geom::Vec2f _p) : position(_p) {}
+			Particle( glm::ivec2f _p) : position(_p) {}
 
 			typedef std::vector<Particle>::iterator Iterator;
 
 			/// current velocity/speed
-			Geom::Vec2f velocity = {0,0};
+			glm::ivec2f velocity = {0,0};
 			/// current position
-			Geom::Vec2f position = {0,0};
+			glm::ivec2f position = {0,0};
 
 			/// the rotation of the particel in degress/radian ( not yet decided )
 			float rotation = 0;

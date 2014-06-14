@@ -26,7 +26,7 @@ namespace sbe
 			}
 
 			/// renders a particle as Quad including rotation
-			inline void renderQuad(Particle& p, sf::Vertex* V, Geom::Rect textureRect = {{0,0},{0,0}} )
+			inline void renderQuad(Particle& p, sf::Vertex* V, Geom::irect textureRect = {{0,0},{0,0}} )
 			{
 				gfx::SetQuadPos( V, { p.position.x - p.size/2, p.position.y - p.size/2, p.size, p.size });
 				gfx::SetQuadColor( V, p.color );
@@ -35,7 +35,7 @@ namespace sbe
 			}
 
 			/// renders a particle as Quad including rotation
-			inline void renderFixedSizeQuad(Particle& p, sf::Vertex* V, int size, Geom::Rect textureRect = {{0,0},{0,0}} )
+			inline void renderFixedSizeQuad(Particle& p, sf::Vertex* V, int size, Geom::irect textureRect = {{0,0},{0,0}} )
 			{
 				gfx::SetQuadPos( V, { p.position.x - size/2, p.position.y - size/2, size, size });
 				gfx::SetQuadColor( V, p.color );

@@ -50,10 +50,12 @@ set( SFML_FIND_REQUIRED true )
 find_package(Boost 1.46 REQUIRED thread system filesystem)
 find_package(SFML 2 COMPONENTS audio graphics window system ${ADD_SFML_MAIN})
 find_package(SFGUI REQUIRED )
+find_package(GLM REQUIRED )
 
 include_directories(${Boost_INCLUDE_DIR})
 include_directories(${SFML_INCLUDE_DIR})
 include_directories(${SFGUI_INCLUDE_DIR})
+include_directories(${GLM_INCLUDE_DIRS})
 
 #############################################################
 #################### File inclusion #########################

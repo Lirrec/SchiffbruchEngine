@@ -38,8 +38,8 @@ namespace sbe
 			return sf::IntRect( topleft.x, topleft.y, bottomright.x - topleft.x, bottomright.y - topleft.y );
 		}
 
-				/// converts a Geom::Rect to sf::Floatrect
-		inline sf::FloatRect toSFFloatRect ( const Rect& r)
+				/// converts a Geom::irect to sf::Floatrect
+		inline sf::FloatRect toSFFloatRect ( const rect& r)
 		{
 			return sf::FloatRect( r.x.x, // left
 								r.x.y, // top
@@ -47,8 +47,8 @@ namespace sbe
 								r.y.y-r.x.y ); // height
 		}
 
-		/// converts a Geom::Rect to sf::IntRect
-		inline sf::IntRect toSFRect(const Rect& r)
+		/// converts a Geom::irect to sf::IntRect
+		inline sf::IntRect toSFRect(const rect& r)
 		{
 			return sf::IntRect( r.x.x, // left
 								r.x.y, // top
@@ -67,14 +67,14 @@ namespace sbe
 			return re;
 		}
 
-		/// converts a sf::IntRect to Geom::Rect
-		inline Rect fromSFRect(const sf::IntRect& r)
+		/// converts a sf::IntRect to Geom::irect
+		inline irect fromSFRect(const sf::IntRect& r)
 		{
-			return Rect(Point(r.left, r.top), Point(r.left + r.width, r.top + r.height));
+			return irect(ipoint(r.left, r.top), ipoint(r.left + r.width, r.top + r.height));
 		}
 
-		/// converts a sf::FloatRect to Geom::Rect ( ! Loss of fp precision ! )
-		inline Rect fromSFFloatRect ( const sf::FloatRect& r )
+		/// converts a sf::FloatRect to Geom::irect ( ! Loss of fp precision ! )
+		inline rect fromSFFloatRect ( const sf::FloatRect& r )
 		{
 			return fromSFRect( SFRectFloatToInt(r) );
 		}

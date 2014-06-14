@@ -19,14 +19,14 @@ namespace sbe
 			/**
 				Recursive creation of a quadtree
 			*/
-			QuadTreeNode(Geom::Rect _area);
+			QuadTreeNode(Geom::irect _area);
 
 			/**
 				for late construction with init()
 			*/
 			QuadTreeNode();
 
-			void init(Geom::Rect _area);
+			void init(Geom::irect _area);
 
 
 			~QuadTreeNode();
@@ -36,14 +36,14 @@ namespace sbe
 				@param r the rectangle
 				@param result a list containing all found items
 			*/
-			void FindItemsInRect(const Geom::Rect& r, std::forward_list<Item>& result);
+			void FindItemsInRect(const Geom::irect& r, std::forward_list<Item>& result);
 
 			/**
 				Insert a Item with the given center into the tree
 				@param center the center of the item
 				@param t the new item
 			*/
-			void InsertItem(const Geom::Point& center, Item t);
+			void InsertItem(const glm::ipoint2& center, Item t);
 
 			/**
 				Remove a Item from the tree, to avoid some comparisions, center must
@@ -51,12 +51,12 @@ namespace sbe
 				@param center the center of the item
 				@param t the item itself
 			*/
-			void RemoveItem(Geom::Point& center, Item t);
+			void RemoveItem(glm::ipoint2& center, Item t);
 
 			/**
 				Defines the area spanned by this quadtree
 			*/
-			Geom::Rect area;
+			Geom::irect area;
 
 			/**
 				Defines the minimal size of an individual node and thus the maximal subdivision granularity.

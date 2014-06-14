@@ -33,9 +33,9 @@ namespace sbe
 		/// returns the index of a 2d position in an array, assumes data is stored in rows, not columns
 		inline size_t linear( int x, int y, int width ) { return x + y*width; }
 		/// returns the index of a 2d position in an array, assumes data is stored in rows, not columns
-		inline size_t linear( Geom::Vec2f p, int width ) { return linear(p.x, p.y, width); }
+		inline size_t linear( glm::ivec2f p, int width ) { return linear(p.x, p.y, width); }
 		/// returns the index of a 2d position in an array, assumes data is stored in rows, not columns
-		inline size_t linear( Geom::Vec2 p, int width ) { return linear(p.x, p.y, width); }
+		inline size_t linear( glm::ivec2 p, int width ) { return linear(p.x, p.y, width); }
 
 		/**
 			Normalize a float, i.e. scale it to a range from 0.0 to 1.0
@@ -53,9 +53,9 @@ namespace sbe
 		/**
 			Return the middle point of a line defined by p1 and p2
 		*/
-		inline Geom::Point middle(const Point& p1, const Point& p2)
+		inline glm::ipoint2 middle(const Point& p1, const Point& p2)
 		{
-			return Geom::Point( static_cast<int>(std::abs(p1.x + p2.x)/2),    static_cast<int>(std::abs(p1.y + p2.y)/2));
+			return glm::ipoint2( static_cast<int>(std::abs(p1.x + p2.x)/2),    static_cast<int>(std::abs(p1.y + p2.y)/2));
 		}
 
 		// TRIANGLE

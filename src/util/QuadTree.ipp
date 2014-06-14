@@ -9,7 +9,7 @@ namespace sbe
 
 
 	template < class Item >
-	QuadTreeNode<Item>::QuadTreeNode(Geom::Rect _area)
+	QuadTreeNode<Item>::QuadTreeNode(Geom::irect _area)
 	{
 		Engine::out(Engine::SPAM) << "Creating QuadTree of Dimensions: " << area << std::endl;
 
@@ -31,7 +31,7 @@ namespace sbe
 	}
 
 	template < class Item >
-	void QuadTreeNode<Item>::init(Geom::Rect _area)
+	void QuadTreeNode<Item>::init(Geom::irect _area)
 	{
 
 		this->area = _area;
@@ -65,7 +65,7 @@ namespace sbe
 	Adds all Items in a given rect to the given list
 	*/
 	template < class Item >
-	void QuadTreeNode<Item>::FindItemsInRect(const Geom::Rect& r, std::forward_list<Item>& result)
+	void QuadTreeNode<Item>::FindItemsInRect(const Geom::irect& r, std::forward_list<Item>& result)
 	{
 
 	//	if (!Geom::rcOverlap(area, Geom::makeRect(0,0,1024,1024)))
@@ -122,7 +122,7 @@ namespace sbe
 
 	*/
 	template < class Item >
-	void QuadTreeNode<Item>::InsertItem(const Geom::Point& center, Item t)
+	void QuadTreeNode<Item>::InsertItem(const glm::ipoint2& center, Item t)
 	{
 		if (!t)
 		{
@@ -130,7 +130,7 @@ namespace sbe
 			return;
 		}
 
-		if (!Geom::PointInRect(area, center))
+		if (!glm::ipoint2InRect(area, center))
 		{
 			Engine::out(Engine::ERROR) << "QTN:InsertItem: center " << center << " not in QT "<< area <<"!" << std::endl;
 			abort();
@@ -149,25 +149,25 @@ namespace sbe
 			//ChildNodes[0].InsertItem(center, t);
 
 
-			if (Geom::PointInRect(ChildNodes[0].area , center))
+			if (glm::ipoint2InRect(ChildNodes[0].area , center))
 			{
 				ChildNodes[0].InsertItem(center, t);
 				return;
 			}
 			else
-			if (Geom::PointInRect(ChildNodes[1].area , center))
+			if (glm::ipoint2InRect(ChildNodes[1].area , center))
 			{
 				ChildNodes[1].InsertItem(center, t);
 				return;
 			}
 			else
-			if (Geom::PointInRect(ChildNodes[2].area , center))
+			if (glm::ipoint2InRect(ChildNodes[2].area , center))
 			{
 				ChildNodes[2].InsertItem(center, t);
 				return;
 			}
 			else
-			if (Geom::PointInRect(ChildNodes[3].area , center))
+			if (glm::ipoint2InRect(ChildNodes[3].area , center))
 			{
 				ChildNodes[3].InsertItem(center, t);
 				return;
@@ -181,7 +181,7 @@ namespace sbe
 				Engine::out(Engine::ERROR) << "Child2 BR: " <<  ChildNodes[2].area << std::endl;
 				Engine::out(Engine::ERROR) << "Child3 BL: " <<  ChildNodes[3].area << std::endl;
 
-				Engine::out(Engine::ERROR) << Geom::PointInRect(Geom::makeRect(1024,0, 2048, 1024),  Geom::Point(1665,36)) << std::endl;
+				Engine::out(Engine::ERROR) << glm::ipoint2InRect(Geom::makeRect(1024,0, 2048, 1024),  glm::ipoint2(1665,36)) << std::endl;
 
 				abort();
 			}
@@ -189,7 +189,7 @@ namespace sbe
 	}
 
 	template < class Item >
-	void QuadTreeNode<Item>::RemoveItem(Geom::Point& center, Item t)
+	void QuadTreeNode<Item>::RemoveItem(glm::ipoint2& center, Item t)
 	{
 
 		if (!t)
@@ -198,7 +198,7 @@ namespace sbe
 			return;
 		}
 
-		if (!Geom::PointInRect(area, center))
+		if (!glm::ipoint2InRect(area, center))
 		{
 			Engine::out(Engine::ERROR) << "QTN:RemoveItem: center " << center << " not in QT "<< area <<"!" << std::endl;
 			return;
@@ -217,25 +217,25 @@ namespace sbe
 			//ChildNodes[0].RemoveItem(center, t);
 
 
-			if (Geom::PointInRect(ChildNodes[0].area , center))
+			if (glm::ipoint2InRect(ChildNodes[0].area , center))
 			{
 				ChildNodes[0].RemoveItem(center, t);
 				return;
 			}
 			else
-			if (Geom::PointInRect(ChildNodes[1].area , center))
+			if (glm::ipoint2InRect(ChildNodes[1].area , center))
 			{
 				ChildNodes[1].RemoveItem(center, t);
 				return;
 			}
 			else
-			if (Geom::PointInRect(ChildNodes[2].area , center))
+			if (glm::ipoint2InRect(ChildNodes[2].area , center))
 			{
 				ChildNodes[2].RemoveItem(center, t);
 				return;
 			}
 			else
-			if (Geom::PointInRect(ChildNodes[3].area , center))
+			if (glm::ipoint2InRect(ChildNodes[3].area , center))
 			{
 				ChildNodes[3].RemoveItem(center, t);
 				return;
@@ -248,7 +248,7 @@ namespace sbe
 				Engine::out(Engine::ERROR) << "Child1 TR: " <<  ChildNodes[1].area << std::endl;
 				Engine::out(Engine::ERROR) << "Child2 BR: " <<  ChildNodes[2].area << std::endl;
 				Engine::out(Engine::ERROR) << "Child3 BL: " <<  ChildNodes[3].area << std::endl;
-				Engine::out(Engine::ERROR) << Geom::PointInRect(Geom::makeRect(1024,0, 2048, 1024),  Geom::Point(1665,36)) << std::endl;
+				Engine::out(Engine::ERROR) << glm::ipoint2InRect(Geom::makeRect(1024,0, 2048, 1024),  glm::ipoint2(1665,36)) << std::endl;
 			}
 		}
 	}

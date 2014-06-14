@@ -38,7 +38,7 @@ namespace sbe
 			@param the Image to scale
 			@param newSize the target size
 		*/
-		inline sf::Image ScaleImage( sf::Image& img, Geom::Vec2 newSize )
+		inline sf::Image ScaleImage( sf::Image& img, glm::ivec2 newSize )
 		{
 			/// scale the image by rendering it bigger onto a rendertexture, not nice
 			sf::Texture tex;

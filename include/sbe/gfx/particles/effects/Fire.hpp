@@ -28,9 +28,9 @@ namespace sbe
 				float speed 			= 100;
 				float spread 			= Geom::pi()/18;
 				float maxage 			= 0.2f;
-				Geom::Vec2f sizelimits 	= { 0.5, 1.5 };
-				Geom::Vec2f agelimits 	= { 0, 0.1 };
-				Geom::Vec2f pos 		= {0,0};
+				glm::ivec2f sizelimits 	= { 0.5, 1.5 };
+				glm::ivec2f agelimits 	= { 0, 0.1 };
+				glm::ivec2f pos 		= {0,0};
 				float gametime = 0;
 				int pps = 240;
 				float spawntime = 0;

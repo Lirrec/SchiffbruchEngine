@@ -25,7 +25,7 @@ namespace sbe
 		namespace manipulators
 		{
 			/// Emits particles with random velocities
-			inline void emitRandom(std::vector<Particle>& Particles, float, Geom::Vec2f Origin, float maxvelocity, Geom::Vec2f sizelimits)
+			inline void emitRandom(std::vector<Particle>& Particles, float, glm::ivec2f Origin, float maxvelocity, glm::ivec2f sizelimits)
 			{
 				Particle re;
 				re.position = Origin;
@@ -41,7 +41,7 @@ namespace sbe
 			}
 
 			/// Emits a ray of particles
-			inline void emitRay(std::vector<Particle>& Particles, float, Geom::Vec2f Origin, float direction, float maxspread, float velocity, Geom::Vec2f sizelimits, Geom::Vec2f agelimits)
+			inline void emitRay(std::vector<Particle>& Particles, float, glm::ivec2f Origin, float direction, float maxspread, float velocity, glm::ivec2f sizelimits, glm::ivec2f agelimits)
 			{
 				Particle re;
 				re.position = Origin;

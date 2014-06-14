@@ -16,7 +16,7 @@
 
 namespace sbe {
 
-    FileBrowse::FileBrowse ( const Geom::Vec2 Size, const select_type t, const std::string& title,
+    FileBrowse::FileBrowse ( const glm::ivec2 Size, const select_type t, const std::string& title,
                              const std::string& okEvent, const std::string& cancelEvent )
         : okEvt ( okEvent ), cancelEvt ( cancelEvent ), okAction(  [](const std::string&){} ), cancelAction( []{} ), selection_type(t)
     {
@@ -29,7 +29,7 @@ namespace sbe {
         Module::Get()->QueueEvent ( Event ( "SCREEN_ADD_WINDOW", Win ) );
     }
 
-    void FileBrowse::CreateWindow ( const Geom::Vec2 Size, const std::string& title )
+    void FileBrowse::CreateWindow ( const glm::ivec2 Size, const std::string& title )
     {
         Win = sfg::Window::Create ( sfg::Window::Style::BACKGROUND | sfg::Window::Style::TITLEBAR | sfg::Window::Style::SHADOW );
 

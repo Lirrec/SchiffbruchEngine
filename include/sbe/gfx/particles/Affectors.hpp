@@ -31,9 +31,9 @@ namespace sbe
 			}
 
 			/// applies a gravitational pull to a particle
-			inline void applyGravitation(Particle& P, float delta, Geom::Pointf pos, float m)
+			inline void applyGravitation(Particle& P, float delta, glm::ipoint2f pos, float m)
 			{
-				Geom::Vec2f dist = pos - P.position;
+				glm::ivec2f dist = pos - P.position;
 				if ( dist.x == 0 && dist.y == 0) return;
 
 				float accel = (P.size*m) / (Geom::length(dist)*Geom::length(dist));
@@ -41,9 +41,9 @@ namespace sbe
 			}
 
 			/// applies a gravitational pull with linear falloff to a particle
-			inline void applyLinearGravitation(Particle& P, float delta, Geom::Pointf pos, float m)
+			inline void applyLinearGravitation(Particle& P, float delta, glm::ipoint2f pos, float m)
 			{
-				Geom::Vec2f dist = pos - P.position;
+				glm::ivec2f dist = pos - P.position;
 				if ( dist.x == 0 && dist.y == 0) return;
 
 				float accel = (P.size*m) / Geom::length(dist);
@@ -51,13 +51,13 @@ namespace sbe
 			}
 
 			/// applies a gravity ( down ) to a particle
-			inline void applyGravity(Particle& P, float delta, Geom::Vec2f direction, float factor = 1.0f)
+			inline void applyGravity(Particle& P, float delta, glm::ivec2f direction, float factor = 1.0f)
 			{
 				P.velocity += Geom::normalize(direction)*factor * delta;
 			}
 
 			/// performs a collision with a bounding box
-			inline void collideBoxed(Particle& P, float delta, Geom::Vec2f limits)
+			inline void collideBoxed(Particle& P, float delta, glm::ivec2f limits)
 			{
 				if ( P.position.x > limits.x)
 				{
@@ -83,7 +83,7 @@ namespace sbe
 			}
 
 			/// performs a collision with a bounding box ( bouncy )
-			inline void collideBoxedBouncy(Particle& P, float delta, Geom::Vec2f limits, float forceloss, float min)
+			inline void collideBoxedBouncy(Particle& P, float delta, glm::ivec2f limits, float forceloss, float min)
 			{
 				if ( P.position.x > limits.x)
 				{
@@ -150,7 +150,7 @@ namespace sbe
 			}
 
 			/// performs a warp to the other side of the particle system if a particle leaves one side
-			inline void collideWarped(Particle& P, float delta, Geom::Vec2f limits)
+			inline void collideWarped(Particle& P, float delta, glm::ivec2f limits)
 			{
 				P.position.x = P.position.x > 0 ? std::fmod(P.position.x, limits.x) : limits.x +P.position.x;
 				P.position.y = P.position.y > 0 ? std::fmod(P.position.y, limits.y) : limits.y +P.position.y;

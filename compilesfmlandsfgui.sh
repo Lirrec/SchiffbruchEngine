@@ -1,11 +1,12 @@
 #!/bin/bash
 
-sfmldir=/d/dev/libs/sfml2_git
+sfmldir=/d/libs/sfml2_git
 sfmllibs="window system graphics audio network"
 
-sfguidir=/d/dev/libs/SFGUI
-sbedir=/d/dev/libs/SchiffbruchEngine
-boostdir=/d/dev/libs/boost_1_55_0
+sfguidir=/d/libs/SFGUI
+sbedir=/d/libs/SchiffbruchEngine
+boostdir=/d/libs/boost_1_55_0
+glmdir=/d/libs/glm
 clean=false
 static=true
 
@@ -154,7 +155,7 @@ function buildsbe()
 	echo "-- BUILDING SBE --"
 	echo 
 	cleanbuild
-	cmake --debug-trycompile -G"MSYS Makefiles" -DBOOST_ROOT="$boostdir" -DSFGUI_ROOT="$sfguidir" -DSFML_ROOT="$sfmldir" -DBUILD_SHARED_LIBS=$shared -DSFGUI_STATIC_LIBRARIES=$static -DSFML_STATIC_LIBRARIES=$static ..
+	cmake --debug-trycompile -G"MSYS Makefiles" -DGLM_ROOT_DIR="$glmdir" -DBOOST_ROOT="$boostdir" -DSFGUI_ROOT="$sfguidir" -DSFML_ROOT="$sfmldir" -DBUILD_SHARED_LIBS=$shared -DSFGUI_STATIC_LIBRARIES=$static -DSFML_STATIC_LIBRARIES=$static ..
 	echo "---------------------------"
 	make -j8
 

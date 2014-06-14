@@ -33,9 +33,9 @@ namespace sbe
 
 		/**
 			Set the texture coordinates of a quad.
-			@param coords a Geom::Rect containing the new texture coordinates
+			@param coords a Geom::irect containing the new texture coordinates
 		*/
-		inline void SetQuadTex( sf::Vertex* vs, const Geom::Rect& coords )
+		inline void SetQuadTex( sf::Vertex* vs, const Geom::irect& coords )
 		{
 			vs[0].texCoords = sf::Vector2f( coords.x.x, coords.x.y );	// top-left
 			vs[1].texCoords = sf::Vector2f( coords.x.x, coords.y.y ); // bottom-left
@@ -106,7 +106,7 @@ namespace sbe
 		/**
 			Append a quad to a vertexarray. This version takes Texturecoordinates
 		*/
-		inline void AppendQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, Geom::Rect coords )
+		inline void AppendQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, Geom::irect coords )
 		{
 			sf::Vertex vs[4];
 			SetQuadPos( vs, Pos );
@@ -121,7 +121,7 @@ namespace sbe
 		/**
 			Append a quad to a vertexarray. This version takes Texturecoordinates
 		*/
-		inline void AppendQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, Geom::Rect coords, sf::Color _color )
+		inline void AppendQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, Geom::irect coords, sf::Color _color )
 		{
 			sf::Vertex vs[4];
 			SetQuadPos( vs, Pos );
@@ -152,7 +152,7 @@ namespace sbe
 		/**
 			Update a quad in a vertexarray ( 4 vertices ). This version takes Texturecoordinates
 		*/
-		inline void UpdateQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, const Geom::Rect& coords, const int ArrayIndex)
+		inline void UpdateQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, const Geom::irect& coords, const int ArrayIndex)
 		{
 			SetQuadPos( &vA[ArrayIndex], Pos );
 			SetQuadTex( &vA[ArrayIndex], coords );
@@ -161,7 +161,7 @@ namespace sbe
 		/**
 			Update a quad in a vertexarray ( 4 vertices ). This version takes Texturecoordinates
 		*/
-		inline void UpdateQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, const Geom::Rect& coords, const int ArrayIndex, sf::Color _color)
+		inline void UpdateQuad( sf::VertexArray& vA, const sf::FloatRect& Pos, const Geom::irect& coords, const int ArrayIndex, sf::Color _color)
 		{
 			SetQuadPos( &vA[ArrayIndex], Pos );
 			SetQuadTex( &vA[ArrayIndex], coords );
