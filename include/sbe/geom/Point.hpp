@@ -1,7 +1,7 @@
 #ifndef POINT_HPP
 #define POINT_HPP
 
-#include <glm/fwd.hpp>
+#include <glm/vec2.hpp>
 
 namespace glm
 {

@@ -57,14 +57,14 @@ namespace sbe
 		return FPos;
 	}
 
-	Geom::irect ImageSet::CalcTexCoords(const int index) const
+	geom::irect ImageSet::CalcTexCoords(const int index) const
 	{
 		return CalcTexCoords( CalcFramePos( index ) );
 	}
 
-	Geom::irect ImageSet::CalcTexCoords(const glm::ivec2 FramePos) const
+	geom::irect ImageSet::CalcTexCoords(const glm::ivec2 FramePos) const
 	{
-		Geom::irect re;
+		geom::irect re;
 		glm::ipoint2 topleft, bottomright;
 
 		topleft.x = StartPos.x + FramePos.x * FrameSize.x;
@@ -101,7 +101,7 @@ namespace sbe
 		if ( updateTexture() )
 		{
 			re.setTexture(*Tex);
-			re.setTextureRect( Geom::toSFRect( CalcTexCoords(FramePos) ) );
+			re.setTextureRect( geom::toSFRect( CalcTexCoords(FramePos) ) );
 		}
 		else
 		{
@@ -119,7 +119,7 @@ namespace sbe
 		if ( updateTexture() )
 		{
 			re->setTexture(*Tex);
-			re->setTextureRect( Geom::toSFRect( CalcTexCoords(FramePos) ) );
+			re->setTextureRect( geom::toSFRect( CalcTexCoords(FramePos) ) );
 		}
 		else
 		{
@@ -173,7 +173,7 @@ namespace sbe
 	void ImageSet::CreateQuad( const glm::ivec2 FramePos , sf::VertexArray& vA, const sf::FloatRect& Pos, const int ArrayIndex, const sf::Color& _color)
 	{
 		updateTexture();
-		Geom::irect coords = CalcTexCoords(FramePos);
+		geom::irect coords = CalcTexCoords(FramePos);
 		if ( ArrayIndex == -1 )
 			gfx::AppendQuad( vA, Pos, coords, _color);
 		else

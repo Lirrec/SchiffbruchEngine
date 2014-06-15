@@ -16,13 +16,13 @@ namespace sbe
 	{
 		namespace generators {
 			/// generates particles on a grid
-			void generateGrid( std::vector<Particle>& Particles, glm::ivec2 Size, glm::ivec2 Count, glm::ivec2f particlesizelimits )
+			void generateGrid( std::vector<Particle>& Particles, glm::ivec2 Size, glm::ivec2 Count, glm::vec2 particlesizelimits )
 			{
 				Particles.clear();
 
-				glm::ivec2f steps { Size.x/(float)Count.x, Size.y/(float)Count.y };
+				glm::vec2 steps { Size.x/(float)Count.x, Size.y/(float)Count.y };
 
-				glm::ipoint2f pos;
+				glm::point2 pos;
 				for ( float x = 0; x < Count.x; ++x)
 				{
 					pos.x += steps.x;

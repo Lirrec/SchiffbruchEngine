@@ -1,12 +1,11 @@
 #include "sbe/entity/systems/LinearMovement.hpp"
 
 #include "sbe/entity/Entity.hpp"
+#include "sbe/geom/PointHelpers.hpp"
+#include "sbe/Engine.hpp"
 
 #include <SFML/Graphics/Transformable.hpp>
-
-#include "sbe/geom/PointHelpers.hpp"
-
-#include "sbe/Engine.hpp"
+#include <glm/glm.hpp>
 #include <iostream>
 
 namespace sbe
@@ -24,10 +23,10 @@ namespace sbe
 		{
 			sf::Transformable& T = E.C<sf::Transformable&>("Transformable");
 			glm::ipoint2& TargetPosition = E.C<glm::ipoint2&>("TargetPosition2D");
-			glm::ipoint2f Pos = {T.getPosition().x, T.getPosition().y};
+			glm::point2 Pos = {T.getPosition().x, T.getPosition().y};
 
-            glm::ipoint2f Dist = Geom::PIToF(TargetPosition) - Pos;
-			if ( Geom::length(Dist) < (unitspersecond * delta.asSeconds()) )
+            glm::point2 Dist = geom::PIToF(TargetPosition) - Pos;
+			if ( glm::length(Dist) < (unitspersecond * delta.asSeconds()) )
 			{
 				T.setPosition( TargetPosition.x, TargetPosition.y );
 				E.removeSystem(getID());
@@ -35,7 +34,7 @@ namespace sbe
 			}
 
 
-			glm::ipoint2f newpos = Pos + Geom::normalize(Dist) * delta.asSeconds() * unitspersecond;
+			glm::point2 newpos = Pos + glm::normalize(Dist) * delta.asSeconds() * unitspersecond;
 
 			//Engine::out() << "oldpos : " << Pos << " - new: " << newpos << std::endl;
 

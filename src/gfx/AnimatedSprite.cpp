@@ -35,7 +35,7 @@ namespace sbe
 
 	void AnimatedSprite::updateDrawable()
 	{
-		s.setTextureRect( Geom::toSFRect( AnimData.CalcTexCoords(CurFramePos) ) );
+		s.setTextureRect( geom::toSFRect( AnimData.CalcTexCoords(CurFramePos) ) );
 		s.setPosition( (float)Screen_Position.x, (float)Screen_Position.y );
 	}
 

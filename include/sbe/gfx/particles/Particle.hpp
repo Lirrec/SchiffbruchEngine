@@ -6,20 +6,21 @@
 #include <SFML/Graphics/Color.hpp>
 
 #include <iterator>
+#include <vector>
 
 namespace sbe	{
 
 	class Particle {
 		public:
 			Particle() {};
-			Particle( glm::ivec2f _p) : position(_p) {}
+			Particle( glm::vec2 _p) : position(_p) {}
 
 			typedef std::vector<Particle>::iterator Iterator;
 
 			/// current velocity/speed
-			glm::ivec2f velocity = {0,0};
-			/// current position
-			glm::ivec2f position = {0,0};
+			glm::vec2 velocity = {0,0};
+			/// current positionglm::vec2
+			glm::vec2 position = {0,0};
 
 			/// the rotation of the particel in degress/radian ( not yet decided )
 			float rotation = 0;

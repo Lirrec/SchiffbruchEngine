@@ -1,34 +1,35 @@
-#ifndef POINTHELPERS_HPP
-#define POINTHELPERS_HPP
+#ifndef ipointHELPERS_HPP
+#define ipointHELPERS_HPP
 
-#include "sbe/geom/Point.hpp"
+#include "sbe/geom/point.hpp"
+
 
 /**
-	@file "Helpers.hpp" Functions regarding Points and Vectors
+	@file "Helpers.hpp" Functions regarding ipoints and Vectors
 */
 
 namespace sbe
 {
-	namespace Geom
+	namespace geom
 	{
-		/// returns the origin (0,0)
-		inline Point Origin() { return Point(0,0); }
+		/// returns the origin as integer point (0,0)
+		inline glm::ipoint2 iOrigin() { return glm::ipoint2(0,0); }
 		/// returns the origin (0.0,0.0)
-		inline Pointf Originf() { return Pointf(0.0f,0.0f); }
+		inline glm::point2 Origin() { return glm::point2(0.0f,0.0f); }
 
-		/// convert a point<int> to point<float>,
-		inline Pointf PIToF( const Point& p )
+		/// convert a ipoint to point(float),
+		inline glm::point2 PIToF( const glm::ipoint2& p )
 		{
-			return Pointf( p.x, p.y );
+			return glm::point2( p.x, p.y );
 		}
 
-		/// convert a point<float> to point<int>, precision loss!
-		inline Point PFToI( const Pointf& p )
+		/// convert a point(float) to ipoint(int), precision loss!
+		inline glm::ipoint2 PFToI( const glm::point2& p )
 		{
-			return Point( (int)p.x, (int)p.y );
+			return glm::ipoint2( (int)p.x, (int)p.y );
 		}
-	} // namespace Geom
+	} // namespace geom
 } // namespace sbe
 
-#endif // POINTHELPERS_HPP
+#endif // ipointHELPERS_HPP
 

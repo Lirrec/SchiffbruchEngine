@@ -10,6 +10,7 @@
 */
 
 #include <sbe/geom/Point.hpp>
+#include <sbe/geom/Rect.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <random>
 
@@ -25,18 +26,18 @@ namespace sbe
 				return uniform_dist(getRNG());
 			}
 
-			inline float randomFloat(const glm::ivec2f limits)
+			inline float randomFloat(const glm::vec2 limits)
 			{
 				std::uniform_real_distribution<float> uniform_dist(limits.x, limits.y);
 				return uniform_dist(getRNG());
 			}
 
-			inline glm::ipoint2f randomPointf(const Geom::irectf limits)
+			inline glm::point2 randomPointf(const geom::rect limits)
 			{
 				return { randomFloat( {limits.x.x, limits.y.x} ), randomFloat({limits.x.y, limits.y.y}) };
 			}
 
-			inline glm::ipoint2 randomPoint(const Geom::irect limits)
+			inline glm::ipoint2 randomPoint(const geom::irect limits)
 			{
 				return { randomInt( {limits.x.x, limits.y.x} ), randomInt({limits.x.y, limits.y.y}) };
 			}

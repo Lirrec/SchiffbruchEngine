@@ -15,7 +15,7 @@
 
 namespace sbe
 {
-	namespace Geom
+	namespace geom
 	{
 
 		/**
@@ -33,7 +33,7 @@ namespace sbe
 		/// returns the index of a 2d position in an array, assumes data is stored in rows, not columns
 		inline size_t linear( int x, int y, int width ) { return x + y*width; }
 		/// returns the index of a 2d position in an array, assumes data is stored in rows, not columns
-		inline size_t linear( glm::ivec2f p, int width ) { return linear(p.x, p.y, width); }
+		inline size_t linear( glm::vec2 p, int width ) { return linear(p.x, p.y, width); }
 		/// returns the index of a 2d position in an array, assumes data is stored in rows, not columns
 		inline size_t linear( glm::ivec2 p, int width ) { return linear(p.x, p.y, width); }
 
@@ -53,7 +53,7 @@ namespace sbe
 		/**
 			Return the middle point of a line defined by p1 and p2
 		*/
-		inline glm::ipoint2 middle(const Point& p1, const Point& p2)
+		inline glm::ipoint2 middle(const glm::ipoint2& p1, const glm::ipoint2& p2)
 		{
 			return glm::ipoint2( static_cast<int>(std::abs(p1.x + p2.x)/2),    static_cast<int>(std::abs(p1.y + p2.y)/2));
 		}
@@ -61,7 +61,7 @@ namespace sbe
 		// TRIANGLE
 		/**
 			Checks wether a given point is inside a triangle
-			@see PointInTri(Point p, Point t1, Point t2, Point t3) a version which takes points as parameters
+			@see PointInTri(glm::ipoint2 p, glm::ipoint2 t1, glm::ipoint2 t2, glm::ipoint2 t3) a version which takes points as parameters
 		*/
 		inline bool PointInTri(int X, int Y, int X0, int Y0, int X1, int Y1, int /*X3*/, int Y3)
 		{
@@ -95,12 +95,12 @@ namespace sbe
 			return true;
 		}
 
-		inline bool PointInTri(Point p, Point t1, Point t2, Point t3)
+		inline bool PointInTri(glm::ipoint2 p, glm::ipoint2 t1, glm::ipoint2 t2, glm::ipoint2 t3)
 		{
 			return PointInTri(p.x, p.y, t1.x, t1.y, t2.x, t2.y, t3.x, t3.y);
 		}
 
 
-	}	// namespace Geom
+	}	// namespace geom
 } // namespace sbe
 #endif // HELPERS_HPP

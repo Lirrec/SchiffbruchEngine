@@ -10,8 +10,8 @@
 
 #include <sbe/util/FactoriesAndManipulators.hpp>
 
-#include<sbe/geom/Geom.hpp>
-#include<sbe/geom/Point.hpp>
+#include <sbe/geom/Point.hpp>
+#include <glm/gtx/constants.hpp>
 
 #include <random>
 #include <vector>
@@ -25,11 +25,11 @@ namespace sbe
 		namespace manipulators
 		{
 			/// Emits particles with random velocities
-			inline void emitRandom(std::vector<Particle>& Particles, float, glm::ivec2f Origin, float maxvelocity, glm::ivec2f sizelimits)
+			inline void emitRandom(std::vector<Particle>& Particles, float, glm::vec2 Origin, float maxvelocity, glm::vec2 sizelimits)
 			{
 				Particle re;
 				re.position = Origin;
-				re.rotation = factories::randomFloat( {0, 2*Geom::pi() });
+				re.rotation = factories::randomFloat( {0, 2*glm::pi<float>() });
 				float  speed = factories::randomFloat( {0, maxvelocity});
 				auto tmp = gfx::rot( {0, speed}, re.rotation );
 				re.velocity = {tmp.x, tmp.y};
@@ -41,11 +41,11 @@ namespace sbe
 			}
 
 			/// Emits a ray of particles
-			inline void emitRay(std::vector<Particle>& Particles, float, glm::ivec2f Origin, float direction, float maxspread, float velocity, glm::ivec2f sizelimits, glm::ivec2f agelimits)
+			inline void emitRay(std::vector<Particle>& Particles, float, glm::vec2 Origin, float direction, float maxspread, float velocity, glm::vec2 sizelimits, glm::vec2 agelimits)
 			{
 				Particle re;
 				re.position = Origin;
-				re.rotation = factories::randomFloat( {0, 2*Geom::pi() });
+				re.rotation = factories::randomFloat( {0, 2*glm::pi<float>() });
 				float spread = factories::randomFloat( {-maxspread, maxspread} );
 				float speed = factories::randomFloat( {velocity- velocity*0.1f, velocity+ velocity*0.1f} );
 				//Engine::out() << "speed: " << speed << std::endl;

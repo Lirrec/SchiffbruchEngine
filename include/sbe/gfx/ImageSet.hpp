@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "sbe/geom/Point.hpp"
+#include "sbe/geom/Rect.hpp"
 
 #include "sbe/Engine.hpp"
 
@@ -33,9 +34,9 @@ namespace sbe
 					  const int _fps);
 
 			/// calculates the rectangle on the image which contains the given frame ( 2d-framepos )
-			Geom::irect CalcTexCoords( const glm::ivec2 FramePos ) const;
+			geom::irect CalcTexCoords( const glm::ivec2 FramePos ) const;
 			/// calculates the rectangle on the image which contains the given frame ( frame-index )
-			Geom::irect CalcTexCoords( const int index ) const;
+			geom::irect CalcTexCoords( const int index ) const;
 
 			/// calculate the frame position in the image from a frame index
 			glm::ivec2 CalcFramePos( const int index ) const ;

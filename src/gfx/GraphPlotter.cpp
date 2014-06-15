@@ -5,9 +5,10 @@
 #include "sbe/ResourceManager.hpp"
 
 #include <boost/thread.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include <cmath>
-
+#include <glm/gtx/string_cast.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
 namespace sbe
@@ -360,8 +361,8 @@ namespace sbe
 		int PointsToDraw = (validwidth / g.MinPointDist) + 1;
 
 		// calculate the first point
-		glm::ipoint2f last(0, 0);
-		glm::ipoint2f current;
+		glm::point2 last(0, 0);
+		glm::point2 current;
 
 		for ( int p = 0; p < PointsToDraw; ++p)
 		{
@@ -425,9 +426,9 @@ namespace sbe
 	{
 		Engine::out(Engine::INFO) << "[GraphPlotter] Settings:" << std::endl;
 		Engine::out(Engine::INFO) << "[GraphPlotter] Dynamic x/y:" << g.dynX << "/" << g.dynY << std::endl;
-		Engine::out(Engine::INFO) << "[GraphPlotter] AxisSize: " << g.AxisSize << std::endl;
-		Engine::out(Engine::INFO) << "[GraphPlotter] AxisStart: " << g.AxisStart << std::endl;
-		Engine::out(Engine::INFO) << "[GraphPlotter] AxesPoints: " << g.AxesPoints << std::endl;
-		Engine::out(Engine::INFO) << "[GraphPlotter] Size: " << g.Size << std::endl;
+		Engine::out(Engine::INFO) << "[GraphPlotter] AxisSize: " << glm::to_string(g.AxisSize) << std::endl;
+		Engine::out(Engine::INFO) << "[GraphPlotter] AxisStart: " << glm::to_string(g.AxisStart) << std::endl;
+		Engine::out(Engine::INFO) << "[GraphPlotter] AxesPoints: " << glm::to_string(g.AxesPoints) << std::endl;
+		Engine::out(Engine::INFO) << "[GraphPlotter] Size: " << glm::to_string(g.Size) << std::endl;
 	}
 } // namespace sbe

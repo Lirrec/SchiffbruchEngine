@@ -64,7 +64,7 @@ namespace sbe
 	void Camera::setTargetSize ( sf::Vector2f size, bool dontsmooth)
 	{
 		if ( ZoomLimits.width != 0 && ZoomLimits.height != 0)
-			if (Geom::clip( size, ZoomLimits ) != size) return;
+			if (geom::clip( size, ZoomLimits ) != size) return;
 
 		TargetSize = size;
 
@@ -74,7 +74,7 @@ namespace sbe
 	void Camera::setTargetCenter ( sf::Vector2f c, bool dontsmooth)
 	{
 		if ( CamLimits.width != 0 && CamLimits.height != 0 )
-			c = Geom::clip( c, CamLimits );
+			c = geom::clip( c, CamLimits );
 
 		TargetCenter = c;
 
@@ -83,7 +83,7 @@ namespace sbe
 
 	void Camera::setZoomLimits( const sf::Vector2f& min, const sf::Vector2f& max)
 	{
-		ZoomLimits = Geom::makeSfRectf(min, max);
+		ZoomLimits = geom::makeSfRectf(min, max);
 	}
 
 	void Camera::update()
@@ -106,7 +106,7 @@ namespace sbe
 			if ( std::abs(CurrentSize.x - TargetSize.x) < minDiff ) Target.x = TargetSize.x;
 			if ( std::abs(CurrentSize.y - TargetSize.y) < minDiff ) Target.y = TargetSize.y;
 
-			//Target = Geom::clip( Target, ZoomLimits);
+			//Target = geom::clip( Target, ZoomLimits);
 			view.setSize( Target );
 		}
 
@@ -117,7 +117,7 @@ namespace sbe
 			if ( std::abs(CurrentCenter.x - TargetCenter.x) < minDiff ) Target.x = TargetCenter.x;
 			if ( std::abs(CurrentCenter.y - TargetCenter.y) < minDiff ) Target.y = TargetCenter.y;
 
-			//Target = Geom::clip( Target, CamLimits);
+			//Target = geom::clip( Target, CamLimits);
 			view.setCenter( Target );
 		}
 
@@ -180,7 +180,7 @@ namespace sbe
 						break;
 				}
 
-				TargetCenter = Geom::clip( TargetCenter, CamLimits);
+				TargetCenter = geom::clip( TargetCenter, CamLimits);
 
 				break;
 
@@ -193,7 +193,7 @@ namespace sbe
 				}
 
 				// only set TargetSize if NewSize doesnt exceed any ZoomLimits
-				if ( NewSize == Geom::clip( NewSize, ZoomLimits))
+				if ( NewSize == geom::clip( NewSize, ZoomLimits))
 					TargetSize = NewSize;
 
 				break;
@@ -208,7 +208,7 @@ namespace sbe
 				if (Scrolling)
 				{
 					TargetCenter += (glLastMousePos - glMouseMove )*ScrollFactor;
-					TargetCenter = Geom::clip( TargetCenter, CamLimits);
+					TargetCenter = geom::clip( TargetCenter, CamLimits);
 				}
 
 				lastMousePos.x = e.mouseMove.x;

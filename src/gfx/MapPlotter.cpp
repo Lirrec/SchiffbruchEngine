@@ -4,6 +4,7 @@
 
 #include "sbe/geom/Point.hpp"
 #include "sbe/geom/Helpers.hpp"
+#include <glm/geometric.hpp>
 
 #include <algorithm>
 
@@ -31,7 +32,7 @@ namespace sbe
 		{
 			float min = *std::min_element( Data.begin(), Data.end());
 			float max = *std::max_element( Data.begin(), Data.end());
-			for( float& f : Data ) f = Geom::normalize(f, min, max);
+			for( float& f : Data ) f = geom::normalize(f, min, max);
 		}
 
 		Img.create( Size.x, Size.y );
@@ -47,7 +48,7 @@ namespace sbe
 
 		for (int y = 0; y < Size.y; ++y)
 			for ( int x = 0; x < Size.x; ++x )
-				Img.setPixel( x, y, getColor( Data[ Geom::linear(x,y, Size.x ) ] ));
+				Img.setPixel( x, y, getColor( Data[ geom::linear(x,y, Size.x ) ] ));
 	}
 
 	sf::Color MapPlotter::getColor(float f)

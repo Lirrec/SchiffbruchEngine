@@ -30,10 +30,10 @@ namespace sbe
 				using namespace sbe::particles;
 				using namespace std::placeholders;
 
-				float tmp = P.age * Geom::pi();
+				float tmp = P.age * glm::pi<float>();
 				P.velocity.x = 0;
 				//float disp = std::sin(tmp*2)*(1/P.age) + std::sin(tmp*5.0f);
-				float disp = std::sin(tmp+Geom::pi())*3 + P.avelocity * std::sin(tmp) + std::sin(gametime*2+(tmp*2))*0.4;
+				float disp = std::sin(tmp+glm::pi<float>())*3 + P.avelocity * std::sin(tmp) + std::sin(gametime*2+(tmp*2))*0.4;
 				P.position.x = pos.x + disp;
 
 //				Engine::out() << delta << std::endl;
@@ -51,7 +51,7 @@ namespace sbe
 				while ( spawntime > (1.0f/pps))
 				{
 					spawntime  -= (1.0f/pps);
-					manipulators::emitRay( Ps,delta, pos, Geom::pi(), spread, speed, sizelimits, agelimits );
+					manipulators::emitRay( Ps,delta, pos, glm::pi<float>(), spread, speed, sizelimits, agelimits );
 					float tmp = speed * maxage / 4.0f;
 					if ( Ps.size() ) {
 							Ps.back().avelocity = factories::randomFloat( {-tmp, tmp} );
