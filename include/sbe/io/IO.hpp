@@ -97,7 +97,7 @@ namespace sbe
 				@return a vector of loaded objects, may be empty
 			*/
 			template <class T>
-			std::vector<std::shared_ptr<T> > loadObjects( const std::string name );
+			std::vector<std::shared_ptr<T> > loadObjects( const std::string& name );
 
 			/**
 				Tries to save a given object to a file.

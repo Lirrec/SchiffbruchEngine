@@ -176,7 +176,7 @@ namespace sbe
 	}
 
 	template <class T>
-	std::vector<std::shared_ptr<T> > IO::loadObjects( const std::string name ){
+	std::vector<std::shared_ptr<T> > IO::loadObjects( const std::string &name ){
 		auto ti = std::type_index( typeid(T) );
 
 		std::shared_ptr<IOPlugin> iop = getPlugin( ti );
