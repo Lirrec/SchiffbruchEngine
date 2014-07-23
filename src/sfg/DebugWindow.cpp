@@ -11,7 +11,7 @@ using namespace sfg;
 
 namespace sbe
 {
-	DebugWindow::DebugWindow( const Geom::Point& RelativePosition, const Geom::Vec2 Size)
+	DebugWindow::DebugWindow( const glm::ipoint2& RelativePosition, const glm::ivec2 Size)
 	{
 		RegisterForEvent( "VIEW_DBG_STRING" );
 		RegisterForEvent( "EVT_FRAME" );
@@ -27,7 +27,7 @@ namespace sbe
 		CreateWindow(RelativePosition, Size);
 	}
 
-	void DebugWindow::CreateWindow( const Geom::Point& RelativePosition, const Geom::Vec2 Size )
+	void DebugWindow::CreateWindow( const glm::ipoint2& RelativePosition, const glm::ivec2 Size )
 	{
 		Win = Window::Create( Window::Style::TOPLEVEL | Window::Style::SHADOW );
 
@@ -43,8 +43,8 @@ namespace sbe
 		// create Inputbox for console commands.
 		ConsoleInput = Entry::Create();
 
-		ConsoleInput->GetSignal( Entry::OnGainFocus ).Connect( std::bind( &DebugWindow::EntryGainFocus , this) );
-		ConsoleInput->GetSignal( Entry::OnLostFocus ).Connect( std::bind(  &DebugWindow::EntryLostFocus , this) );
+		ConsoleInput->GetSignal( Entry::OnGainFocus ).Connect( [this](){ ListenToActionKeys = true; } );
+		ConsoleInput->GetSignal( Entry::OnLostFocus ).Connect( [this](){ ListenToActionKeys = false; } );
 
 		//ConsoleInput->AppendText( "Not yet implemented." );
 		///ConsoleInput->SetState( Widget::State::INSENSITIVE );
@@ -150,15 +150,6 @@ namespace sbe
 		}
 	}
 
-	void DebugWindow::EntryGainFocus()
-	{
-		ListenToActionKeys = true;
-	}
-
-	void DebugWindow::EntryLostFocus()
-	{
-		ListenToActionKeys = false;
-	}
 
 	void DebugWindow::UpdateText(FilterLevel level)
 	{

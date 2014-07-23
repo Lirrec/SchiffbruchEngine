@@ -10,8 +10,15 @@ namespace sbe
 	ScriptingEngine::ScriptingEngine()
 	{
 		RegisterForEvent("RUN_SCRIPT");
-		RegisterForEvent("SCRIPT_HELLO");
-		RegisterForEvent("RESTART_SCRIPTING");
+
+		RegisterForEvent("SCRIPT_HELLO", [this](Event&) {
+			RunString( "print ( \"hello, world\" )\0");
+		} );
+
+		RegisterForEvent("RESTART_SCRIPTING", [this](Event&) {
+			deinit();
+			init();
+		} );
 	}
 
 	void ScriptingEngine::HandleEvent( Event& e )
@@ -25,15 +32,6 @@ namespace sbe
 				Engine::out(Engine::ERROR) << "[SCRIPTING] Unable to load path! '" << filename << "' not found!" << std::endl;
 				return;
 			}
-		}
-		else if ( e.Is( "SCRIPT_HELLO"))
-		{
-			RunString( "print ( \"hello, world\" )\0");
-		}
-		else if ( e.Is( "RESTART_SCRIPTING"))
-		{
-			deinit();
-			init();
 		}
 	}
 

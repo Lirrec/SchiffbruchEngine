@@ -36,14 +36,14 @@ namespace sbe
 		playing = false;
 		reverse = false;
 		looping = false;
-		Screen_Position = Geom::Point (0,0);
+		Screen_Position = glm::ipoint2 (0,0);
 		sendEndEvent = false;
 		setFrame(0);
 		RangeToPlay = AnimData.FrameCount;
 		LastUpdate = GameTime;
 	}
 
-	void Animation::setScreenPosition( Geom::Point p )
+	void Animation::setScreenPosition( glm::ipoint2 p )
 	{
 		Screen_Position = p;
 	}

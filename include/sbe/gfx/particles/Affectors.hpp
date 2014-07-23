@@ -3,7 +3,11 @@
 
 #include <sbe/geom/Point.hpp>
 #include <sbe/geom/PointHelpers.hpp>
+#include <glm/geometric.hpp>
+#include <glm/gtc/constants.hpp>
+
 #include <sbe/gfx/particles/Particle.hpp>
+
 
 #include <functional>
 #include <cmath>
@@ -20,7 +24,7 @@ namespace sbe
 				P.position += P.velocity * delta;
 				P.velocity *= std::pow(dampening,delta);
 
-				P.rotation = std::fmod(P.rotation+P.avelocity*delta, 2*Geom::pi() );
+				P.rotation = std::fmod(P.rotation+P.avelocity*delta, 2*glm::pi<float>() );
 				P.avelocity *= std::pow(dampening, delta);
 			}
 
@@ -31,33 +35,33 @@ namespace sbe
 			}
 
 			/// applies a gravitational pull to a particle
-			inline void applyGravitation(Particle& P, float delta, Geom::Pointf pos, float m)
+			inline void applyGravitation(Particle& P, float delta, glm::point2 pos, float m)
 			{
-				Geom::Vec2f dist = pos - P.position;
+				glm::vec2 dist = pos - P.position;
 				if ( dist.x == 0 && dist.y == 0) return;
 
-				float accel = (P.size*m) / (Geom::length(dist)*Geom::length(dist));
-				P.velocity += Geom::normalize(dist) * (accel * delta);
+				float accel = (P.size*m) / (glm::length(dist)*glm::length(dist));
+				P.velocity += glm::normalize(dist) * (accel * delta);
 			}
 
 			/// applies a gravitational pull with linear falloff to a particle
-			inline void applyLinearGravitation(Particle& P, float delta, Geom::Pointf pos, float m)
+			inline void applyLinearGravitation(Particle& P, float delta, glm::point2 pos, float m)
 			{
-				Geom::Vec2f dist = pos - P.position;
+				glm::vec2 dist = pos - P.position;
 				if ( dist.x == 0 && dist.y == 0) return;
 
-				float accel = (P.size*m) / Geom::length(dist);
-				P.velocity += Geom::normalize(dist) * (accel * delta);
+				float accel = (P.size*m) / glm::length(dist);
+				P.velocity += glm::normalize(dist) * (accel * delta);
 			}
 
 			/// applies a gravity ( down ) to a particle
-			inline void applyGravity(Particle& P, float delta, Geom::Vec2f direction, float factor = 1.0f)
+			inline void applyGravity(Particle& P, float delta, glm::vec2 direction, float factor = 1.0f)
 			{
-				P.velocity += Geom::normalize(direction)*factor * delta;
+				P.velocity += glm::normalize(direction)*factor * delta;
 			}
 
 			/// performs a collision with a bounding box
-			inline void collideBoxed(Particle& P, float delta, Geom::Vec2f limits)
+			inline void collideBoxed(Particle& P, float delta, glm::vec2 limits)
 			{
 				if ( P.position.x > limits.x)
 				{
@@ -83,7 +87,7 @@ namespace sbe
 			}
 
 			/// performs a collision with a bounding box ( bouncy )
-			inline void collideBoxedBouncy(Particle& P, float delta, Geom::Vec2f limits, float forceloss, float min)
+			inline void collideBoxedBouncy(Particle& P, float delta, glm::vec2 limits, float forceloss, float min)
 			{
 				if ( P.position.x > limits.x)
 				{
@@ -150,7 +154,7 @@ namespace sbe
 			}
 
 			/// performs a warp to the other side of the particle system if a particle leaves one side
-			inline void collideWarped(Particle& P, float delta, Geom::Vec2f limits)
+			inline void collideWarped(Particle& P, float delta, glm::vec2 limits)
 			{
 				P.position.x = P.position.x > 0 ? std::fmod(P.position.x, limits.x) : limits.x +P.position.x;
 				P.position.y = P.position.y > 0 ? std::fmod(P.position.y, limits.y) : limits.y +P.position.y;

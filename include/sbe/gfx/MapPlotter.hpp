@@ -42,7 +42,7 @@ namespace sbe
 			@param _Size the size of the 2d array given in data in x/y
 			@param normalize if set to false the data is assumed to be normalized ( valures range from 0.0 to 1.0). Otherwise the lowest value will be scaled to 0, the highest to 1
 		*/
-		void setData( std::vector<float>& data, Geom::Vec2 _Size, bool normalize = false );
+		void setData( std::vector<float>& data, glm::ivec2 _Size, bool normalize = false );
 
 		/**
 			Define which plot mode to use.
@@ -75,7 +75,7 @@ namespace sbe
 		/// our input data
 		std::vector<float> Data;
 		/// the size of our input data (x/y)
-		Geom::Vec2 Size;
+		glm::ivec2 Size;
 
 		/// which plotmode to use
 		PlotMode Mode;

@@ -47,7 +47,12 @@ namespace sbe
 					break;
 				}
 			}
-
+			if ( !found )
+			{
+				// try an absolute path
+				tmp = loadPath<T>( IOP, "", filename);
+				if(!tmp.empty()){ found = true; }
+			}
 		}
 		catch (fs::filesystem_error& e)
 		{
@@ -57,33 +62,41 @@ namespace sbe
 		if(found){
 			return tmp;
 		}
+
 		return std::vector<std::shared_ptr<T>>();
 	}
 
 	template<class T>
 	std::vector<std::shared_ptr<T>> IO::loadPath(  std::shared_ptr<IOPlugin>& IOP, const std::string& current_path, const std::string& filename)
 	{
-	    Engine::out() << "currentpath: " << current_path << std::endl;
-	    Engine::out() << "filename: " << filename << std::endl;
+	    //Engine::out() << "currentpath: " << current_path << std::endl;
+	    //Engine::out() << "filename: " << filename << std::endl;
 
 		fs::path cp(current_path);
+		fs::path filepath( filename );
 
-		if ( !fs::exists( cp ) )
+		if ( filepath.is_absolute() )
 		{
-			Engine::out(Engine::ERROR) << "[IO] Unable to load path! '" << cp.generic_string() << "' not found!" << std::endl;
-			return std::vector<std::shared_ptr<T>>();
+			cp = filepath;
+		}
+		else
+		{
+			if ( fs::is_regular_file(cp / filename)  ) return loadFile<T>( IOP , cp / filename );
+			cp /= IOP->relative_path;
+			cp /= filename;
+
+			if ( !fs::exists( cp ) )
+			{
+				//Engine::out(Engine::ERROR) << "[IO] Unable to load path! '" << cp.generic_string() << "' not found!" << std::endl;
+				return std::vector<std::shared_ptr<T>>();
+			}
 		}
 
 
-		// check if we got a valid file
-		if ( fs::is_regular_file(cp / filename)  ) return loadFile<T>( IOP , cp / filename );
 
-		cp /= IOP->relative_path;
-		cp /= filename;
-
-		if ( fs::is_regular_file(cp)  ) return loadFile<T>( IOP , cp );
-
-		if ( fs::is_directory(cp) )
+		if ( fs::is_regular_file(cp)  )
+			return loadFile<T>( IOP , cp );
+		else if ( fs::is_directory(cp) )
 		{
 			if (IOP->loader_type == IOPlugin::loader::PTREE )
 			{

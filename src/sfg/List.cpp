@@ -49,7 +49,7 @@ namespace sbe
 
 		sfg::Label::Ptr L = sfg::Label::Create( name );
 		std::shared_ptr<sfgList::item> I( new sfgList::item( *this, name, false, L ) );
-		L->GetSignal( sfg::Label::OnLeftClick ).Connect( std::bind( &item::click, I.get()) );
+		L->GetSignal( sfg::Label::OnLeftClick ).Connect( [this,name](){ LabelClicked(name); } );
 		L->SetAlignment( sf::Vector2f( 0, 0 ) );
 		ItemBox->Pack( L, false, false );
 		Items.push_back(I);
@@ -87,7 +87,7 @@ namespace sbe
 		selectedItems = 0;
 	}
 
-	void sfgList::select( int idx )
+	void sfgList::select( size_t idx )
 	{
 		if ( idx >= Items.size() ) return;
 

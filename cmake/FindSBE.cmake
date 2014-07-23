@@ -42,6 +42,8 @@ else()
 endif()
 
 set( FIND_SBE_PATHS
+		/usr
+		/usr/local
 		${SBEDIR}
 		${SBE_ROOT}
 		$ENV{SBEDIR}

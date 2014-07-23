@@ -10,6 +10,9 @@
 
 #include <sbe/util/FactoriesAndManipulators.hpp>
 
+#include <sbe/geom/Point.hpp>
+#include <glm/gtx/constants.hpp>
+
 #include <random>
 #include <vector>
 
@@ -22,11 +25,11 @@ namespace sbe
 		namespace manipulators
 		{
 			/// Emits particles with random velocities
-			void emitRandom(std::vector<Particle>& Particles, float, Geom::Vec2f Origin, float maxvelocity, Geom::Vec2f sizelimits)
+			inline void emitRandom(std::vector<Particle>& Particles, float, glm::vec2 Origin, float maxvelocity, glm::vec2 sizelimits)
 			{
 				Particle re;
 				re.position = Origin;
-				re.rotation = factories::randomFloat( {0, 2*Geom::pi() });
+				re.rotation = factories::randomFloat( {0, 2*glm::pi<float>() });
 				float  speed = factories::randomFloat( {0, maxvelocity});
 				auto tmp = gfx::rot( {0, speed}, re.rotation );
 				re.velocity = {tmp.x, tmp.y};
@@ -38,13 +41,15 @@ namespace sbe
 			}
 
 			/// Emits a ray of particles
-			void emitRay(std::vector<Particle>& Particles, float, Geom::Vec2f Origin, float direction, float maxspread, float velocity, Geom::Vec2f sizelimits, Geom::Vec2f agelimits)
+			inline void emitRay(std::vector<Particle>& Particles, float, glm::vec2 Origin, float direction, float maxspread, float velocity, glm::vec2 sizelimits, glm::vec2 agelimits)
 			{
 				Particle re;
 				re.position = Origin;
-				re.rotation = factories::randomFloat( {0, 2*Geom::pi() });
+				re.rotation = factories::randomFloat( {0, 2*glm::pi<float>() });
 				float spread = factories::randomFloat( {-maxspread, maxspread} );
-				auto tmp = gfx::rot( {0, velocity}, direction + spread );
+				float speed = factories::randomFloat( {velocity- velocity*0.1f, velocity+ velocity*0.1f} );
+				//Engine::out() << "speed: " << speed << std::endl;
+				auto tmp = gfx::rot( {0.0f, speed }, direction + spread );
 				re.velocity = {tmp.x, tmp.y};
 				re.avelocity = factories::randomFloat( {-velocity, velocity});
 				re.color = factories::randomColor();
@@ -55,7 +60,7 @@ namespace sbe
 			}
 
 			/// removes all particles with an age > 1
-			void destroyOld(std::vector<Particle>& Particles, float)
+			inline void destroyOld(std::vector<Particle>& Particles, float)
 			{
 				auto pend = std::remove_if(Particles.begin(), Particles.end(), [](Particle& P){ return P.age > 1; });
 				Particles.erase(pend, Particles.end());

@@ -27,12 +27,17 @@ namespace sbe
 		init ( EventName, _Data );
 	}
 
+	Event::EventType Event::hashName( const std::string& EventName)
+	{
+		return Core::EvtCore->GetEventHash( EventName );
+	}
+
 	void Event::init( const std::string& EventName, const boost::any& _Data)
 	{
 		if (!Core::EvtCore->HasEvent( EventName ))
 			Core::EvtCore->RegisterEventName( EventName );
 		EvtData = _Data;
-		Type = Core::EvtCore->GetEventHash( EventName );
+		Type = hashName( EventName );
 	}
 
 	std::string Event::getDebugName()

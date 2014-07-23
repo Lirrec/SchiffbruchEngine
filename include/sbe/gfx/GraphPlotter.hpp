@@ -65,8 +65,8 @@ namespace sbe
 
 		std::vector< Curve > getCurves() { return Curves; }
 
-		Geom::Point getMaximas() {
-			Geom::Point max;
+		glm::ipoint2 getMaximas() {
+			glm::ipoint2 max;
 			for( auto& C : Curves )
 			{
 				if ( C.data.empty() ) continue;
@@ -80,16 +80,16 @@ namespace sbe
 		/**
 			The Size of the final image to which this graph should be rendered
 		*/
-		Geom::Vec2 Size;
+		glm::ivec2 Size;
 		/**
 			Determines the range of the x and y axes ( e.g. start -> start + AxesSize.x )
 		*/
-		Geom::Vec2 AxisSize;
+		glm::ivec2 AxisSize;
 
 		/**
 			Determines the first point on each axis to show ( usually 0,0 )
 		*/
-		Geom::Vec2 AxisStart;
+		glm::ivec2 AxisStart;
 
 		/// determines the granularity of the graph or how many points should be rendered ( default 2px distance between each rendered point )
 		float MinPointDist;
@@ -97,7 +97,7 @@ namespace sbe
 		/**
 			how many visual markers should be placed on the axes ( x/y) (defautl: 10/10)
 		*/
-		Geom::Vec2 AxesPoints;
+		glm::ivec2 AxesPoints;
 
 		/// wether to draw the labels on the axes
 		bool drawAxisLabels;
@@ -171,7 +171,7 @@ namespace sbe
 		/**
 			Check if dynamic axes are needed and adjust accordingly
 		*/
-		void dynScaleAxes( const Geom::Point& max);
+		void dynScaleAxes( const glm::ipoint2& max);
 
 		/**
 			draw the names of the curves on the graph

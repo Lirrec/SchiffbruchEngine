@@ -94,7 +94,7 @@ namespace sbe
 		for ( auto & EvL : EventListeners[ e.getEventType() ] )
 		{
 		    //if ( !e.Is( "VIEW_DBG_STRING" ) && !e.Is( "EVT_FRAME") && !e.Is("EVT_TICK") )  Engine::out() << "[FE:"<< Module::Get()->GetName() <<"] Posting Event to Handler: " << e.getDebugName() << std::endl;
-			EvL.second->HandleEvent ( e );
+			EvL.second->RealHandleEvent ( e );
 		}
 	}
 

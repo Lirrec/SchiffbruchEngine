@@ -1,7 +1,6 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
-#include <boost/any.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/optional.hpp>
 

@@ -2,6 +2,7 @@
 #define RECTHELPERS_HPP
 
 #include "sbe/geom/Point.hpp"
+#include "sbe/geom/Rect.hpp"
 
 
 /**
@@ -10,10 +11,10 @@
 
 namespace sbe
 {
-	namespace Geom
+	namespace geom
 	{
 		///Converts a rectangle to a human readable string suitable for debugging purposes
-		inline std::string RectToString( const Geom::Rect& r)
+		inline std::string RectToString( const geom::irect& r)
 		{
 			std::string re("");
 			re += "[";
@@ -30,7 +31,7 @@ namespace sbe
 		}
 
 			/// Checks wether p is inside rc
-		inline bool PointInRect(const Rect& rc, const Point& p)
+		inline bool PointInRect(const geom::irect& rc, const glm::ipoint2& p)
 		{
 				if (
 					(p.x >= rc.x.x && p.x <= rc.y.x)
@@ -43,39 +44,39 @@ namespace sbe
 
 
 		/// returns the width of a rectangle
-		inline int rcWidth(const Rect& rc)
+		inline int rcWidth(const geom::irect& rc)
 		{
 			return std::abs(rc.y.x - rc.x.x);
 		}
 
 		/// returns the height of a rectangle
-		inline int rcHeight(const Rect& rc)
+		inline int rcHeight(const geom::irect& rc)
 		{
 			return std::abs(rc.y.y - rc.x.y);
 		}
 
 		/// returns the top right point of a rectangle
-		inline Point rcBLPoint(const Rect& rc)
+		inline Point rcBLPoint(const geom::irect& rc)
 		{
-			return Geom::Point(rc.x.x, rc.y.y);
+			return glm::ipoint2(rc.x.x, rc.y.y);
 		}
 
 		/// returns the top right point of a rectangle
-		inline Point rcTRPoint(const Rect& rc)
+		inline Point rcTRPoint(const geom::irect& rc)
 		{
-			return Geom::Point(rc.y.x , rc.x.y );
+			return glm::ipoint2(rc.y.x , rc.x.y );
 		}
 
 
 		/// Construction helper for rectangles ( takes 4 ints instead of 2 points
-		inline Rect makeRect(const int left, const int top, const int right, const int bottom)
+		inline geom::irect makeRect(const int left, const int top, const int right, const int bottom)
 		{
-			return Rect( Point(left, top), Point(right, bottom) );
+			return geom::irect( Point(left, top), Point(right, bottom) );
 		}
 		/// Construction helper for rectangles ( takes 4 floats instead of 2 pointfs
-		inline Rectf makeRectf(const float left, const float top, const float right, const float bottom)
+		inline geom::rect makeRectf(const float left, const float top, const float right, const float bottom)
 		{
-			return Rectf( Pointf(left, top), Pointf(right, bottom) );
+			return geom::rect( Pointf(left, top), Pointf(right, bottom) );
 		}
 
 		/// returns the 4 points of a rectangle ( clockwise starting at top-left )
@@ -90,7 +91,7 @@ namespace sbe
 		}
 
 		/// Checks if r is inside rc
-		inline bool RectInRect(const Rect& rc, const Rect& r)
+		inline bool RectInRect(const geom::irect& rc, const geom::irect& r)
 		{
 				if (
 					PointInRect(rc, r.x)
@@ -102,7 +103,7 @@ namespace sbe
 		}
 
 		/// Checks if two rectangles overlap
-		inline bool rcOverlap(const Rect& lhs, const Rect& rhs)
+		inline bool rcOverlap(const geom::irect& lhs, const geom::irect& rhs)
 		{
 			// check if they _don't_ overlap
 			if (
@@ -119,6 +120,7 @@ namespace sbe
 			return true;
 		}
 
+		/// clip a point to be inside a given Rectangle
 		template< class T >
 		inline point<T> clip( const point<T> v, const point<point<T>>& limits )
 		{
@@ -154,9 +156,9 @@ namespace sbe
 		*/
 
 		/// Subdivie a rectangle into 4 subrectangles, return top-left one
-		inline Rect rcTLQuad(const Rect& r)
+		inline geom::irect rcTLQuad(const geom::irect& r)
 		{
-			return Rect( //top left point
+			return geom::irect( //top left point
 					 r.x,
 					 //bottom right point add half height/width
 					 Point( static_cast<int>(r.x.x + 0.5*rcWidth(r)),
@@ -165,9 +167,9 @@ namespace sbe
 		}
 
 		/// Subdivie a rectangle into 4 subrectangles, return top-right one
-		inline Rect rcTRQuad(const Rect& r)
+		inline geom::irect rcTRQuad(const geom::irect& r)
 		{
-			return Rect( //top left point
+			return geom::irect( //top left point
 					 Point( static_cast<int>(r.x.x + 0.5*rcWidth(r)),
 							r.x.y ),
 					 //bottom right point
@@ -177,9 +179,9 @@ namespace sbe
 		}
 
 		/// Subdivie a rectangle into 4 subrectangles, return bottom-right one
-		inline Rect rcBRQuad(const Rect& r)
+		inline geom::irect rcBRQuad(const geom::irect& r)
 		{
-			return Rect( //top left point
+			return geom::irect( //top left point
 					 Point( static_cast<int>(r.x.x + 0.5*rcWidth(r)),
 							static_cast<int>(r.x.y + 0.5*rcHeight(r)) ),
 					 //bottom right point
@@ -188,9 +190,9 @@ namespace sbe
 		}
 
 		/// Subdivie a rectangle into 4 subrectangles, return bottom-left one
-		inline Rect rcBLQuad(const Rect& r)
+		inline geom::irect rcBLQuad(const geom::irect& r)
 		{
-			return Rect( //top left point
+			return geom::irect( //top left point
 					 Point( r.x.x,
 							static_cast<int>( r.x.y + 0.5*rcHeight(r))),
 					 //bottom right point add half height/width
@@ -207,7 +209,7 @@ namespace sbe
 	//	}
 
 
-	} // namespace Geom
+	} // namespace geom
 } // namespace sbe
 
 #endif // RECTHELPERS_HPP

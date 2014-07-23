@@ -44,18 +44,6 @@ namespace sbe
 			*/
 			void Render();
 
-
-			/**
-				Handles the following Events:
-				 - EVT_FRAME: draws and updates the desktop
-				 - EVT_QUIT: stopps the renderthread
-				 - SCREEN_ADD_WINDOW (Data: sfg::Window::Ptr): Adds a new Window to the Desktop, use this to add your own Widgets
-				 - SCREEN_REMOVE_WINDOW (Data: sfg::Window::Ptr): Removes a Window from the Desktop
-				 - TOGGLE_FULLSCREEN: recreate the RenderWindow in fullscreen Mode
-				 - WINDOW_RESIZE: adapts the Camera to the new window size
-			*/
-			void HandleEvent(Event& e);
-
 			/// used to determine wether an event should be sent to the renderer/
 			bool desktopHandledEvent;
 			/// add this as a handler on all your custom SFGUI Bindings, otherwise the clicks on items will also be sent to the renderer
@@ -107,6 +95,20 @@ namespace sbe
 			std::shared_ptr<sfg::Desktop> getDesktop() { return Desktop; }
 			/// access to the SFMLEventConverter
 			std::shared_ptr<SFMLEventConverter> getEvtConv() { return EvtConv; }
+
+		protected:
+			/**
+				Handles the following Events:
+				 - EVT_FRAME: draws and updates the desktop
+				 - EVT_QUIT: stopps the renderthread
+				 - SCREEN_ADD_WINDOW (Data: sfg::Window::Ptr): Adds a new Window to the Desktop, use this to add your own Widgets
+				 - SCREEN_REMOVE_WINDOW (Data: sfg::Window::Ptr): Removes a Window from the Desktop
+				 - TOGGLE_FULLSCREEN: recreate the RenderWindow in fullscreen Mode
+				 - WINDOW_RESIZE: adapts the Camera to the new window size
+			*/
+			void HandleEvent(Event& e) override;
+
+
 		private:
 
 			void Init();

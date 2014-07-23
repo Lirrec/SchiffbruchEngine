@@ -44,7 +44,7 @@ namespace sbe
 		/// remove all Items
 		void clear();
 		/// select or deselect an item, sends "selected" event
-		void select( int idx );
+		void select( size_t idx );
 
 		/// return the selected item or the first selected item if multiselect is allowed
 		/// @return the label of the item oder an empty string
@@ -59,12 +59,10 @@ namespace sbe
 		struct item
 		{
 			item ( sfgList& l, std::string t, bool b, std::shared_ptr<sfg::Label> p )
-			: text(t), active(b), list(l), label(p) {}
+			: text(t), active(b), label(p) {}
 			std::string text;
 			bool active;
 			std::shared_ptr<sfg::Label> label;
-			sfgList& list;
-			void click() { list.LabelClicked(text); }
 		};
 
 		std::vector<std::shared_ptr<item>> Items;

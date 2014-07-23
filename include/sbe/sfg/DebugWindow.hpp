@@ -29,9 +29,10 @@ namespace sbe
 
 		public:
 
-			DebugWindow( const Geom::Point& RelativePosition = Geom::Point(0,0), const Geom::Vec2 Size = Geom::Vec2(600, 280));
+			DebugWindow( const glm::ipoint2& RelativePosition = glm::ipoint2(0,0), const glm::ivec2 Size = glm::ivec2(600, 280));
 			~DebugWindow() {};
 
+		protected:
 			/**
 				Handles the following events:
 					Event			|		Data
@@ -40,13 +41,11 @@ namespace sbe
 				EVT_FRAME			|	-
 				TOGGLE_SHOW_DBGWIN	|	-
 			*/
-			void HandleEvent( Event& e );
+			void HandleEvent( Event& e ) override;
 
 		private:
-			void CreateWindow( const Geom::Point& RelativePosition, const Geom::Vec2 Size );
+			void CreateWindow( const glm::ipoint2& RelativePosition, const glm::ivec2 Size );
 
-			void EntryGainFocus();
-			void EntryLostFocus();
 			bool ListenToActionKeys;
 
 			void UpdateText(FilterLevel level = FilterLevel::VERBOSE);

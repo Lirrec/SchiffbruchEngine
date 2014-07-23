@@ -5,9 +5,10 @@
 #include "sbe/ResourceManager.hpp"
 
 #include <boost/thread.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include <cmath>
-
+#include <glm/gtx/string_cast.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
 namespace sbe
@@ -165,7 +166,7 @@ namespace sbe
 
 		boost::mutex::scoped_lock data_mutex_lock(data_mutex);
 
-		Geom::Point maximas = g.getMaximas();
+		glm::ipoint2 maximas = g.getMaximas();
 
 		dynScaleAxes( maximas );
 		if ( g.AxisStart.x > maximas.x) g.AxisStart.x = maximas.x;
@@ -192,7 +193,7 @@ namespace sbe
 		}
 	}
 
-	void GraphPlotter::dynScaleAxes( const Geom::Point& max)
+	void GraphPlotter::dynScaleAxes( const glm::ipoint2& max)
 	{
 		if(!g.dynX && !g.dynY) return;
 
@@ -360,8 +361,8 @@ namespace sbe
 		int PointsToDraw = (validwidth / g.MinPointDist) + 1;
 
 		// calculate the first point
-		Geom::Pointf last(0, 0);
-		Geom::Pointf current;
+		glm::point2 last(0, 0);
+		glm::point2 current;
 
 		for ( int p = 0; p < PointsToDraw; ++p)
 		{
@@ -425,9 +426,9 @@ namespace sbe
 	{
 		Engine::out(Engine::INFO) << "[GraphPlotter] Settings:" << std::endl;
 		Engine::out(Engine::INFO) << "[GraphPlotter] Dynamic x/y:" << g.dynX << "/" << g.dynY << std::endl;
-		Engine::out(Engine::INFO) << "[GraphPlotter] AxisSize: " << g.AxisSize << std::endl;
-		Engine::out(Engine::INFO) << "[GraphPlotter] AxisStart: " << g.AxisStart << std::endl;
-		Engine::out(Engine::INFO) << "[GraphPlotter] AxesPoints: " << g.AxesPoints << std::endl;
-		Engine::out(Engine::INFO) << "[GraphPlotter] Size: " << g.Size << std::endl;
+		Engine::out(Engine::INFO) << "[GraphPlotter] AxisSize: " << glm::to_string(g.AxisSize) << std::endl;
+		Engine::out(Engine::INFO) << "[GraphPlotter] AxisStart: " << glm::to_string(g.AxisStart) << std::endl;
+		Engine::out(Engine::INFO) << "[GraphPlotter] AxesPoints: " << glm::to_string(g.AxesPoints) << std::endl;
+		Engine::out(Engine::INFO) << "[GraphPlotter] Size: " << glm::to_string(g.Size) << std::endl;
 	}
 } // namespace sbe

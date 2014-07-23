@@ -43,7 +43,7 @@ namespace sbe
 			void update();
 
 			/**
-				Handles SFML events for zooming and Scrolling
+				Handles SFML events for zooming and Scrolling. Called by Screen
 			*/
 			void HandleEvent( const sf::Event& e);
 

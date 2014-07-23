@@ -14,8 +14,8 @@ namespace sbe
 
 	Message::Message ( Message::Type type_, const std::string& title_, const std::string& message_, const std::string& answerEventName_, bool pause_ )
 	{
-		RegisterForEvent( "WINDOW_RESIZE" );
-		RegisterForEvent( "TOGGLE_FULLSCREEN" );
+		RegisterForEvent( "WINDOW_RESIZE", [this](Event& e){  updatePosition();  } );
+		RegisterForEvent( "TOGGLE_FULLSCREEN", [this](Event& e){  updatePosition();  } );
 		Type_ = type_;
 		Title_ = title_;
 		Message_ = message_;
@@ -48,14 +48,6 @@ namespace sbe
         Win->Show(false);
         Module::Get()->QueueEvent( Event( "SCREEN_REMOVE_WINDOW", Win ) );
     }
-
-	void Message::HandleEvent( Event& e )
-	{
-		if ( e.Is( "WINDOW_RESIZE" ) || e.Is( "TOGGLE_FULLSCREEN" ) )
-		{
-			updatePosition();
-		}
-	}
 
 	void Message::MakeOkMessage()
 	{
