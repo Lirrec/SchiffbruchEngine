@@ -151,7 +151,7 @@ namespace sbe
 			EventData& Data() { return EvtData; };
 
 			/// returns the type of this event
-			EventType getEventType() { return Type; };
+			EventType getEventType() const { return Type; };
 
 			/// returns the eventname as string
 			std::string getDebugName();
