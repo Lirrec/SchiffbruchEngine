@@ -4,6 +4,7 @@
 #include "sbe/geom/Point.hpp"
 #include "sbe/geom/Rect.hpp"
 
+#include <boost/lexical_cast.hpp>
 
 /**
 	@file "Helpers.hpp" Functions regarding Rectangles
@@ -56,13 +57,13 @@ namespace sbe
 		}
 
 		/// returns the top right point of a rectangle
-		inline Point rcBLPoint(const geom::irect& rc)
+		inline glm::ipoint2 rcBLPoint(const geom::irect& rc)
 		{
 			return glm::ipoint2(rc.x.x, rc.y.y);
 		}
 
 		/// returns the top right point of a rectangle
-		inline Point rcTRPoint(const geom::irect& rc)
+		inline glm::ipoint2 rcTRPoint(const geom::irect& rc)
 		{
 			return glm::ipoint2(rc.y.x , rc.x.y );
 		}
@@ -71,22 +72,22 @@ namespace sbe
 		/// Construction helper for rectangles ( takes 4 ints instead of 2 points
 		inline geom::irect makeRect(const int left, const int top, const int right, const int bottom)
 		{
-			return geom::irect( Point(left, top), Point(right, bottom) );
+			return geom::irect( glm::ipoint2(left, top), glm::ipoint2(right, bottom) );
 		}
 		/// Construction helper for rectangles ( takes 4 floats instead of 2 pointfs
 		inline geom::rect makeRectf(const float left, const float top, const float right, const float bottom)
 		{
-			return geom::rect( Pointf(left, top), Pointf(right, bottom) );
+			return geom::rect( glm::point2(left, top), glm::point2(right, bottom) );
 		}
 
 		/// returns the 4 points of a rectangle ( clockwise starting at top-left )
-		template< class T>
-		inline void decompose( point<T>* re, const point<point<T>>& r )
+		template< class point, class rect>
+		inline void decompose( point* re, const rect& r )
 		{
 			re[0] = r.x;
-			re[1] = point<T>(r.y.x, r.x.y);
+			re[1] = point(r.y.x, r.x.y);
 			re[2] = r.y;
-			re[3] = point<T>(r.x.x, r.y.y);
+			re[3] = point(r.x.x, r.y.y);
 			return;
 		}
 
@@ -121,10 +122,10 @@ namespace sbe
 		}
 
 		/// clip a point to be inside a given Rectangle
-		template< class T >
-		inline point<T> clip( const point<T> v, const point<point<T>>& limits )
+		template< class point, class rect >
+		inline point clip( const point v, const rect& limits )
 		{
-			point<T> vec = v;
+			point vec = v;
 			if ( vec.x < limits.x.x ) vec.x = limits.x.x;
 			else if ( vec.x > limits.y.x ) vec.x = limits.y.x;
 
@@ -161,7 +162,7 @@ namespace sbe
 			return geom::irect( //top left point
 					 r.x,
 					 //bottom right point add half height/width
-					 Point( static_cast<int>(r.x.x + 0.5*rcWidth(r)),
+					 glm::ipoint2( static_cast<int>(r.x.x + 0.5*rcWidth(r)),
 							static_cast<int>(r.x.y + 0.5*rcHeight(r)) )
 					);
 		}
@@ -170,10 +171,10 @@ namespace sbe
 		inline geom::irect rcTRQuad(const geom::irect& r)
 		{
 			return geom::irect( //top left point
-					 Point( static_cast<int>(r.x.x + 0.5*rcWidth(r)),
+					 glm::ipoint2( static_cast<int>(r.x.x + 0.5*rcWidth(r)),
 							r.x.y ),
 					 //bottom right point
-					 Point( r.y.x,
+					 glm::ipoint2( r.y.x,
 							static_cast<int>(r.x.y + 0.5*rcHeight(r)) )
 					);
 		}
@@ -182,7 +183,7 @@ namespace sbe
 		inline geom::irect rcBRQuad(const geom::irect& r)
 		{
 			return geom::irect( //top left point
-					 Point( static_cast<int>(r.x.x + 0.5*rcWidth(r)),
+					 glm::ipoint2( static_cast<int>(r.x.x + 0.5*rcWidth(r)),
 							static_cast<int>(r.x.y + 0.5*rcHeight(r)) ),
 					 //bottom right point
 					 r.y
@@ -193,17 +194,17 @@ namespace sbe
 		inline geom::irect rcBLQuad(const geom::irect& r)
 		{
 			return geom::irect( //top left point
-					 Point( r.x.x,
+					 glm::ipoint2( r.x.x,
 							static_cast<int>( r.x.y + 0.5*rcHeight(r))),
 					 //bottom right point add half height/width
-					 Point( static_cast<int>(r.x.x + 0.5*rcWidth(r)),
+					 glm::ipoint2( static_cast<int>(r.x.x + 0.5*rcWidth(r)),
 							r.y.y )
 					);
 		}
 
-	//	inline Point rcMid(const Rect& r)
+	//	inline glm::ipoint2 rcMid(const Rect& r)
 	//	{
-	//		return Point( r.x.x + 0.5*rcWidth(r),
+	//		return glm::ipoint2( r.x.x + 0.5*rcWidth(r),
 	//					  r.x.y + 0.5*rcHeight(r)
 	//				);
 	//	}

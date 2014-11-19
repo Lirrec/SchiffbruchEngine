@@ -130,7 +130,7 @@ namespace sbe
 			return;
 		}
 
-		if (!glm::ipoint2InRect(area, center))
+		if (!geom::PointInRect(area, center))
 		{
 			Engine::out(Engine::ERROR) << "QTN:InsertItem: center " << center << " not in QT "<< area <<"!" << std::endl;
 			abort();
@@ -149,25 +149,25 @@ namespace sbe
 			//ChildNodes[0].InsertItem(center, t);
 
 
-			if (glm::ipoint2InRect(ChildNodes[0].area , center))
+			if (geom::PointInRect(ChildNodes[0].area , center))
 			{
 				ChildNodes[0].InsertItem(center, t);
 				return;
 			}
 			else
-			if (glm::ipoint2InRect(ChildNodes[1].area , center))
+			if (geom::PointInRect(ChildNodes[1].area , center))
 			{
 				ChildNodes[1].InsertItem(center, t);
 				return;
 			}
 			else
-			if (glm::ipoint2InRect(ChildNodes[2].area , center))
+			if (geom::PointInRect(ChildNodes[2].area , center))
 			{
 				ChildNodes[2].InsertItem(center, t);
 				return;
 			}
 			else
-			if (glm::ipoint2InRect(ChildNodes[3].area , center))
+			if (geom::PointInRect(ChildNodes[3].area , center))
 			{
 				ChildNodes[3].InsertItem(center, t);
 				return;
@@ -181,7 +181,7 @@ namespace sbe
 				Engine::out(Engine::ERROR) << "Child2 BR: " <<  ChildNodes[2].area << std::endl;
 				Engine::out(Engine::ERROR) << "Child3 BL: " <<  ChildNodes[3].area << std::endl;
 
-				Engine::out(Engine::ERROR) << glm::ipoint2InRect(geom::makeRect(1024,0, 2048, 1024),  glm::ipoint2(1665,36)) << std::endl;
+				Engine::out(Engine::ERROR) << geom::PointInRect(geom::makeRect(1024,0, 2048, 1024),  glm::ipoint2(1665,36)) << std::endl;
 
 				abort();
 			}
@@ -198,7 +198,7 @@ namespace sbe
 			return;
 		}
 
-		if (!glm::ipoint2InRect(area, center))
+		if (!geom::PointInRect(area, center))
 		{
 			Engine::out(Engine::ERROR) << "QTN:RemoveItem: center " << center << " not in QT "<< area <<"!" << std::endl;
 			return;
@@ -217,25 +217,25 @@ namespace sbe
 			//ChildNodes[0].RemoveItem(center, t);
 
 
-			if (glm::ipoint2InRect(ChildNodes[0].area , center))
+			if (geom::PointInRect(ChildNodes[0].area , center))
 			{
 				ChildNodes[0].RemoveItem(center, t);
 				return;
 			}
 			else
-			if (glm::ipoint2InRect(ChildNodes[1].area , center))
+			if (geom::PointInRect(ChildNodes[1].area , center))
 			{
 				ChildNodes[1].RemoveItem(center, t);
 				return;
 			}
 			else
-			if (glm::ipoint2InRect(ChildNodes[2].area , center))
+			if (geom::PointInRect(ChildNodes[2].area , center))
 			{
 				ChildNodes[2].RemoveItem(center, t);
 				return;
 			}
 			else
-			if (glm::ipoint2InRect(ChildNodes[3].area , center))
+			if (geom::PointInRect(ChildNodes[3].area , center))
 			{
 				ChildNodes[3].RemoveItem(center, t);
 				return;
@@ -248,7 +248,7 @@ namespace sbe
 				Engine::out(Engine::ERROR) << "Child1 TR: " <<  ChildNodes[1].area << std::endl;
 				Engine::out(Engine::ERROR) << "Child2 BR: " <<  ChildNodes[2].area << std::endl;
 				Engine::out(Engine::ERROR) << "Child3 BL: " <<  ChildNodes[3].area << std::endl;
-				Engine::out(Engine::ERROR) << glm::ipoint2InRect(geom::makeRect(1024,0, 2048, 1024),  glm::ipoint2(1665,36)) << std::endl;
+				Engine::out(Engine::ERROR) << geom::PointInRect(geom::makeRect(1024,0, 2048, 1024),  glm::ipoint2(1665,36)) << std::endl;
 			}
 		}
 	}

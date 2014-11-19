@@ -2,6 +2,7 @@
 #define POINT_HPP
 
 #include <glm/vec2.hpp>
+#include <glm/gtx/io.hpp>
 
 namespace glm
 {

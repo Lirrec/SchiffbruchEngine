@@ -1,12 +1,12 @@
 #!/bin/bash
 
-sfmldir=/d/libs/sfml2_git
+sfmldir=/d/dev/libs/sfml2_git
 sfmllibs="window system graphics audio network"
 
-sfguidir=/d/libs/SFGUI
-sbedir=/d/libs/SchiffbruchEngine
-boostdir=/d/libs/boost_1_55_0
-glmdir=/d/libs/glm
+sfguidir=/d/dev/libs/SFGUI
+sbedir=/d/dev/libs/SchiffbruchEngine
+boostdir=/d/dev/libs/boost_1_57_0
+glmdir=/d/dev/libs/glm_0_9_5_4
 clean=false
 static=true
 

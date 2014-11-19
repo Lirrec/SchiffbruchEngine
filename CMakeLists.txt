@@ -15,12 +15,13 @@ option( PROFILE "" OFF)
 option( USE_PYTHON "" OFF)
 option( USE_RUBY "" OFF)
 option( BUILD_SHARED_LIBS "" ON )
-option(ENABLE_LTO "enable lto, if ya dont know what this is, ya dont need it!" OFF)
+option( ENABLE_LTO "enable lto, if ya dont know what this is, ya dont need it!" OFF)
 
 set( SFGUI_ROOT "" CACHE PATH "Path to where SFGUI is located.")
 
 set( CMAKE_MODULE_PATH "${SFML_ROOT}/cmake/Modules" ${CMAKE_MODULE_PATH} )
 set( CMAKE_MODULE_PATH "${SFGUI_ROOT}/cmake" ${CMAKE_MODULE_PATH} )
+set( CMAKE_MODULE_PATH "${GLM_ROOT}/util" ${CMAKE_MODULE_PATH} )
 
 SET( CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
