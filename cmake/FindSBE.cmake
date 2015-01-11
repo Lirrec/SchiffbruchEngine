@@ -42,48 +42,28 @@ else()
 endif()
 
 set( FIND_SBE_PATHS
-		/usr
-		/usr/local
 		${SBEDIR}
 		${SBE_ROOT}
 		$ENV{SBEDIR}
-		$ENV{SBE_ROOT})
-		
-find_path(
-	SBE_INCLUDE_DIR
-	sbe/Engine.hpp
-	PATH_SUFFIXES
-		include
-	PATHS
-		${FIND_SBE_PATHS}
-	NO_DEFAULT_PATH
-)
+		$ENV{SBE_ROOT}
+		/usr
+		/usr/local)
 
-find_library(
-	SBE_LIBRARY_RELEASE
-	sbe${SBE_SUFFIX}
-	PATH_SUFFIXES
+set( FIND_SBE_PATH_SUFFIXES
 		lib
 		lib64
 		build
-		build.win
-	PATHS
-		${FIND_SBE_PATHS}
-	NO_DEFAULT_PATH
-)
+		build.win)
+	
+#always search first for the manual paths, then the default paths
+find_path( SBE_INCLUDE_DIR sbe/Engine.hpp PATH_SUFFIXES include PATHS ${FIND_SBE_PATHS} NO_DEFAULT_PATH)
+find_path( SBE_INCLUDE_DIR sbe/Engine.hpp PATH_SUFFIXES include )
 
-find_library(
-	SBE_LIBRARY_DEBUG
-	sbe${SBE_SUFFIX}-d
-	PATH_SUFFIXES
-		lib
-		lib64
-		build
-		build.win
-	PATHS
-		${FIND_SBE_PATHS}
-	NO_DEFAULT_PATH
-)
+find_library( SBE_LIBRARY_RELEASE sbe${SBE_SUFFIX} PATH_SUFFIXES ${FIND_SBE_PATH_SUFFIXES} PATHS ${FIND_SBE_PATHS} NO_DEFAULT_PATH )
+find_library( SBE_LIBRARY_RELEASE sbe${SBE_SUFFIX} PATH_SUFFIXES ${FIND_SBE_PATH_SUFFIXES} )
+
+find_library( SBE_LIBRARY_DEBUG sbe${SBE_SUFFIX}-d PATH_SUFFIXES ${FIND_SBE_PATH_SUFFIXES} PATHS ${FIND_SBE_PATHS} NO_DEFAULT_PATH )
+find_library( SBE_LIBRARY_DEBUG sbe${SBE_SUFFIX}-d PATH_SUFFIXES ${FIND_SBE_PATH_SUFFIXES} )
 
 if( SBE_LIBRARY_RELEASE AND SBE_LIBRARY_DEBUG )
 	set( SBE_LIBRARY debug ${SBE_LIBRARY_DEBUG} optimized ${SBE_LIBRARY_RELEASE} )

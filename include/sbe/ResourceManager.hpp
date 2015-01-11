@@ -217,6 +217,6 @@ namespace sbe
 } // namespace sbe
 
 // Include Implementation
-#include "../../src/ResourceManager.ipp"
+#include "ResourceManager.ipp"
 
 #endif // RESMGR_H

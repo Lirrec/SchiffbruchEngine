@@ -158,6 +158,6 @@ namespace sbe
 
 } // namespace sbe
 
-#include "../../../src/io/IO.ipp"
+#include "IO.ipp"
 
 #endif // IO_H

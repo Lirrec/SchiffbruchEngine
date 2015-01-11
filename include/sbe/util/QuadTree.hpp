@@ -80,7 +80,7 @@ namespace sbe
 
 } // namespace sbe
 
-#include "../../../src/util/QuadTree.ipp"
+#include "QuadTree.ipp"
 
 #endif // QUADTREE_H
 
