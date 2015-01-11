@@ -14,7 +14,6 @@ replaces=('schiffbruchengine')
 
 source=("git+https://github.com/Lirrec/SchiffbruchEngine.git")
 md5sums=('SKIP')
-options=(!ccache)
 
 pkgver() {
   cd "${srcdir}/SchiffbruchEngine"
@@ -24,7 +23,7 @@ pkgver() {
 build() {
   cd "$srcdir/SchiffbruchEngine"
 
-  cmake -DCMAKE_INSTALL_PREFIX=/usr . 
+  cmake -DCMAKE_INSTALL_PREFIX=/usr .
   make
 }
 
