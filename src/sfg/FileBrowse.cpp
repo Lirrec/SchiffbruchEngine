@@ -24,12 +24,12 @@ namespace sbe {
         RegisterForEvent ( "KEY_PRESSED_ENTER" );
         //RegisterForEvent();
 
-        CreateWindow ( Size, title );
+        CreateWin ( Size, title );
         Win->Show ( false );
         Module::Get()->QueueEvent ( Event ( "SCREEN_ADD_WINDOW", Win ) );
     }
 
-    void FileBrowse::CreateWindow ( const glm::ivec2 Size, const std::string& title )
+    void FileBrowse::CreateWin ( const glm::ivec2 Size, const std::string& title )
     {
         Win = sfg::Window::Create ( sfg::Window::Style::BACKGROUND | sfg::Window::Style::TITLEBAR | sfg::Window::Style::SHADOW );
 

@@ -15,7 +15,6 @@ namespace sfg {
 
 #include <boost/filesystem/path.hpp>
 
-
 namespace sbe
 {
     class sfgList;
@@ -65,7 +64,7 @@ namespace sbe
 
 
         private:
-            void CreateWindow(const glm::ivec2 Size, const std::string &title);
+            void CreateWin(const glm::ivec2 Size, const std::string &title);
             void onOkClicked();
             void onCancelClicked();
             void updatePosition();

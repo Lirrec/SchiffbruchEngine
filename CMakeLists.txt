@@ -94,7 +94,9 @@ endif()
 #############################################################
 
 if(CMAKE_SYSTEM_NAME MATCHES Windows)
-
+	# nogdi prevents a "#define ERROR 0" from wingdi.h which fucks up our code
+	# wingdi.h is sometimes included in gl.h ( some mingw versions of glew don't include it, most do )
+	add_definitions( -DNOGDI -DWIN32_LEAN_AND_MEAN )
 else()
 	add_definitions( -fPIC )
 endif()

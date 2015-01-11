@@ -44,7 +44,7 @@ namespace sbe
 			void HandleEvent( Event& e ) override;
 
 		private:
-			void CreateWindow( const glm::ipoint2& RelativePosition, const glm::ivec2 Size );
+			void CreateWin( const glm::ipoint2& RelativePosition, const glm::ivec2 Size );
 
 			bool ListenToActionKeys;
 

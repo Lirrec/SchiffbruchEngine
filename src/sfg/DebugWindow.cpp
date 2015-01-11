@@ -24,10 +24,10 @@ namespace sbe
 		updateCounter = 0;
 		currentlabeltext = 0;
 		ListenToActionKeys = false;
-		CreateWindow(RelativePosition, Size);
+		CreateWin(RelativePosition, Size);
 	}
 
-	void DebugWindow::CreateWindow( const glm::ipoint2& RelativePosition, const glm::ivec2 Size )
+	void DebugWindow::CreateWin( const glm::ipoint2& RelativePosition, const glm::ivec2 Size )
 	{
 		Win = Window::Create( Window::Style::TOPLEVEL | Window::Style::SHADOW );
 
