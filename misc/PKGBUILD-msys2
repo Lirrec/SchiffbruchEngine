@@ -1,0 +1,39 @@
+# Maintainer: Lirrec <sbe at lirrec dot de>
+
+pkgname="${MINGW_PACKAGE_PREFIX}-sbe-git"
+pkgver=0.1.0.r38.g5f57fe8
+pkgrel=1
+pkgdesc="A C++ Game Engine based on SFML and SFGUI"
+arch=('i686' 'x86_64')
+url="http://github.com/Lirrec/SchiffbruchEngine"
+license=('none')
+depends=("${MINGW_PACKAGE_PREFIX}-sfml-git" "${MINGW_PACKAGE_PREFIX}-sfgui-git" "${MINGW_PACKAGE_PREFIX}-boost" "${MINGW_PACKAGE_PREFIX}-glm")
+makedepends=("${MINGW_PACKAGE_PREFIX}-cmake" "git")
+provides=('sbe')
+conflicts=('sbe')
+replaces=('sbe')
+
+source=("git+https://github.com/Lirrec/SchiffbruchEngine.git")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/SchiffbruchEngine"
+  git describe --long --tags | sed -r 's/([^-]*-g)/r\1/;s/-/./g'
+}
+
+build() {
+  cd "$srcdir/SchiffbruchEngine"
+
+  cmake -G"MSYS Makefiles" -DCMAKE_INSTALL_PREFIX=${pkgdir}${MINGW_PREFIX} -DCMAKE_MODULE_PATH=${MINGW_PREFIX}/share/cmake/modules/ .
+  make
+}
+
+package() {
+  cd "$srcdir/SchiffbruchEngine"
+
+  make install
+
+  #install -Dm644 "${srcdir}/SchiffbruchEngine/cmake/FindSBE.cmake" "${pkgdir}${MINGW_PREFIX}/share/cmake/Modules/FindSBE.cmake"
+}
+
+# vim:set ts=2 sw=2 et:

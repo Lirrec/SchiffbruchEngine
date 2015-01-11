@@ -1,0 +1,43 @@
+# Maintainer: oi_wtf <brainpower at gulli dot com>
+
+pkgname="${MINGW_PACKAGE_PREFIX}-sfgui-git"
+pkgver=0.2.3.r1.g5a17f40
+pkgrel=2
+pkgdesc="SFGUI (Simple and Fast Graphical User Interface), a C++ GUI library for SFML."
+arch=('i686' 'x86_64')
+url="http://sfgui.sfml-dev.org/"
+license=('zlib')
+depends=("${MINGW_PACKAGE_PREFIX}-sfml-git")
+makedepends=("${MINGW_PACKAGE_PREFIX}-cmake" "git")
+provides=('sfgui')
+conflicts=('sfgui')
+replaces=('sfgui')
+
+source=("git+https://github.com/TankOs/SFGUI.git")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/SFGUI"
+  git describe --long --tags | sed -r 's/([^-]*-g)/r\1/;s/-/./g'
+}
+
+build() {
+  cd "$srcdir/SFGUI"
+
+  cmake -G"MSYS Makefiles" -DCMAKE_INSTALL_PREFIX=${pkgdir}${MINGW_PREFIX} -DCMAKE_MODULE_PATH=${MINGW_PREFIX}/share/cmake/modules/ .
+  make
+}
+
+package() {
+  cd "$srcdir/SFGUI"
+
+  make install
+
+  install -Dm644 "${srcdir}/SFGUI/cmake/FindSFGUI.cmake" "${pkgdir}${MINGW_PREFIX}/share/cmake/Modules/FindSFGUI.cmake"
+
+  install -Dm644 ./LICENSE ${pkgdir}${MINGW_PREFIX}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 ./FONT.LICENSE ${pkgdir}${MINGW_PREFIX}/usr/share/licenses/${pkgname}/FONT.LICENSE
+
+}
+
+# vim:set ts=2 sw=2 et:
