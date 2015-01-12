@@ -1,7 +1,7 @@
 #ifndef ipointHELPERS_HPP
 #define ipointHELPERS_HPP
 
-#include "sbe/geom/point.hpp"
+#include "sbe/geom/Point.hpp"
 
 
 /**

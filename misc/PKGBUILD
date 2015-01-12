@@ -12,12 +12,10 @@ makedepends=('cmake')
 source=("sbe-${pkgver}.tar.gz::https://github.com/Lirrec/SchiffbruchEngine/archive/${pkgver}.tar.gz")
 sha256sums=('58715117e6299dcbb98a43bbbe5e5a0f93f4570bb8bd10f0ba568d69bbb97b4a')
 
-options=(!ccache)
-
 build() {
   cd "$srcdir/SchiffbruchEngine-${pkgver}"
 
-  cmake -DCMAKE_INSTALL_PREFIX=/usr . 
+  cmake -DCMAKE_INSTALL_PREFIX=/usr .
   make
 }
 
