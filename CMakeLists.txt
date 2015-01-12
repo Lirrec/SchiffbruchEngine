@@ -21,7 +21,11 @@ SET( CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 if (NOT CMAKE_BUILD_TYPE)
 	set( CMAKE_BUILD_TYPE "Release")
 endif()
-message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+
+message(STATUS "INFO --")
+message(STATUS "BUILD_SHARED_LIBS: ${BUILD_SHARED_LIBS}" )
+message(STATUS "CMAKE_BUILD_TYPE:  ${CMAKE_BUILD_TYPE}" )
+message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}" )
 
 #############################################################
 #################### External Libraries Configuration #####################
@@ -64,10 +68,7 @@ file( GLOB_RECURSE sbe_HDRS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_D
 
 #left here for debugging purposes
 if (true)
-	message(STATUS "INFO --")
-	message(STATUS "BUILD_SHARED_LIBS: ${BUILD_SHARED_LIBS}" )
-	message(STATUS "CMAKE_BUILD_TYPE:  ${CMAKE_BUILD_TYPE}" )
-	message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}" )
+
 	message(STATUS "INCLUDES --")
 	message(STATUS "sfml libs:      ${SFML_LIBRARIES}" )
 	message(STATUS "sfml includes:  ${SFML_INCLUDE_DIR}" )
