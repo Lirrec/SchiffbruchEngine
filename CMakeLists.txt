@@ -10,18 +10,11 @@ set(VER_MINOR 1)
 ################### Cmake Options ###########################
 #############################################################
 
-
 option( PROFILE "" OFF)
 option( USE_PYTHON "" OFF)
 option( USE_RUBY "" OFF)
 option( BUILD_SHARED_LIBS "" ON )
 option( ENABLE_LTO "enable lto, if ya dont know what this is, ya dont need it!" OFF)
-
-set( SFGUI_ROOT "" CACHE PATH "Path to where SFGUI is located.")
-
-set( CMAKE_MODULE_PATH "${SFML_ROOT}/cmake/Modules" ${CMAKE_MODULE_PATH} )
-set( CMAKE_MODULE_PATH "${SFGUI_ROOT}/cmake" ${CMAKE_MODULE_PATH} )
-set( CMAKE_MODULE_PATH "${GLM_ROOT}/util" ${CMAKE_MODULE_PATH} )
 
 SET( CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
@@ -48,7 +41,7 @@ endif()
 #############################################################
 
 set( SFML_FIND_REQUIRED true )
-find_package(Boost 1.46 REQUIRED thread system filesystem)
+find_package(Boost 1.55 REQUIRED thread system filesystem)
 find_package(SFML 2 COMPONENTS audio graphics window system ${ADD_SFML_MAIN})
 find_package(SFGUI REQUIRED )
 find_package(GLM REQUIRED )
@@ -74,6 +67,7 @@ if (true)
 	message(STATUS "INFO --")
 	message(STATUS "BUILD_SHARED_LIBS: ${BUILD_SHARED_LIBS}" )
 	message(STATUS "CMAKE_BUILD_TYPE:  ${CMAKE_BUILD_TYPE}" )
+	message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}" )
 	message(STATUS "INCLUDES --")
 	message(STATUS "sfml libs:      ${SFML_LIBRARIES}" )
 	message(STATUS "sfml includes:  ${SFML_INCLUDE_DIR}" )
@@ -94,9 +88,7 @@ endif()
 #############################################################
 
 if(CMAKE_SYSTEM_NAME MATCHES Windows)
-	# nogdi prevents a "#define ERROR 0" from wingdi.h which fucks up our code
-	# wingdi.h is sometimes included in gl.h ( some mingw versions of glew don't include it, most do )
-	add_definitions( -DNOGDI -DWIN32_LEAN_AND_MEAN )
+
 else()
 	add_definitions( -fPIC )
 endif()
@@ -165,7 +157,6 @@ install(TARGETS sbe
 	RUNTIME DESTINATION bin
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib )
-set(CM_VER ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
-install(FILES cmake/FindSBE.cmake DESTINATION share/cmake-${CM_VER}/Modules)
+install(FILES cmake/FindSBE.cmake DESTINATION share/cmake-2.8/Modules)
 
 
