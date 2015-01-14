@@ -6,6 +6,7 @@
 
 #include <algorithm>
 
+#include <boost/uuid/uuid_io.hpp>
 
 namespace sbe
 {
@@ -68,7 +69,7 @@ namespace sbe
 		for ( std::shared_ptr<Actor>& A : L.RenderList)
 		{
 			//Engine::out() << "Updating Actor " << ++i << std::endl;
-			A->update( RenderTime.getElapsedTime() );
+			if (A->enabled) A->update( RenderTime.getElapsedTime() );
 		}
 	}
 
@@ -92,8 +93,13 @@ namespace sbe
 
 		for ( const std::shared_ptr<Actor>& A : L.RenderList)
 		{
-			//Engine::out() << "Drawing: " << std::endl;
-			t.draw( A->getDrawable(), L.States );
+			//Engine::out() << "Drawing actor: " << A->getID() << " - drawable: " << &(A->getDrawable()) << std::endl;
+
+			if (A->enabled) {
+				t.draw( A->getDrawable(), L.States );
+				assert(&(A->getDrawable()) != nullptr);
+			}
+
 		}
 	}
 
@@ -143,7 +149,7 @@ void Renderer::addActor(const std::shared_ptr<Actor>& A, int Layer)
 
 void Renderer::updateActor(const ActorID& ID, std::shared_ptr<Actor>& A)
 {
-	if (!ActorMap.count( ID )) return;
+	if (!ActorMap.count( ID ) || !A->enabled) return;
 
 	ActorInfo AI = ActorMap[ID];
 	AI.first = A;

@@ -32,6 +32,8 @@ namespace sbe
 		virtual sf::Drawable& getDrawable() = 0;
 		ActorID getID() const { return ID; }
 
+		bool enabled = true;
+
 		private:
 			const ActorID ID;
 	};
