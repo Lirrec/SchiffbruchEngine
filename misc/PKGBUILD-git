@@ -6,11 +6,13 @@ pkgdesc="The Schiffbruch Engine"
 arch=('i686' 'x86_64')
 url="https://github.com/Lirrec/SchiffbruchEngine"
 license=('GPL')
-depends=('sfml-git' 'sfgui-git')
+depends=('sfml-git' 'sfgui-git' 'glm')
 makedepends=('cmake' 'git')
 provides=('schiffbruchengine')
 conflicts=('schiffbruchengine')
 replaces=('schiffbruchengine')
+options=('debug')
+
 
 source=("git+https://github.com/Lirrec/SchiffbruchEngine.git")
 md5sums=('SKIP')
@@ -22,6 +24,10 @@ pkgver() {
 
 build() {
   cd "$srcdir/SchiffbruchEngine"
+
+  # fix for glm >= 0.9.6
+  sed -i 's@glm/gtx/constants.hpp@glm/gtc/constants.hpp@g' include/sbe/gfx/particles/effects/Fire.hpp
+  sed -i 's@glm/gtx/constants.hpp@glm/gtc/constants.hpp@g' include/sbe/gfx/particles/Manipulators.hpp
 
   cmake -DCMAKE_INSTALL_PREFIX=/usr .
   make

@@ -10,27 +10,22 @@ set(VER_MINOR 1)
 ################### Cmake Options ###########################
 #############################################################
 
-
 option( PROFILE "" OFF)
 option( USE_PYTHON "" OFF)
 option( USE_RUBY "" OFF)
 option( BUILD_SHARED_LIBS "" ON )
 option( ENABLE_LTO "enable lto, if ya dont know what this is, ya dont need it!" OFF)
 
-set( SFGUI_ROOT "" CACHE PATH "Path to where SFGUI is located.")
-
-set( CMAKE_MODULE_PATH "${SFML_ROOT}/cmake/Modules" ${CMAKE_MODULE_PATH} )
-set( CMAKE_MODULE_PATH "${SFGUI_ROOT}/cmake" ${CMAKE_MODULE_PATH} )
-set( CMAKE_MODULE_PATH "${GLM_ROOT}/util" ${CMAKE_MODULE_PATH} )
-
-set( CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build" CACHE PATH "")
+SET( CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
 if (NOT CMAKE_BUILD_TYPE)
 	set( CMAKE_BUILD_TYPE "Release")
 endif()
-message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+
+message(STATUS "INFO --")
+message(STATUS "BUILD_SHARED_LIBS: ${BUILD_SHARED_LIBS}" )
+message(STATUS "CMAKE_BUILD_TYPE:  ${CMAKE_BUILD_TYPE}" )
+message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}" )
 
 #############################################################
 #################### External Libraries Configuration #####################
@@ -73,10 +68,7 @@ file( GLOB_RECURSE sbe_HDRS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_D
 
 #left here for debugging purposes
 if (true)
-	message(STATUS "INFO --")
-	message(STATUS "BUILD_SHARED_LIBS: ${BUILD_SHARED_LIBS}" )
-	message(STATUS "CMAKE_BUILD_TYPE:  ${CMAKE_BUILD_TYPE}" )
-	message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}" )
+
 	message(STATUS "INCLUDES --")
 	message(STATUS "sfml libs:      ${SFML_LIBRARIES}" )
 	message(STATUS "sfml includes:  ${SFML_INCLUDE_DIR}" )
@@ -168,7 +160,7 @@ install(TARGETS sbe
 	RUNTIME DESTINATION bin
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib )
+	
 set(CM_VER ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 install(FILES cmake/FindSBE.cmake DESTINATION share/cmake-${CM_VER}/Modules)
-
 
