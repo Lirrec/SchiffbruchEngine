@@ -72,8 +72,13 @@ namespace sbe {
 
 	void ParticleSystem::simulateStep()
 	{
+		if ( !Effects.size() ) return;
+
 		using particles::Effect;
 		float delta = Time.restart().asSeconds();
+
+		for ( std::shared_ptr<Effect>& E : Effects)
+			E->Prepare();
 
 		//Engine::out() << "delta: " << delta << std::endl;
         for ( std::shared_ptr<Effect>& E : Effects)

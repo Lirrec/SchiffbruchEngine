@@ -22,7 +22,7 @@ namespace sbe
 		namespace globalaffectors
 		{
 			///	apply a affector if the left mouse button is clicked
-			void applyMouseAffector(Particle::Iterator start, Particle::Iterator end, float delta, std::function<void(Particle&,float,glm::vec2)> A)
+			inline void applyMouseAffector(Particle::Iterator start, Particle::Iterator end, float delta, std::function<void(Particle&,float,glm::vec2)> A)
 			{
 				if ( sf::Mouse::isButtonPressed(sf::Mouse::Left))
 				{

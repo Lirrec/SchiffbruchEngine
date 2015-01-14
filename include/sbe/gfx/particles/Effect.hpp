@@ -21,6 +21,10 @@ namespace sbe
 				Effect();
 				virtual ~Effect();
 
+				/// called once each frame before the other functions are executed
+				/// use this to compute values you only need to compute once for all particles
+				virtual void Prepare() {};
+
 				/// affect single particles
 				virtual void Affector( Particle& P, float delta) {};
 

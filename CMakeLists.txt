@@ -23,7 +23,9 @@ set( CMAKE_MODULE_PATH "${SFML_ROOT}/cmake/Modules" ${CMAKE_MODULE_PATH} )
 set( CMAKE_MODULE_PATH "${SFGUI_ROOT}/cmake" ${CMAKE_MODULE_PATH} )
 set( CMAKE_MODULE_PATH "${GLM_ROOT}/util" ${CMAKE_MODULE_PATH} )
 
-SET( CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+set( CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build" CACHE PATH "")
 
 if (NOT CMAKE_BUILD_TYPE)
 	set( CMAKE_BUILD_TYPE "Release")
@@ -48,7 +50,7 @@ endif()
 #############################################################
 
 set( SFML_FIND_REQUIRED true )
-find_package(Boost 1.46 REQUIRED thread system filesystem)
+find_package(Boost 1.55 REQUIRED thread system filesystem)
 find_package(SFML 2 COMPONENTS audio graphics window system ${ADD_SFML_MAIN})
 find_package(SFGUI REQUIRED )
 find_package(GLM REQUIRED )
@@ -74,6 +76,7 @@ if (true)
 	message(STATUS "INFO --")
 	message(STATUS "BUILD_SHARED_LIBS: ${BUILD_SHARED_LIBS}" )
 	message(STATUS "CMAKE_BUILD_TYPE:  ${CMAKE_BUILD_TYPE}" )
+	message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}" )
 	message(STATUS "INCLUDES --")
 	message(STATUS "sfml libs:      ${SFML_LIBRARIES}" )
 	message(STATUS "sfml includes:  ${SFML_INCLUDE_DIR}" )
