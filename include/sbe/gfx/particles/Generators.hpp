@@ -25,17 +25,18 @@ namespace sbe
 				glm::point2 pos;
 				for ( float x = 0; x < Count.x; ++x)
 				{
-					pos.x += steps.x;
 					pos.y = 0;
 					for ( float y = 0; y < Count.y; ++y)
 					{
-						pos.y += steps.y;
 						Particle P( pos );
 						P.size = factories::randomFloat(particlesizelimits);
 						P.color = sf::Color::White;
 						Particles.push_back( P );
 						//Engine::out() << "Creating particle at: " << x << "," << y << std::endl;
+						pos.y += steps.y;
 					}
+
+					pos.x += steps.x;
 				}
 			}
 		}
