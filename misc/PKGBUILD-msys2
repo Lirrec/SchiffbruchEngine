@@ -22,16 +22,12 @@ pkgver() {
 }
 
 prepare() {
-	msg2 "Creating temporary directory with cmake Module files"
-	[ ! -d "$srcdir/cmake" ] && mkdir "$srcdir/cmake"
-	cd "${srcdir}/cmake"
-	ln -fs ${MINGW_PREFIX}/share/cmake/Modules/FindSFML.cmake
-	ln -fs ${MINGW_PREFIX}/share/cmake-3.0/Modules/FindGLM.cmake
+
 }
 
 build() {
   cd "$srcdir/SchiffbruchEngine"
-  cmake -G"MSYS Makefiles" -DCMAKE_MODULE_PATH="$srcdir/cmake" -DCMAKE_INSTALL_PREFIX="${pkgdir}${MINGW_PREFIX}"  .
+  cmake -G"MSYS Makefiles" -DCMAKE_INSTALL_PREFIX="${pkgdir}${MINGW_PREFIX}"  .
   make
 }
 

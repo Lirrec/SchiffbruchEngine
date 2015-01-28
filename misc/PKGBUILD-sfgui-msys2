@@ -29,7 +29,7 @@ prepare() {
 build() {
   cd "$srcdir/SFGUI"
 
-  cmake -G"MSYS Makefiles" -DCMAKE_INSTALL_PREFIX=${pkgdir}${MINGW_PREFIX} -DCMAKE_MODULE_PATH=${MINGW_PREFIX}/share/cmake/modules/ .
+  cmake -G"MSYS Makefiles" -DCMAKE_INSTALL_PREFIX=${pkgdir}${MINGW_PREFIX} .
   make
 }
 
