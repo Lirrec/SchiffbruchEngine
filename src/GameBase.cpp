@@ -84,24 +84,22 @@ namespace sbe
 	void GameBase::StartModules()
 	{
 		Engine::out(Engine::INFO) << "[Engine] Starting Modules: " << std::endl;
+		Module::ModulesBarrier.reset ( new boost::barrier( Modules.size() + 1 ));
 
-		for (auto& M : Modules)
-		{
+		for (auto& M : Modules) {
 			//Engine::out() << "[" << M.second.Name << "]" << std::endl;
 			M.first->StartModule(M.second);
-
-			if (M.second.delay != 0) boost::this_thread::sleep(boost::posix_time::milliseconds(M.second.delay));
 		}
+
+		Module::ModulesBarrier->wait();
 	}
 
 	void GameBase::JoinModules()
 	{
 		Engine::out(Engine::INFO) << "[Engine] Joining Threads." << std::endl;
 
-		for ( auto r_it = Modules.rbegin(); r_it != Modules.rend(); ++r_it)
-		{
+		for ( auto r_it = Modules.rbegin(); r_it != Modules.rend(); ++r_it) {
 			if (!r_it->first->getThread()->joinable() ) Engine::out(Engine::ERROR) << "[Engine] ERROR: can't join Threads!!" << std::endl;
-
 			r_it->first->getThread()->join();
 		}
 	}

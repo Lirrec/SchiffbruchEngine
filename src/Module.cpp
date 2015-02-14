@@ -16,7 +16,7 @@ namespace sbe
 	boost::thread_specific_ptr<Module> Module::Instance;
 	std::list< Module* > Module::RunningModules;
 	boost::mutex Module::ModulesMutex;
-
+	std::shared_ptr<boost::barrier> Module::ModulesBarrier;
 
 	Module::Module()
 	{
@@ -33,13 +33,9 @@ namespace sbe
 	{
 		DbgStringEvent->Data() =  std::pair<std::string, std::string>( name, value);
 
-
-		if (useEventQueue)
-		{
+		if (useEventQueue) {
 			QueueEvent( *DbgStringEvent, true );
-		}
-		else
-		{
+		} else {
 			// XXX: This is hardcoded!!
 			if (Name == "EventCore") Core::EvtCore->PostEventToQueue( 1 , *DbgStringEvent);
 		}
@@ -58,8 +54,7 @@ namespace sbe
 		quit = false;
 		TC->Init( m.desiredTicksPerSecond, m.TickEvt );
 
-		if (useEventQueue)
-		{
+		if (useEventQueue) {
 			EvtQ.reset( new EventQueue() );
 			QueueID = Core::EvtCore->RegisterModule (*this);
 		}
@@ -103,6 +98,8 @@ namespace sbe
 
 		Engine::out(Engine::INFO) << "[" << Module::Get()->GetName() << "] New module." << std::endl;
 
+		LocalInit();
+		ModulesBarrier->wait();
 		Init();
 		Execute();
 		DeInit();
@@ -115,10 +112,7 @@ namespace sbe
 
 	void Module::Execute()
 	{
-		while (!quit)
-		{
-			TC->Tick();
-		}
+		while (!quit) TC->Tick();
 	}
 
 } // namespace sbe

@@ -12,6 +12,7 @@
 
 #include <boost/thread/tss.hpp>
 #include <boost/thread/mutex.hpp>
+#include <boost/thread/barrier.hpp>
 
 namespace boost { class thread; }
 
@@ -20,6 +21,7 @@ namespace sbe
 	class TickControl;
 	class EventQueue;
 	class Event;
+	class GameBase;
 
 	/**
 		This class contains configuration parameters for the behaviour and default settings of a module.
@@ -35,13 +37,11 @@ namespace sbe
 			Name: "_NameNotSet"
 			TicksPerSecond: 100
 			TickEvent: none
-			delay: 0
 			useEventQueue: false
 		*/
 		ModuleStartInfo()
 		 : Name("_NameNotSet"),
 			desiredTicksPerSecond(100),
-			delay(0),
 			useEventQueue(true)
 		{
 			TickEvt = std::shared_ptr<Event>();
@@ -53,12 +53,10 @@ namespace sbe
 		ModuleStartInfo(std::string name,
 					int tps = 100,
 					std::shared_ptr<Event> Evt = std::shared_ptr<Event>(),
-					int _delay = 0,
 					bool useQueue = true)
 		 : Name(name),
 		   desiredTicksPerSecond(tps),
 		   TickEvt(Evt),
-		   delay(_delay),
 		   useEventQueue(useQueue)
 		{}
 
@@ -69,11 +67,6 @@ namespace sbe
 		int desiredTicksPerSecond;
 		/// @see Module::SetTickEvent()
 		std::shared_ptr<Event> TickEvt;
-
-		/** Specify a delay to wait after this modules thread was started.
-			0 means no delay
-		*/
-		int delay;
 
 		/** Does the Modules require an event queue.
 			All user created modules need to use an eventqueue to be able to process events.
@@ -185,6 +178,10 @@ namespace sbe
 			/**
 				Called once the module is started, use for module-specific initialisation code.
 			*/
+			virtual void LocalInit() {};
+			/**
+				Called once all modules are started, use for inter-module initialisation code.
+			*/
 			virtual void Init() {};
 			/**
 				Called after Execute() returns.
@@ -213,6 +210,11 @@ namespace sbe
 			static boost::thread_specific_ptr<Module> Instance;
 			/// mutex for module access
 			static boost::mutex ModulesMutex;
+
+			/// barrier for synchronisation ( initialisation )
+			static std::shared_ptr<boost::barrier> ModulesBarrier;
+			friend class GameBase;
+			/// GameBase needs access to the ModulesBarrier.
 
 			/// List of existing Modules
 			static std::list< Module* > RunningModules;
