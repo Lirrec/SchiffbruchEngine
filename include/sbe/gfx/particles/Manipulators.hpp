@@ -11,7 +11,7 @@
 #include <sbe/util/FactoriesAndManipulators.hpp>
 
 #include <sbe/geom/Point.hpp>
-#include <glm/gtx/constants.hpp>
+#include <glm/gtc/constants.hpp>
 
 #include <random>
 #include <vector>

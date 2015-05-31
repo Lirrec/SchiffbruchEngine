@@ -5,7 +5,7 @@
 #include <sbe/gfx/particles/Effect.hpp>
 #include <sbe/geom/Point.hpp>
 #include <sbe/geom/Rect.hpp>
-#include <glm/gtx/constants.hpp>
+#include <glm/gtc/constants.hpp>
 #include <vector>
 
 namespace sbe

@@ -6,6 +6,7 @@
 #include <SFGUI/Window.hpp>
 #include <SFGUI/Entry.hpp>
 #include <SFGUI/ScrolledWindow.hpp>
+#include <SFGUI/Adjustment.hpp>
 
 using namespace sfg;
 

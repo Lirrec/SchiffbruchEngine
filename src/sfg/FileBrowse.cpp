@@ -4,13 +4,13 @@
 #include "sbe/Config.hpp"
 #include "sbe/sfg/List.hpp"
 
-#include "SFGUI/Window.hpp"
-#include "SFGUI/Button.hpp"
-#include "SFGUI/Entry.hpp"
-#include "SFGUI/Box.hpp"
-#include "SFGUI/Label.hpp"
+#include <SFGUI/Window.hpp>
+#include <SFGUI/Button.hpp>
+#include <SFGUI/Entry.hpp>
+#include <SFGUI/Box.hpp>
+#include <SFGUI/Label.hpp>
 
-
+#include <SFML/Graphics/RenderWindow.hpp>
 
 #include <boost/filesystem.hpp>
 

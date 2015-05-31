@@ -2,6 +2,8 @@
 
 #include "sbe/sfg/MessageHandler.hpp"
 
+#include <SFML/Graphics/RenderWindow.hpp>
+
 #include <SFGUI/Window.hpp>
 #include <SFGUI/Box.hpp>
 #include <SFGUI/Label.hpp>

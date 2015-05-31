@@ -1,18 +1,16 @@
 #include "sbe/gfx/Screen.hpp"
 
-#include "sbe/Engine.hpp"
-#include "sbe/Module.hpp"
 #include "sbe/Config.hpp"
 
-#include "sbe/event/EventUser.hpp"
 #include "sbe/event/SFMLEventUser.hpp"
 #include "sbe/event/SFMLEvent.hpp"
 
 #include "sbe/gfx/Renderer.hpp"
 #include "sbe/gfx/Camera.hpp"
 
-#include <SFML/System/Clock.hpp>
 #include <SFGUI/SFGUI.hpp>
+#include <SFGUI/Desktop.hpp>
+#include <SFGUI/Window.hpp>
 
 namespace sbe
 {
