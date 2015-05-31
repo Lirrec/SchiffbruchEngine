@@ -54,7 +54,12 @@ set( FIND_SBE_PATH_SUFFIXES
 		lib64
 		build
 		build.win)
-	
+
+if(CMAKE_SYSTEM_NAME MATCHES Windows)
+  SET(CMAKE_FIND_LIBRARY_PREFIXES "lib" "")
+  SET(CMAKE_FIND_LIBRARY_SUFFIXES ".dll" ".dll.a" ".a" ".lib")
+endif()
+		
 #always search first for the manual paths, then the default paths
 find_path( SBE_INCLUDE_DIR sbe/Engine.hpp PATH_SUFFIXES include PATHS ${FIND_SBE_PATHS} NO_DEFAULT_PATH)
 find_path( SBE_INCLUDE_DIR sbe/Engine.hpp PATH_SUFFIXES include )
