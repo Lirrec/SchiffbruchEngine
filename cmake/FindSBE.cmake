@@ -34,6 +34,14 @@
 
 set( SBE_FOUND false )
 
+if(DEFINED SBEDIR)
+    message("Using SBEDIR: ${SBEDIR}")
+endif()
+
+if(DEFINED SBE_ROOT)
+    message("Using SBE_ROOT: ${SBE_ROOT}")
+endif()
+
 if( SBE_STATIC_LIBRARIES )
 	set( SBE_SUFFIX "-s" )
 	add_definitions( -DSBE_STATIC )
@@ -58,8 +66,9 @@ set( FIND_SBE_PATH_SUFFIXES
 		build.clion/Release)
 
 if(CMAKE_SYSTEM_NAME MATCHES Windows)
-  SET(CMAKE_FIND_LIBRARY_PREFIXES "lib" "")
-  SET(CMAKE_FIND_LIBRARY_SUFFIXES ".dll" ".dll.a" ".a" ".lib")
+	#only search for libsbe... as there is a sbe.dll in System32..
+	SET(CMAKE_FIND_LIBRARY_PREFIXES "lib")
+	SET(CMAKE_FIND_LIBRARY_SUFFIXES ".dll" ".dll.a" ".a" ".lib")
 endif()
 		
 #always search first for the manual paths, then the default paths
@@ -71,6 +80,9 @@ find_library( SBE_LIBRARY_RELEASE sbe${SBE_SUFFIX} PATH_SUFFIXES ${FIND_SBE_PATH
 
 find_library( SBE_LIBRARY_DEBUG sbe${SBE_SUFFIX}-d PATH_SUFFIXES ${FIND_SBE_PATH_SUFFIXES} PATHS ${FIND_SBE_PATHS} NO_DEFAULT_PATH )
 find_library( SBE_LIBRARY_DEBUG sbe${SBE_SUFFIX}-d PATH_SUFFIXES ${FIND_SBE_PATH_SUFFIXES} )
+
+message("rel: ${SBE_LIBRARY_RELEASE}")
+message("dbg: ${SBE_LIBRARY_DEBUG}")
 
 if( SBE_LIBRARY_RELEASE AND SBE_LIBRARY_DEBUG )
 	set( SBE_LIBRARY debug ${SBE_LIBRARY_DEBUG} optimized ${SBE_LIBRARY_RELEASE} )
@@ -86,15 +98,24 @@ if( SBE_LIBRARY_DEBUG AND NOT SBE_LIBRARY_RELEASE )
 	set( SBE_LIBRARY ${SBE_LIBRARY_DEBUG} )
 endif()
 
+set (SBE_ERROR "")
+
 if( NOT SBE_INCLUDE_DIR OR NOT SBE_LIBRARY )
+
+		LIST(APPEND SBE_ERROR "Searching for sbe${SBE_SUFFIX}\n")
+		LIST(APPEND SBE_ERROR "Tried suffixes [${CMAKE_FIND_LIBRARY_SUFFIXES} and prefixes [${CMAKE_FIND_LIBRARY_PREFIXES}]\n")
+		LIST(APPEND SBE_ERROR "Paths: ${FIND_SBE_PATHS}\n")
+		LIST(APPEND SBE_ERROR "Path suffixes: ${FIND_SBE_PATH_SUFFIXES}\n")
+		LIST(APPEND SBE_ERROR "SBE not found.\n")
+
 	if( SBE_FIND_REQUIRED )
-		message( FATAL_ERROR "SBE not found." )
-	elseif( NOT SBE_FIND_QUIETLY )
-		message( "SBE not found." )
+		message( FATAL_ERROR "${SBE_ERROR}" )
+	elseif( NOT SBE_FIND_QUIETLY )	
+		message( "${SBE_ERROR}" )
 	endif()
 else()
 	set( SBE_FOUND true )
 	if ( NOT SBE_FIND_QUIETLY )
-		message( STATUS "SBE found: ${SBE_INCLUDE_DIR} with ${SBE_LIBRARY}" )
+		message( STATUS "SBE found: ${SBE_INCLUDE_DIR}\n with ${SBE_LIBRARY}" )
 	endif()
 endif()

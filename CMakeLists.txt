@@ -14,6 +14,7 @@ option( PROFILE "" OFF)
 option( USE_PYTHON "" OFF)
 option( USE_RUBY "" OFF)
 option( BUILD_SHARED_LIBS "" ON )
+option( USE_SHARED_LIBS "" ON )
 option( ENABLE_LTO "enable lto, if ya dont know what this is, ya dont need it!" OFF)
 
 SET( CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
@@ -31,7 +32,7 @@ message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}" )
 #################### External Libraries Configuration #####################
 #############################################################
 
-if (BUILD_SHARED_LIBS)
+if (USE_SHARED_LIBS)
 	set(SFML_STATIC_LIBRARIES false)
 	set(SFGUI_STATIC_LIBRARIES false)
 else()
