@@ -25,7 +25,15 @@ namespace sbe
 
 	EntityManager::~EntityManager()
 	{
+        Entities.clear();
 
+        ComponentFactories.clear();
+        ComponentMappings.clear();
+        ComponentNames.clear();
+
+        SystemFactories.clear();
+        SystemMappings.clear();
+        Systems.clear();
 	}
 
 	void EntityManager::update(const sf::Time& delta)

@@ -27,18 +27,19 @@ namespace sbe
 
 	namespace systems
 	{
+        using namespace sbe::operators;
 		void SpriteRenderer::onEntityUpdate(Entity& E)
 		{
-			A->sprite = E.C<sf::Sprite>("Sprite");
-			copyTransformable( E.C<sf::Transformable&>("Transformable"), A->sprite);
+			A->sprite = E.C<sf::Sprite>("Sprite"_cId);
+			copyTransformable( E.C<sf::Transformable&>("Transformable"_cId), A->sprite);
 		}
 
 		void SpriteRenderer::onAttach(Entity& E)
 		{
 			A.reset( new SpriteActor );
-			A->sprite = E.C<sf::Sprite>("Sprite");
-			copyTransformable( E.C<sf::Transformable&>("Transformable"), A->sprite);
-			Module::Get()->QueueEvent( Event("ADD_ACTOR", std::make_pair(std::dynamic_pointer_cast<Actor>(A), E.C<int>("RenderLayer"))), true 	);
+			A->sprite = E.C<sf::Sprite>("Sprite"_cId);
+			copyTransformable( E.C<sf::Transformable&>("Transformable"_cId), A->sprite);
+			Module::Get()->QueueEvent( Event("ADD_ACTOR", std::make_pair(std::dynamic_pointer_cast<Actor>(A), E.C<int>("RenderLayer"_cId))), true 	);
 		}
 
 		void SpriteRenderer::onDetach(Entity& E)

@@ -21,8 +21,9 @@ namespace sbe
 
 		void LinearMovement::update(Entity& E, const sf::Time& delta)
 		{
-			sf::Transformable& T = E.C<sf::Transformable&>("Transformable");
-			glm::ipoint2& TargetPosition = E.C<glm::ipoint2&>("TargetPosition2D");
+            using namespace sbe::operators;
+			sf::Transformable& T = E.C<sf::Transformable&>("Transformable"_cId);
+			glm::ipoint2& TargetPosition = E.C<glm::ipoint2&>("TargetPosition2D"_cId);
 			glm::point2 Pos = {T.getPosition().x, T.getPosition().y};
 
             glm::point2 Dist = geom::PIToF(TargetPosition) - Pos;

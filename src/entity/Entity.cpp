@@ -25,16 +25,6 @@ namespace sbe
 		return Engine::GetEntityMgr()->addEntity( shared_from_this() );
 	}
 
-	void Entity::addComponent(const std::string& name)
-	{
-		addComponent(lookupComponentID(name));
-	}
-
-	void Entity::addComponent(const std::string& name, boost::any& value)
-	{
-		addComponent( lookupComponentID(name), value );
-	}
-
 	void Entity::addComponent( const sbeID cID, boost::any& value)
 	{
 		Engine::GetEntityMgr()->onEntityChanged( ID );
@@ -82,21 +72,6 @@ namespace sbe
 		return boost::optional<boost::any&>();
 	}
 
-	boost::optional<boost::any&> Entity::getComponent(const std::string& name)
-	{
-		return getComponent( lookupComponentID( name ));
-	}
-
-	bool Entity::removeComponent(const std::string& name)
-	{
-		return removeComponent( lookupComponentID(name));
-	}
-
-	std::shared_ptr<System> Entity::getSystem(const std::string& name)
-	{
-		return getSystem(lookupSystemID(name));
-	}
-
 	void Entity::addSystem(const sbeID sID)
 	{
 		auto S = Engine::GetEntityMgr()->createSystem(sID);
@@ -107,17 +82,6 @@ namespace sbe
 			changed = true;
 		}
 	}
-
-	void Entity::addSystem(const std::string& name)
-	{
-		addSystem(lookupSystemID(name));
-	}
-
-	bool Entity::removeSystem(const std::string& name)
-	{
-		return removeSystem(lookupSystemID(name));
-	}
-
 
 	std::shared_ptr<System> Entity::getSystem(const sbeID sID)
 	{
@@ -140,17 +104,5 @@ namespace sbe
 		changed = true;
 		return Systems.erase(sID);
 	}
-
-
-	sbeID Entity::lookupComponentID(const std::string& name) const
-	{
-		return Engine::GetEntityMgr()->lookupComponentID(name);
-	}
-
-	sbeID Entity::lookupSystemID(const std::string& name) const
-	{
-		return Engine::GetEntityMgr()->lookupSystemID(name);
-	}
-
 
 } // namespace sbe

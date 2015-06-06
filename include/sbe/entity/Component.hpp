@@ -2,10 +2,12 @@
 #define COMPONENT_HPP
 
 #include "sbe/util/ClassFactory.hpp"
+#include "sbe/entity/EntityID.hpp"
 #include <boost/any.hpp>
 #include <memory>
 #include <string>
 #include <utility>
+#include <sbe/Engine.hpp>
 
 namespace sbe
 {
@@ -19,6 +21,11 @@ namespace sbe
 		return std::dynamic_pointer_cast<ComponentFactory>(std::make_shared<AssignmentConversionFactory<T, boost::any>>());
 	}
 
-
+    namespace operators {
+        /**
+         * A String literal for easy lookup of component ids
+         */
+        sbeID operator "" _cId(const char* str, size_t);
+    }
 } // namespace sbe
 #endif // COMPONENT_HPP

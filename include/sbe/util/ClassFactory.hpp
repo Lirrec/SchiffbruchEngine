@@ -22,8 +22,8 @@ namespace sbe
 	class RealFactory : public Factory<T>
 	{
 		public:
-			std::shared_ptr<T> create() { return std::make_shared<T>(); }
-			virtual std::type_index type() {return std::type_index(typeid(T));}
+			std::shared_ptr<T> create() override { return std::make_shared<T>(); }
+			virtual std::type_index type() override {return std::type_index(typeid(T));}
 	};
 
 	template <class T, class Base>

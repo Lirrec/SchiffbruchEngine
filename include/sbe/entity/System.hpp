@@ -3,11 +3,11 @@
 
 
 #include "sbe/entity/EntityID.hpp"
+#include "sbe/util/ClassFactory.hpp"
+
 #include <boost/uuid/name_generator.hpp>
 
 #include <SFML/System/Time.hpp>
-
-#include "sbe/util/ClassFactory.hpp"
 
 #include <string>
 #include <vector>
@@ -17,6 +17,13 @@ namespace sbe
 	class Entity;
 	class Component;
 
+    namespace operators {
+        /**
+         * A String literal for easy lookup of system ids.
+         * Allows to pass a string to any function taking a system id
+         */
+        sbeID operator "" _sId(const char* str, size_t);
+    }
 	/**
 		A System ( other common Words are behaviour /Controller ) operates on an Entities Components( Data/attributes ).
 		Systems are attached automatically to Entities matching the required Components of the System.
