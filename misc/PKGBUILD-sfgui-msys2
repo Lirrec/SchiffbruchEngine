@@ -23,7 +23,7 @@ pkgver() {
 
 prepare() {
 	echo 'set(CM_VER ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})' >> "$srcdir/SFGUI/CMakeLists.txt"
-	echo 'install(FILES cmake/FindSFGUI.cmake DESTINATION share/cmake-${CM_VER}/Modules)' >> "$srcdir/SFGUI/CMakeLists.txt"
+	echo 'install(FILES cmake/Modules/FindSFGUI.cmake DESTINATION share/cmake-${CM_VER}/Modules)' >> "$srcdir/SFGUI/CMakeLists.txt"
 }
 
 build() {
