@@ -53,7 +53,9 @@ set( FIND_SBE_PATH_SUFFIXES
 		lib
 		lib64
 		build
-		build.win)
+		build.win
+		build.clion/Debug
+		build.clion/Release)
 
 if(CMAKE_SYSTEM_NAME MATCHES Windows)
   SET(CMAKE_FIND_LIBRARY_PREFIXES "lib" "")
