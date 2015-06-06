@@ -72,6 +72,7 @@ namespace sbe
 
 	void Engine::UnloadSubSystems()
 	{
+	    EntityMgr.reset();
 		SndSys  .reset();
 		ResMgr  .reset();
 		_config.reset();
