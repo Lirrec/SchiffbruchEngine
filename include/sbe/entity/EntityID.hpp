@@ -8,7 +8,7 @@ namespace sbe
 {
 
 	typedef boost::uuids::uuid sbeID;
-	static sbeID sbeID_namespace;
+	extern sbeID sbeID_namespace;
 
     namespace operators {
         sbeID operator "" _id(const char* str, size_t);

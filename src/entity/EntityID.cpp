@@ -4,7 +4,7 @@
 
 namespace sbe
 {
-	static sbeID sbeID_namespace = boost::uuids::nil_generator()();
+	sbeID sbeID_namespace = boost::uuids::nil_generator()();
 
     namespace operators {
         sbeID operator "" _id(const char *str, size_t) {
