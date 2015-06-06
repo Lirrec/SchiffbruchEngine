@@ -13,10 +13,12 @@ namespace sbe
 	/// Router class for distributing threaded Events (internal)
 	class Core : public Module
 	{
-		public:
-			Core();
-			virtual ~Core();
-			static EventCore* 		EvtCore;
+	public:
+		Core();
+
+		virtual ~Core();
+
+		static EventCore* EvtCore;
 	};
 
 } // namespace sbe

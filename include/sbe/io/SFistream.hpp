@@ -21,17 +21,19 @@ namespace sbe
 
 		/// constructor, takes a reference to a std::istream object
 		sfIStream(std::istream& i)
-			: stream(i)
-		{}
+				: stream(i) { }
 
-		virtual ~sfIStream() {}
+		virtual ~sfIStream() { }
 
 		/// @see sf::InputStream Documentation
 		virtual Int64 read(void* data, Int64 size);
+
 		/// @see sf::InputStream Documentation
 		virtual Int64 seek(Int64 position);
+
 		/// @see sf::InputStream Documentation
 		virtual Int64 tell();
+
 		/// @see sf::InputStream Documentation
 		virtual Int64 getSize();
 

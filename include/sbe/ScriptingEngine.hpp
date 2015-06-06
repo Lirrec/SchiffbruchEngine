@@ -13,36 +13,36 @@ namespace sbe
 	class ScriptingEngine : public EventUser
 	{
 
-		public:
+	public:
 
-			ScriptingEngine();
-			virtual ~ScriptingEngine() {}
+		ScriptingEngine();
 
-			/**
-				Initialize the scripting language, has to be called once before using other functions
-			*/
-			virtual void init() = 0;
+		virtual ~ScriptingEngine() { }
 
-			/** Execute a given script
-				@return false on error
-			*/
-			virtual bool RunString(const std::string& code) = 0;
+		/**
+			Initialize the scripting language, has to be called once before using other functions
+		*/
+		virtual void init() = 0;
 
-			/** Execute a given file
-				@return false on error
-			 */
-			virtual bool RunFile(const std::string& path) = 0;
+		/** Execute a given script
+			@return false on error
+		*/
+		virtual bool RunString(const std::string& code) = 0;
 
-
-
-			/**
-				Shuts the scripting runtime down and cleans up
-			*/
-			virtual void deinit() = 0;
+		/** Execute a given file
+			@return false on error
+		 */
+		virtual bool RunFile(const std::string& path) = 0;
 
 
-		protected:
-			void HandleEvent(Event& e) override;
+		/**
+			Shuts the scripting runtime down and cleans up
+		*/
+		virtual void deinit() = 0;
+
+
+	protected:
+		void HandleEvent(Event& e) override;
 	};
 
 } // namespace sbe

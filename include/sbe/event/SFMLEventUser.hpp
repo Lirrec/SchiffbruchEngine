@@ -11,14 +11,14 @@ namespace sbe
 	*/
 	class SFMLEventUser
 	{
-		public:
-		virtual ~SFMLEventUser(){}
+	public:
+		virtual ~SFMLEventUser() { }
 
 		/**
 			Handle an sfml event.
 			@param e const reference to the current event
 		*/
-		virtual void HandleSfmlEvent ( const sf::Event& e) = 0;
+		virtual void HandleSfmlEvent(const sf::Event& e) = 0;
 	};
 
 } // namespace sbe

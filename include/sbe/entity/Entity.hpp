@@ -23,93 +23,89 @@ namespace sbe
 	*/
 	class Entity : public std::enable_shared_from_this<Entity>
 	{
-		public:
+	public:
 
-			friend class EntityManager;
+		friend class EntityManager;
 
-			Entity();
-			~Entity();
+		Entity();
 
-			/// register this entity with the entitymanager, enables systems to be run
-			bool Register();
+		~Entity();
 
-			template <class T>
-			boost::optional<T> getComponentData( const sbeID cID )
-			{
-				auto c = getComponent(cID);
-				if ( !c ) return boost::optional<T>();
-				return boost::make_optional<T>(boost::any_cast<T>(*c));
-			}
+		/// register this entity with the entitymanager, enables systems to be run
+		bool Register();
 
-			boost::any& operator[](const sbeID cID)
-			{
-				return Components[cID];
-			}
+		template<class T>
+		boost::optional<T> getComponentData(const sbeID cID) {
+			auto c = getComponent(cID);
+			if (!c) return boost::optional<T>();
+			return boost::make_optional<T>(boost::any_cast<T>(*c));
+		}
 
-			template<class T>
-			T& C(const sbeID cID)
-			{
-				changed = true;
-				return boost::any_cast<T&>(Components[cID]);
-			}
+		boost::any& operator[](const sbeID cID) {
+			return Components[cID];
+		}
 
-			bool setComponentData( const sbeID cID, const boost::any& data );
+		template<class T>
+		T& C(const sbeID cID) {
+			changed = true;
+			return boost::any_cast<T&>(Components[cID]);
+		}
 
-			/** Adds a new component to the Entity, this will overwrite any existing component with the same id.
-				@param cID the ID of the new Component. */
-			void addComponent( const sbeID cID );
-			/** Adds a new component to the Entity, this will overwrite any existing component with the same id.
-				@param cID the ID of the new Component.
-				@param value the value of the new component */
-			void addComponent( const sbeID cID, boost::any& value );
+		bool setComponentData(const sbeID cID, const boost::any& data);
 
-			/**
-				Removes a component by ID
-				@return true if a component was removed
-			*/
-			bool removeComponent( const sbeID cID );
+		/** Adds a new component to the Entity, this will overwrite any existing component with the same id.
+			@param cID the ID of the new Component. */
+		void addComponent(const sbeID cID);
 
-			/**
-				get a component by ID
-			*/
-			boost::optional<boost::any&> getComponent( const sbeID sID );
+		/** Adds a new component to the Entity, this will overwrite any existing component with the same id.
+			@param cID the ID of the new Component.
+			@param value the value of the new component */
+		void addComponent(const sbeID cID, boost::any& value);
 
-			/**
-				get a System by ID
-				@return the system or an invalid  shared_ptr
-			*/
-			std::shared_ptr<System> getSystem( const sbeID sID );
+		/**
+			Removes a component by ID
+			@return true if a component was removed
+		*/
+		bool removeComponent(const sbeID cID);
 
-			/**
-				Adds a new system to the Entity, this will overwrite any existing system with the same id
-			*/
-			void addSystem( std::shared_ptr<System> S);
+		/**
+			get a component by ID
+		*/
+		boost::optional<boost::any&> getComponent(const sbeID sID);
 
-			/**
-				Adds a new system to the Entity, this will overwrite any existing system with the same id
-			*/
-			void addSystem( const sbeID sID);
+		/**
+			get a System by ID
+			@return the system or an invalid  shared_ptr
+		*/
+		std::shared_ptr<System> getSystem(const sbeID sID);
 
-			/**
-				Removes a system by ID
-				@return true if a system was removed
-			*/
-			bool removeSystem( const sbeID sID );
+		/**
+			Adds a new system to the Entity, this will overwrite any existing system with the same id
+		*/
+		void addSystem(std::shared_ptr<System> S);
 
-			/// returns this entities' id
-			const sbeID getID() const { return ID; }
+		/**
+			Adds a new system to the Entity, this will overwrite any existing system with the same id
+		*/
+		void addSystem(const sbeID sID);
 
-		private:
+		/**
+			Removes a system by ID
+			@return true if a system was removed
+		*/
+		bool removeSystem(const sbeID sID);
 
-			// set to true if a component has been accessed, or a component/system is added/removed
-			bool changed;
+		/// returns this entities' id
+		const sbeID getID() const { return ID; }
 
-			sbeID lookupComponentID( const std::string& name ) const;
-			sbeID lookupSystemID( const std::string& name ) const;
+	private:
 
-			sbeID ID;
-			std::map<sbeID, boost::any> Components;
-			std::map<sbeID, std::shared_ptr<System>> Systems;
+		// set to true if a component has been accessed, or a component/system is added/removed
+		bool changed;
+
+		sbeID ID;
+		std::map<sbeID, boost::any> Components;
+		std::map<sbeID, std::shared_ptr<System>> Systems;
 	};
 
 } // namespace sbe

@@ -18,64 +18,64 @@ namespace sbe
 	*/
 	class TickControl
 	{
-		public:
-			/**
-				Init method
-				@param TPS the desired ticks per second
-				@param TickEvt the desired Event to be set each tick
-			*/
-			void Init( int TPS, std::shared_ptr<Event> TickEvt );
+	public:
+		/**
+			Init method
+			@param TPS the desired ticks per second
+			@param TickEvt the desired Event to be set each tick
+		*/
+		void Init(int TPS, std::shared_ptr<Event> TickEvt);
 
-			/**
-				Set the desired amount of TicksPerSecond
-			*/
-			void SetTargetTicksPerSecond( int TPS );
+		/**
+			Set the desired amount of TicksPerSecond
+		*/
+		void SetTargetTicksPerSecond(int TPS);
 
-			/**
-				Specify which event should be sent as TickEvent.
-				An invalid/empty shared_ptr defaults to no Event.
-			*/
-			void SetTickEvent( std::shared_ptr<Event> TickEvt );
+		/**
+			Specify which event should be sent as TickEvent.
+			An invalid/empty shared_ptr defaults to no Event.
+		*/
+		void SetTickEvent(std::shared_ptr<Event> TickEvt);
 
-			/**
-				Do a tick.
-				This usually sends a TickEvent to this threads eventqueue.
-			*/
-			void Tick();
+		/**
+			Do a tick.
+			This usually sends a TickEvent to this threads eventqueue.
+		*/
+		void Tick();
 
-		private:
+	private:
 
-			/**
-				Logs tick information.
-				Sends information about the current fps, ms taken per tick and ms slept per tick via the DEBUG_STRING Event.
-			*/
-			void LogModuleStats();
+		/**
+			Logs tick information.
+			Sends information about the current fps, ms taken per tick and ms slept per tick via the DEBUG_STRING Event.
+		*/
+		void LogModuleStats();
 
-			/// Sleep the rest of the current tick
-			void YieldTickRest();
+		/// Sleep the rest of the current tick
+		void YieldTickRest();
 
-			/// This event will be sent locally each tick
-			std::shared_ptr<Event> TickEvent;
+		/// This event will be sent locally each tick
+		std::shared_ptr<Event> TickEvent;
 
-			/// How many eventqueue ticks per second should this module try to reach
-			int 	TicksPerSecond;
-			/// How long took us the last tick (ms)
-			float	LastTickDuration;
-			/// How many ms did we lose through ticks that took longer then planned
-			float Lag;
+		/// How many eventqueue ticks per second should this module try to reach
+		int TicksPerSecond;
+		/// How long took us the last tick (ms)
+		float LastTickDuration;
+		/// How many ms did we lose through ticks that took longer then planned
+		float Lag;
 
-			/// how many ms are spare till we should start the next tick
-			float		MsToNextTick;
-			/// how long should a tick at maximum take to reach our TPS (ms)
-			float	MaxTickDuration;
+		/// how many ms are spare till we should start the next tick
+		float MsToNextTick;
+		/// how long should a tick at maximum take to reach our TPS (ms)
+		float MaxTickDuration;
 
-			/// Counts Frames/Ticks
-			int TickCounter;
+		/// Counts Frames/Ticks
+		int TickCounter;
 
-			/// last time we reported our stats
-			sf::Clock LastStatsLog;
-			/// counts how long each Tick takes
-			sf::Clock Timer;
+		/// last time we reported our stats
+		sf::Clock LastStatsLog;
+		/// counts how long each Tick takes
+		sf::Clock Timer;
 	};
 
 } // namespace sbe

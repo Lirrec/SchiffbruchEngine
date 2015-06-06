@@ -13,18 +13,17 @@ namespace sbe
 
 		class LinearMovement : public SystemBuilder<LinearMovement>
 		{
-			public:
-				LinearMovement()
-				 : unitspersecond( 10 )
-				 {}
+		public:
+			LinearMovement()
+					: unitspersecond(10) { }
 
-				LinearMovement(float ups)
-				 : unitspersecond( ups )
-				{}
+			LinearMovement(float ups)
+					: unitspersecond(ups) { }
 
-				void update(Entity& E, const sf::Time& delta) override;
-			private:
-				float unitspersecond;
+			void update(Entity& E, const sf::Time& delta) override;
+
+		private:
+			float unitspersecond;
 		};
 
 	} // namespace systems

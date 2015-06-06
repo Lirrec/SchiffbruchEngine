@@ -10,28 +10,29 @@
 
 #include <random>
 #include <vector>
+
 namespace sbe
 {
 	namespace particles
 	{
-		namespace generators {
+		namespace generators
+		{
 			/// generates particles on a grid
-			void generateGrid( std::vector<Particle>& Particles, glm::ivec2 Size, glm::ivec2 Count, glm::vec2 particlesizelimits )
-			{
+			void generateGrid(std::vector<Particle>& Particles, glm::ivec2 Size, glm::ivec2 Count, glm::vec2 particlesizelimits) {
 				Particles.clear();
 
-				glm::vec2 steps { Size.x/(float)Count.x, Size.y/(float)Count.y };
+				glm::vec2 steps{Size.x/(float) Count.x, Size.y/(float) Count.y};
 
 				glm::point2 pos;
-				for ( float x = 0; x < Count.x; ++x)
+				for (float x = 0; x < Count.x; ++x)
 				{
 					pos.y = 0;
-					for ( float y = 0; y < Count.y; ++y)
+					for (float y = 0; y < Count.y; ++y)
 					{
-						Particle P( pos );
+						Particle P(pos);
 						P.size = factories::randomFloat(particlesizelimits);
 						P.color = sf::Color::White;
-						Particles.push_back( P );
+						Particles.push_back(P);
 						//Engine::out() << "Creating particle at: " << x << "," << y << std::endl;
 						pos.y += steps.y;
 					}

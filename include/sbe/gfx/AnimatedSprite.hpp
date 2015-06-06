@@ -14,17 +14,18 @@ namespace sbe
 	{
 	public:
 
-			AnimatedSprite( ImageSet& _A );
+		AnimatedSprite(ImageSet& _A);
 
-			/// update the associated sprite/vertexarray to show the correct sub-rect/frame of the image
-			void updateDrawable();
+		/// update the associated sprite/vertexarray to show the correct sub-rect/frame of the image
+		void updateDrawable();
 
-			void setImageSet( ImageSet& _A);
+		void setImageSet(ImageSet& _A) override;
 
-			/// return the managed Sprite
-			sf::Sprite& getSprite();
-		private:
-			sf::Sprite s;
+		/// return the managed Sprite
+		sf::Sprite& getSprite();
+
+	private:
+		sf::Sprite s;
 
 	};
 } // namespace sbe

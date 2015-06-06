@@ -16,16 +16,18 @@ namespace sbe
 	A Soundsystem for managing currently active Sounds and volume.
 	@note this is not completely implemented
 */
-class SoundSystem : sf::NonCopyable
-{
+	class SoundSystem : sf::NonCopyable
+	{
 	public:
 
 		SoundSystem();
 
 		void PlayPauseSound(const std::string& name);
+
 		void StopSound(const std::string& name);
 
 		void SetVolume(const float v);
+
 		float GetVolume();
 
 		void SetBackgroundMusic(const std::string& name);
@@ -38,7 +40,7 @@ class SoundSystem : sf::NonCopyable
 
 		NamedList<sf::Sound> CurrentSounds;
 
-};
+	};
 
 } // namespace sbe
 

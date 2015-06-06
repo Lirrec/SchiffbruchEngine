@@ -2,8 +2,6 @@
 
 #include <ruby.h>
 
-#include <cstdio>
-
 namespace sbe
 {
 

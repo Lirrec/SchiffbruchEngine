@@ -3,7 +3,11 @@
 
 #include "sbe/event/EventUser.hpp"
 
-namespace sfg { class Window; }
+namespace sfg
+{
+	class Window;
+}
+
 #include "sbe/geom/Point.hpp"
 
 namespace sbe
@@ -31,39 +35,54 @@ namespace sbe
 
 	class Message : public EventUser
 	{
-		public:
+	public:
 
-			enum Type {
-			    OK,     /// A closable Message with an "ok" button
-			    MODAL,  /// MODAL messages can't be closed by the user and have to be removed with a CLOSE_MESSAGE event
-			    CHOICE  /// Allows the User to make a Yes/No, Ok/Abort choice, the Answer event will contain a bool
-			    };
-			Message( const Message::Type type_, const std::string& title_, const std::string& message_, const std::string& answerEventName_ = "", bool pause_ = false );
-			~Message() {}
-			void ShowMessage();
-			void SaveMessageHandler( MessageHandler* h );
-			bool doPause() { return pause; }
-            const std::string& getTitle() { return Title_; }
+		enum Type
+		{
+			OK,     /// A closable Message with an "ok" button
+			MODAL,  /// MODAL messages can't be closed by the user and have to be removed with a CLOSE_MESSAGE event
+			CHOICE  /// Allows the User to make a Yes/No, Ok/Abort choice, the Answer event will contain a bool
+		};
 
-            void Close();
-		private:
-			void MakeOkMessage();
-			void MakeModalMessage();
-			void MakeChoiceMessage();
-			void Ok();
-			void Abort();
-			void Confirm();
-			void updatePosition();
+		Message(const Message::Type type_, const std::string& title_, const std::string& message_, const std::string& answerEventName_ = "",
+				bool pause_ = false);
 
-			Message::Type Type_;
-			std::string Title_;
-			std::string Message_;
-			std::string AnswerEventName_;
-			bool pause;
+		~Message() { }
 
-			std::shared_ptr<sfg::Window> Win;
+		void ShowMessage();
 
-			MessageHandler* Handler;
+		void SaveMessageHandler(MessageHandler* h);
+
+		bool doPause() { return pause; }
+
+		const std::string& getTitle() { return Title_; }
+
+		void Close();
+
+	private:
+		void MakeOkMessage();
+
+		void MakeModalMessage();
+
+		void MakeChoiceMessage();
+
+		void Ok();
+
+		void Abort();
+
+		void Confirm();
+
+		void updatePosition();
+
+		Message::Type Type_;
+		std::string Title_;
+		std::string Message_;
+		std::string AnswerEventName_;
+		bool pause;
+
+		std::shared_ptr<sfg::Window> Win;
+
+		MessageHandler* Handler;
 	};
 
 } // namespace sbe

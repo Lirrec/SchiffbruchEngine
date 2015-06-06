@@ -12,7 +12,6 @@
 #include <list>
 
 
-
 namespace sbe
 {
 
@@ -113,64 +112,62 @@ namespace sbe
 
 	class Event
 	{
-		public:
-			typedef boost::any EventData;
-			typedef HashedString::HashType EventType;
+	public:
+		typedef boost::any EventData;
+		typedef HashedString::HashType EventType;
 
-			/**
-				Constructor. Takes the Name of the Event as String
-			*/
-			Event( const std::string& EventName);
-			/**
-				Constructor. Takes the Name of the Event as String and a boost::any as data
-			*/
-			Event( const std::string& EventName, const boost::any& _Data );
+		/**
+			Constructor. Takes the Name of the Event as String
+		*/
+		Event(const std::string& EventName);
 
-			/** returns the Eventtype( = Hash) of a given eventname ( string ) */
-			static Event::EventType hashName( const std::string& EventName);
+		/**
+			Constructor. Takes the Name of the Event as String and a boost::any as data
+		*/
+		Event(const std::string& EventName, const boost::any& _Data);
 
-			/**
-				Constructor. Takes the Name of the Event as String and anything as data
-			*/
-			template < class T >
-			Event( const std::string& EventName, const T& _Data )
-			{
-				init( EventName, boost::any(_Data) );
-			}
+		/** returns the Eventtype( = Hash) of a given eventname ( string ) */
+		static Event::EventType hashName(const std::string& EventName);
+
+		/**
+			Constructor. Takes the Name of the Event as String and anything as data
+		*/
+		template<class T>
+		Event(const std::string& EventName, const T& _Data) {
+			init(EventName, boost::any(_Data));
+		}
 
 
+		/// Sets an arbitrary Type as data
+		template<class T>
+		void SetData(const T& _Data) {
+			EvtData = _Data;
+		}
 
-			/// Sets an arbitrary Type as data
-			template < class T >
-			void SetData( const T& _Data )
-			{
-				EvtData = _Data;
-			}
+		/// returns the data stored within the event
+		EventData& Data() { return EvtData; };
 
-			/// returns the data stored within the event
-			EventData& Data() { return EvtData; };
+		/// returns the type of this event
+		EventType getEventType() const { return Type; };
 
-			/// returns the type of this event
-			EventType getEventType() const { return Type; };
+		/// returns the eventname as string
+		std::string getDebugName();
 
-			/// returns the eventname as string
-			std::string getDebugName();
+		/// check if the event is of the given type (string-name)
+		bool Is(const std::string& Name) const;
 
-			/// check if the event is of the given type (string-name)
-			bool Is(const std::string& Name) const;
+		/// check if the event is of the given string-name and the data is of the given type
+		bool Is(const std::string& Name, const std::type_info& type) const;
 
-			/// check if the event is of the given string-name and the data is of the given type
-			bool Is(const std::string& Name, const std::type_info &type ) const ;
+		/// check if the event is of the given type (EventType / string-hash)
+		bool Is(const EventType& otherType) const { return Type == otherType; };
 
-			/// check if the event is of the given type (EventType / string-hash)
-			bool Is(const EventType& otherType) const { return Type == otherType; };
+	private:
 
-		private:
+		void init(const std::string& EventName, const boost::any& _data);
 
-			void init( const std::string& EventName, const boost::any& _data);
-
-			EventType Type;
-			EventData EvtData;
+		EventType Type;
+		EventData EvtData;
 	};
 
 } // sbe

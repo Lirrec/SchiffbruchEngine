@@ -22,54 +22,51 @@ namespace sbe
 	*/
 	class RenderLayer
 	{
-		public:
-			RenderLayer() :
+	public:
+		RenderLayer() :
 				isActive(true),
 				cull(false),
-				changed(true)
-			{}
+				changed(true) { }
 
-			RenderLayer( std::shared_ptr<Camera> C, sf::RenderStates S )
-			: 	isActive(true),
-				cull(false),
-				changed(true)
-			{
-				Cam = C;
-				States = S;
-			}
+		RenderLayer(std::shared_ptr<Camera> C, sf::RenderStates S)
+				: isActive(true),
+				  cull(false),
+				  changed(true) {
+			Cam = C;
+			States = S;
+		}
 
-			RenderLayer( std::shared_ptr<Camera> C )
-			: 	isActive(true),
-				cull(false),
-				changed(true)
-			{
-				Cam = C;
-			}
+		RenderLayer(std::shared_ptr<Camera> C)
+				: isActive(true),
+				  cull(false),
+				  changed(true) {
+			Cam = C;
+		}
 
-			RenderLayer( sf::RenderStates S )
-			: 	isActive(true),
-				cull(false),
-				changed(true)
-			{
-				States = S;
-			}
+		RenderLayer(sf::RenderStates S)
+				: isActive(true),
+				  cull(false),
+				  changed(true) {
+			States = S;
+		}
 
-			/// enable or disable rendering of this layer
-			bool isActive;
-			/// enable or disable culling
-			bool cull;
+		/// enable or disable rendering of this layer
+		bool isActive;
+		/// enable or disable culling
+		bool cull;
 
-			/// the renderstates to use ( for setting a custom texture for vertexarrays or shaders
-			sf::RenderStates States;
-			std::shared_ptr<Camera> Cam;
+		/// the renderstates to use ( for setting a custom texture for vertexarrays or shaders
+		sf::RenderStates States;
+		std::shared_ptr<Camera> Cam;
 
-			friend class Renderer;
-		private:
+		friend class Renderer;
 
-			/// did the RenderList change since last frame ( used to determine a recull
-			bool changed;
+	private:
 
-			std::vector< std::shared_ptr<Actor> > RenderList;
+		/// did the RenderList change since last frame ( used to determine a recull
+		bool changed;
+
+		std::vector<std::shared_ptr<Actor> > RenderList;
 	};
 
 	/**
@@ -90,104 +87,107 @@ namespace sbe
 	*/
 	class Renderer : EventUser
 	{
-		public:
-			Renderer();
+	public:
+		Renderer();
 
-			~Renderer() {};
+		~Renderer() { };
 
-			// - Render Interface -
-			/**
-				Render all active Layers to the given RenderTarget and use Camera C
-			*/
-			void render( sf::RenderTarget& t);
-			/**
-				Render a single Layer to the given Target.
-				This ignores the isActive setting of the Layer.
-			*/
-			void renderSingleLayer(int index, sf::RenderTarget& t);
+		// - Render Interface -
+		/**
+			Render all active Layers to the given RenderTarget and use Camera C
+		*/
+		void render(sf::RenderTarget& t);
 
-			// - Layer Management -
-			/**
-				Add a RenderLayer.
-				@param L the new RenderLayer
-				@param index the index of the new Layer will be inserted BEFORE Layer[index], default is -1 ( append at the end )
-			*/
-			void addLayer( const RenderLayer& L, const int index = -1 );
+		/**
+			Render a single Layer to the given Target.
+			This ignores the isActive setting of the Layer.
+		*/
+		void renderSingleLayer(unsigned int index, sf::RenderTarget& t);
 
-			/**
-				Remove a RenderLayer by index.
-				@param index the index of the Layer which should be removed
-			*/
-			void removeLayer ( int index );
+		// - Layer Management -
+		/**
+			Add a RenderLayer.
+			@param L the new RenderLayer
+			@param index the index of the new Layer will be inserted BEFORE Layer[index], default is -1 ( append at the end )
+		*/
+		void addLayer(const RenderLayer& L, const int index = -1);
 
-			/**
-				Get Access to a Layer
-				@param index the index of the Layer
-				@return a pointer to the requested Layer or nullptr if the index is invalid
-			*/
-			RenderLayer* getLayer( int index );
+		/**
+			Remove a RenderLayer by index.
+			@param index the index of the Layer which should be removed
+		*/
+		void removeLayer(unsigned int index);
 
-			/**
-				Remove all Actors from a Layer
-				@param index the index of the Layer
-			*/
-			void clearLayer( int index );
+		/**
+			Get Access to a Layer
+			@param index the index of the Layer
+			@return a pointer to the requested Layer or nullptr if the index is invalid
+		*/
+		RenderLayer* getLayer(unsigned int index);
 
-			// - Actor Management -
-			/**
-				Add a new Actor
-				@param A the actor
-				@param Layer which layer should the actor be rendered on
-			*/
-			void addActor( const std::shared_ptr<Actor>& A, int Layer );
+		/**
+			Remove all Actors from a Layer
+			@param index the index of the Layer
+		*/
+		void clearLayer(unsigned int index);
 
-			/**
-				Update an Actor.
-				@param ID the ID of the Actor to update
-				@param A the updated Version of the Actor
-			*/
-			void updateActor( const ActorID& ID, std::shared_ptr<Actor>& A);
+		// - Actor Management -
+		/**
+			Add a new Actor
+			@param A the actor
+			@param Layer which layer should the actor be rendered on
+		*/
+		void addActor(const std::shared_ptr<Actor>& A, unsigned int Layer);
 
-			/**
-				Get Access to an Actor.
-				@param ID the ID of the requested
-				@return a shared_ptr to the Actor, empty if the Actor was not found
-			*/
-			std::shared_ptr<Actor> getActor( const ActorID& ID );
+		/**
+			Update an Actor.
+			@param ID the ID of the Actor to update
+			@param A the updated Version of the Actor
+		*/
+		void updateActor(const ActorID& ID, std::shared_ptr<Actor>& A);
 
-			/**
-				Remove an Actor
-				@param ID the ID of the Actor to remove
-			*/
-			void removeActor( const ActorID& ID );
+		/**
+			Get Access to an Actor.
+			@param ID the ID of the requested
+			@return a shared_ptr to the Actor, empty if the Actor was not found
+		*/
+		std::shared_ptr<Actor> getActor(const ActorID& ID);
 
-		protected:
-			/**	Events handled:
-				Event			| 	Data
-				----------------+---------------------------------------------
-				ADD_ACTOR		|	std::pair<std::shared_ptr<Actor>, int>
-				UPDATE_ACTOR	|	std::shared_ptr<Actor>
-				REMOVE_ACTOR	|	ActorID
-			*/
-			void HandleEvent( Event& e ) override;
+		/**
+			Remove an Actor
+			@param ID the ID of the Actor to remove
+		*/
+		void removeActor(const ActorID& ID);
 
-		private:
+	protected:
+		/**	Events handled:
+			Event			| 	Data
+			----------------+---------------------------------------------
+			ADD_ACTOR		|	std::pair<std::shared_ptr<Actor>, int>
+			UPDATE_ACTOR	|	std::shared_ptr<Actor>
+			REMOVE_ACTOR	|	ActorID
+		*/
+		void HandleEvent(Event& e) override;
 
-			void updateLayer( RenderLayer& L );
-			/**
-				Cull the layer.
-			*/
-			void cullLayer( RenderLayer& L );
-			void drawLayer(const RenderLayer& L, sf::RenderTarget& t);
+	private:
 
-			/// used to time Animations
-			sf::Clock RenderTime;
+		void updateLayer(RenderLayer& L);
 
-			typedef std::pair<std::shared_ptr<Actor>, int> ActorInfo;
-			typedef std::unordered_map<ActorID, ActorInfo> ActorList;
-			ActorList ActorMap;
+		/**
+			Cull the layer.
+		*/
+		void cullLayer(RenderLayer& L);
 
-			std::vector<RenderLayer> Layers;
+		void drawLayer(const RenderLayer& L, sf::RenderTarget& t);
+
+		/// used to time Animations
+		sf::Clock RenderTime;
+
+		typedef std::pair<std::shared_ptr<Actor>, unsigned int> ActorInfo;
+		typedef std::unordered_map<ActorID, ActorInfo> ActorList;
+		ActorList ActorMap;
+
+		std::vector<RenderLayer> Layers;
 	};
 } // namespace sbe
 #endif // RENDERER_HPP

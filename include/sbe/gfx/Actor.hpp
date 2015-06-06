@@ -22,20 +22,24 @@ namespace sbe
 		An Actor defines an entity which represents a graphical element and is rendered by the Renderer.
 		@see Renderer
 	*/
-	class Actor {
-		public:
+	class Actor
+	{
+	public:
 
 		Actor();
-		virtual ~Actor() {}
 
-		virtual void update( const sf::Time& RenderTime ) {};
+		virtual ~Actor() { }
+
+		virtual void update(const sf::Time& RenderTime) { };
+
 		virtual sf::Drawable& getDrawable() = 0;
+
 		ActorID getID() const { return ID; }
 
 		bool enabled = true;
 
-		private:
-			const ActorID ID;
+	private:
+		const ActorID ID;
 	};
 
 	/**
@@ -43,9 +47,10 @@ namespace sbe
 	*/
 	class SpriteActor : public Actor
 	{
-		public:
-			sf::Drawable& getDrawable();
-			sf::Sprite sprite;
+	public:
+		sf::Drawable& getDrawable();
+
+		sf::Sprite sprite;
 
 	};
 
@@ -54,9 +59,10 @@ namespace sbe
 	*/
 	class VertexActor : public Actor
 	{
-		public:
-			sf::Drawable& getDrawable();
-			sf::VertexArray arr;
+	public:
+		sf::Drawable& getDrawable();
+
+		sf::VertexArray arr;
 	};
 
 	/**
@@ -64,30 +70,36 @@ namespace sbe
 	*/
 	class DrawableActor : public Actor
 	{
-		public:
-			sf::Drawable& getDrawable();
-			std::shared_ptr<sf::Drawable> d;
+	public:
+		sf::Drawable& getDrawable();
+
+		std::shared_ptr<sf::Drawable> d;
 	};
 
 	/**
 		An Actor holding an AnimatedSprite
 	*/
-	class AnimationActor : public Actor {
-		public:
-			AnimationActor( ImageSet& ImgSet);
+	class AnimationActor : public Actor
+	{
+	public:
+		AnimationActor(ImageSet& ImgSet);
 
-			void update( const sf::Time& RenderTime );
-			sf::Drawable& getDrawable();
-			AnimatedSprite Anim;
+		void update(const sf::Time& RenderTime);
+
+		sf::Drawable& getDrawable();
+
+		AnimatedSprite Anim;
 	};
 
 	/**
 		An Actor holding an AnimatedSprite
 	*/
-	class ShapeActor : public Actor {
-		public:
-			sf::Drawable& getDrawable();
-			std::shared_ptr<sf::Shape> Shape;
+	class ShapeActor : public Actor
+	{
+	public:
+		sf::Drawable& getDrawable();
+
+		std::shared_ptr<sf::Shape> Shape;
 	};
 
 	//class VertexAnimationActor : public Actor {

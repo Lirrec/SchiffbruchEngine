@@ -9,14 +9,16 @@
 #include <vector>
 #include <memory>
 
-namespace sbe {
-	namespace components {
-		namespace {
-			std::vector<ComponentInfo> getPositionComponents()
-			{
+namespace sbe
+{
+	namespace components
+	{
+		namespace
+		{
+			std::vector<ComponentInfo> getPositionComponents() {
 				return {
-					{ "Transformable", makeComponentFactory<sf::Transformable>() },
-					{ "TargetPosition2D", makeComponentFactory<glm::ipoint2>() }
+						{"Transformable",    makeComponentFactory<sf::Transformable>()},
+						{"TargetPosition2D", makeComponentFactory<glm::ipoint2>()}
 				};
 			}
 		}

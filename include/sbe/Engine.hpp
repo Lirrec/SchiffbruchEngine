@@ -4,19 +4,30 @@
 #include "Logger.hpp"
 #include <memory>
 
-namespace sf { class RenderWindow; }
+namespace sf
+{
+	class RenderWindow;
+}
 
 namespace sbe
 {
 
 	class SoundSystem;
+
 	class ResourceManager;
+
 	class EntityManager;
+
 	class Graphics;
+
 	class AssetManager;
+
 	class SFMLEventConverter;
+
 	class IO;
+
 	class Config;
+
 	class CommandParser;
 
 	/**
@@ -33,94 +44,102 @@ namespace sbe
 	class Engine
 	{
 
-		public:
+	public:
 
 
 		/// Defines the differnt severity levels of log messages
 		enum LogLevel
 		{
 			/// Used for all messages appearing frequently, like debbuging messages for every frame
-			SPAM,
+					SPAM,
 			/// General informative message
-			INFO,
+					INFO,
 			/// Warnings
-			WARNING,
+					WARNING,
 			/// Errors
-			ERROR
+					ERROR
 		};
 
-			Engine();
-			~Engine();
+		Engine();
 
-			/// create and initialize Engine subsystems ( called per default only from GameBase )
-			void CreateSubSystems();
-			/// destroy Engine subsystems ( called per default only from GameBase )
-			void UnloadSubSystems();
+		~Engine();
 
-			static std::shared_ptr<Logger> GetLogger(LogLevel level = LogLevel::SPAM)
+		/// create and initialize Engine subsystems ( called per default only from GameBase )
+		void CreateSubSystems();
+
+		/// destroy Engine subsystems ( called per default only from GameBase )
+		void UnloadSubSystems();
+
+		static std::shared_ptr<Logger> GetLogger(LogLevel level = LogLevel::SPAM) {
+			switch (level)
 			{
-				switch ( level )
-				{
-					case LogLevel::SPAM:
+				case LogLevel::SPAM:
 					return Instance->SpamLogger;
 					break;
 
-					case LogLevel::INFO:
+				case LogLevel::INFO:
 					return Instance->InfoLogger;
 					break;
 
-					case LogLevel::WARNING:
+				case LogLevel::WARNING:
 					return Instance->WarningLogger;
 					break;
 
-					case LogLevel::ERROR:
+				case LogLevel::ERROR:
 					return Instance->ErrorLogger;
 					break;
-				}
-
-				return Instance->SpamLogger;
 			}
-			/**
-				Returns a reference to the currently valid output and logging stream.
-				(could be to stdout or some class )
-				@param level the severity of the log message
-				@see Engine::LogLevel
-			*/
-			static Logger& out(LogLevel level = LogLevel::SPAM);
 
-			/// static access to the SoundSystem
-			static std::shared_ptr<SoundSystem> 	GetSndSys ();
-			/// static access to the ResourceManager
-			static std::shared_ptr<ResourceManager> GetResMgr ();
-			/// static access to the EntityManager
-			static std::shared_ptr<EntityManager> GetEntityMgr ();
-			/// static access to the sf::RenderWindow
-			static sf::RenderWindow&                GetApp    ();
-			/// static access to the IO
-			static std::shared_ptr<IO>              GetIO();
-			/// static access to the Config
-			static std::shared_ptr<Config>          getCfg();
-			/// static access to the CommandParser
-			static std::shared_ptr<CommandParser>   GetCmdParser();
+			return Instance->SpamLogger;
+		}
+
+		/**
+			Returns a reference to the currently valid output and logging stream.
+			(could be to stdout or some class )
+			@param level the severity of the log message
+			@see Engine::LogLevel
+		*/
+		static Logger& out(LogLevel level = LogLevel::SPAM);
+
+		/// static access to the SoundSystem
+		static std::shared_ptr<SoundSystem> GetSndSys();
+
+		/// static access to the ResourceManager
+		static std::shared_ptr<ResourceManager> GetResMgr();
+
+		/// static access to the EntityManager
+		static std::shared_ptr<EntityManager> GetEntityMgr();
+
+		/// static access to the sf::RenderWindow
+		static sf::RenderWindow& GetApp();
+
+		/// static access to the IO
+		static std::shared_ptr<IO> GetIO();
+
+		/// static access to the Config
+		static std::shared_ptr<Config> getCfg();
+
+		/// static access to the CommandParser
+		static std::shared_ptr<CommandParser> GetCmdParser();
 
 
-		private:
-			std::shared_ptr<sf::RenderWindow> App;
+	private:
+		std::shared_ptr<sf::RenderWindow> App;
 
-			static Engine* Instance;
-			std::shared_ptr<Logger>			SpamLogger;
-			std::shared_ptr<Logger>			InfoLogger;
-			std::shared_ptr<Logger>			WarningLogger;
-			std::shared_ptr<Logger>			ErrorLogger;
+		static Engine* Instance;
+		std::shared_ptr<Logger> SpamLogger;
+		std::shared_ptr<Logger> InfoLogger;
+		std::shared_ptr<Logger> WarningLogger;
+		std::shared_ptr<Logger> ErrorLogger;
 
-			std::shared_ptr<SoundSystem>     SndSys;
-			std::shared_ptr<ResourceManager> ResMgr;
-			std::shared_ptr<EntityManager> EntityMgr;
-			std::shared_ptr<IO>              Io;
-			std::shared_ptr<Config>	_config;
-			std::shared_ptr<CommandParser>   CmdPrs;
+		std::shared_ptr<SoundSystem> SndSys;
+		std::shared_ptr<ResourceManager> ResMgr;
+		std::shared_ptr<EntityManager> EntityMgr;
+		std::shared_ptr<IO> Io;
+		std::shared_ptr<Config> _config;
+		std::shared_ptr<CommandParser> CmdPrs;
 
-			static std::string getTimeStamp();
+		static std::string getTimeStamp();
 	};
 
 } // namespace sbe

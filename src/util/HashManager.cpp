@@ -9,28 +9,25 @@ namespace sbe
 	  *
 	  * @todo: document this function
 	  */
-	bool HashManager::ElementExists(const HashedString::HashType & Hash) const
-	{
-		return ElementsByHash.find ( Hash ) != ElementsByHash.end();
+	bool HashManager::ElementExists(const HashedString::HashType& Hash) const {
+		return ElementsByHash.find(Hash) != ElementsByHash.end();
 	}
 
 	/** @brief ElementExists
 	  *
 	  * @todo: document this function
 	  */
-	bool HashManager::ElementExists(const std::string& Name) const
-	{
-		return ElementsByString.find ( Name ) != ElementsByString.end();
+	bool HashManager::ElementExists(const std::string& Name) const {
+		return ElementsByString.find(Name) != ElementsByString.end();
 	}
 
 	/** @brief GetString
 	  *
 	  * @todo: document this function
 	  */
-	const std::string& HashManager::GetString(const HashedString::HashType& Hash) const
-	{
-		auto it = ElementsByHash.find ( Hash );
-		if (it != ElementsByHash.end() )
+	const std::string& HashManager::GetString(const HashedString::HashType& Hash) const {
+		auto it = ElementsByHash.find(Hash);
+		if (it != ElementsByHash.end())
 		{
 			return it->second->getStr();
 		}
@@ -43,10 +40,9 @@ namespace sbe
 	  *
 	  * @todo: document this function
 	  */
-	HashedString::HashType HashManager::GetHash(const std::string& Name) const
-	{
-		auto it = ElementsByString.find ( Name );
-		if (it != ElementsByString.end() )
+	HashedString::HashType HashManager::GetHash(const std::string& Name) const {
+		auto it = ElementsByString.find(Name);
+		if (it != ElementsByString.end())
 		{
 			return it->second->getHashValue();
 		}
@@ -59,12 +55,11 @@ namespace sbe
 	  *
 	  * @todo: document this function
 	  */
-	bool HashManager::UnRegisterElement(const HashedString::HashType& Hash)
-	{
-		if (ElementExists( Hash ))
+	bool HashManager::UnRegisterElement(const HashedString::HashType& Hash) {
+		if (ElementExists(Hash))
 		{
-			ElementsByString.erase( GetString( Hash ));
-			ElementsByHash.erase ( Hash );
+			ElementsByString.erase(GetString(Hash));
+			ElementsByHash.erase(Hash);
 			return true;
 		}
 		return false;
@@ -74,12 +69,11 @@ namespace sbe
 	  *
 	  * @todo: document this function
 	  */
-	bool HashManager::UnRegisterElement(const std::string& Name)
-	{
-		if (ElementExists( Name ))
+	bool HashManager::UnRegisterElement(const std::string& Name) {
+		if (ElementExists(Name))
 		{
-			ElementsByHash.erase( GetHash( Name ));
-			ElementsByString.erase ( Name );
+			ElementsByHash.erase(GetHash(Name));
+			ElementsByString.erase(Name);
 			return true;
 		}
 
@@ -90,11 +84,10 @@ namespace sbe
 	  *
 	  * @todo: document this function
 	  */
-	bool HashManager::RegisterElement(const std::string& Name)
-	{
-		if ( !ElementExists( Name ) )
+	bool HashManager::RegisterElement(const std::string& Name) {
+		if (!ElementExists(Name))
 		{
-			std::shared_ptr<HashedString> HS( new HashedString(Name.c_str()  ) );
+			std::shared_ptr<HashedString> HS(new HashedString(Name.c_str()));
 
 			if (HS->getHashValue() == 0)
 			{
@@ -102,8 +95,8 @@ namespace sbe
 				return false;
 			}
 
-			ElementsByString[ Name ] = HS;
-			ElementsByHash[ HS->getHashValue() ] = HS;
+			ElementsByString[Name] = HS;
+			ElementsByHash[HS->getHashValue()] = HS;
 
 			return true;
 		}

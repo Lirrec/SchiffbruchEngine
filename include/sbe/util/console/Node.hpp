@@ -14,59 +14,60 @@ namespace sbe
 	*/
 	class Node
 	{
-		public:
+	public:
 
-			Node( const std::string& command_name );
-			virtual ~Node() {}
+		Node(const std::string& command_name);
 
-			///returns a list with subnodes beginning with a given string
-			virtual std::list<std::shared_ptr<Node>> GetAll( const std::string& s = "" );
+		virtual ~Node() { }
 
-			///returns true if given string is identic to node's command.
-			virtual bool Is( const std::string& s );
+		///returns a list with subnodes beginning with a given string
+		virtual std::list<std::shared_ptr<Node>> GetAll(const std::string& s = "");
 
-			/// returns true if the node begins with a given string ( can be overloaded for some special node types, e.g. parameters )
-			virtual bool startsWith( const std::string& prefix ) { return beginsWith( name, prefix ); }
+		///returns true if given string is identic to node's command.
+		virtual bool Is(const std::string& s);
 
-			///overloaded by Commandnode which has an Event
-			virtual bool IsExecutable() { return false; }
+		/// returns true if the node begins with a given string ( can be overloaded for some special node types, e.g. parameters )
+		virtual bool startsWith(const std::string& prefix) { return beginsWith(name, prefix); }
 
-			virtual void Execute( std::vector<std::string> Parameters ) {};
+		///overloaded by Commandnode which has an Event
+		virtual bool IsExecutable() { return false; }
 
-			///returns true if Node has subnode/s beginning with given string
-			virtual bool HasWith( const std::string& s );
+		virtual void Execute(std::vector<std::string> Parameters) { };
 
-			///returns the child node with given command
-			virtual std::shared_ptr<Node> Get( const std::string& s );
+		///returns true if Node has subnode/s beginning with given string
+		virtual bool HasWith(const std::string& s);
 
-			///returns the name of the Node
-			std::string Name();
+		///returns the child node with given command
+		virtual std::shared_ptr<Node> Get(const std::string& s);
 
-			///returns the helptext
-			std::string Help();
+		///returns the name of the Node
+		std::string Name();
 
-			void setParent( Node* N ) { parent = N; }
+		///returns the helptext
+		std::string Help();
 
-			Node* Parent() { return parent; }
+		void setParent(Node* N) { parent = N; }
 
-			///adds a subNode and sorts them alphabeticaly again
-			virtual void AddSub( std::shared_ptr<Node> sub );
+		Node* Parent() { return parent; }
 
-		protected:
+		///adds a subNode and sorts them alphabeticaly again
+		virtual void AddSub(std::shared_ptr<Node> sub);
 
-			///returns true if s begins with prefix
-			bool beginsWith( const std::string& s, const std::string& prefix );
+	protected:
 
-			///contains the name of the node
-			std::string name;
+		///returns true if s begins with prefix
+		bool beginsWith(const std::string& s, const std::string& prefix);
 
-			///contains the helptext
-			std::string help;
+		///contains the name of the node
+		std::string name;
 
-			Node* parent;
+		///contains the helptext
+		std::string help;
 
-			///contains the list with subnodes
-			std::list<std::shared_ptr<Node>> subNodes;
+		Node* parent;
+
+		///contains the list with subnodes
+		std::list<std::shared_ptr<Node>> subNodes;
 
 	};
 } // namespace sbe

@@ -4,102 +4,94 @@
 #include "sbe/Config.hpp"
 #include "EventQueue.hpp"
 
-#include <boost/optional.hpp>
-#include <boost/property_tree/ptree.hpp>
-
 namespace sbe
 {
-	 SFMLEventConverter::SFMLEventConverter()
-	{
+	SFMLEventConverter::SFMLEventConverter() {
 
 	}
 
-	SFMLEventConverter::ConvEvt SFMLEventConverter::CreateConversion(const std::string& EvtName, bool sendglobal, boost::any Data)
-	{
-		return std::make_tuple( EvtName, sendglobal, Data );
+	SFMLEventConverter::ConvEvt SFMLEventConverter::CreateConversion(const std::string& EvtName, bool sendglobal, boost::any Data) {
+		return std::make_tuple(EvtName, sendglobal, Data);
 	}
 
-	void SFMLEventConverter::AddEventConversion(sf::Event::EventType SFMLEvtType, const std::string& EvtName, bool sendglobal, boost::any Data)
-	{
-		EvtConversions.insert( std::make_pair( SFMLEvtType, CreateConversion( EvtName, sendglobal, Data )) );
+	void SFMLEventConverter::AddEventConversion(sf::Event::EventType SFMLEvtType, const std::string& EvtName, bool sendglobal, boost::any Data) {
+		EvtConversions.insert(std::make_pair(SFMLEvtType, CreateConversion(EvtName, sendglobal, Data)));
 	}
 
-	void SFMLEventConverter::AddKeyConversion(sf::Keyboard::Key Key, const std::string& EvtName, bool sendglobal, boost::any Data)
-	{
-		KeyConversions.insert( std::make_pair( Key, CreateConversion( EvtName, sendglobal, Data )) );
+	void SFMLEventConverter::AddKeyConversion(sf::Keyboard::Key Key, const std::string& EvtName, bool sendglobal, boost::any Data) {
+		KeyConversions.insert(std::make_pair(Key, CreateConversion(EvtName, sendglobal, Data)));
 	}
 
-	void SFMLEventConverter::AddKeyConversion(const std::string& Key, const std::string& EvtName, bool sendglobal, boost::any Data)
-	{
-		auto keycode = SFMLKeyNames.find( Key );
-		if ( keycode == SFMLKeyNames.end() )
+	void SFMLEventConverter::AddKeyConversion(const std::string& Key, const std::string& EvtName, bool sendglobal, boost::any Data) {
+		auto keycode = SFMLKeyNames.find(Key);
+		if (keycode == SFMLKeyNames.end())
 		{
 			Engine::out(Engine::ERROR) << "[SFMLEventConverter] Tried to register unknown key string: " << Key << std::endl;
 			return;
 		}
 
-		KeyConversions.insert( std::make_pair( keycode->second, CreateConversion( EvtName, sendglobal, Data )) );
+		KeyConversions.insert(std::make_pair(keycode->second, CreateConversion(EvtName, sendglobal, Data)));
 	}
 
-	void SFMLEventConverter::HandleEvent(Event& e)
-	{
+	void SFMLEventConverter::HandleEvent(Event& e) {
 		if (e.Is("SFML_KEY_CONV", typeid(KeyConvData)))
 		{
 			KeyConvData KCData = boost::any_cast<KeyConvData>(e.Data());
-			KeyConversions.insert( KCData );
+			KeyConversions.insert(KCData);
 		}
-		else if (e.Is("SFML_EVT_CONV", typeid(EvtConvData )))
+		else if (e.Is("SFML_EVT_CONV", typeid(EvtConvData)))
 		{
 			EvtConvData ECData = boost::any_cast<EvtConvData>(e.Data());
-			EvtConversions.insert( ECData );
+			EvtConversions.insert(ECData);
 		}
 	}
 
-	void SFMLEventConverter::HandleSfmlEvent ( const sf::Event& e)
-	{
-		for ( auto it = EvtConversions.lower_bound( e.type ); it != EvtConversions.upper_bound( e.type ); ++ it )
+	void SFMLEventConverter::HandleSfmlEvent(const sf::Event& e) {
+		for (auto it = EvtConversions.lower_bound(e.type); it != EvtConversions.upper_bound(e.type); ++it)
 		{
 			Engine::out(Engine::SPAM) << "[EvtConv] SFML: " << std::get<0>(it->second) << std::endl;
 
-			Event TmpEvt( std::get<0>(it->second) );
+			Event TmpEvt(std::get<0>(it->second));
 			TmpEvt.Data() = std::get<2>(it->second);
-			Module::Get()->GetEventQueue()->QueueEvent( TmpEvt, std::get<1>(it->second) );
+			Module::Get()->GetEventQueue()->QueueEvent(TmpEvt, std::get<1>(it->second));
 		}
 
-		if (e.type == sf::Event::KeyReleased )
+		if (e.type == sf::Event::KeyReleased)
 		{
-			if ( KeyConversions.find( e.key.code ) != KeyConversions.end() )
+			if (KeyConversions.find(e.key.code) != KeyConversions.end())
 			{
-				for ( auto it = KeyConversions.lower_bound( e.key.code ); it != KeyConversions.upper_bound( e.key.code ); ++ it )
+				for (auto it = KeyConversions.lower_bound(e.key.code); it != KeyConversions.upper_bound(e.key.code); ++it)
 				{
 					Engine::out(Engine::SPAM) << "[EvtConv] KEY: " << std::get<0>(it->second) << std::endl;
 
-					Event TmpEvt( std::get<0>(it->second) );
+					Event TmpEvt(std::get<0>(it->second));
 					TmpEvt.Data() = std::get<2>(it->second);
-					Module::Get()->GetEventQueue()->QueueEvent( TmpEvt, std::get<1>(it->second) );
+					Module::Get()->GetEventQueue()->QueueEvent(TmpEvt, std::get<1>(it->second));
 				}
 			}
 
 		}
 	}
 
-	int SFMLEventConverter::LoadKeyBindingsFromConfig(const std::string& root)
-	{
+	int SFMLEventConverter::LoadKeyBindingsFromConfig(const std::string& root) {
 		auto rootnode = Engine::getCfg()->getPath(root);
 		if (!rootnode) return 0;
 		int count = 0;
 
 		const boost::property_tree::ptree& pt = *rootnode;
 
-		for ( const boost::property_tree::ptree::value_type& node : pt)
+		for (const boost::property_tree::ptree::value_type& node : pt)
 		{
 			auto keycode = SFMLKeyNames.find(node.first);
-			if( keycode != SFMLKeyNames.end())
+			if (keycode != SFMLKeyNames.end())
 			{
-				try {
-					AddKeyConversion(keycode->second, node.second.get<std::string>("event"),  node.second.get<bool>("global", false));
+				try
+				{
+					AddKeyConversion(keycode->second, node.second.get<std::string>("event"), node.second.get<bool>("global", false));
 					count++;
-				} catch ( boost::property_tree::ptree_error& e) {
+				}
+				catch (boost::property_tree::ptree_error& e)
+				{
 					Engine::out(Engine::ERROR) << "[EvtConv::LoadKeyBindingsFromConfig] Error: " << e.what() << std::endl;
 				}
 			}

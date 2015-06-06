@@ -4,12 +4,17 @@
 #include "sbe/event/EventUser.hpp"
 #include <memory>
 
-namespace sfg {
-		class Label;
-		class Box;
-		class Window;
-		class ScrolledWindow;
-		class Entry;
+namespace sfg
+{
+	class Label;
+
+	class Box;
+
+	class Window;
+
+	class ScrolledWindow;
+
+	class Entry;
 }
 
 #include "sbe/geom/Point.hpp"
@@ -27,42 +32,44 @@ namespace sbe
 			DEFAULT, VERBOSE, PEDANTIC
 		};
 
-		public:
+	public:
 
-			DebugWindow( const glm::ipoint2& RelativePosition = glm::ipoint2(0,0), const glm::ivec2 Size = glm::ivec2(600, 280));
-			~DebugWindow() {};
+		DebugWindow(const glm::ipoint2& RelativePosition = glm::ipoint2(0, 0), const glm::ivec2 Size = glm::ivec2(600, 280));
 
-		protected:
-			/**
-				Handles the following events:
-					Event			|		Data
-				--------------------|-----------------
-				VIEW_DBG_STRING		|	std::pair<string,string>
-				EVT_FRAME			|	-
-				TOGGLE_SHOW_DBGWIN	|	-
-			*/
-			void HandleEvent( Event& e ) override;
+		~DebugWindow() { };
 
-		private:
-			void CreateWin( const glm::ipoint2& RelativePosition, const glm::ivec2 Size );
+	protected:
+		/**
+			Handles the following events:
+				Event			|		Data
+			--------------------|-----------------
+			VIEW_DBG_STRING		|	std::pair<string,string>
+			EVT_FRAME			|	-
+			TOGGLE_SHOW_DBGWIN	|	-
+		*/
+		void HandleEvent(Event& e) override;
 
-			bool ListenToActionKeys;
+	private:
+		void CreateWin(const glm::ipoint2& RelativePosition, const glm::ivec2 Size);
 
-			void UpdateText(FilterLevel level = FilterLevel::VERBOSE);
-			void AddLogText( std::string& newtext, int labelTextLimit );
+		bool ListenToActionKeys;
 
-			std::shared_ptr<sfg::Label> LogText;
-			std::shared_ptr<sfg::Label> DbgText;
-			std::shared_ptr<sfg::Label> DbgLabels;
-			std::shared_ptr<sfg::Box>	LogBox;
-			std::shared_ptr<sfg::Window> Win;
-			std::shared_ptr<sfg::ScrolledWindow> scrolledwindow;
-			std::shared_ptr<sfg::Entry> ConsoleInput;
-			unsigned int currentlabeltext;
-			unsigned int updateCounter;
+		void UpdateText(FilterLevel level = FilterLevel::VERBOSE);
 
-			// a list of debugging strings which are set by event
-			std::map<std::string, std::string> DebugStrings;
+		void AddLogText(std::string& newtext, unsigned int labelTextLimit);
+
+		std::shared_ptr<sfg::Label> LogText;
+		std::shared_ptr<sfg::Label> DbgText;
+		std::shared_ptr<sfg::Label> DbgLabels;
+		std::shared_ptr<sfg::Box> LogBox;
+		std::shared_ptr<sfg::Window> Win;
+		std::shared_ptr<sfg::ScrolledWindow> scrolledwindow;
+		std::shared_ptr<sfg::Entry> ConsoleInput;
+		unsigned int currentlabeltext;
+		unsigned int updateCounter;
+
+		// a list of debugging strings which are set by event
+		std::map<std::string, std::string> DebugStrings;
 	};
 } // namespace sbe
 #endif // DGB_WINDOW_H

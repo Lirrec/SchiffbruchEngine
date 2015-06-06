@@ -25,7 +25,8 @@ namespace sbe
 
 	public:
 
-		enum class loader {
+		enum class loader
+		{
 			BINARY,
 			PTREE
 		} loader_type;
@@ -33,11 +34,10 @@ namespace sbe
 		/**
 			This constructor is the only one provided to make sure loader_type is always set.
 		*/
-		IOPlugin ( loader ldtype, const std::string& relpath )
-		: loader_type(ldtype), relative_path(relpath)
-		{}
+		IOPlugin(loader ldtype, const std::string& relpath)
+				: loader_type(ldtype), relative_path(relpath) { }
 
-		virtual ~IOPlugin() {};
+		virtual ~IOPlugin() { };
 
 		/**
 			Returns supported file extensions by the plugin.
@@ -62,35 +62,34 @@ namespace sbe
 	class iBinaryIOPlugin : public IOPlugin
 	{
 
-		public:
+	public:
 
-			iBinaryIOPlugin( const std::string& relpath )
-			: IOPlugin ( loader::BINARY, relpath )
-			{}
+		iBinaryIOPlugin(const std::string& relpath)
+				: IOPlugin(loader::BINARY, relpath) { }
 
-			virtual ~iBinaryIOPlugin() {};
+		virtual ~iBinaryIOPlugin() { };
 
-			typedef std::vector<std::shared_ptr<T>> ObjectList;
+		typedef std::vector<std::shared_ptr<T>> ObjectList;
 
-			/**
-				Called when an object should be loaded from a stream.
-				@param in the inputstream from which the object should be loaded
-				@return a possibly empty ObjectList ( vector of objects )
-			*/
-			virtual ObjectList decodeStream(std::istream& in) = 0;
+		/**
+			Called when an object should be loaded from a stream.
+			@param in the inputstream from which the object should be loaded
+			@return a possibly empty ObjectList ( vector of objects )
+		*/
+		virtual ObjectList decodeStream(std::istream& in) = 0;
 
-			/**
-				Called when an object should be saved to a stream.
-				@param object the object to be saved
-				@param out the outputstream to which the object should be saved
-				@return true on successfull encoding
-			*/
-			virtual bool encodeStream( const T& object, std::ostream& out) = 0;
+		/**
+			Called when an object should be saved to a stream.
+			@param object the object to be saved
+			@param out the outputstream to which the object should be saved
+			@return true on successfull encoding
+		*/
+		virtual bool encodeStream(const T& object, std::ostream& out) = 0;
 
-			/**
-				@return a vector of string containing the supported file endinges (e.g. "png", "jpg", "jpeg")
-			*/
-			virtual const std::vector<std::string>& getSupportedFileExtensions() = 0;
+		/**
+			@return a vector of string containing the supported file endinges (e.g. "png", "jpg", "jpeg")
+		*/
+		virtual const std::vector<std::string>& getSupportedFileExtensions() = 0;
 
 	};
 
@@ -106,34 +105,33 @@ namespace sbe
 	class iTreeIOPlugin : public IOPlugin
 	{
 
-		public:
+	public:
 
-			iTreeIOPlugin( const std::string& relpath )
-			: IOPlugin ( loader::PTREE, relpath )
-			{}
+		iTreeIOPlugin(const std::string& relpath)
+				: IOPlugin(loader::PTREE, relpath) { }
 
-			typedef std::shared_ptr<T> ObjPtr;
+		typedef std::shared_ptr<T> ObjPtr;
 
-			/**
-				Called when an object should be loaded.
-				@param node the root of the tree which contains the object
-				@return a possibly empty shared_ptr to the loaded object
-			*/
-			virtual ObjPtr loadObject(const boost::property_tree::ptree::value_type& node) = 0;
+		/**
+			Called when an object should be loaded.
+			@param node the root of the tree which contains the object
+			@return a possibly empty shared_ptr to the loaded object
+		*/
+		virtual ObjPtr loadObject(const boost::property_tree::ptree::value_type& node) = 0;
 
-			/**
-				Called when an object should be saved.
-				@param name the name of the object
-				@param object the object itself
-				@param root the root of the ptree to save to
-				@return true on successfull encoding
-			*/
-			virtual bool saveObject( const std::string& name, const T& object, boost::property_tree::ptree& root) = 0;
+		/**
+			Called when an object should be saved.
+			@param name the name of the object
+			@param object the object itself
+			@param root the root of the ptree to save to
+			@return true on successfull encoding
+		*/
+		virtual bool saveObject(const std::string& name, const T& object, boost::property_tree::ptree& root) = 0;
 
-			virtual const std::vector<std::string>& getSupportedFileExtensions() {
-				 static std::vector<std::string> fileexts { "info" };
-				 return fileexts;
-				 }
+		virtual const std::vector<std::string>& getSupportedFileExtensions() {
+			static std::vector<std::string> fileexts{"info"};
+			return fileexts;
+		}
 
 	};
 } // namespace sbe

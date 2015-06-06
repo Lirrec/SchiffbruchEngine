@@ -2,12 +2,15 @@
 #define SFGLIST_HPP
 
 
+namespace sfg
+{
+	class Widget;
 
-namespace sfg {
-		class Widget;
-		class Label;
-		class Box;
-		class ScrolledWindow;
+	class Label;
+
+	class Box;
+
+	class ScrolledWindow;
 }
 
 #include <string>
@@ -27,39 +30,48 @@ namespace sbe
 			Construct a new List
 			@param ClickEventName if not empty an event with the given name will be sent if an item is clicked ( data will be a string with the name of the item )
 		*/
-		sfgList ( std::string ClickEventName = "" );
+		sfgList(std::string ClickEventName = "");
 
 		std::shared_ptr<sfg::Widget> getList();
 
 		/// change the event sent on click
-		void setClickEventName( const std::string& cEvtName );
+		void setClickEventName(const std::string& cEvtName);
+
 		/// set single or multiple selects
-		void setMultiSelect( bool multi ) { MultiSelect = multi; }
+		void setMultiSelect(bool multi) { MultiSelect = multi; }
+
 		bool isMultiSelect() { return MultiSelect; }
+
 		/// add an item to the list
-		void addItem( std::string name );
+		void addItem(std::string name);
+
 		/// remove an item from the list
-		void removeItem( std::string name);
-		int getIndex( std::string name);
+		void removeItem(std::string name);
+
+		int getIndex(std::string name);
+
 		/// remove all Items
 		void clear();
+
 		/// select or deselect an item, sends "selected" event
-		void select( size_t idx );
+		void select(size_t idx);
 
 		/// return the selected item or the first selected item if multiselect is allowed
 		/// @return the label of the item oder an empty string
 		std::string getSelectedItem();
+
 		/// return all selected items ( only makes sense in multi mode )
 		std::vector<std::string> getSelectedItems();
 
-		void LabelClicked( std::string Name );
+		void LabelClicked(std::string Name);
 
 	private:
 
 		struct item
 		{
-			item ( sfgList& l, std::string t, bool b, std::shared_ptr<sfg::Label> p )
-			: text(t), active(b), label(p) {}
+			item(sfgList& l, std::string t, bool b, std::shared_ptr<sfg::Label> p)
+					: text(t), active(b), label(p) { }
+
 			std::string text;
 			bool active;
 			std::shared_ptr<sfg::Label> label;

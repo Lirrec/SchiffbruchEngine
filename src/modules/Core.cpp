@@ -7,13 +7,11 @@ namespace sbe
 
 	EventCore* Core::EvtCore;
 
-	Core::Core()
-	{
-		EvtCore = new EventCore() ;
+	Core::Core() {
+		EvtCore = new EventCore();
 	}
 
-	Core::~Core()
-	{
+	Core::~Core() {
 		delete EvtCore;
 		EvtCore = nullptr;
 	}

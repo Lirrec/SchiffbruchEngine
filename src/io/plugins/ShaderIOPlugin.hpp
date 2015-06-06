@@ -10,15 +10,17 @@ namespace sbe
 {
 
 	/// iTreeIOPlugin for sf::Shader
-	class ShaderIOPlugin : public iTreeIOPlugin<sf::Shader> {
+	class ShaderIOPlugin : public iTreeIOPlugin<sf::Shader>
+	{
 	public:
 		ShaderIOPlugin()
-		 : iTreeIOPlugin( "Shaders.info" )
-		{}
+				: iTreeIOPlugin("Shaders.info") { }
 
 		virtual ~ShaderIOPlugin();
-		virtual ObjPtr loadObject(const boost::property_tree::ptree::value_type &node);
-		virtual bool saveObject( const std::string& name, const sf::Shader &o, boost::property_tree::ptree &root);
+
+		virtual ObjPtr loadObject(const boost::property_tree::ptree::value_type& node);
+
+		virtual bool saveObject(const std::string& name, const sf::Shader& o, boost::property_tree::ptree& root);
 
 	};
 

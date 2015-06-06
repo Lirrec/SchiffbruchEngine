@@ -18,9 +18,8 @@ namespace sbe
 	*/
 	// EventBinder
 
-	EventBinder::EventBinder( const std::string& trigger, std::function< void(const Event&) > _action)
-	{
+	EventBinder::EventBinder(const std::string& trigger, std::function<void(const Event&)> _action) {
 		this->action = _action;
-		RegisterForEvent( trigger, [this](Event& e){ action(e); } );
+		RegisterForEvent(trigger, [this](Event& e) { action(e); });
 	}
 } // namespace sbe

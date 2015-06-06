@@ -3,30 +3,33 @@
 
 #include "Node.hpp"
 
-namespace sbe {
+namespace sbe
+{
 
 	class ParameterNode : public Node
 	{
-		public:
+	public:
 
-			/**
-				A Validator is used to determine wether a String is valid for a ParameterNode.
-				Should return true if the given string is valid.
-				This can be used to ensure that a parameter is e.g. a valid integer, an existing config node, etc.
-			*/
-			typedef std::function<bool(const std::string&)> Validator;
+		/**
+			A Validator is used to determine wether a String is valid for a ParameterNode.
+			Should return true if the given string is valid.
+			This can be used to ensure that a parameter is e.g. a valid integer, an existing config node, etc.
+		*/
+		typedef std::function<bool(const std::string&)> Validator;
 
-			ParameterNode();
-			~ParameterNode();
+		ParameterNode();
 
-			void setValidator( Validator Val ) { V = Val; }
+		~ParameterNode();
 
-			bool Is( const std::string& s ) override;
-			bool startsWith( const std::string& prefix ) override;
+		void setValidator(Validator Val) { V = Val; }
 
-		private:
+		bool Is(const std::string& s) override;
 
-			Validator V;
+		bool startsWith(const std::string& prefix) override;
+
+	private:
+
+		Validator V;
 	};
 }
 

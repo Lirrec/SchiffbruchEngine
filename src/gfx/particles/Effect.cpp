@@ -5,13 +5,11 @@ namespace sbe
 
 	namespace particles
 	{
-		Effect::Effect()
-		{
+		Effect::Effect() {
 
 		}
 
-		Effect::~Effect()
-		{
+		Effect::~Effect() {
 
 		}
 	} // namespace particles

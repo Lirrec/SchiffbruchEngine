@@ -11,7 +11,7 @@
 namespace sbe
 {
 	template<>
-	std::vector<std::string> SystemBuilder<systems::LinearMovement>::RequirementsPlain { "Transformable", "TargetPosition2D" };
+	std::vector<std::string> SystemBuilder<systems::LinearMovement>::RequirementsPlain{"Transformable", "TargetPosition2D"};
 	template<>
 	std::string SystemBuilder<systems::LinearMovement>::Name = "LinearMovement";
 
@@ -19,27 +19,26 @@ namespace sbe
 	namespace systems
 	{
 
-		void LinearMovement::update(Entity& E, const sf::Time& delta)
-		{
-            using namespace sbe::operators;
+		void LinearMovement::update(Entity& E, const sf::Time& delta) {
+			using namespace sbe::operators;
 			sf::Transformable& T = E.C<sf::Transformable&>("Transformable"_cId);
 			glm::ipoint2& TargetPosition = E.C<glm::ipoint2&>("TargetPosition2D"_cId);
 			glm::point2 Pos = {T.getPosition().x, T.getPosition().y};
 
-            glm::point2 Dist = geom::PIToF(TargetPosition) - Pos;
-			if ( glm::length(Dist) < (unitspersecond * delta.asSeconds()) )
+			glm::point2 Dist = geom::PIToF(TargetPosition) - Pos;
+			if (glm::length(Dist) < (unitspersecond*delta.asSeconds()))
 			{
-				T.setPosition( TargetPosition.x, TargetPosition.y );
+				T.setPosition(TargetPosition.x, TargetPosition.y);
 				E.removeSystem(getID());
 				return;
 			}
 
 
-			glm::point2 newpos = Pos + glm::normalize(Dist) * delta.asSeconds() * unitspersecond;
+			glm::point2 newpos = Pos + glm::normalize(Dist)*delta.asSeconds()*unitspersecond;
 
 			//Engine::out() << "oldpos : " << Pos << " - new: " << newpos << std::endl;
 
-			T.setPosition( newpos.x, newpos.y );
+			T.setPosition(newpos.x, newpos.y);
 
 
 		}

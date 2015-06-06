@@ -5,17 +5,14 @@ namespace sbe
 	using boost::property_tree::ptree;
 
 	ImageSetIOPlugin::ImageSetIOPlugin()
-	: iTreeIOPlugin( "ImageSets.info" )
-	{}
+			: iTreeIOPlugin("ImageSets.info") { }
 
-	ImageSetIOPlugin::~ImageSetIOPlugin()
-	{
+	ImageSetIOPlugin::~ImageSetIOPlugin() {
 
 	}
 
 
-	ImageSetIOPlugin::ObjPtr ImageSetIOPlugin::loadObject(const boost::property_tree::ptree::value_type& node)
-	{
+	ImageSetIOPlugin::ObjPtr ImageSetIOPlugin::loadObject(const boost::property_tree::ptree::value_type& node) {
 		ObjPtr re;
 		if (node.first != "ImageSet") return re;
 
@@ -39,12 +36,13 @@ namespace sbe
 			re->FrameCount.x = pt.get<int>("FrameCount.x");
 			re->FrameCount.y = pt.get<int>("FrameCount.y");
 
-			re->FramesPerSecond = pt.get<int>("FramesPerSecond");
+			re->FramesPerSecond = pt.get < unsigned
+			int > ("FramesPerSecond");
 
 			re->calcNumFrames();
 
 		}
-		catch ( boost::property_tree::ptree_error )
+		catch (boost::property_tree::ptree_error)
 		{
 			Engine::out(Engine::ERROR) << "[ImageSetIOPlugin] Error loading ImageSet from ptree!" << std::endl;
 			re.reset();
@@ -55,9 +53,9 @@ namespace sbe
 	}
 
 
-	bool ImageSetIOPlugin::saveObject( const std::string& name, const ImageSet& object, boost::property_tree::ptree& root)
-	{
-		try {
+	bool ImageSetIOPlugin::saveObject(const std::string& name, const ImageSet& object, boost::property_tree::ptree& root) {
+		try
+		{
 			ptree pt;
 
 			pt.put("Name", name);
@@ -80,7 +78,7 @@ namespace sbe
 			root.add_child("ImageSet", pt);
 			return true;
 		}
-		catch ( boost::property_tree::ptree_error )
+		catch (boost::property_tree::ptree_error)
 		{
 			Engine::out(Engine::ERROR) << "[ImageSetIOPlugin] Error saving ImageSet to ptree!" << std::endl;
 			return false;

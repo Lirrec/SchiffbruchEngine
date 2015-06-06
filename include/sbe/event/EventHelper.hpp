@@ -31,12 +31,13 @@ namespace sbe
 	*/
 	class EventBinder : EventUser
 	{
-		public:
-			EventBinder( const std::string& trigger, std::function< void(const Event&) > _action);
-			virtual ~EventBinder() {};
+	public:
+		EventBinder(const std::string& trigger, std::function<void(const Event&)> _action);
 
-		private:
-			std::function< void(const Event&) > action;
+		virtual ~EventBinder() { };
+
+	private:
+		std::function<void(const Event&)> action;
 	};
 } // namespace sbe
 

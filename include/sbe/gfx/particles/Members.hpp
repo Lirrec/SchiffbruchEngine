@@ -54,14 +54,21 @@ namespace sbe
 		};*/
 
 
-		namespace members {
-			inline glm::vec2& velocity( Particle &P ) { return P.velocity; }
-			inline glm::vec2& position( Particle &P ) { return P.position; }
-			inline float& rotation( Particle &P ) { return P.rotation; }
-			inline float& avelocity( Particle &P ) { return P.avelocity; }
-			inline float& age( Particle &P ) { return P.age; }
-			inline float& size( Particle &P ) { return P.size; }
-			inline sf::Color& color( Particle &P ) { return P.color; }
+		namespace members
+		{
+			inline glm::vec2& velocity(Particle& P) { return P.velocity; }
+
+			inline glm::vec2& position(Particle& P) { return P.position; }
+
+			inline float& rotation(Particle& P) { return P.rotation; }
+
+			inline float& avelocity(Particle& P) { return P.avelocity; }
+
+			inline float& age(Particle& P) { return P.age; }
+
+			inline float& size(Particle& P) { return P.size; }
+
+			inline sf::Color& color(Particle& P) { return P.color; }
 		}
 	}
 }

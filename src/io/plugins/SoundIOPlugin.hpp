@@ -21,8 +21,10 @@ namespace sbe
 
 		virtual ~SoundIOPlugin();
 
-		virtual ObjectList decodeStream(std::istream &in);
-		virtual bool encodeStream( const sf::SoundBuffer &o, std::ostream &out);
+		virtual ObjectList decodeStream(std::istream& in);
+
+		virtual bool encodeStream(const sf::SoundBuffer& o, std::ostream& out);
+
 		virtual const std::vector<std::string>& getSupportedFileExtensions();
 	};
 

@@ -3,6 +3,7 @@
 namespace sbe
 {
 	static std::default_random_engine rng;
+
 	std::default_random_engine& getRNG() { return rng; };
 
 	namespace factories
@@ -20,8 +21,7 @@ namespace sbe
 			unsigned char v;
 		};
 
-		sf::Color HsvToRgb(HsvColor hsv)
-		{
+		sf::Color HsvToRgb(HsvColor hsv) {
 			sf::Color rgb;
 			unsigned char region, p, q, t;
 			unsigned int h, s, v, remainder;
@@ -39,12 +39,12 @@ namespace sbe
 			s = hsv.s;
 			v = hsv.v;
 
-			region = h / 43;
-			remainder = (h - (region * 43)) * 6;
+			region = h/43;
+			remainder = (h - (region*43))*6;
 
-			p = (v * (255 - s)) >> 8;
-			q = (v * (255 - ((s * remainder) >> 8))) >> 8;
-			t = (v * (255 - ((s * (255 - remainder)) >> 8))) >> 8;
+			p = (v*(255 - s)) >> 8;
+			q = (v*(255 - ((s*remainder) >> 8))) >> 8;
+			t = (v*(255 - ((s*(255 - remainder)) >> 8))) >> 8;
 
 			switch (region)
 			{
@@ -83,8 +83,7 @@ namespace sbe
 			return rgb;
 		}
 
-		HsvColor RgbToHsv(sf::Color rgb)
-		{
+		HsvColor RgbToHsv(sf::Color rgb) {
 			HsvColor hsv;
 			unsigned char rgbMin, rgbMax;
 
@@ -99,7 +98,7 @@ namespace sbe
 				return hsv;
 			}
 
-			hsv.s = 255 * ((long)(rgbMax - rgbMin)) / hsv.v;
+			hsv.s = 255*((long) (rgbMax - rgbMin))/hsv.v;
 			if (hsv.s == 0)
 			{
 				hsv.h = 0;
@@ -107,39 +106,37 @@ namespace sbe
 			}
 
 			if (rgbMax == rgb.r)
-				hsv.h = 0 + 43 * (rgb.g - rgb.b) / (rgbMax - rgbMin);
+				hsv.h = 0 + 43*(rgb.g - rgb.b)/(rgbMax - rgbMin);
 			else if (rgbMax == rgb.g)
-				hsv.h = 85 + 43 * (rgb.b - rgb.r) / (rgbMax - rgbMin);
+				hsv.h = 85 + 43*(rgb.b - rgb.r)/(rgbMax - rgbMin);
 			else
-				hsv.h = 171 + 43 * (rgb.r - rgb.g) / (rgbMax - rgbMin);
+				hsv.h = 171 + 43*(rgb.r - rgb.g)/(rgbMax - rgbMin);
 
 			return hsv;
 		}
 
-		sf::Color interpolateColor(const sf::Color from, const sf::Color to, float percentage)
-		{
-			percentage = percentage > 1.0 ? 1 : ( percentage < 0? 0 : percentage );
+		sf::Color interpolateColor(const sf::Color from, const sf::Color to, float percentage) {
+			percentage = percentage > 1.0 ? 1 : (percentage < 0 ? 0 : percentage);
 
 			HsvColor fromhsv = RgbToHsv(from);
 			HsvColor tohsv = RgbToHsv(to);
 
 			HsvColor hsv;
-			hsv.h = interpolateFloat( fromhsv.h, tohsv.h, percentage );
-			hsv.s = interpolateFloat( fromhsv.s, tohsv.s, percentage );
-			hsv.v = interpolateFloat( fromhsv.v, tohsv.v, percentage );
+			hsv.h = interpolateFloat(fromhsv.h, tohsv.h, percentage);
+			hsv.s = interpolateFloat(fromhsv.s, tohsv.s, percentage);
+			hsv.v = interpolateFloat(fromhsv.v, tohsv.v, percentage);
 			sf::Color re = HsvToRgb(hsv);
-			re.a = interpolateInt( from.a, to.a, percentage );
+			re.a = interpolateInt(from.a, to.a, percentage);
 			return re;
 		}
 
-		sf::Color interpolateColorRGB(const sf::Color from, const sf::Color to, float percentage)
-		{
-			percentage = percentage > 1.0 ? 1 : ( percentage < 0? 0 : percentage );
+		sf::Color interpolateColorRGB(const sf::Color from, const sf::Color to, float percentage) {
+			percentage = percentage > 1.0 ? 1 : (percentage < 0 ? 0 : percentage);
 			return sf::Color(
-				interpolateInt( from.r, to.r, percentage ),
-				interpolateInt( from.g, to.g, percentage ),
-				interpolateInt( from.b, to.b, percentage ),
-				interpolateInt( from.a, to.a, percentage )
+					interpolateInt(from.r, to.r, percentage),
+					interpolateInt(from.g, to.g, percentage),
+					interpolateInt(from.b, to.b, percentage),
+					interpolateInt(from.a, to.a, percentage)
 			);
 		}
 

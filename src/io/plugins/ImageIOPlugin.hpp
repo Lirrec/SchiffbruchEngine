@@ -19,8 +19,10 @@ namespace sbe
 
 		virtual ~ImageIOPlugin();
 
-		virtual ObjectList decodeStream(std::istream &in);
-		virtual bool encodeStream( const sf::Image &o, std::ostream &out);
+		virtual ObjectList decodeStream(std::istream& in);
+
+		virtual bool encodeStream(const sf::Image& o, std::ostream& out);
+
 		virtual const std::vector<std::string>& getSupportedFileExtensions();
 	};
 

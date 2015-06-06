@@ -6,10 +6,14 @@ namespace sbe
 {
 	sbeID sbeID_namespace = boost::uuids::nil_generator()();
 
-    namespace operators {
-        sbeID operator "" _id(const char *str, size_t) {
-            boost::uuids::name_generator gen(sbeID_namespace);
-            return gen(str);
-        }
-    }
+	namespace operators
+	{
+		sbeID operator
+		""
+
+		_id(const char* str, size_t) {
+			boost::uuids::name_generator gen(sbeID_namespace);
+			return gen(str);
+		}
+	}
 } // namespace sbe

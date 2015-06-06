@@ -4,13 +4,14 @@
 
 namespace sbe
 {
-	namespace components {
-		namespace {
-			std::vector<ComponentInfo> getSFMLComponents()
-			{
+	namespace components
+	{
+		namespace
+		{
+			std::vector<ComponentInfo> getSFMLComponents() {
 				return {
-					{"Sprite", makeComponentFactory<sf::Sprite>()},
-					{"RenderLayer", makeComponentFactory<int>()}
+						{"Sprite",      makeComponentFactory<sf::Sprite>()},
+						{"RenderLayer", makeComponentFactory<int>()}
 				};
 			}
 		}

@@ -9,8 +9,11 @@ namespace sbe
 {
 
 	class Logger;
+
 	class Module;
+
 	class ModuleStartInfo;
+
 	class Engine;
 
 	/**
@@ -27,47 +30,47 @@ namespace sbe
 	*/
 	class GameBase
 	{
-		public:
+	public:
 
-			GameBase();
+		GameBase();
 
 
-
-			/// Starts the mainloop
-			void Run();
+		/// Starts the mainloop
+		void Run();
 
 	protected:
 
-			/**
-				Register a module to be started.
-				@see Module
-			*/
-			void RegisterModule( Module* Mod, const ModuleStartInfo& Info );
+		/**
+			Register a module to be started.
+			@see Module
+		*/
+		void RegisterModule(Module* Mod, const ModuleStartInfo& Info);
 
-			/// Game related init- The Game should initialize its own classes here, called after the engine and modules have been started
-			virtual void GameInit() {};
+		/// Game related init- The Game should initialize its own classes here, called after the engine and modules have been started
+		virtual void GameInit() { };
 
-			/// Game related cleanup - called after all Modules have been unloaded
-			virtual void DeInit() {};
+		/// Game related cleanup - called after all Modules have been unloaded
+		virtual void DeInit() { };
 
-			/// The Game should call RegisterModule with every module it wants to be started
-			virtual void ModuleInit() = 0;
+		/// The Game should call RegisterModule with every module it wants to be started
+		virtual void ModuleInit() = 0;
 
-		private:
+	private:
 
-			/// Initialize the Engine
-			void EngineInit();
+		/// Initialize the Engine
+		void EngineInit();
 
-			/// start all registered Modules
-			void StartModules();
-			void JoinModules();
+		/// start all registered Modules
+		void StartModules();
 
-			/// Cleanup and delete all engine Objects
-			void CleanUp();
+		void JoinModules();
 
-			std::shared_ptr<Engine> _Engine;
+		/// Cleanup and delete all engine Objects
+		void CleanUp();
 
-			std::vector<std::pair<Module*, ModuleStartInfo>> Modules;
+		std::shared_ptr<Engine> _Engine;
+
+		std::vector<std::pair<Module*, ModuleStartInfo>> Modules;
 	};
 
 } // namespace sbe

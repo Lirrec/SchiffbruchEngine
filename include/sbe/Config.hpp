@@ -22,7 +22,8 @@ namespace sbe
 
 		@warning not threadsafe!
 	*/
-	class Config : sf::NonCopyable {
+	class Config : sf::NonCopyable
+	{
 
 	private:
 		/// stores settings
@@ -32,32 +33,33 @@ namespace sbe
 		//NamedList<boost::any> _cache;
 
 		/*const*/
-			  std::string _fileName;
+		std::string _fileName;
 		const std::string _defaultPath;
 
 	public:
 
 		Config();
-		Config(const std::string &fileName, const std::string &defaultPath);
+
+		Config(const std::string& fileName, const std::string& defaultPath);
 
 		/**
 		 * \brief set a key to value
 		 */
 		template<typename T>
-		void set(const std::string &key, const T &value);
+		void set(const std::string& key, const T& value);
 
 		/**
 		 * \brief get value of key
 		 * \return the value key is set to
 		 */
 		template<typename T>
-		T get(const std::string &key) const;
+		T get(const std::string& key) const;
 
 		/**
 		 * \brief get a ptree node by path
 		 * \return the requested node or empty optional
 		 */
-		boost::optional<const boost::property_tree::ptree&> getPath(const std::string &path) const;
+		boost::optional<const boost::property_tree::ptree&> getPath(const std::string& path) const;
 
 		/**
 		 * \brief get value of key
@@ -66,7 +68,7 @@ namespace sbe
 		 * \return the value key is set to or, if key not set, the the value given as default
 		 */
 		template<typename T>
-		T get(const std::string &key, const T &dfault) const;
+		T get(const std::string& key, const T& dfault) const;
 
 		/**
 		 * \brief loads content of the default conf file into the "system" subtree.
@@ -83,7 +85,7 @@ namespace sbe
 		 * Wehn calling save(), those will be written to their respective files.
 		 * \warning Make sure there's a valid IO-stack in IO before calling this
 		 */
-		void loadInto(const std::string &dest, const std::string &file);
+		void loadInto(const std::string& dest, const std::string& file);
 
 		/**
 		 * \brief save settings from the internal cache to the settings file.
@@ -97,28 +99,31 @@ namespace sbe
 	};
 
 	template<typename T>
-	void Config::set(const std::string &key, const T &value){
+	void Config::set(const std::string& key, const T& value) {
 		_settings.put<T>(key, value);
 	}
 
 	template<typename T>
-	T Config::get(const std::string &key) const {
-		try {
-		return _settings.get<T>(key);
-		} catch(boost::property_tree::ptree_error &e){ // if key doesn't exist or translation fails, return default
+	T Config::get(const std::string& key) const {
+		try
+		{
+			return _settings.get<T>(key);
+		}
+		catch (boost::property_tree::ptree_error& e)
+		{ // if key doesn't exist or translation fails, return default
 			Engine::out(Engine::ERROR) << "[Config] " << key << ":" << e.what() << std::endl;
 			throw;
 		}
 	}
 
 	template<typename T>
-	T Config::get(const std::string &key, const T &dfault) const {
-		try{
-
+	T Config::get(const std::string& key, const T& dfault) const {
+		try
+		{
 			return _settings.get<T>(key);
-
-		} catch(boost::property_tree::ptree_error &e){ // if key doesn't exist or translation fails, return default
-
+		}
+		catch (boost::property_tree::ptree_error& e)
+		{ // if key doesn't exist or translation fails, return default
 			return dfault;
 		}
 	}

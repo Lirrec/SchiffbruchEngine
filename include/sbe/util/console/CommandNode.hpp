@@ -11,21 +11,22 @@ namespace sbe
 	*/
 	class CommandNode : public Node
 	{
-		public:
+	public:
 
-			CommandNode( std::string command_name, std::string command_event );
-			~CommandNode() {}
+		CommandNode(std::string command_name, std::string command_event);
 
-			///returns the name of the event-string
-			void Execute( std::vector<std::string> Parameters ) override;
+		~CommandNode() { }
 
-			///returns true if event is not empty
-			bool IsExecutable() override { return event.length() != 0; }
+		///returns the name of the event-string
+		void Execute(std::vector<std::string> Parameters) override;
 
-		protected:
+		///returns true if event is not empty
+		bool IsExecutable() override { return event.length() != 0; }
 
-			///contains the event-string
-			std::string event;
+	protected:
+
+		///contains the event-string
+		std::string event;
 
 	};
 } // namespace sbe

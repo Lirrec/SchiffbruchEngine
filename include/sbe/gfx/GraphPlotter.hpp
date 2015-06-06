@@ -20,10 +20,10 @@ namespace sbe
 	*/
 	class Curve
 	{
-		public:
-		Curve( const std::string& _name, const std::vector<int> _data, const sf::Color& _color)
-		: name( _name), data(_data), color(_color)
-		{}
+	public:
+		Curve(const std::string& _name, const std::vector<int> _data, const sf::Color& _color)
+				: name(_name), data(_data), color(_color) { }
+
 		/// the name of the Curve
 		std::string name;
 		/// a vector of datapoints
@@ -42,37 +42,36 @@ namespace sbe
 	public:
 
 		Graph()
-		 : Size( 512,512),
-		 AxisSize( 1000, 1000),
-		 AxisStart ( 0, 0 ),
-		 MinPointDist( 1 ),
-		 AxesPoints ( 5, 5),
-		 drawAxisLabels(true),
-		 drawLegend(true),
-		 textSize( 15 ),
-		 drawAxes(true),
-		 dynX(true), dynY(true),
-		 logScale(true),
-		 logBase(10)
-		{
+				: Size(512, 512),
+				  AxisSize(1000, 1000),
+				  AxisStart(0, 0),
+				  MinPointDist(1),
+				  AxesPoints(5, 5),
+				  drawAxisLabels(true),
+				  drawLegend(true),
+				  textSize(15),
+				  drawAxes(true),
+				  dynX(true), dynY(true),
+				  logScale(true),
+				  logBase(10) {
 
 		}
 
 		/** Add a new Curve to the graph.
 			@return false if the curve is empty, true if it was added
 		*/
-		bool addCurve ( const Curve& c );
+		bool addCurve(const Curve& c);
 
-		std::vector< Curve > getCurves() { return Curves; }
+		std::vector<Curve> getCurves() { return Curves; }
 
-		glm::ipoint2 getMaximas() {
-			glm::ipoint2 max;
-			for( auto& C : Curves )
+		glm::upoint2 getMaximas() {
+			glm::upoint2 max;
+			for (auto& C : Curves)
 			{
-				if ( C.data.empty() ) continue;
-				if ( C.data.size() > max.x ) max.x = C.data.size();
-				float tmp = *std::max_element( C.data.begin(), C.data.end() );
-				if ( tmp > max.y ) max.y = tmp;
+				if (C.data.empty()) continue;
+				if (C.data.size() > max.x) max.x = C.data.size();
+				float tmp = *std::max_element(C.data.begin(), C.data.end());
+				if (tmp > max.y) max.y = tmp;
 			}
 			return max;
 		}
@@ -80,11 +79,11 @@ namespace sbe
 		/**
 			The Size of the final image to which this graph should be rendered
 		*/
-		glm::ivec2 Size;
+		glm::uvec2 Size;
 		/**
 			Determines the range of the x and y axes ( e.g. start -> start + AxesSize.x )
 		*/
-		glm::ivec2 AxisSize;
+		glm::uvec2 AxisSize;
 
 		/**
 			Determines the first point on each axis to show ( usually 0,0 )
@@ -97,7 +96,7 @@ namespace sbe
 		/**
 			how many visual markers should be placed on the axes ( x/y) (defautl: 10/10)
 		*/
-		glm::ivec2 AxesPoints;
+		glm::uvec2 AxesPoints;
 
 		/// wether to draw the labels on the axes
 		bool drawAxisLabels;
@@ -113,24 +112,27 @@ namespace sbe
 		bool logScale;
 		/// to which base should the y axis scale if logarithmic scaling is enabled
 		float logBase;
+
 		friend class GraphPlotter;
 
 	private:
 
-		std::vector< Curve > Curves;
+		std::vector<Curve> Curves;
 	};
+
 	/**
 		This class can be used to plot simple Graphs with one or more curves in it.
 	*/
 	class GraphPlotter
 	{
-		public:
+	public:
 		GraphPlotter();
 
 		/**
 			Set the graph to be plotted
 		*/
-		bool setGraph( const Graph& _g );
+		bool setGraph(const Graph& _g);
+
 		/// access the current graph
 		Graph& getGraph() { return g; }
 
@@ -140,52 +142,60 @@ namespace sbe
 		/**
 			Update a curve of the Graph
 		*/
-		void updateCurve( const std::string& name, Curve& C );
+		void updateCurve(const std::string& name, Curve& C);
+
 		/**
 			Update the data of a curve of the Graph
 		*/
-		void updateCurveData( const std::string& name, std::vector<int>& Data );
+		void updateCurveData(const std::string& name, std::vector<int>& Data);
+
 		/**
 			Add data to a curve of the Graph
 		*/
-		void extendCurve( const std::string& name, std::vector<int>& Data );
-		void extendCurve( const std::string& name, int D );
+		void extendCurve(const std::string& name, std::vector<int>& Data);
+
+		void extendCurve(const std::string& name, int D);
 
 		/**
 			Create the vertexarrays and sprites needed for rendering, has to be called before draw()
 		*/
 		void updateVertexArrays();
+
 		/**
 			Draw the graph to a rendertarget.
 			As you cant set a relative origin on the rendertarget yet, this works best with a sf::RenderTexture  of appropriate size or with a sf::View
 		*/
-		void draw( sf::RenderTarget& Target );
+		void draw(sf::RenderTarget& Target);
 
 		/**
 			Prints current Graph settings to INFO log.
 		*/
 		void printSettings();
 
-		private:
+	private:
 
 		/**
 			Check if dynamic axes are needed and adjust accordingly
 		*/
-		void dynScaleAxes( const glm::ipoint2& max);
+		void dynScaleAxes(const glm::ipoint2& max);
 
 		/**
 			draw the names of the curves on the graph
 		*/
 		void drawLegend();
+
 		/**
 			draw labels on the axes
 		*/
 		void drawAxisLabels();
-		void drawText( const sf::Vector2f& pos, const std::string& text, bool xAxis);
-		void drawAxes();
-		void drawCurve( const Curve& c, sf::VertexArray& vA  );
 
-		int interpolatedCurveData( const Curve& c, float percentage);
+		void drawText(const sf::Vector2f& pos, const std::string& text, bool xAxis);
+
+		void drawAxes();
+
+		void drawCurve(const Curve& c, sf::VertexArray& vA);
+
+		int interpolatedCurveData(const Curve& c, float percentage);
 
 		bool valid;
 		Graph g;

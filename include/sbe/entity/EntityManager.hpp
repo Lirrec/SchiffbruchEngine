@@ -22,58 +22,62 @@ namespace sbe
 	*/
 	class EntityManager
 	{
-		public:
-			EntityManager();
-			~EntityManager();
+	public:
+		EntityManager();
 
-			/**
-				Update all Entities.
-				This calls all Entities' Systems' update() method.
-			*/
-			void update(const sf::Time& delta);
+		~EntityManager();
 
-			void onEntityChanged( const sbeID eID );
+		/**
+			Update all Entities.
+			This calls all Entities' Systems' update() method.
+		*/
+		void update(const sf::Time& delta);
 
-			bool addEntity( std::shared_ptr<Entity> E );
-			bool removeEntity( const sbeID eID );
+		void onEntityChanged(const sbeID eID);
 
-			template <class T>
-			void registerComponent( const std::string& Name)
-			{
-				registerComponent( Name, std::make_shared( new FactoryWithBase<T, boost::any>() ) );
-			}
+		bool addEntity(std::shared_ptr<Entity> E);
 
-			void registerComponent( const ComponentInfo& C );
+		bool removeEntity(const sbeID eID);
 
-			void registerComponents( const std::vector<ComponentInfo>& Cs);
+		template<class T>
+		void registerComponent(const std::string& Name) {
+			registerComponent(Name, std::make_shared(new FactoryWithBase<T, boost::any>()));
+		}
 
-			template<class T>
-			void registerSystem()
-			{
-				registerSystem(std::make_shared<T>());
-			}
+		void registerComponent(const ComponentInfo& C);
 
-			void registerSystem( std::shared_ptr<System> S );
+		void registerComponents(const std::vector<ComponentInfo>& Cs);
 
-			const sbeID lookupSystemID( const std::string& name ) const;
-			const sbeID lookupComponentID( const std::string& name ) const;
-			const std::string lookupSystemName( sbeID sID ) const;
-			const std::string lookupComponentName( sbeID cID ) const;
+		template<class T>
+		void registerSystem() {
+			registerSystem(std::make_shared<T>());
+		}
 
-			std::shared_ptr<System> createSystem( sbeID sID );
-			boost::optional<boost::any> createComponent( sbeID cID );
+		void registerSystem(std::shared_ptr<System> S);
 
-		private:
+		const sbeID lookupSystemID(const std::string& name) const;
 
-			std::map<std::string, sbeID> ComponentMappings;
-			std::map<sbeID, std::string> ComponentNames;
-			std::map<sbeID, std::shared_ptr< CopyFactory<boost::any> >> ComponentFactories;
+		const sbeID lookupComponentID(const std::string& name) const;
 
-			std::map<sbeID, std::shared_ptr<Entity> > Entities;
+		const std::string lookupSystemName(sbeID sID) const;
 
-			std::map<sbeID, std::shared_ptr<System>> Systems;
-			std::map<std::string, sbeID> SystemMappings;
-			std::map<sbeID, std::shared_ptr< Factory<System> >> SystemFactories;
+		const std::string lookupComponentName(sbeID cID) const;
+
+		std::shared_ptr<System> createSystem(sbeID sID);
+
+		boost::optional<boost::any> createComponent(sbeID cID);
+
+	private:
+
+		std::map<std::string, sbeID> ComponentMappings;
+		std::map<sbeID, std::string> ComponentNames;
+		std::map<sbeID, std::shared_ptr<CopyFactory<boost::any> >> ComponentFactories;
+
+		std::map<sbeID, std::shared_ptr<Entity> > Entities;
+
+		std::map<sbeID, std::shared_ptr<System>> Systems;
+		std::map<std::string, sbeID> SystemMappings;
+		std::map<sbeID, std::shared_ptr<Factory<System> >> SystemFactories;
 
 	};
 

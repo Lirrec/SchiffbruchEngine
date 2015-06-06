@@ -11,31 +11,31 @@ namespace sbe
 	*/
 	class PythonEngine : public ScriptingEngine
 	{
-		public:
+	public:
 
-			PythonEngine();
-			~PythonEngine();
+		PythonEngine();
 
-			/**
-				Initialize the scripting language, has to be called once before using other functions
-			*/
-			virtual void init();
+		~PythonEngine();
 
-			/** Execute a given script
-				@return false on error
-			*/
-			virtual bool RunString(const std::string& code);
+		/**
+			Initialize the scripting language, has to be called once before using other functions
+		*/
+		virtual void init();
 
-			/** Execute a given file
-				@return false on error
-			 */
-			virtual bool RunFile(const std::string& path);
+		/** Execute a given script
+			@return false on error
+		*/
+		virtual bool RunString(const std::string& code);
 
-			/**
-				Shuts the scripting runtime down and cleans up
-			*/
-			virtual void deinit();
+		/** Execute a given file
+			@return false on error
+		 */
+		virtual bool RunFile(const std::string& path);
 
+		/**
+			Shuts the scripting runtime down and cleans up
+		*/
+		virtual void deinit();
 
 
 	};

@@ -1,6 +1,5 @@
 #include "sbe/event/EventUser.hpp"
 
-#include "sbe/Engine.hpp"
 #include "EventCore.hpp"
 
 #include "../modules/Core.hpp"
@@ -8,20 +7,17 @@
 namespace sbe
 {
 	// EventUser
-	EventUser::EventUser()
-	{
-		Module::Get()->GetEventQueue()->AddEventUser( this );
+	EventUser::EventUser() {
+		Module::Get()->GetEventQueue()->AddEventUser(this);
 	}
 
-	EventUser::~EventUser()
-	{
+	EventUser::~EventUser() {
 		if (Module::Get())
-			Module::Get()->GetEventQueue()->RemoveEventUser( this );
+			Module::Get()->GetEventQueue()->RemoveEventUser(this);
 	}
 
-	void EventUser::RegisterForEvent(const Event::EventType& EvtType, int priority)
-	{
-		if (Core::EvtCore->HasEvent( EvtType ))
+	void EventUser::RegisterForEvent(const Event::EventType& EvtType, int priority) {
+		if (Core::EvtCore->HasEvent(EvtType))
 		{
 			Module::Get()->GetEventQueue()->RegisterEventUser(this, EvtType, priority);
 		}
@@ -31,34 +27,29 @@ namespace sbe
 		}
 	}
 
-	void EventUser::RegisterForEvent(const std::string& EvtName, int priority)
-	{
+	void EventUser::RegisterForEvent(const std::string& EvtName, int priority) {
 		Module::Get()->GetEventQueue()->RegisterEventUser(this, EvtName, priority);
 	}
 
-	void EventUser::RegisterForEvent(const std::string& EvtName, const EventHandler& Handler, int priority)
-	{
+	void EventUser::RegisterForEvent(const std::string& EvtName, const EventHandler& Handler, int priority) {
 		RegisterForEvent(EvtName, priority);
-		Callbacks[ Event::hashName(EvtName) ] = Handler;
+		Callbacks[Event::hashName(EvtName)] = Handler;
 	}
 
-	void EventUser::RegisterForEvent(const Event::EventType& EvtType, const EventHandler& Handler, int priority)
-	{
+	void EventUser::RegisterForEvent(const Event::EventType& EvtType, const EventHandler& Handler, int priority) {
 		RegisterForEvent(EvtType, priority);
-		Callbacks[ EvtType ] = Handler;
+		Callbacks[EvtType] = Handler;
 	}
 
-	void EventUser::RealHandleEvent(Event& e)
-	{
+	void EventUser::RealHandleEvent(Event& e) {
 		auto it = Callbacks.find(e.getEventType());
-		if ( it != Callbacks.end() )
-            ((*it).second)(e);
+		if (it != Callbacks.end())
+			((*it).second)(e);
 		else
 			HandleEvent(e);
 	}
 
-	void EventUser::UnregisterThis()
-	{
+	void EventUser::UnregisterThis() {
 		if (Module::Get())
 		{
 			Module::Get()->GetEventQueue()->RemoveEventUser(this);

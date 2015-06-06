@@ -6,11 +6,11 @@
 
 namespace sbe
 {
-	AnimatedSprite::AnimatedSprite( ImageSet& _A )
-		: Animation ( _A )
-	{
+	AnimatedSprite::AnimatedSprite(ImageSet& _A)
+			: Animation(_A) {
 		std::shared_ptr<sf::Texture> txt = AnimData.getTexture();
-		if (txt) {
+		if (txt)
+		{
 			s.setTexture(*txt);
 		}
 		else
@@ -19,12 +19,12 @@ namespace sbe
 		}
 	}
 
-	void AnimatedSprite::setImageSet( ImageSet& _A)
-	{
-		Animation::setImageSet( _A );
+	void AnimatedSprite::setImageSet(ImageSet& _A) {
+		Animation::setImageSet(_A);
 
 		std::shared_ptr<sf::Texture> txt = AnimData.getTexture();
-		if (txt) {
+		if (txt)
+		{
 			s.setTexture(*txt);
 		}
 		else
@@ -33,14 +33,12 @@ namespace sbe
 		}
 	}
 
-	void AnimatedSprite::updateDrawable()
-	{
-		s.setTextureRect( geom::toSFRect( AnimData.CalcTexCoords(CurFramePos) ) );
-		s.setPosition( (float)Screen_Position.x, (float)Screen_Position.y );
+	void AnimatedSprite::updateDrawable() {
+		s.setTextureRect(geom::toSFRect(AnimData.CalcTexCoords(CurFramePos)));
+		s.setPosition((float) Screen_Position.x, (float) Screen_Position.y);
 	}
 
-	sf::Sprite& AnimatedSprite::getSprite()
-	{
+	sf::Sprite& AnimatedSprite::getSprite() {
 		return s;
 	}
 } // namespace sbe

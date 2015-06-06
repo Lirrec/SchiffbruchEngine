@@ -62,37 +62,39 @@ namespace sbe
 
 	*/
 
-	typedef std::function< void(std::string laststate) > StateFunction;
+	typedef std::function<void(std::string laststate)> StateFunction;
 
 	class Action : EventUser
 	{
-		public:
-			// Starts the first state
-			void Execute();
+	public:
+		// Starts the first state
+		void Execute();
 
-			void IsRunning();
+		void IsRunning();
 
-			// State functions, add new states
-			void AddState ( const std::string& name, StateFunction state_function );
+		// State functions, add new states
+		void AddState(const std::string& name, StateFunction state_function);
 
-		private:
+	private:
 
-			// - Functions intended to be called from the states
+		// - Functions intended to be called from the states
 
-			/// switch to a named state
-			void SwitchState( std::string newstate );
-			/// switch to the next state in queue
-			void NextState();
-			/// switch to the previous state in queue
-			void PreviousState();
+		/// switch to a named state
+		void SwitchState(std::string newstate);
 
-			/// the name of this action
-			std::string name;
+		/// switch to the next state in queue
+		void NextState();
 
-			/// TODO: change this to a numeric identifier for faster lookup?
-			std::string current_state;
+		/// switch to the previous state in queue
+		void PreviousState();
 
-			std::map< std::string, StateFunction > States;
+		/// the name of this action
+		std::string name;
+
+		/// TODO: change this to a numeric identifier for faster lookup?
+		std::string current_state;
+
+		std::map<std::string, StateFunction> States;
 
 	};
 

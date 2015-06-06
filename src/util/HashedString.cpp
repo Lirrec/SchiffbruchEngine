@@ -8,8 +8,7 @@ namespace sbe
 	const HashedString::HashType HashedString::InvalidHash = 0;
 
 	HashedString::HashType
-	HashedString::hash_name( char const * pIdentStr )
-	{
+	HashedString::hash_name(char const* pIdentStr) {
 		// Relatively simple hash of arbitrary text string into a
 		// 32-bit identifier Output value is
 		// input-valid-deterministic, but no guarantees are made
@@ -33,11 +32,11 @@ namespace sbe
 		// (n+1)(BASE-1) <= 2^32-1
 		unsigned long NMAX = 5552;
 
-	#define DO1(buf,i)  {s1 += tolower(buf[i]); s2 += s1;}
-	#define DO2(buf,i)  DO1(buf,i); DO1(buf,i+1);
-	#define DO4(buf,i)  DO2(buf,i); DO2(buf,i+2);
-	#define DO8(buf,i)  DO4(buf,i); DO4(buf,i+4);
-	#define DO16(buf)   DO8(buf,0); DO8(buf,8);
+#define DO1(buf, i)  {s1 += tolower(buf[i]); s2 += s1;}
+#define DO2(buf, i)  DO1(buf,i); DO1(buf,i+1);
+#define DO4(buf, i)  DO2(buf,i); DO2(buf,i+2);
+#define DO8(buf, i)  DO4(buf,i); DO4(buf,i+4);
+#define DO16(buf)   DO8(buf,0); DO8(buf,8);
 
 		if (pIdentStr == NULL)
 			return NULL;
@@ -45,7 +44,7 @@ namespace sbe
 		unsigned long s1 = 0;
 		unsigned long s2 = 0;
 
-		for ( size_t len = std::strlen( pIdentStr ); len > 0 ; )
+		for (size_t len = std::strlen(pIdentStr); len > 0;)
 		{
 			unsigned long k = len < NMAX ? len : NMAX;
 
@@ -58,24 +57,25 @@ namespace sbe
 				k -= 16;
 			}
 
-			if (k != 0) do
-			{
-				s1 += std::tolower( *pIdentStr++ );
-				s2 += s1;
-			} while (--k);
+			if (k != 0)
+				do
+				{
+					s1 += std::tolower(*pIdentStr++);
+					s2 += s1;
+				} while (--k);
 
 			s1 %= BASE;
 			s2 %= BASE;
 		}
 
 
-		return reinterpret_cast<HashedString::HashType>( (s2 << 16) | s1 );
+		return reinterpret_cast<HashedString::HashType>((s2 << 16) | s1 );
 
-	#undef DO1
-	#undef DO2
-	#undef DO4
-	#undef DO8
-	#undef DO16
+#undef DO1
+#undef DO2
+#undef DO4
+#undef DO8
+#undef DO16
 	}
 
 } // namespace sbe

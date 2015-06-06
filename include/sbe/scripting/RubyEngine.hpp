@@ -11,35 +11,38 @@ namespace sbe
 	*/
 	class RubyEngine : public ScriptingEngine
 	{
-		public:
+	public:
 
-			RubyEngine();
-			~RubyEngine();
+		RubyEngine();
 
-			/**
-				Initialize the scripting language, has to be called once before using other functions
-			*/
-			virtual void init();
+		~RubyEngine();
 
-			/** Execute a given script
-				@return false on error
-			*/
-			virtual bool RunString(const std::string& code);
+		/**
+			Initialize the scripting language, has to be called once before using other functions
+		*/
+		virtual void init();
 
-			/** Execute a given file
-				@return false on error
-			 */
-			virtual bool RunFile(const std::string& path);
+		/** Execute a given script
+			@return false on error
+		*/
+		virtual bool RunString(const std::string& code);
 
-			/**
-				Shuts the scripting runtime down and cleans up
-			*/
-			virtual void deinit();
+		/** Execute a given file
+			@return false on error
+		 */
+		virtual bool RunFile(const std::string& path);
 
-		private:
-			void backtrace();
-			typedef long unsigned int VALUE;
-			bool protectedCall( VALUE(*fn)(VALUE), const std::string& msg = "", VALUE arg = 0, VALUE* out = nullptr );
+		/**
+			Shuts the scripting runtime down and cleans up
+		*/
+		virtual void deinit();
+
+	private:
+		void backtrace();
+
+		typedef long unsigned int VALUE;
+
+		bool protectedCall(VALUE(* fn)(VALUE), const std::string& msg = "", VALUE arg = 0, VALUE* out = nullptr);
 
 	};
 

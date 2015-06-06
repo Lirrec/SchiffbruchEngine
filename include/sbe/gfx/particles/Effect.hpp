@@ -4,7 +4,6 @@
 #include <sbe/gfx/particles/Particle.hpp>
 
 
-
 namespace sbe
 {
 	class ParticleSystem;
@@ -17,33 +16,35 @@ namespace sbe
 		*/
 		class Effect
 		{
-			public:
-				Effect();
-				virtual ~Effect();
+		public:
+			Effect();
 
-				/// called once each frame before the other functions are executed
-				/// use this to compute values you only need to compute once for all particles
-				virtual void Prepare() {};
+			virtual ~Effect();
 
-				/// affect single particles
-				virtual void Affector( Particle& P, float delta) {};
+			/// called once each frame before the other functions are executed
+			/// use this to compute values you only need to compute once for all particles
+			virtual void Prepare() { };
 
-
-				/** may modify all particles at once ( allow interaction, will not be executed in parallel )
-					@note remember to modifiy only particles where P.effectindex == EffectId
-				*/
-				virtual void GlobalAffector( Particle::Iterator, Particle::Iterator, float ) {};
+			/// affect single particles
+			virtual void Affector(Particle& P, float delta) { };
 
 
-				/** may insert or remove particles
-					@note remember to modifiy only particles where P.effectindex == EffectId
-				*/
-				virtual void Manipulator( std::vector<Particle>&, float ) {};
+			/** may modify all particles at once ( allow interaction, will not be executed in parallel )
+				@note remember to modifiy only particles where P.effectindex == EffectId
+			*/
+			virtual void GlobalAffector(Particle::Iterator, Particle::Iterator, float) { };
 
-				friend class ::sbe::ParticleSystem;
-			protected:
-				/// set by the particlesystem
-				short EffectId = -1;
+
+			/** may insert or remove particles
+				@note remember to modifiy only particles where P.effectindex == EffectId
+			*/
+			virtual void Manipulator(std::vector<Particle>&, float) { };
+
+			friend class ::sbe::ParticleSystem;
+
+		protected:
+			/// set by the particlesystem
+			short EffectId = -1;
 
 		};
 	} // namespace particles

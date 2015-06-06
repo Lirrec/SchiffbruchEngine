@@ -10,7 +10,8 @@
 #include <iostream>
 #include <sstream>
 
-namespace boost {
+namespace boost
+{
 	class mutex;
 }
 
@@ -23,12 +24,12 @@ namespace sbe
 	{
 	public:
 
-		Logger( std::ostream& _out );
-		virtual ~Logger() {}
+		Logger(std::ostream& _out);
 
-		template <typename T>
-		Logger & operator <<(T data)
-		{
+		virtual ~Logger() { }
+
+		template<typename T>
+		Logger& operator<<(T data) {
 			/* Takes any data type and stores in a stringstream
 			 */
 			lock();
@@ -38,8 +39,7 @@ namespace sbe
 			return *this;
 		}
 
-		Logger & operator<<(std::ostream& (*pf)(std::ostream&))
-		{
+		Logger& operator<<(std::ostream& (* pf)(std::ostream&)) {
 			// for stream manipulators
 			lock();
 			oss << pf;
@@ -48,27 +48,24 @@ namespace sbe
 			return *this;
 		}
 
-		Logger & operator<<(Logger & (*pf)(Logger &))
-		{
+		Logger& operator<<(Logger& (* pf)(Logger&)) {
 			//applicator - mainly calling the print function;
 			return pf(*this);
 		}
 
-		std::string GetLog()
-		{
+		std::string GetLog() {
 			return oss.str();
 		}
 
-		void ClearCache( int chars = -1 )
-		{
-			if ( chars == -1 )
+		void ClearCache(int chars = -1) {
+			if (chars == -1)
 			{
 				// clear everything
 				oss.str("");
 			}
 			else
 			{
-				oss.str( oss.str().erase (0, chars) );
+				oss.str(oss.str().erase(0, chars));
 			}
 
 			oss.clear();
@@ -77,6 +74,7 @@ namespace sbe
 	private:
 
 		void lock();
+
 		void unlock();
 
 		static boost::mutex* io_mutex;

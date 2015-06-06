@@ -5,17 +5,15 @@ namespace sbe
 {
 	boost::mutex* Logger::io_mutex = nullptr;
 
-	Logger::Logger( std::ostream& _out ) :out(_out) {
-			if (io_mutex == nullptr) io_mutex = new boost::mutex;
-		}
+	Logger::Logger(std::ostream& _out) : out(_out) {
+		if (io_mutex == nullptr) io_mutex = new boost::mutex;
+	}
 
-	void Logger::lock()
-	{
+	void Logger::lock() {
 		io_mutex->lock();
 	}
 
-	void Logger::unlock()
-	{
+	void Logger::unlock() {
 		io_mutex->unlock();
 	}
 

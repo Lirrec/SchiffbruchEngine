@@ -1,93 +1,79 @@
 #include "sbe/gfx/Animation.hpp"
 
 #include "sbe/event/Event.hpp"
-#include "sbe/Engine.hpp"
 #include "sbe/Module.hpp"
-#include "sbe/geom/Point.hpp"
 
-
-
-#include <cmath>
-#include <iostream>
-#include <string>
 
 namespace sbe
 {
 
-	Animation::Animation( ImageSet& _A) : AnimData( _A )
-	{
+	Animation::Animation(ImageSet& _A) : AnimData(_A) {
 
-		reset( sf::Time() );
-	//	Engine::out() << "Animation(" << this << ")" << std::endl;
+		reset(sf::Time());
+		//	Engine::out() << "Animation(" << this << ")" << std::endl;
 	}
 
-	void Animation::setImageSet( ImageSet& A)
-	{
+	void Animation::setImageSet(ImageSet& A) {
 		AnimData = A;
 
-		if ( A.NumFrames == 0 )
+		if (A.NumFrames == 0)
 		{
 			Engine::out() << "Animation: got invalid ImageSet '" << A.Name << "'" << std::endl;
 		}
 	}
 
-	void Animation::reset( const sf::Time& GameTime )
-	{
+	void Animation::reset(const sf::Time& GameTime) {
 		playing = false;
 		reverse = false;
 		looping = false;
-		Screen_Position = glm::ipoint2 (0,0);
+		Screen_Position = glm::ipoint2(0, 0);
 		sendEndEvent = false;
 		setFrame(0);
 		RangeToPlay = AnimData.FrameCount;
 		LastUpdate = GameTime;
 	}
 
-	void Animation::setScreenPosition( glm::ipoint2 p )
-	{
+	void Animation::setScreenPosition(glm::ipoint2 p) {
 		Screen_Position = p;
 	}
 
-	void Animation::setFrame(int index)
-	{
-		if ( index < 0 || index >= AnimData.NumFrames)
+	void Animation::setFrame(unsigned int index) {
+		if (index < 0 || index >= AnimData.NumFrames)
 		{
 			Engine::out(Engine::ERROR) << "Animation::Play() # Can't set Frame, requested index out of range!" << std::endl;
 			return;
 		}
 
 		CurFrame = index;
-		CurFramePos = AnimData.CalcFramePos( index );
+		CurFramePos = AnimData.CalcFramePos(index);
 	}
 
-	void Animation::playRandomized( const sf::Time& GameTime )
-	{
-		if ( AnimData.NumFrames <= 0 )
+	void Animation::playRandomized(const sf::Time& GameTime) {
+		if (AnimData.NumFrames <= 0)
 		{
 			Engine::out(Engine::ERROR) << "Animation::Play() # Can't play Animation '" << AnimData.Name << "', no Frames!" << std::endl;
 			return;
 		}
 
 		play(0, 0);
-		setFrame( std::rand() % AnimData.NumFrames );
+		setFrame(std::rand()%AnimData.NumFrames);
 
 		// this should give an random offest off maximum 1.f ( 1 second )
 		// maxes updates look much more naturally
-		float tmp = (float)std::rand() / static_cast<float>(RAND_MAX);
-		float sec = 1.0f / (float)AnimData.FramesPerSecond;
+		float tmp = (float) std::rand()/static_cast<float>(RAND_MAX);
+		float sec = 1.0f/(float) AnimData.FramesPerSecond;
 		LastUpdate = GameTime - sf::seconds(sec*tmp);
 	}
 
-	void Animation::play(unsigned int from, unsigned int to)
-	{
+	void Animation::play(unsigned int from, unsigned int to) {
 		//if (from < 1) from = 1;
 
-		if ( from < 0 || from >= AnimData.NumFrames || to >= AnimData.NumFrames || AnimData.NumFrames <= 0)
+		if (from < 0 || from >= AnimData.NumFrames || to >= AnimData.NumFrames || AnimData.NumFrames <= 0)
 		{
 			Engine::out(Engine::ERROR) << "Animation::Play() # Can't play Animation, requested index out of range!" << std::endl;
 			return;
 		}
-		if (to == 0) to = AnimData.NumFrames-1;
+		if (to == 0) to = AnimData.NumFrames - 1;
 
 		RangeToPlay = {from, to};
 		reverse = (from > to);
@@ -96,66 +82,56 @@ namespace sbe
 	}
 
 
-
-	void Animation::togglePlay()
-	{
+	void Animation::togglePlay() {
 		playing = !playing;
 	}
 
-	bool Animation::isPlaying()
-	{
+	bool Animation::isPlaying() {
 		return playing;
 	}
 
-	bool Animation::isReverse()
-	{
+	bool Animation::isReverse() {
 		return reverse;
 	}
 
-	bool Animation::isLooping()
-	{
+	bool Animation::isLooping() {
 		return looping;
 	}
 
-	void Animation::setLooping(bool loop)
-	{
+	void Animation::setLooping(bool loop) {
 		looping = loop;
 	}
 
-	void Animation::setReverse(bool _reverse)
-	{
+	void Animation::setReverse(bool _reverse) {
 		this->reverse = _reverse;
 	}
 
-	void Animation::advance()
-	{
+	void Animation::advance() {
 		// Finished
-		if ((CurFrame == RangeToPlay.y && !looping) || !playing )
+		if ((CurFrame == RangeToPlay.y && !looping) || !playing)
 		{
 			finish();
 			Engine::out(Engine::SPAM) << "Anim " << AnimData.Name << " finished." << std::endl;
-			reset( sf::Time() );
+			reset(sf::Time());
 			return;
 		}
 		// we're looping, reset to first frame
-		setFrame ( (CurFrame == RangeToPlay.y) ? RangeToPlay.x : CurFrame+1 );
+		setFrame((CurFrame == RangeToPlay.y) ? RangeToPlay.x : CurFrame + 1);
 	}
 
-	void Animation::rAdvance()
-	{
+	void Animation::rAdvance() {
 		// Finished
-		if ((CurFrame == RangeToPlay.x && !looping) || !playing )
+		if ((CurFrame == RangeToPlay.x && !looping) || !playing)
 		{
 			finish();
-			reset( sf::Time() );
+			reset(sf::Time());
 			return;
 		}
 		// we're looping, reset to first frame
-		setFrame ( (CurFrame == RangeToPlay.x) ? RangeToPlay.y : CurFrame-1 );
+		setFrame((CurFrame == RangeToPlay.x) ? RangeToPlay.y : CurFrame - 1);
 	}
 
-	void Animation::finish()
-	{
+	void Animation::finish() {
 		if (sendEndEvent)
 		{
 			Event e = Event("EVT_ANIM_END");
@@ -164,9 +140,7 @@ namespace sbe
 	}
 
 
-
-	void Animation::update( const sf::Time& GameTime )
-	{
+	void Animation::update(const sf::Time& GameTime) {
 		if (AnimData.FramesPerSecond == 0 || AnimData.NumFrames == 0 || !playing)
 		{
 			//Engine::out() << "Anim not playing: " << AnimData.Name << std::endl;
@@ -174,25 +148,25 @@ namespace sbe
 		}
 
 		sf::Time diff = GameTime - LastUpdate;
-		sf::Time FrameTime = sf::seconds(1.0f/(float)AnimData.FramesPerSecond);
+		sf::Time FrameTime = sf::seconds(1.0f/(float) AnimData.FramesPerSecond);
 
 		if (diff > FrameTime)
 		{
 //			Engine::out() << "Diff: " << diff.asMilliseconds() << std::endl;
 //			Engine::out() << "FrameTime: " << FrameTime.asMilliseconds() << std::endl;
-	//		Engine::out() << "AnimData: " << AnimData.ImageName << std::endl;
-	//		Engine::out() << "AnimData.fps: " << AnimData.FramesPerSecond << std::endl;
+			//		Engine::out() << "AnimData: " << AnimData.ImageName << std::endl;
+			//		Engine::out() << "AnimData.fps: " << AnimData.FramesPerSecond << std::endl;
 
 			int oldframe = CurFrame;
 
 			while (diff > FrameTime)
 			{
 				//Engine::out() << "Franetime: " << FrameTime.asMilliseconds() << " - Diff: " << diff.asMilliseconds() << std::endl;
-				reverse?rAdvance():advance();
+				reverse ? rAdvance() : advance();
 				diff -= FrameTime;
 			}
 
-			if ( oldframe != CurFrame )
+			if (oldframe != CurFrame)
 				updateDrawable();
 		}
 

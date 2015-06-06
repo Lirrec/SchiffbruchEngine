@@ -16,15 +16,14 @@
 namespace std
 {
 
-    template <>
-    class hash< boost::uuids::uuid > : public std::unary_function< boost::uuids::uuid, size_t >
-    {   // hash functor
-    public:
-        std::size_t operator()(const boost::uuids::uuid& _Keyval) const
-        {       // hash _Keyval to size_t value by pseudorandomizing transform
-            return boost::uuids::hash_value(_Keyval);
-        }
-    };
+	template<>
+	class hash<boost::uuids::uuid> : public std::unary_function<boost::uuids::uuid, size_t>
+	{   // hash functor
+	public:
+		std::size_t operator()(const boost::uuids::uuid& _Keyval) const {       // hash _Keyval to size_t value by pseudorandomizing transform
+			return boost::uuids::hash_value(_Keyval);
+		}
+	};
 
 } // namespace std
 

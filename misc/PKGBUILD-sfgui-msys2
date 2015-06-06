@@ -1,13 +1,13 @@
 # Maintainer: oi_wtf <brainpower at gulli dot com>
 
 pkgname="${MINGW_PACKAGE_PREFIX}-sfgui-git"
-pkgver=0.2.3.r1.g5a17f40
-pkgrel=2
+pkgver=0.2.3.r33.g6f4a009
+pkgrel=1
 pkgdesc="SFGUI (Simple and Fast Graphical User Interface), a C++ GUI library for SFML."
 arch=('i686' 'x86_64')
 url="http://sfgui.sfml-dev.org/"
 license=('zlib')
-depends=("${MINGW_PACKAGE_PREFIX}-sfml-git")
+depends=("${MINGW_PACKAGE_PREFIX}-sfml")
 makedepends=("${MINGW_PACKAGE_PREFIX}-cmake" "git")
 provides=('sfgui')
 conflicts=('sfgui')

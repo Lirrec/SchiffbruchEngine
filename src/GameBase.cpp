@@ -9,18 +9,13 @@
 
 #include "modules/Core.hpp"
 
-#include <memory>
-#include <iostream>
-
 namespace sbe
 {
 
-	GameBase::GameBase()
-	{
+	GameBase::GameBase() {
 	}
 
-	void GameBase::Run()
-	{
+	void GameBase::Run() {
 		EngineInit();
 
 		ModuleInit();
@@ -33,10 +28,9 @@ namespace sbe
 		CleanUp();
 	}
 
-	void GameBase::EngineInit()
-	{
+	void GameBase::EngineInit() {
 		/// Engine
-		_Engine.reset( new Engine() );
+		_Engine.reset(new Engine());
 
 		_Engine->CreateSubSystems();
 
@@ -48,17 +42,15 @@ namespace sbe
 		RegisterModule(new Core, CoreInfo);
 
 
-
 		Engine::out(Engine::INFO) << "[Engine] Initialisation done..." << std::endl;
 	}
 
 
-	void GameBase::CleanUp()
-	{
-		Engine::out(Engine::INFO) << "[Engine] Starting Cleanup ... " << std::endl ;
+	void GameBase::CleanUp() {
+		Engine::out(Engine::INFO) << "[Engine] Starting Cleanup ... " << std::endl;
 
-		Engine::out(Engine::INFO) << "[Engine] Deleting Modules ... " << std::endl ;
-		for ( auto r_it = Modules.rbegin(); r_it != Modules.rend(); ++r_it)
+		Engine::out(Engine::INFO) << "[Engine] Deleting Modules ... " << std::endl;
+		for (auto r_it = Modules.rbegin(); r_it != Modules.rend(); ++r_it)
 		{
 			Engine::out() << r_it->first << " - " << r_it->second.Name << std::endl;
 			delete r_it->first;
@@ -66,27 +58,26 @@ namespace sbe
 		Modules.clear();
 
 
-		Engine::out(Engine::INFO) << "[Engine] Deleting Game ... " << std::endl ;
+		Engine::out(Engine::INFO) << "[Engine] Deleting Game ... " << std::endl;
 		DeInit();
 
-		Engine::out(Engine::INFO) << "[Engine] Deleting Engine ... " << std::endl ;
+		Engine::out(Engine::INFO) << "[Engine] Deleting Engine ... " << std::endl;
 		_Engine.reset();
 
 	}
 
 
-	void GameBase::RegisterModule(Module* Mod, const ModuleStartInfo& Info)
-	{
+	void GameBase::RegisterModule(Module* Mod, const ModuleStartInfo& Info) {
 		Engine::out(Engine::INFO) << "[Engine] New Module: [" << Info.Name << "]" << std::endl;
 		Modules.push_back(std::make_pair(Mod, Info));
 	}
 
-	void GameBase::StartModules()
-	{
+	void GameBase::StartModules() {
 		Engine::out(Engine::INFO) << "[Engine] Starting Modules: " << std::endl;
-		Module::ModulesBarrier.reset ( new boost::barrier( Modules.size() + 1 ));
+		Module::ModulesBarrier.reset(new boost::barrier(Modules.size() + 1));
 
-		for (auto& M : Modules) {
+		for (auto& M : Modules)
+		{
 			//Engine::out() << "[" << M.second.Name << "]" << std::endl;
 			M.first->StartModule(M.second);
 		}
@@ -94,12 +85,12 @@ namespace sbe
 		Module::ModulesBarrier->wait();
 	}
 
-	void GameBase::JoinModules()
-	{
+	void GameBase::JoinModules() {
 		Engine::out(Engine::INFO) << "[Engine] Joining Threads." << std::endl;
 
-		for ( auto r_it = Modules.rbegin(); r_it != Modules.rend(); ++r_it) {
-			if (!r_it->first->getThread()->joinable() ) Engine::out(Engine::ERROR) << "[Engine] ERROR: can't join Threads!!" << std::endl;
+		for (auto r_it = Modules.rbegin(); r_it != Modules.rend(); ++r_it)
+		{
+			if (!r_it->first->getThread()->joinable()) Engine::out(Engine::ERROR) << "[Engine] ERROR: can't join Threads!!" << std::endl;
 			r_it->first->getThread()->join();
 		}
 	}
