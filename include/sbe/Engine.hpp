@@ -119,6 +119,8 @@ namespace sbe
 			std::shared_ptr<IO>              Io;
 			std::shared_ptr<Config>	_config;
 			std::shared_ptr<CommandParser>   CmdPrs;
+
+			static std::string getTimeStamp();
 	};
 
 } // namespace sbe

@@ -19,6 +19,7 @@
 #include <memory>
 #include <iostream>
 #include <chrono>
+#include <iomanip>
 
 namespace sbe
 {
@@ -84,32 +85,49 @@ namespace sbe
 		ErrorLogger.reset();
 	}
 
+	std::string Engine::getTimeStamp() {
+		std::stringstream ts;
+
+		char timestamp[128];
+		auto time = Clock::now();
+		auto seconds = std::chrono::duration_cast<std::chrono::seconds>(time.time_since_epoch());
+		auto fraction = time - seconds;
+		auto fr_milliseconds =  std::chrono::duration_cast<std::chrono::milliseconds>(fraction.time_since_epoch());
+		auto time_t = std::chrono::system_clock::to_time_t(time);
+		if ( std::strftime(timestamp, sizeof(timestamp), "%d.%m.%Y %H:%M:%S", std::localtime(&time_t)) == 0)
+		{
+			*(Instance->ErrorLogger) << "Unable to create Timestamp!" << std::endl;
+		}
+		ts << timestamp << "." << fr_milliseconds.count();
+		return ts.str();
+	}
+
 	Logger& Engine::out(LogLevel level)
 	{
 		switch ( level )
 		{
 			case LogLevel::SPAM:
-			*(Instance->SpamLogger) << Clock::now().time_since_epoch().count() << "[S]";
+			*(Instance->SpamLogger) << getTimeStamp() << " [S]";
 			return *(Instance->SpamLogger);
 			break;
 
 			case LogLevel::INFO:
-			*(Instance->SpamLogger) << Clock::now().time_since_epoch().count() << "[I]";
+			*(Instance->SpamLogger) << getTimeStamp() << " [I]";
 			return *(Instance->InfoLogger);
 			break;
 
 			case LogLevel::WARNING:
-			*(Instance->SpamLogger) << Clock::now().time_since_epoch().count() << "[W]";
+			*(Instance->SpamLogger) << getTimeStamp() << " [W]";
 			return *(Instance->WarningLogger);
 			break;
 
 			case LogLevel::ERROR:
-			*(Instance->SpamLogger) << Clock::now().time_since_epoch().count() << "[E]";
+			*(Instance->SpamLogger) << getTimeStamp() << " [E]";
 			return *(Instance->ErrorLogger);
 			break;
 
 			default:
-				*(Instance->SpamLogger) << Clock::now().time_since_epoch().count() << "[S]";
+				*(Instance->SpamLogger) << getTimeStamp() << " [S]";
 				return *(Instance->SpamLogger);
 				break;
 		}
