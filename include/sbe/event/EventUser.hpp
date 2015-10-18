@@ -3,8 +3,6 @@
 
 #include "sbe/event/Event.hpp"
 
-#include "sbe/Module.hpp"
-
 #include <map>
 
 namespace sbe

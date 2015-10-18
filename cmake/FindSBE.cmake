@@ -52,6 +52,7 @@ endif()
 set( FIND_SBE_PATHS
 		${SBEDIR}
 		${SBE_ROOT}
+		${CMAKE_CURRENT_LIST_DIR}/../
 		$ENV{SBEDIR}
 		$ENV{SBE_ROOT}
 		/usr

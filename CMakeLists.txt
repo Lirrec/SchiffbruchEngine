@@ -110,7 +110,7 @@ elseif(CMAKE_BUILD_TYPE MATCHES Release)
 	if( PROFILE )
 		add_definitions( -O1 )
 	else()
-		add_definitions( -fomit-frame-pointer -fexpensive-optimizations )
+		add_definitions( -O3 -fomit-frame-pointer -fexpensive-optimizations )
 	endif()
 
 endif()
@@ -119,7 +119,8 @@ if( PROFILE )
 	add_definitions( -pg )
 endif()
 if(ENABLE_LTO)
-	add_definitions( -flto )
+	add_definitions( -flto)
+
 endif()
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
@@ -140,7 +141,7 @@ if( BUILD_SHARED_LIBS )
 
 	set_target_properties( sbe PROPERTIES DEBUG_POSTFIX -d )
 
-	add_definitions(-Wl,-rdynamic)
+	add_definitions(-Wl,-rdynamic, -Wl,--export-all-symbols)
 else()
 	add_definitions( -DSBE_STATIC )
 	add_library( sbe ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS} )

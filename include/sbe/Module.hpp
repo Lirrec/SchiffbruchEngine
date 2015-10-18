@@ -2,21 +2,19 @@
 #define MODULE_H
 
 
-#include <SFML/System/Clock.hpp>
 #include <SFML/System/NonCopyable.hpp>
+#include <SFML/System/Time.hpp>
 
 #include <memory>
 #include <string>
 #include <list>
-
-#include <boost/thread/tss.hpp>
-#include <boost/thread/mutex.hpp>
-#include <boost/thread/barrier.hpp>
-
 namespace boost
 {
 	class thread;
+	class barrier;
 }
+
+
 
 namespace sbe
 {
@@ -97,13 +95,13 @@ namespace sbe
 		virtual ~Module();
 
 		/// Static module getter. Use this in your code to access the current module.
-		static Module* Get() { return Module::Instance.get(); }
+		static Module* Get();
 
 		///	Starts the module thread
 		virtual void StartModule(const ModuleStartInfo& m);
 
 		/// returns the modules name
-		const std::string& GetName() const { return Name; }
+		const std::string& GetName() const;
 
 		// TODO: implement routing
 		//virtual std::forward_list<std::string> ReturnDesiredEvents() = 0;
@@ -111,8 +109,11 @@ namespace sbe
 		/// return evtq non-static
 		EventQueue* GetEventQueue();
 
+		/// whether this module uses an eventqueue ( used only from TickControl )
+		bool EventQueueEnabled();
+
 		/// return the ID of the Eventqueue
-		size_t GetQueueID() { return QueueID; }
+		size_t GetQueueID();
 
 		/**
 			Immediatly send an Event to all (local) listeners.
@@ -142,13 +143,13 @@ namespace sbe
 		void DebugString(const std::string& name, const std::string& value);
 
 		/// access this modules boost::thread instance
-		boost::thread* getThread() { return MyThread; }
+		boost::thread* getThread();
 
 		/// request this module to quit
-		void RequestQuit() { quit = true; }
+		void RequestQuit();
 
 		/// returns the time this module is already running
-		sf::Time GetModuleTime() { return ModuleTime.getElapsedTime(); }
+		sf::Time GetModuleTime();
 
 		/**
 			Change the target TicksPerSecond at runtime.
@@ -206,46 +207,10 @@ namespace sbe
 
 	private:
 
-		/// Module internal timer
-		sf::Clock ModuleTime;
-
-		/// Event sent with key/value debbuging information
-		std::shared_ptr<Event> DbgStringEvent;
-
-		/// ptr to module instance
-		static boost::thread_specific_ptr<Module> Instance;
-		/// mutex for module access
-		static boost::mutex ModulesMutex;
-
-		/// barrier for synchronisation ( initialisation )
-		static std::shared_ptr<boost::barrier> ModulesBarrier;
-
 		friend class GameBase;
-		/// GameBase needs access to the ModulesBarrier.
-
-		/// List of existing Modules
-		static std::list<Module*> RunningModules;
-
-		/// True if the Modules needs an EventQueue
-		bool useEventQueue;
-
-
-		friend class TickControl;
-
-		/// this modules TickControl
-		std::shared_ptr<TickControl> TC;
-		/// Eventloop termination condition
-		bool quit;
-
-		/// those will be registered and set by Run()
-		size_t QueueID;
-		/// this modules EventQueue
-		std::shared_ptr<EventQueue> EvtQ;
-
-		/// Module name
-		std::string Name;
-		/// Lokal thread pointer
-		boost::thread* MyThread;
+		static std::shared_ptr<boost::barrier>& GetBarrier();
+		class Private;
+		Private* pimpl;
 	};
 
 } // namespace sbe

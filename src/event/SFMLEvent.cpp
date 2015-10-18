@@ -3,6 +3,7 @@
 
 #include "sbe/Config.hpp"
 #include "EventQueue.hpp"
+#include "sbe/Module.hpp"
 
 namespace sbe
 {

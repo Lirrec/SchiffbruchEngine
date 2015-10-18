@@ -5,6 +5,8 @@
 #include "sbe/util/console/CommandNode.hpp"
 //#include "sbe/util/console/ArgumentsCommandNode.hpp"
 
+#include <algorithm>
+
 namespace sbe
 {
 	CommandParser::CommandParser() {

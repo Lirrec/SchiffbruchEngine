@@ -38,7 +38,7 @@ namespace sbe
 	void TickControl::Tick() {
 		Timer.restart();
 
-		if (Module::Get()->useEventQueue)
+		if (Module::Get()->EventQueueEnabled())
 		{
 			// Send a TickEvent if it is valid
 			if (TickEvent)
@@ -93,7 +93,7 @@ namespace sbe
 									   str(format("%.1g")%TickCounter));
 
 			Module::Get()->DebugString("Events [%s] " + Module::Get()->GetName(),
-									   str(format("%d")%(Module::Get()->useEventQueue ? Module::Get()->GetEventQueue()->GetEventCount()
+									   str(format("%d")%(Module::Get()->EventQueueEnabled() ? Module::Get()->GetEventQueue()->GetEventCount()
 																					  : Core::EvtCore->GetEventCount())));
 
 

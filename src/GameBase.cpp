@@ -74,7 +74,7 @@ namespace sbe
 
 	void GameBase::StartModules() {
 		Engine::out(Engine::INFO) << "[Engine] Starting Modules: " << std::endl;
-		Module::ModulesBarrier.reset(new boost::barrier(Modules.size() + 1));
+		Module::GetBarrier().reset(new boost::barrier(Modules.size() + 1));
 
 		for (auto& M : Modules)
 		{
@@ -82,7 +82,7 @@ namespace sbe
 			M.first->StartModule(M.second);
 		}
 
-		Module::ModulesBarrier->wait();
+		Module::GetBarrier()->wait();
 	}
 
 	void GameBase::JoinModules() {

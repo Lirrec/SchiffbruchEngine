@@ -2,6 +2,8 @@
 
 #include <sbe/gfx/particles/Manipulators.hpp>
 
+#include "sbe/Module.hpp"
+
 namespace sbe
 {
 

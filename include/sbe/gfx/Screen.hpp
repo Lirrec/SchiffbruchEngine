@@ -2,6 +2,7 @@
 #define SCREEN_H
 
 #include "sbe/event/EventUser.hpp"
+#include <SFML/System/Clock.hpp>
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/Color.hpp>
 

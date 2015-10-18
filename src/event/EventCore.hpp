@@ -1,8 +1,6 @@
 #ifndef EVTMGR_H
 #define EVTMGR_H
 
-#include <boost/thread.hpp>
-
 #include "sbe/Module.hpp"
 #include "sbe/event/Event.hpp"
 #include "sbe/util/ConcurrentQueue.hpp"

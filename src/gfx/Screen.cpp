@@ -8,6 +8,8 @@
 #include "sbe/gfx/Renderer.hpp"
 #include "sbe/gfx/Camera.hpp"
 
+#include "sbe/Module.hpp"
+
 #include <SFGUI/SFGUI.hpp>
 #include <SFGUI/Desktop.hpp>
 #include <SFGUI/Window.hpp>

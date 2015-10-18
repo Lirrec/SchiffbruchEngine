@@ -8,6 +8,8 @@
 #include <SFGUI/ScrolledWindow.hpp>
 #include <SFGUI/Adjustment.hpp>
 
+#include "sbe/Module.hpp"
+
 using namespace sfg;
 
 namespace sbe

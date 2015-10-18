@@ -9,6 +9,8 @@
 #include <SFGUI/Label.hpp>
 #include <SFGUI/Button.hpp>
 
+#include "sbe/Module.hpp"
+
 using namespace sfg;
 
 namespace sbe

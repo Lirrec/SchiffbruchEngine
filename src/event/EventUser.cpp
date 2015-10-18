@@ -2,6 +2,8 @@
 
 #include "EventCore.hpp"
 
+
+#include "sbe/Module.hpp"
 #include "../modules/Core.hpp"
 
 namespace sbe

@@ -13,6 +13,8 @@
 
 #include <boost/filesystem.hpp>
 
+#include "sbe/Module.hpp"
+
 namespace sbe
 {
 
