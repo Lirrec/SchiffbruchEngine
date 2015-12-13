@@ -25,7 +25,9 @@ namespace sbe
 		}
 		else
 		{
-			Engine::out(Engine::ERROR) << "[EventUser] Couldn't register for non-existing Event " << EvtType << std::endl;
+			//Engine::out(Engine::ERROR) << "[EventUser] Couldn't register for non-existing Event " << EvtType << std::endl;
+			Engine::out(Engine::ERROR) << "[EventUser] Registering for unknown Event " << EvtType << std::endl;
+			Module::Get()->GetEventQueue()->RegisterEventUser(this, EvtType, priority);
 		}
 	}
 

@@ -1,14 +1,19 @@
-#include "sbe/util/HashedString.hpp"
+#ifndef SCHIFFBRUCHENGINE_HASH_HPP_H
+#define SCHIFFBRUCHENGINE_HASH_HPP_H
 
 #include <cstring>
 
-namespace sbe
-{
+namespace sbe {
 
-	const HashedString::HashType HashedString::InvalidHash = 0;
+	typedef unsigned long HashType;
+	constexpr HashType InvalidHash = 0;
 
-	HashedString::HashType
-	HashedString::hash_name(char const* pIdentStr) {
+	constexpr int tolower(int c)
+	{
+		return (c>'A' && c<'Z') ? c + (0x61/* 'a' */ - 0x41/* 'A' */) : c;
+	}
+
+	/**
 		// Relatively simple hash of arbitrary text string into a
 		// 32-bit identifier Output value is
 		// input-valid-deterministic, but no guarantees are made
@@ -24,6 +29,10 @@ namespace sbe
 		// This code lossely based upon the adler32 checksum by Mark
 		// Adler and published as part of the zlib compression
 		// library sources.
+	 */
+	constexpr
+	HashType hash_name(char const* pIdentStr) {
+
 
 		// largest prime smaller than 65536
 		unsigned long BASE = 65521L;
@@ -60,7 +69,7 @@ namespace sbe
 			if (k != 0)
 				do
 				{
-					s1 += std::tolower(*pIdentStr++);
+					s1 += tolower(*pIdentStr++);
 					s2 += s1;
 				} while (--k);
 
@@ -69,7 +78,7 @@ namespace sbe
 		}
 
 
-		return reinterpret_cast<HashedString::HashType>((s2 << 16) | s1 );
+		return reinterpret_cast<HashType>((s2 << 16) | s1 );
 
 #undef DO1
 #undef DO2
@@ -77,5 +86,7 @@ namespace sbe
 #undef DO8
 #undef DO16
 	}
+}
 
-} // namespace sbe
+
+#endif //SCHIFFBRUCHENGINE_HASH_HPP_H

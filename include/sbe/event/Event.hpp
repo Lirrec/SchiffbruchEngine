@@ -114,12 +114,18 @@ namespace sbe
 	{
 	public:
 		typedef boost::any EventData;
-		typedef HashedString::HashType EventType;
+		typedef HashType EventType;
 
 		/**
 			Constructor. Takes the Name of the Event as String
 		*/
 		Event(const std::string& EventName);
+
+		///	Constructor. Takes the Hash of the Event
+		Event(const EventType& Type);
+
+		///Constructor. Takes the Hash of the Event
+		Event(const EventType& Type, const boost::any& _Data);
 
 		/**
 			Constructor. Takes the Name of the Event as String and a boost::any as data
@@ -146,6 +152,7 @@ namespace sbe
 
 		/// returns the data stored within the event
 		EventData& Data() { return EvtData; };
+		const EventData& cData() const { return EvtData; };
 
 		/// returns the type of this event
 		EventType getEventType() const { return Type; };

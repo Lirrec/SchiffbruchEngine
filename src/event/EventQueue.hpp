@@ -39,6 +39,7 @@ namespace sbe
 		/// Same as above, but event will be constructed in place
 		void QueueEvent(const std::string& Name, bool global = false);
 
+
 		/// Queue an Event from another Thread
 		void ThreadSafeQueueEvent(const Event& e);
 

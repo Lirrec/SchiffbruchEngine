@@ -10,12 +10,12 @@ set(VER_MINOR 1)
 ################### Cmake Options ###########################
 #############################################################
 
-option( PROFILE "" OFF)
-option( USE_PYTHON "" OFF)
-option( USE_RUBY "" OFF)
-option( BUILD_SHARED_LIBS "" ON )
-option( USE_SHARED_LIBS "" ON )
-option( ENABLE_LTO "enable ltoclion " OFF)
+option( SBE_PROFILE "" OFF)
+option( SBE_USE_PYTHON "" OFF)
+option( SBE_USE_RUBY "" OFF)
+option( SBE_BUILD_SHARED_LIBS "" ON )
+option( SBE_USE_SHARED_LIBS "" ON )
+option( SBE_ENABLE_LTO "enable ltoclion " OFF)
 
 SET( CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
@@ -24,7 +24,7 @@ if (NOT CMAKE_BUILD_TYPE)
 endif()
 
 message(STATUS "INFO --")
-message(STATUS "BUILD_SHARED_LIBS: ${BUILD_SHARED_LIBS}" )
+message(STATUS "SBE_BUILD_SHARED_LIBS: ${SBE_BUILD_SHARED_LIBS}" )
 message(STATUS "CMAKE_BUILD_TYPE:  ${CMAKE_BUILD_TYPE}" )
 message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}" )
 
@@ -32,7 +32,7 @@ message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}" )
 #################### External Libraries Configuration #####################
 #############################################################
 
-if (USE_SHARED_LIBS)
+if (SBE_USE_SHARED_LIBS)
 	set(SFML_STATIC_LIBRARIES false)
 	set(SFGUI_STATIC_LIBRARIES false)
 else()
@@ -47,7 +47,8 @@ endif()
 
 set( SFML_FIND_REQUIRED true )
 find_package(Boost 1.55 REQUIRED thread system filesystem)
-find_package(SFML 2 COMPONENTS audio graphics window system ${ADD_SFML_MAIN})
+#find_package(SFML 2 COMPONENTS audio graphics window system main ${ADD_SFML_MAIN})
+find_package(SFML 2 COMPONENTS audio window graphics system main ${ADD_SFML_MAIN})
 find_package(SFGUI REQUIRED )
 find_package(GLM REQUIRED )
 
@@ -107,7 +108,7 @@ if (CMAKE_BUILD_TYPE MATCHES Debug)
 	endif()
 
 elseif(CMAKE_BUILD_TYPE MATCHES Release)
-	if( PROFILE )
+	if( SBE_PROFILE )
 		add_definitions( -O1 )
 	else()
 		add_definitions( -O3 -fomit-frame-pointer -fexpensive-optimizations )
@@ -115,10 +116,10 @@ elseif(CMAKE_BUILD_TYPE MATCHES Release)
 
 endif()
 
-if( PROFILE )
+if( SBE_PROFILE )
 	add_definitions( -pg )
 endif()
-if(ENABLE_LTO)
+if(SBE_ENABLE_LTO)
 	add_definitions( -flto)
 
 endif()
@@ -136,15 +137,19 @@ include_directories( ${SBE_SCRIPT_INCLUDES} )
 
 #################### Final lib ##############################
 # Add the library.
-if( BUILD_SHARED_LIBS )
+if( SBE_BUILD_SHARED_LIBS )
 	add_library( sbe SHARED ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS} )
 
 	set_target_properties( sbe PROPERTIES DEBUG_POSTFIX -d )
 
-	add_definitions(-Wl,-rdynamic, -Wl,--export-all-symbols)
+    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+        add_definitions(-fvisibility=default)
+    else()
+        add_definitions(-shared -Wl,-rdynamic, -Wl,-export-all-symbols)
+    endif()
 else()
 	add_definitions( -DSBE_STATIC )
-	add_library( sbe ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS} )
+	add_library( sbe ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS} include/sbe/util/Meta.hpp)
 
 	set_target_properties( sbe PROPERTIES DEBUG_POSTFIX -s-d )
 	set_target_properties( sbe PROPERTIES RELEASE_POSTFIX -s )

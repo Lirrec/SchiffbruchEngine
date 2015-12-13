@@ -17,7 +17,7 @@ namespace sbe
 		AnimatedSprite(ImageSet& _A);
 
 		/// update the associated sprite/vertexarray to show the correct sub-rect/frame of the image
-		void updateDrawable();
+		void updateDrawable() override;
 
 		void setImageSet(ImageSet& _A) override;
 

@@ -31,7 +31,7 @@ namespace sbe
 	public:
 		SFMLEventConverter();
 
-		void HandleSfmlEvent(const sf::Event& e);
+		void HandleSfmlEvent(const sf::Event& e) override;
 
 		/// This defines the event which is sent, once a conversion matches.
 		/// The string is the Name of the event to be sent, the bool defines

@@ -65,7 +65,7 @@ namespace sbe
 		if (!Core::EvtCore->HasEvent(EvtType))
 		{
 			//Engine::out() << "[EventQueue]: " << "Listener " << Listener << " tried to register for non-existing EventType " << EvtType << std::endl;
-			return;
+			//return;
 		}
 
 		if (Listener != 0)

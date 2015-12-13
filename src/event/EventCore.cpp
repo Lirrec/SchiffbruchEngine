@@ -23,7 +23,7 @@ namespace sbe
 	// Registration and hash stuff
 	// -----------------------------------------------------------------
 
-	bool EventCore::HasEvent(const HashedString::HashType& Hash) {
+	bool EventCore::HasEvent(const HashType& Hash) {
 		boost::shared_lock<boost::shared_mutex> lock(HashMutex);
 		return EventTypes.ElementExists(Hash);
 	}
@@ -33,12 +33,12 @@ namespace sbe
 		return EventTypes.ElementExists(Name);
 	}
 
-	HashedString::HashType EventCore::GetEventHash(const std::string& Name) {
+	HashType EventCore::GetEventHash(const std::string& Name) {
 		boost::shared_lock<boost::shared_mutex> lock(HashMutex);
 		return EventTypes.GetHash(Name);
 	}
 
-	const std::string& EventCore::GetEventName(const HashedString::HashType& Hash) {
+	const std::string& EventCore::GetEventName(const HashType& Hash) {
 		boost::shared_lock<boost::shared_mutex> lock(HashMutex);
 		return EventTypes.GetString(Hash);
 	}

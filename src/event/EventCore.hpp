@@ -44,11 +44,11 @@ namespace sbe
 		bool HasEvent(const std::string& Name);
 
 		/// returns true if this type of event is registered ( by hash )
-		bool HasEvent(const HashedString::HashType& Hash);
+		bool HasEvent(const HashType& Hash);
 
-		const std::string& GetEventName(const HashedString::HashType& Hash);
+		const std::string& GetEventName(const HashType& Hash);
 
-		HashedString::HashType GetEventHash(const std::string& Name);
+		HashType GetEventHash(const std::string& Name);
 
 
 

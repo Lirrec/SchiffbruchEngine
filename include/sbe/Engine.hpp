@@ -13,21 +13,13 @@ namespace sbe
 {
 
 	class SoundSystem;
-
 	class ResourceManager;
-
 	class EntityManager;
-
 	class Graphics;
-
 	class AssetManager;
-
 	class SFMLEventConverter;
-
 	class IO;
-
 	class Config;
-
 	class CommandParser;
 
 	/**

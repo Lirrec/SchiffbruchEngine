@@ -9,7 +9,7 @@ namespace sbe
 	  *
 	  * @todo: document this function
 	  */
-	bool HashManager::ElementExists(const HashedString::HashType& Hash) const {
+	bool HashManager::ElementExists(const HashType& Hash) const {
 		return ElementsByHash.find(Hash) != ElementsByHash.end();
 	}
 
@@ -25,7 +25,7 @@ namespace sbe
 	  *
 	  * @todo: document this function
 	  */
-	const std::string& HashManager::GetString(const HashedString::HashType& Hash) const {
+	const std::string& HashManager::GetString(const HashType& Hash) const {
 		auto it = ElementsByHash.find(Hash);
 		if (it != ElementsByHash.end())
 		{
@@ -40,7 +40,7 @@ namespace sbe
 	  *
 	  * @todo: document this function
 	  */
-	HashedString::HashType HashManager::GetHash(const std::string& Name) const {
+	HashType HashManager::GetHash(const std::string& Name) const {
 		auto it = ElementsByString.find(Name);
 		if (it != ElementsByString.end())
 		{
@@ -48,14 +48,14 @@ namespace sbe
 		}
 
 		Engine::out(Engine::ERROR) << " Couldnt find hash for string " << Name << std::endl;
-		return HashedString::InvalidHash;
+		return InvalidHash;
 	}
 
 	/** @brief UnRegisterElement
 	  *
 	  * @todo: document this function
 	  */
-	bool HashManager::UnRegisterElement(const HashedString::HashType& Hash) {
+	bool HashManager::UnRegisterElement(const HashType& Hash) {
 		if (ElementExists(Hash))
 		{
 			ElementsByString.erase(GetString(Hash));

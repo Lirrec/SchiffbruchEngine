@@ -2,6 +2,9 @@
 #define STRINGHASH_H
 
 #include <string>
+#include <cstring>
+
+#include <sbe/util/Hash.hpp>
 
 namespace sbe
 {
@@ -18,29 +21,22 @@ namespace sbe
 		class HashedString				- Chapter 10, page 274
 	*/
 
+
 	class HashedString
 	{
 	public:
-
-		typedef unsigned long HashType;
-
-		static const HashType InvalidHash;
 
 		explicit HashedString(char const* const pIdentString)
 				: m_ident(hash_name(pIdentString)), m_identStr(pIdentString) {
 		}
 
 		HashType getHashValue(void) const {
-			//return reinterpret_cast<HashType>( m_ident );
 			return m_ident;
 		}
 
 		const std::string& getStr() const {
 			return m_identStr;
 		}
-
-		static
-		HashType hash_name(char const* pIdentStr);
 
 		bool operator<(HashedString const& o) const {
 			bool r = (getHashValue() < o.getHashValue());
@@ -54,14 +50,16 @@ namespace sbe
 
 	private:
 
-		// note: m_ident is stored as a void* not an int, so that in
-		// the debugger it will show up as hex-values instead of
-		// integer values. This is a bit more representative of what
-		// we're doing here and makes it easy to allow external code
-		// to assign event types as desired.
-
 		HashType m_ident;
 		std::string m_identStr;
 	};
+
+	namespace operators {
+		constexpr sbe::HashType operator "" _Hash(const char* str, size_t) {
+			return sbe::hash_name(str);
+		}
+	}
+
 } // namespace sbe
+
 #endif // STRINGHASH_H

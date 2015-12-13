@@ -2,11 +2,13 @@
 #define EVTLISTENER_H
 
 #include "sbe/event/Event.hpp"
+#include "sbe/Module.hpp"
 
 #include <map>
 
-namespace sbe
-{
+#include <sbe/util/Meta.hpp>
+
+namespace sbe {
 
 
 	/**
@@ -18,28 +20,29 @@ namespace sbe
 		or implement the virtual HandleEvent() function.
 
 	*/
-	class EventUser
-	{
+	class EventUser {
 	public:
 		EventUser();
 
 		virtual ~EventUser();
 
-		typedef std::function<void(Event& e)> EventHandler;
+	protected:
+
+		typedef std::function<void(Event &e)> EventHandler;
 
 		/**
 			Register for an Event by Type.
 			@param EvtType the Event type
 			@param priority the priority of this Eventhandler, higher means being called before all the low priority handlers
 		*/
-		void RegisterForEvent(const Event::EventType& EvtType, int priority = 0);
+		void RegisterForEvent(const Event::EventType &EvtType, int priority = 0);
 
 		/**
 			Register for an Event by Name.
 			@param EvtName the Event name
 			@param priority the priority of this Eventhandler, higher means being called before all the low priority handlers
 		*/
-		void RegisterForEvent(const std::string& EvtName, int priority = 0);
+		void RegisterForEvent(const std::string &EvtName, int priority = 0);
 
 		/**
 			Register a callback for an Event by name.
@@ -48,7 +51,7 @@ namespace sbe
 			@param Handler a callback which is called with the event as first parameter if a event with EvtName occurs.
 			@param priority the priority of this Eventhandler, higher means being called before all the low priority handlers
 		*/
-		void RegisterForEvent(const std::string& EvtName, const EventHandler& Handler, int priority = 0);
+		void RegisterForEvent(const std::string &EvtName, const EventHandler &Handler, int priority = 0);
 
 		/**
 			Register a callback for an Event by EventType.
@@ -57,29 +60,41 @@ namespace sbe
 			@param Handler a callback which is called with the event as first parameter if a event with EvtName occurs.
 			@param priority the priority of this Eventhandler, higher means being called before all the low priority handlers
 		*/
-		void RegisterForEvent(const Event::EventType& EvtType, const EventHandler& Handler, int priority = 0);
+		void RegisterForEvent(const Event::EventType &EvtType, const EventHandler &Handler, int priority = 0);
+
+
+		template<HashType Hash, class Base, typename... Params>
+		void RegisterMemberAsEventCallback(Base *_this, Module::EventDef<Hash, void (Base::*)(Params...)> D,
+		                                   const std::string &name, int prio = 0) {
+			using ParamTuple = tuple_with_removed_refs<Params...>;
+			std::cout << "register" << std::endl;
+			_this->RegisterForEvent(name, [_this, D](const Event &E) {
+				ParamTuple Arguments = boost::any_cast<ParamTuple>(E.cData());
+				std::cout << "Invoke" << std::endl;
+				sbe::invoke_member(_this, D.member, Arguments);
+
+			}, prio);
+		}
 
 		/**
 			Remove this listener from all registered Events
 		*/
 		void UnregisterThis();
 
-	protected:
 
 		/**
 			Handle Events manually.
 			This function will be called with each event that is not already handeled by a callback.
 		*/
-		virtual void HandleEvent(Event&) { };
+		virtual void HandleEvent(Event &) { };
 
 	private:
+
 		friend class EventQueue;
 
-		void RealHandleEvent(Event& e);
+		void RealHandleEvent(Event &e);
 
 		std::map<Event::EventType, EventHandler> Callbacks;
-
-
 	};
 } // namespace sbe
 #endif // EVTLISTENER_H

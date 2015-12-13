@@ -148,8 +148,8 @@ namespace sbe
 
 			/// performs a warp to the other side of the particle system if a particle leaves one side
 			inline void collideWarped(Particle& P, float delta, glm::vec2 limits) {
-				P.position.x = P.position.x > 0 ? std::fmod(P.position.x, limits.x) : limits.x + P.position.x;
-				P.position.y = P.position.y > 0 ? std::fmod(P.position.y, limits.y) : limits.y + P.position.y;
+				P.position.x = P.position.x > 0 ? std::fmod(P.position.x, limits.x) : limits.x + std::fmod(P.position.x, -limits.x);
+				P.position.y = P.position.y > 0 ? std::fmod(P.position.y, limits.y) : limits.y + std::fmod(P.position.y, -limits.y);
 			}
 
 			template<typename T>

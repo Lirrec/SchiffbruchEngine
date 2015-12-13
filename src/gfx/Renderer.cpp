@@ -6,19 +6,21 @@
 namespace sbe
 {
 	Renderer::Renderer() {
-		RegisterForEvent("ADD_ACTOR");
+		//RegisterForEvent("ADD_ACTOR");
 		RegisterForEvent("UPDATE_ACTOR");
 		RegisterForEvent("REMOVE_ACTOR");
+		using namespace operators;
+		RegisterMemberAsEventCallback(this, addActorEvent(), "ADD_ACTOR");
 	}
 
 
 	void Renderer::HandleEvent(Event& e) {
-		if (e.Is("ADD_ACTOR", typeid(std::pair<std::shared_ptr<Actor>, int>)))
+		/*if (e.Is("ADD_ACTOR", typeid(ActorInfo)))
 		{
 			ActorInfo AI = boost::any_cast<ActorInfo>(e.Data());
 			addActor(AI.first, AI.second);
 		}
-		else if (e.Is("UPDATE_ACTOR", typeid(std::shared_ptr<Actor>)))
+		else*/ if (e.Is("UPDATE_ACTOR", typeid(std::shared_ptr<Actor>)))
 		{
 			std::shared_ptr<Actor> A = boost::any_cast<std::shared_ptr<Actor>>(e.Data());
 			updateActor(A->getID(), A);
@@ -84,10 +86,8 @@ namespace sbe
 			//Engine::out() << "Drawing actor: " << A->getID() << " - drawable: " << &(A->getDrawable()) << std::endl;
 
 			if (A->enabled)
-			{
 				t.draw(A->getDrawable(), L.States);
-				assert(&(A->getDrawable()) != nullptr);
-			}
+
 
 		}
 	}

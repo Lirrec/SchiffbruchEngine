@@ -90,6 +90,10 @@ namespace sbe
 
 	Module* Module::Get() { return Private::Instance.get(); }
 
+	EventQueue *Module::Evt() {
+		return Private::Instance.get()->GetEventQueue();
+	}
+
 	const std::string& Module::GetName() const { return pimpl->Name; }
 
 	size_t Module::GetQueueID() { return pimpl->QueueID; }

@@ -12,7 +12,7 @@ namespace sbe
 
 	class Module;
 
-	class ModuleStartInfo;
+	struct ModuleStartInfo;
 
 	class Engine;
 

@@ -203,8 +203,6 @@ namespace sbe
 	void GraphPlotter::dynScaleAxes(const glm::ipoint2& max) {
 		if (!g.dynX && !g.dynY) return;
 
-		std::vector<Curve>& cs = g.Curves;
-
 		if (g.dynX)
 		{
 			g.AxisStart.x = 0;

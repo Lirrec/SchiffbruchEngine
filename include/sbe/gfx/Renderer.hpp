@@ -9,6 +9,8 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/System/Clock.hpp>
 
+#include "sbe/Module.hpp"
+
 #include <vector>
 #include <unordered_map>
 #include <memory>
@@ -16,7 +18,7 @@
 namespace sbe
 {
 	class Camera;
-
+	using namespace operators;
 	/**
 		Defines a RenderLayer
 	*/
@@ -85,7 +87,7 @@ namespace sbe
 			- avoid using a large amount of sprites ( e.g. for Tilemaps ), use a Vertexarray instead
 			- avoid many textureswitches ( draw everything that uses one texture together ( e.g. on one layer )
 	*/
-	class Renderer : EventUser
+	class Renderer : public EventUser
 	{
 	public:
 		Renderer();
@@ -131,6 +133,7 @@ namespace sbe
 		*/
 		void clearLayer(unsigned int index);
 
+
 		// - Actor Management -
 		/**
 			Add a new Actor
@@ -138,6 +141,10 @@ namespace sbe
 			@param Layer which layer should the actor be rendered on
 		*/
 		void addActor(const std::shared_ptr<Actor>& A, unsigned int Layer);
+
+		static constexpr auto addActorEvent() {
+			return Module::makeEventDef<hash_name("ADD_ACTOR")>(&Renderer::addActor);
+		}
 
 		/**
 			Update an Actor.
@@ -158,6 +165,9 @@ namespace sbe
 			@param ID the ID of the Actor to remove
 		*/
 		void removeActor(const ActorID& ID);
+
+
+		typedef std::pair<std::shared_ptr<Actor>, unsigned int> ActorInfo;
 
 	protected:
 		/**	Events handled:
@@ -183,7 +193,6 @@ namespace sbe
 		/// used to time Animations
 		sf::Clock RenderTime;
 
-		typedef std::pair<std::shared_ptr<Actor>, unsigned int> ActorInfo;
 		typedef std::unordered_map<ActorID, ActorInfo> ActorList;
 		ActorList ActorMap;
 

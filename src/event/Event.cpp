@@ -10,13 +10,21 @@
 
 namespace sbe
 {
-
 	Event::Event(const std::string& EventName) {
 		init(EventName, 0);
 	}
 
 	Event::Event(const std::string& EventName, const boost::any& _Data) {
 		init(EventName, _Data);
+	}
+
+	Event::Event(const EventType &Type) {
+		this->Type = Type;
+	}
+
+	Event::Event(const EventType &Type, const boost::any &_Data) {
+		this->Type = Type;
+		EvtData = _Data;
 	}
 
 	Event::EventType Event::hashName(const std::string& EventName) {
@@ -37,7 +45,6 @@ namespace sbe
 		re += boost::lexical_cast<std::string>(Type);
 		return re;
 	}
-
 
 	bool Event::Is(const std::string& Name) const {
 		return Type == Core::EvtCore->GetEventHash(Name);

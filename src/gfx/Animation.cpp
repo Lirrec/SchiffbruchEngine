@@ -38,7 +38,7 @@ namespace sbe
 	}
 
 	void Animation::setFrame(unsigned int index) {
-		if (index < 0 || index >= AnimData.NumFrames)
+		if (index >= AnimData.NumFrames)
 		{
 			Engine::out(Engine::ERROR) << "Animation::Play() # Can't set Frame, requested index out of range!" << std::endl;
 			return;
@@ -68,7 +68,7 @@ namespace sbe
 	void Animation::play(unsigned int from, unsigned int to) {
 		//if (from < 1) from = 1;
 
-		if (from < 0 || from >= AnimData.NumFrames || to >= AnimData.NumFrames || AnimData.NumFrames <= 0)
+		if (from >= AnimData.NumFrames || to >= AnimData.NumFrames || AnimData.NumFrames <= 0)
 		{
 			Engine::out(Engine::ERROR) << "Animation::Play() # Can't play Animation, requested index out of range!" << std::endl;
 			return;

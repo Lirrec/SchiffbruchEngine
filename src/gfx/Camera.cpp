@@ -211,6 +211,9 @@ namespace sbe
 			case sf::Event::MouseButtonReleased:
 				if (e.mouseButton.button == sf::Mouse::Middle) Scrolling = false;
 				break;
+			default:
+				//empty
+				break;
 		}
 	}
 } // namespace sbe
