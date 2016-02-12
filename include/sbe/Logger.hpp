@@ -53,7 +53,7 @@ namespace sbe
 			return pf(*this);
 		}
 
-		std::string GetLog() {
+		std::string GetLog() const {
 			return oss.str();
 		}
 
