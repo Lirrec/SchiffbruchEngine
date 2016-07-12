@@ -48,9 +48,9 @@ endif()
 set( SFML_FIND_REQUIRED true )
 find_package(Boost 1.55 REQUIRED thread system filesystem)
 #find_package(SFML 2 COMPONENTS audio graphics window system main ${ADD_SFML_MAIN})
-find_package(SFML 2 COMPONENTS audio window graphics system main ${ADD_SFML_MAIN})
+find_package(SFML 2 COMPONENTS audio window graphics system ${ADD_SFML_MAIN})
 find_package(SFGUI REQUIRED )
-find_package(GLM REQUIRED )
+find_package(glm REQUIRED )
 
 add_definitions( -DGLM_FORCE_RADIANS -DGLM_FORCE_CXX11 )
 
@@ -167,7 +167,7 @@ install(TARGETS sbe
 	RUNTIME DESTINATION bin
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib )
-	
+
 set(CM_VER ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 install(FILES cmake/FindSBE.cmake DESTINATION share/cmake-${CM_VER}/Modules)
 
