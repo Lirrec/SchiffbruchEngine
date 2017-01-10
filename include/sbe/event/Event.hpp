@@ -23,7 +23,7 @@ namespace sbe
 
 			The EventSystem consists of the following Classes:
 			- Event: An individual event, Events are defined by their name and contain eventdata
-			- EventUser: If some class wants to be able to receive Events it has to inherit EventUser
+			- EventUser: If some class wants to be able to receive Events it has to inherit from EventUser
 			- SFMLEventConverter: This class allows to wrap any sfml events received into normal events and thus handle them the same way
 
 
@@ -94,7 +94,8 @@ namespace sbe
 			Receiving Events:
 			To receive events a class has to inherit EventUser,
 			Then register for the Events it is interested in by calling this->RegisterForEvent() ( inherited from EventUser::RegisterForEvent() )
-			Once an Event occurs for which the EventUser is registered either the callback given as parameter to RegisterForEvent is called or the HandleEvent() method will be called with the corresponding Event.
+			Once an Event occurs for which the EventUser is registered either the callback given as parameter to RegisterForEvent is called,
+			or the HandleEvent() method will be called with the corresponding Event.
 
 
 
@@ -105,7 +106,7 @@ namespace sbe
 
 			For an overview of the SFML Eventsystem see the according <a href="http://sfml-dev.org/">documentation</a>.
 
-		The second one is the eventsystem supplied by SFML for receiving mostly hardware events about input.
+		The second event system are the events supplied by SFML for receiving mostly hardware events about input.
 	*/
 
 

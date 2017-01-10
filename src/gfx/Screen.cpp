@@ -41,6 +41,9 @@ namespace sbe
 		EvtConv->AddEventConversion(sf::Event::Resized, "WINDOW_RESIZE");
 
 		Init();
+
+
+		Engine::out() << "[Screen] Initialized." << std::endl;
 	}
 
 	void Screen::Init() {
@@ -52,11 +55,8 @@ namespace sbe
 		std::string Title = Engine::getCfg()->get<std::string>("system.renderer.title", "SchiffbruchEngine powered.");
 
 		// create the renderwindow
-		Engine::GetApp().create(sf::VideoMode(Engine::getCfg()->get < unsigned
-		int > ("system.renderer.windowsize.x"),
-				Engine::getCfg()->get < unsigned
-		int > ("system.renderer.windowsize.y")),
-		Title );
+		Engine::GetApp().create(sf::VideoMode(Engine::getCfg()->get < unsigned int > ("system.renderer.windowsize.x"),
+				Engine::getCfg()->get < unsigned int > ("system.renderer.windowsize.y")), Title );
 
 		if (Icon != "")
 		{

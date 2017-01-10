@@ -32,24 +32,16 @@ namespace sbe
 		using diff_t = std::ptrdiff_t;
 
 		/* Total item number and portion size. */
-		const diff_t total
-				{
-						distance(range_from, range_to)
-				};
-		const diff_t portion
-				{
-						total/num
-				};
+		const diff_t total      = distance(range_from, range_to);
+		const diff_t portion    = total/num;
 
 		vector<pair<It, It>> chunks(num);
 
-		It portion_end
-				{range_from};
+		It portion_end {range_from};
 
 		/* Use the 'generate' algorithm to create portions. */
 		std::generate(begin(chunks), end(chunks), [range_from, &portion_end, portion]() {
-			It portion_start
-					{portion_end};
+			It portion_start {portion_end};
 
 			portion_end += portion;
 			//Engine::out() << "Chunk from " << std::distance(range_from, portion_start) << " to " << std::distance(range_from, portion_end) << std::endl;
@@ -60,7 +52,6 @@ namespace sbe
 		chunks.back().second = range_to;
 
 		//Engine::out() << " Chunked Vector of size " << total << " to " << num << " chunks of size " << portion << std::endl;
-
 		return chunks;
 	}
 

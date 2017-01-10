@@ -27,6 +27,9 @@ namespace sbe
 		currentlabeltext = 0;
 		ListenToActionKeys = false;
 		CreateWin(RelativePosition, Size);
+
+
+		Engine::out() << "[DebugWindow] Initialized." << std::endl;
 	}
 
 	void DebugWindow::CreateWin(const glm::ipoint2& RelativePosition, const glm::ivec2 Size) {
@@ -34,10 +37,10 @@ namespace sbe
 
 		//DbgText and DbgLabels are different, so it looks like two columns.
 		DbgText = Label::Create();
-		DbgText->SetAlignment(sf::Vector2f(0.f, 0.f));
+		DbgText->SetAlignment({0.f, 0.f});
 
 		DbgLabels = Label::Create();
-		DbgLabels->SetAlignment(sf::Vector2f(0.f, 0.f));
+		DbgLabels->SetAlignment({0.f, 0.f});
 
 		LogText = Label::Create();
 
@@ -50,7 +53,7 @@ namespace sbe
 		//ConsoleInput->AppendText( "Not yet implemented." );
 		///ConsoleInput->SetState( Widget::State::INSENSITIVE );
 
-		Win->SetPosition(sf::Vector2f(RelativePosition.x, RelativePosition.y));
+		Win->SetPosition({(float)RelativePosition.x, (float)RelativePosition.y});
 		//Win->SetRequisition( sf::Vector2f(Size.x, Size.y ) );
 
 		// main box, vertical
@@ -67,7 +70,7 @@ namespace sbe
 
 		scrolledwindow = ScrolledWindow::Create();
 		scrolledwindow->AddWithViewport(LogBox);
-		scrolledwindow->SetRequisition(sf::Vector2f(400.f, 100.f));
+		scrolledwindow->SetRequisition({400.f, 100.f});
 		scrolledwindow->SetScrollbarPolicy(ScrolledWindow::HORIZONTAL_AUTOMATIC | ScrolledWindow::VERTICAL_AUTOMATIC);
 		topBox->Pack(scrolledwindow, true, true);
 		wholeBox->Pack(topBox, true, true);
@@ -85,7 +88,7 @@ namespace sbe
 	void DebugWindow::HandleEvent(Event& e) {
 		if (e.Is("VIEW_DBG_STRING", typeid(std::pair<std::string, std::string>)))
 		{
-			std::pair<std::string, std::string> D = boost::any_cast<std::pair<std::string, std::string> >(e.Data());
+			auto D = boost::any_cast<std::pair<std::string, std::string> >(e.Data());
 			DebugStrings[D.first] = D.second;
 		}
 		else if (e.Is("EVT_FRAME"))

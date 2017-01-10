@@ -35,11 +35,11 @@ namespace sbe {
 
 
 		// largest prime smaller than 65536
-		unsigned long BASE = 65521L;
+		const unsigned long BASE = 65521L;
 
 		// NMAX is the largest n such that 255n(n+1)/2 +
 		// (n+1)(BASE-1) <= 2^32-1
-		unsigned long NMAX = 5552;
+		const unsigned long NMAX = 5552;
 
 #define DO1(buf, i)  {s1 += tolower(buf[i]); s2 += s1;}
 #define DO2(buf, i)  DO1(buf,i); DO1(buf,i+1);
@@ -77,14 +77,12 @@ namespace sbe {
 			s2 %= BASE;
 		}
 
-
-		return reinterpret_cast<HashType>((s2 << 16) | s1 );
-
 #undef DO1
 #undef DO2
 #undef DO4
 #undef DO8
 #undef DO16
+		return reinterpret_cast<HashType>((s2 << 16) | s1 );
 	}
 }
 

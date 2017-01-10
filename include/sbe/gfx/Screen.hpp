@@ -5,6 +5,7 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <cassert>
 
 namespace sfg
 {
@@ -93,28 +94,28 @@ namespace sbe
 		sf::Color getClearColor() { return bgColor; }
 
 		/// static access to the Camera
-		static std::shared_ptr<Camera> sCam() { return Instance->Cam; }
+		static std::shared_ptr<Camera> sCam() { assert(Instance->Cam); return Instance->Cam; }
 
 		/// static access to the Renderer
-		static std::shared_ptr<Renderer> sRndr() { return Instance->Picasso; }
+		static std::shared_ptr<Renderer> sRndr() { assert(Instance->Picasso); return Instance->Picasso; }
 
 		/// static access to the sfgui Desktop
-		static std::shared_ptr<sfg::Desktop> sDesk() { return Instance->Desktop; }
+		static std::shared_ptr<sfg::Desktop> sDesk() { assert(Instance->Desktop); return Instance->Desktop; }
 
 		/// static Access to the SFMLEventConverter
-		static std::shared_ptr<SFMLEventConverter> sEvtConv() { return Instance->EvtConv; }
+		static std::shared_ptr<SFMLEventConverter> sEvtConv() { assert(Instance->EvtConv); return Instance->EvtConv; }
 
 		/// access to the Camera
-		std::shared_ptr<Camera> getCam() { return Cam; }
+		std::shared_ptr<Camera> getCam() { assert(Cam); return Cam; }
 
 		/// access to the Renderer
-		std::shared_ptr<Renderer> getRenderer() { return Picasso; }
+		std::shared_ptr<Renderer> getRenderer() { assert(Picasso); return Picasso; }
 
 		/// access to the Desktop
-		std::shared_ptr<sfg::Desktop> getDesktop() { return Desktop; }
+		std::shared_ptr<sfg::Desktop> getDesktop() { assert(Desktop); return Desktop; }
 
 		/// access to the SFMLEventConverter
-		std::shared_ptr<SFMLEventConverter> getEvtConv() { return EvtConv; }
+		std::shared_ptr<SFMLEventConverter> getEvtConv() { assert(EvtConv); return EvtConv; }
 
 	protected:
 		/**

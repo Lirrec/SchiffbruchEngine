@@ -132,7 +132,7 @@ namespace sbe
 			return;
 		}
 
-		// Hes probably only inthe EventUsers list, no listener
+		//The Eventuser is probably only in the EventUsers list, no listener
 		//EventUsers.erase (Listener->GetID());
 
 		for (auto& EventVec : EventListeners)

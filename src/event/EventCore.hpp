@@ -80,14 +80,7 @@ namespace sbe
 				//Engine::out() << "MInfo copy-constructed" << std::endl;
 			}
 
-			ModuleInfo& operator=(const ModuleInfo& rhs) {
-				//Engine::out() << "MInfo copied" << std::endl;
-				Name = rhs.Name;
-				ID = rhs.ID;
-				EvtQ = rhs.EvtQ;
-				//InputQueue = ConcurrentQueue<Event>();
-				return *this;
-			}
+			ModuleInfo& operator=(const ModuleInfo& rhs) = default;
 
 			ModuleInfo(const std::string& name, size_t _ID, EventQueue* _EvtQ)
 					: Name(name), ID(_ID), EvtQ(_EvtQ), InputQueue() { }

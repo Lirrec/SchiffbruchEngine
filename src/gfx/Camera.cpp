@@ -81,7 +81,7 @@ namespace sbe
 	void Camera::update() {
 
 		// minimum difference between Target and current position to be smoothed
-		const int minDiff = 2;
+		const float minDiff = 0.33;
 		sf::Vector2f CurrentSize = view.getSize();
 		sf::Vector2f CurrentCenter = view.getCenter();
 

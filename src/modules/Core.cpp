@@ -5,15 +5,14 @@
 namespace sbe
 {
 
-	EventCore* Core::EvtCore;
+	std::unique_ptr<EventCore> Core::EvtCore;
 
 	Core::Core() {
-		EvtCore = new EventCore();
+		EvtCore.reset( new EventCore );
 	}
 
 	Core::~Core() {
-		delete EvtCore;
-		EvtCore = nullptr;
+
 	}
 
 } // namespace sbe

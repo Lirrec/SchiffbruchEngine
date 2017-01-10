@@ -18,7 +18,7 @@ namespace sbe
 
 		virtual ~Core();
 
-		static EventCore* EvtCore;
+		static std::unique_ptr<EventCore> EvtCore;
 	};
 
 } // namespace sbe

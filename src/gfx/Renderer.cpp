@@ -109,6 +109,7 @@ namespace sbe
 	RenderLayer* Renderer::getLayer(unsigned int index) {
 		if (index < Layers.size())
 			return &Layers[index];
+
 		return nullptr;
 	}
 

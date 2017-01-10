@@ -16,7 +16,7 @@ namespace sbe
 
 	/**
 		A Class for easily listening to global SFMLEvents
-		by letting them be converted to normalEvents.
+		by letting them be converted to normal Events.
 
 		Conversion can also be added by Events:
 

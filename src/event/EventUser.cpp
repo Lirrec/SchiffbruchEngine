@@ -48,7 +48,7 @@ namespace sbe
 	void EventUser::RealHandleEvent(Event& e) {
 		auto it = Callbacks.find(e.getEventType());
 		if (it != Callbacks.end())
-			((*it).second)(e);
+			(it->second)(e);
 		else
 			HandleEvent(e);
 	}

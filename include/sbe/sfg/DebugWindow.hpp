@@ -34,7 +34,7 @@ namespace sbe
 
 	public:
 
-		DebugWindow(const glm::ipoint2& RelativePosition = glm::ipoint2(0, 0), const glm::ivec2 Size = glm::ivec2(600, 280));
+		DebugWindow(const glm::ipoint2& RelativePosition = {0, 0}, const glm::ivec2 Size = {600, 280});
 
 		~DebugWindow() { };
 

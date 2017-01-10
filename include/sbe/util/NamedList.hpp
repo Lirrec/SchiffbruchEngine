@@ -78,9 +78,8 @@ namespace sbe
 
 		/// Debug function that writes the names of the loaded items to stdout
 		virtual void DebugDump() {
-			for (auto it = Items.begin(); it != Items.end(); ++it)
-			{
-				::sbe::Engine::out() << "- " << it->first << std::endl;
+			for (auto& elem : Items) {
+				::sbe::Engine::out() << "- " << elem.first << std::endl;
 			}
 		}
 
