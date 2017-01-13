@@ -289,7 +289,7 @@ namespace sbe
 		for (Curve& c : g.Curves)
 		{
 			sf::Text t;
-			t.setFillColor(c.color);
+			t.setColor(c.color);
 			t.setString(c.name);
 			t.setFont(*(Engine::GetResMgr()->get<sf::Font>("default")));
 			t.setCharacterSize(g.textSize);
@@ -307,7 +307,7 @@ namespace sbe
 
 	void GraphPlotter::drawText(const sf::Vector2f& pos, const std::string& text, bool xAxis) {
 		sf::Text t;
-		t.setFillColor(sf::Color::Black);
+		t.setColor(sf::Color::Black);
 		t.setString(text);
 		t.setFont(*(Engine::GetResMgr()->get<sf::Font>("default")));
 		t.setCharacterSize(g.textSize);
