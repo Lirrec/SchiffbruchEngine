@@ -2,43 +2,39 @@
 #define EVTHELPER_H
 
 #include "Event.hpp"
-#include "EventUser.hpp"
 
 #include <string>
+#include <sbe/Module.hpp>
 
 namespace sbe
 {
 
-
-	/*
-
-	class SFMLEventBinder : public SFMLEventUser
-	{
-		public:
-			SFMLEventBinder( sf::Event::EventType trigger, std::function< void(sf::Event&) > action);
-			void HandleEvent ( sf::Event& e ) override;
-			virtual ~SFMLEventBinder() {};
-
-		private:
-			std::function< void(sf::Event&) > action;
+	template<HashType HashValue, class F>
+	class EventDef {
+		static_assert(true,
+		              "Member Function Pointer as template argument required.");
 	};
 
-
-	*/
-
-	/**
-		Binds the occurence of a given Event to a std::function ( lambda, function pointer, member pointer, functor, etc )
-	*/
-	class EventBinder : EventUser
-	{
+	template<HashType HashValue, typename Base, typename... Params>
+	class EventDef<HashValue, void (Base::*)(Params...)> {
 	public:
-		EventBinder(const std::string& trigger, std::function<void(const Event&)> _action);
+		constexpr EventDef(void (Base::*fun)(Params...))
+				: member(fun) { }
 
-		virtual ~EventBinder() { };
+		//static constexpr HashType Hash = HashValue;
+		void (Base::*member)(Params...);
 
-	private:
-		std::function<void(const Event&)> action;
+		template<typename... Args>
+		static void Queue(bool global, Args &&... args) {
+			return Module::Get()->QueueEvent<tuple_with_removed_refs<Params...> >(HashValue, global, std::forward<Args>(args)...);
+		}
 	};
+
+	template<HashType H, class T>
+	static constexpr auto makeEventDef(T&& t) {
+		return EventDef<H, T>(std::forward<T>(t));
+	};
+
 } // namespace sbe
 
 #endif // EVTHELPER_H

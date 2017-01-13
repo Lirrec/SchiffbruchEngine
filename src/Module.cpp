@@ -4,7 +4,6 @@
 
 // local includes
 #include "event/EventCore.hpp"
-#include "modules/Core.hpp"
 #include "util/TickControl.hpp"
 
 
@@ -15,6 +14,11 @@ namespace sbe
 	class Module::Private {
 
 			friend class Module;
+			friend class TickControl;
+
+			/// GameBase needs access to the ModulesBarrier.
+			friend class GameBase;
+
 		private:
 			/// Module internal timer
 			sf::Clock ModuleTime;
@@ -28,13 +32,11 @@ namespace sbe
 			static boost::mutex ModulesMutex;
 
 			/// Lokal thread pointer
-			boost::thread* MyThread;
+			boost::thread* MyThread = nullptr;
 
 			/// barrier for synchronisation ( initialisation )
 			static std::shared_ptr<boost::barrier> ModulesBarrier;
 
-			friend class GameBase;
-			/// GameBase needs access to the ModulesBarrier.
 
 			/// List of existing Modules
 			static std::list<Module*> RunningModules;
@@ -42,22 +44,23 @@ namespace sbe
 			/// True if the Modules needs an EventQueue
 			bool useEventQueue;
 
-
-			friend class TickControl;
-
 			/// this modules TickControl
 			std::shared_ptr<TickControl> TC;
+
 			/// Eventloop termination condition
 			bool quit;
 
 			/// those will be registered and set by Run()
 			size_t QueueID;
+
 			/// this module's EventQueue
 			std::shared_ptr<EventQueue> EvtQ;
 
 			/// Module name
 			std::string Name;
 
+			/// The Event sent each Tick, may be nullptr
+			std::shared_ptr<Event> TickEvent;
 	};
 
 
@@ -107,15 +110,18 @@ namespace sbe
 
 
 	void Module::DebugString(const std::string& name, const std::string& value) {
+		if (!pimpl->DbgStringEvent) {
+			Engine::out(Engine::ERROR) << "No DebugStringEvent set in Module ( DebugString in EventCore?" << pimpl->Name << std::endl;
+			return;
+		}
+
 		pimpl->DbgStringEvent->Data() = std::pair<std::string, std::string>(name, value);
 
-		if (pimpl->useEventQueue)
-		{
+		if (pimpl->useEventQueue) {
 			QueueEvent(*pimpl->DbgStringEvent, true);
-		} else
-		{
+		} else 	{
 			// XXX: This is hardcoded!!
-			if (pimpl->Name == "EventCore") Core::EvtCore->PostEventToQueue(1, *pimpl->DbgStringEvent);
+			if (pimpl->Name == "EventCore") EventCore::getInstance()->PostEventToQueue(1, *pimpl->DbgStringEvent);
 		}
 	}
 
@@ -123,19 +129,25 @@ namespace sbe
 
 	void Module::StartModule(const ModuleStartInfo& m)
 	{
+		if (pimpl->MyThread != nullptr) {
+			Engine::out(Engine::INFO) << "[" << m.Name << "] Module already initialized" << std::endl;
+			return;
+		}
+
 		pimpl->useEventQueue = m.useEventQueue;
 
-		pimpl->DbgStringEvent.reset(new Event("VIEW_DBG_STRING"));
+		pimpl->DbgStringEvent = std::make_shared<Event>("VIEW_DBG_STRING");
 
-		pimpl->TC.reset(new TickControl);
+		pimpl->TC = std::make_shared<TickControl>();
 		pimpl->Name = m.Name;
 		pimpl->quit = false;
-		pimpl->TC->Init(m.desiredTicksPerSecond, m.TickEvt);
+		pimpl->TickEvent =  m.TickEvt;
+		pimpl->TC->Init(m.desiredTicksPerSecond);
 
 		if (pimpl->useEventQueue)
 		{
-			pimpl->EvtQ.reset(new EventQueue());
-			pimpl->QueueID = Core::EvtCore->RegisterModule(*this);
+			pimpl->EvtQ = std::make_shared<EventQueue>();
+			pimpl->QueueID = EventCore::getInstance()->RegisterModule(*this);
 		}
 
 		pimpl->MyThread = new boost::thread(boost::bind(&Module::ThreadLocalInit, this));
@@ -162,29 +174,51 @@ namespace sbe
 	}
 
 	void Module::SetTickEvent(std::shared_ptr<Event> TickEvt) {
-		pimpl->TC->SetTickEvent(TickEvt);
+		pimpl->TickEvent = TickEvt;
 	}
 
 	void Module::ThreadLocalInit() {
 		pimpl->Instance.reset(this);
 		pimpl->ModuleTime.restart();
 
+		assert(pimpl->ModulesBarrier);
+
 		Engine::out(Engine::INFO) << "[" << Module::Get()->GetName() << "] New module." << std::endl;
 
 		LocalInit();
+
+		// wait for other modules to complete their LocalInit()
 		pimpl->ModulesBarrier->wait();
+
 		Init();
 		Execute();
 		DeInit();
 
-		if (pimpl->useEventQueue) Core::EvtCore->RemoveModule(pimpl->QueueID);
+		if (pimpl->useEventQueue) EventCore::getInstance()->RemoveModule(pimpl->QueueID);
+
 		Engine::out(Engine::INFO) << "[" << Module::Get()->GetName() << "] Thread/Module has exited" << std::endl;
 		// without this the thread_specific_ptr would call delete on this module
 		pimpl->Instance.release();
 	}
 
 	void Module::Execute() {
-		while (!pimpl->quit) pimpl->TC->Tick();
+		while (!pimpl->quit) {
+			pimpl->TC->StartTick();
+
+			if (EventQueueEnabled())
+			{
+				// Send a TickEvent if it is valid
+				if (pimpl->TickEvent)
+					Module::Get()->QueueEvent(*pimpl->TickEvent);
+				// Clear the EventQueue
+				pimpl->EvtQ->Tick();
+			} else {
+				// do a core tick
+				EventCore::getInstance()->Tick();
+			}
+
+			pimpl->TC->EndTick();
+		}
 	}
 
 } // namespace sbe

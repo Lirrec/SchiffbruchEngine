@@ -3,9 +3,7 @@
 #include <boost/lexical_cast.hpp>
 
 #include "EventCore.hpp"
-#include "sbe/event/EventHelper.hpp"
-
-#include "../modules/Core.hpp"
+#include "sbe/event/EventUser.hpp"
 
 namespace sbe
 {
@@ -52,17 +50,17 @@ namespace sbe
 	}
 
 	void EventQueue::RegisterEventUser(EventUser* Listener, const std::string& EvtName, int priority) {
-		if (!Core::EvtCore->HasEvent(EvtName))
+		if (!EventCore::getInstance()->HasEvent(EvtName))
 		{
 			//Engine::out() << "[EventQueue]: " << "Listener " << Listener << " registered for new Event '" << EvtName << "'" << std::endl;
-			Core::EvtCore->RegisterEventName(EvtName);
+			EventCore::getInstance()->RegisterEventName(EvtName);
 		}
 
-		RegisterEventUser(Listener, Core::EvtCore->GetEventHash(EvtName), priority);
+		RegisterEventUser(Listener, EventCore::getInstance()->GetEventHash(EvtName), priority);
 	}
 
 	void EventQueue::RegisterEventUser(EventUser* Listener, Event::EventType EvtType, int priority) {
-		if (!Core::EvtCore->HasEvent(EvtType))
+		if (!EventCore::getInstance()->HasEvent(EvtType))
 		{
 			//Engine::out() << "[EventQueue]: " << "Listener " << Listener << " tried to register for non-existing EventType " << EvtType << std::endl;
 			//return;
@@ -73,7 +71,7 @@ namespace sbe
 			EventListeners[EvtType].insert(std::make_pair(priority, Listener));
 			//EventUsers[Listener->GetID()] = Listener;
 
-			Engine::out(Engine::SPAM) << "[EventQueue] New listener: " << Core::EvtCore->GetEventName(EvtType) << std::endl;
+			Engine::out(Engine::SPAM) << "[EventQueue] New listener: " << EventCore::getInstance()->GetEventName(EvtType) << std::endl;
 		}
 	}
 
@@ -94,7 +92,7 @@ namespace sbe
 
 		if (global)
 		{
-			Core::EvtCore->PostEventToQueue(Module::Get()->GetQueueID(), e);
+			EventCore::getInstance()->PostEventToQueue(Module::Get()->GetQueueID(), e);
 		}
 
 		//Engine::out() << "Pushing event " << e.getDebugName() << std::endl;
@@ -104,7 +102,7 @@ namespace sbe
 	void EventQueue::QueueEvent(const Event& e, bool global) {
 		if (global)
 		{
-			Core::EvtCore->PostEventToQueue(Module::Get()->GetQueueID(), e);
+			EventCore::getInstance()->PostEventToQueue(Module::Get()->GetQueueID(), e);
 		}
 
 		//Engine::out() << "Pushing event " << e.getDebugName() << std::endl;

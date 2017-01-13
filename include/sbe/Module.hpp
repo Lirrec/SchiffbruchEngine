@@ -140,31 +140,6 @@ namespace sbe {
 			QueueEvent(Event(Hash, EventDataType(std::forward<Args>(args)...)), global);
 		};
 
-		template<HashType HashValue, class F>
-		class EventDef {
-			static_assert(true,
-			              "Member Function Pointer as template argument required.");
-		};
-
-		template<HashType HashValue, typename Base, typename... Params>
-		class EventDef<HashValue, void (Base::*)(Params...)> {
-		public:
-			constexpr EventDef(void (Base::*fun)(Params...))
-					: member(fun) { }
-
-			//static constexpr HashType Hash = HashValue;
-			void (Base::*member)(Params...);
-
-			template<typename... Args>
-			static void Queue(bool global, Args &&... args) {
-				return Module::Get()->QueueEvent<tuple_with_removed_refs<Params...> >(HashValue, global, std::forward<Args>(args)...);
-			}
-		};
-
-		template<HashType H, class T>
-		static constexpr auto makeEventDef(T t) {
-			return EventDef<H, T>(t);
-		};
 
 		/**
 			Send a key/value pair as debugging information.

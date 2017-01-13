@@ -1,12 +1,12 @@
 #include "sbe/event/Event.hpp"
 
 #include <boost/lexical_cast.hpp>
+#include <sbe/util/SimpleModule.hpp>
 
 #include "sbe/event/EventHelper.hpp"
 
 // local includes
 #include "EventCore.hpp"
-#include "../modules/Core.hpp"
 
 namespace sbe
 {
@@ -28,26 +28,26 @@ namespace sbe
 	}
 
 	Event::EventType Event::hashName(const std::string& EventName) {
-		return Core::EvtCore->GetEventHash(EventName);
+		return EventCore::getInstance()->GetEventHash(EventName);
 	}
 
 	void Event::init(const std::string& EventName, const boost::any& _Data) {
-		if (!Core::EvtCore->HasEvent(EventName))
-			Core::EvtCore->RegisterEventName(EventName);
+		if (!EventCore::getInstance()->HasEvent(EventName))
+			EventCore::getInstance()->RegisterEventName(EventName);
 		EvtData = _Data;
 		Type = hashName(EventName);
 	}
 
 	std::string Event::getDebugName() {
 		std::string re("");
-		re = Core::EvtCore->GetEventName(Type);
+		re = EventCore::getInstance()->GetEventName(Type);
 		re += " - ";
 		re += boost::lexical_cast<std::string>(Type);
 		return re;
 	}
 
 	bool Event::Is(const std::string& Name) const {
-		return Type == Core::EvtCore->GetEventHash(Name);
+		return Type == EventCore::getInstance()->GetEventHash(Name);
 	}
 
 	bool Event::Is(const std::string& Name, const std::type_info& type) const {

@@ -45,6 +45,11 @@ namespace sbe
 			  LocalInitializer(_LocalInit)
 		{}
 
+		template<class T>
+		std::unique_ptr<T> getMember() {
+			return std::get<T>(members);
+		}
+
 	private:
 		virtual void LocalInit() override {
 			members = { (std::make_unique<Args>())... };

@@ -4,7 +4,6 @@
 
 
 #include "sbe/Module.hpp"
-#include "../modules/Core.hpp"
 
 namespace sbe
 {
@@ -19,7 +18,7 @@ namespace sbe
 	}
 
 	void EventUser::RegisterForEvent(const Event::EventType& EvtType, int priority) {
-		if (Core::EvtCore->HasEvent(EvtType))
+		if (EventCore::getInstance()->HasEvent(EvtType))
 		{
 			Module::Get()->GetEventQueue()->RegisterEventUser(this, EvtType, priority);
 		}

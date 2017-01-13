@@ -14,6 +14,7 @@
 #include <vector>
 #include <unordered_map>
 #include <memory>
+#include <sbe/event/EventHelper.hpp>
 
 namespace sbe
 {
@@ -142,8 +143,13 @@ namespace sbe
 		*/
 		void addActor(const std::shared_ptr<Actor>& A, unsigned int Layer);
 
+		template <class T>
+		auto addActorCast(const std::shared_ptr<T>& A, unsigned int Layer) -> std::enable_if<std::is_base_of<Actor, T>::value> {
+			addActor(std::dynamic_pointer_cast<sbe::Actor>(A), Layer);
+		 }
+
 		static constexpr auto addActorEvent() {
-			return Module::makeEventDef<hash_name("ADD_ACTOR")>(&Renderer::addActor);
+			return sbe::makeEventDef<hash_name("ADD_ACTOR")>(&Renderer::addActor);
 		}
 
 		/**
@@ -173,7 +179,7 @@ namespace sbe
 		/**	Events handled:
 			Event			| 	Data
 			----------------+---------------------------------------------
-			ADD_ACTOR		|	std::pair<std::shared_ptr<Actor>, int>
+			ADD_ACTOR		|	std::pair<std::shared_ptr<Actor>, unsigned int>
 			UPDATE_ACTOR	|	std::shared_ptr<Actor>
 			REMOVE_ACTOR	|	ActorID
 		*/

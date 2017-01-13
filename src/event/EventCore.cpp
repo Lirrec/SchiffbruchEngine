@@ -4,10 +4,11 @@
 
 namespace sbe
 {
-	EventCore* EventCore::Instance;
+	EventCore* EventCore::Instance = nullptr;
 
 	EventCore::EventCore() {
 		RemoteEventsThisSecond = 0;
+		assert(Instance == nullptr);
 		Instance = this;
 		justStarted = true;
 		idcount = 0;

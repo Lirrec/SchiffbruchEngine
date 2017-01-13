@@ -3,18 +3,16 @@
 
 #include <memory>
 
-#include "sbe/event/Event.hpp"
 #include <SFML/System/Clock.hpp>
-
 
 namespace sbe
 {
 
 	/**
 		This class provides simple functionality for running a tick-based eventloop.
-		It tries to call the Eventloop in the given frequency and will sleep if there is time left.
-		You may specify a TickEvent which will be sent by default with each eventloop.
-		An undefined TickEvent will not be sent.
+		It tries to limit ticks to a given frequency and will sleep if there is time left.
+
+	 	Simple call StartTick() and EndTick() before and after your Tick logic and the TickControl will provide FrameStatistics and will sleep if the desired framerate is reached
 	*/
 	class TickControl
 	{
@@ -22,9 +20,8 @@ namespace sbe
 		/**
 			Init method
 			@param TPS the desired ticks per second
-			@param TickEvt the desired Event to be set each tick
 		*/
-		void Init(int TPS, std::shared_ptr<Event> TickEvt);
+		void Init(int TPS);
 
 		/**
 			Set the desired amount of TicksPerSecond
@@ -32,16 +29,15 @@ namespace sbe
 		void SetTargetTicksPerSecond(int TPS);
 
 		/**
-			Specify which event should be sent as TickEvent.
-			An invalid/empty shared_ptr defaults to no Event.
-		*/
-		void SetTickEvent(std::shared_ptr<Event> TickEvt);
-
-		/**
 			Do a tick.
 			This usually sends a TickEvent to this threads eventqueue.
 		*/
-		void Tick();
+		void StartTick();
+
+		/**
+		 * End a Tick, logs stats and sleeps if the Tick needed less time than available at the current Framerate
+		 */
+		void EndTick();
 
 	private:
 
@@ -53,9 +49,6 @@ namespace sbe
 
 		/// Sleep the rest of the current tick
 		void YieldTickRest();
-
-		/// This event will be sent locally each tick
-		std::shared_ptr<Event> TickEvent;
 
 		/// How many eventqueue ticks per second should this module try to reach
 		int TicksPerSecond;

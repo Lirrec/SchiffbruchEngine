@@ -3,6 +3,7 @@
 
 #include "sbe/event/Event.hpp"
 #include "sbe/Module.hpp"
+#include "EventHelper.hpp"
 
 #include <map>
 
@@ -64,15 +65,22 @@ namespace sbe {
 
 
 		template<HashType Hash, class Base, typename... Params>
-		void RegisterMemberAsEventCallback(Base *_this, Module::EventDef<Hash, void (Base::*)(Params...)> D,
+		void RegisterMemberAsEventCallback(Base *_this, sbe::EventDef<Hash, void (Base::*)(Params...)> D,
 		                                   const std::string &name, int prio = 0) {
 			using ParamTuple = tuple_with_removed_refs<Params...>;
-			std::cout << "register" << std::endl;
-			_this->RegisterForEvent(name, [_this, D](const Event &E) {
-				ParamTuple Arguments = boost::any_cast<ParamTuple>(E.cData());
-				std::cout << "Invoke" << std::endl;
-				sbe::invoke_member(_this, D.member, Arguments);
 
+			std::cout << "register" << std::endl;
+
+			_this->RegisterForEvent(name, [_this, D](const Event &E) {
+				try {
+					ParamTuple Arguments = boost::any_cast<ParamTuple>(E.cData());
+					//std::cout << "Invoke" << std::endl;
+					sbe::invoke_member(_this, D.member, Arguments);
+				} catch (boost::bad_any_cast& e) {
+					std::cout << "Event callback for member. Any cast failed: " << e.what() << std::endl;
+					std::cout << "Event has type: " << E.cData().type().name() << std::endl;
+					std::cout << "Member function has type: " << typeid(ParamTuple).name() << std::endl;
+				}
 			}, prio);
 		}
 

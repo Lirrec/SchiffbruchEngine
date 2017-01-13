@@ -3,11 +3,12 @@
 #include <SFML/Graphics.hpp>
 
 #include <boost/thread.hpp>
+#include <sbe/util/SimpleModule.hpp>
+#include <event/EventCore.hpp>
 
 #include "sbe/Module.hpp"
 #include "sbe/Engine.hpp"
 
-#include "modules/Core.hpp"
 
 namespace sbe
 {
@@ -30,19 +31,26 @@ namespace sbe
 
 	void GameBase::EngineInit() {
 		/// Engine
-		_Engine.reset(new Engine());
+		_Engine = std::make_shared<Engine>();
 
 		_Engine->CreateSubSystems();
 
-		// EventSystem
+		EventsInit();
+
+		Engine::out(Engine::INFO) << "[Engine] Initialisation done..." << std::endl;
+	}
+
+	void GameBase::EventsInit() {
+		// Singleton for the EventCore (leaked, destroyed on program shutdown )
+		auto myEventCore = new EventCore();
+
+		// Start a Module without EventQueue
+		// this module will be the host-module which executes EventCore Ticks
+		// the logic for this in in TickControl, so we can create a completely empty no-op module
 		ModuleStartInfo CoreInfo;
 		CoreInfo.Name = "EventCore";
 		CoreInfo.useEventQueue = false;
-
-		RegisterModule(new Core, CoreInfo);
-
-
-		Engine::out(Engine::INFO) << "[Engine] Initialisation done..." << std::endl;
+		RegisterModule(new SimpleModule<>, CoreInfo);
 	}
 
 
@@ -74,7 +82,9 @@ namespace sbe
 
 	void GameBase::StartModules() {
 		Engine::out(Engine::INFO) << "[Engine] Starting Modules: " << std::endl;
-		Module::GetBarrier().reset(new boost::barrier(Modules.size() + 1));
+
+		// the count on the barrier is Modules.size() + 1 for this thread
+		Module::GetBarrier() = std::make_shared<boost::barrier>(Modules.size() + 1);
 
 		for (auto& M : Modules)
 		{

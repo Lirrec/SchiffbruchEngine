@@ -2,6 +2,7 @@
 
 #include <boost/uuid/uuid_io.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <sbe/gfx/Renderer.hpp>
 #include "sbe/util/Transformable.hpp"
 
 #include "sbe/entity/Entity.hpp"
@@ -28,10 +29,11 @@ namespace sbe
 		}
 
 		void SpriteRenderer::onAttach(Entity& E) {
-			A.reset(new SpriteActor);
+			A = std::make_shared<SpriteActor>();
 			A->sprite = E.C<sf::Sprite>("Sprite"_cId);
 			copyTransformable(E.C<sf::Transformable&>("Transformable"_cId), A->sprite);
-			Module::Get()->QueueEvent(Event("ADD_ACTOR", std::make_pair(std::dynamic_pointer_cast<Actor>(A), E.C<int>("RenderLayer"_cId))), true    );
+
+			sbe::Renderer::addActorEvent().Queue(true, std::dynamic_pointer_cast<Actor>(A), E.C<unsigned int>("RenderLayer"_cId));
 		}
 
 		void SpriteRenderer::onDetach(Entity& E) {

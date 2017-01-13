@@ -60,6 +60,9 @@ namespace sbe
 		/// Initialize the Engine
 		void EngineInit();
 
+		/// Initialize the Event System
+		void EventsInit();
+
 		/// start all registered Modules
 		void StartModules();
 

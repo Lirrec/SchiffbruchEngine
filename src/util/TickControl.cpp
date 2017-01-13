@@ -4,21 +4,17 @@
 
 #include "sbe/Module.hpp"
 
-//internal includes
-#include "../modules/Core.hpp"
-#include "../event/EventCore.hpp"
 
 #include <boost/format.hpp>
+#include "../event/EventCore.hpp"
 
-using boost::format;
-using boost::io::group;
+
 
 namespace sbe
 {
 
-	void TickControl::Init(int TPS, std::shared_ptr<Event> TickEvt) {
+	void TickControl::Init(int TPS) {
 		TicksPerSecond = TPS;
-		TickEvent = TickEvt;
 		LastTickDuration = 0;
 		MsToNextTick = 0;
 		MaxTickDuration = (1.0/TicksPerSecond)*1000;
@@ -26,31 +22,16 @@ namespace sbe
 		Lag = 0;
 	}
 
-	void TickControl::SetTickEvent(std::shared_ptr<Event> TickEvt) {
-		TickEvent = TickEvt;
-	}
-
 	void TickControl::SetTargetTicksPerSecond(int TPS) {
 		TicksPerSecond = TPS;
 		MaxTickDuration = (1.0/TicksPerSecond)*1000;
 	}
 
-	void TickControl::Tick() {
+	void TickControl::StartTick() {
 		Timer.restart();
+	}
 
-		if (Module::Get()->EventQueueEnabled())
-		{
-			// Send a TickEvent if it is valid
-			if (TickEvent)
-				Module::Get()->QueueEvent(*TickEvent);
-			// Clear the EventQueue
-			Module::Get()->GetEventQueue()->Tick();
-		} else
-		{
-			// do a core tick
-			Core::EvtCore->Tick();
-		}
-
+	void TickControl::EndTick() {
 		// Post module info to the gameview (debug)
 		LogModuleStats();
 		TickCounter++;
@@ -85,17 +66,30 @@ namespace sbe
 	}
 
 	void TickControl::LogModuleStats() {
+		using boost::format;
+		using boost::io::group;
+
 		if (LastStatsLog.getElapsedTime() > sf::seconds(1))
 		{
-			Module::Get()->DebugString(str(format("Tick [%s]")%Module::Get()->GetName()),
-									   str(format(" %.2g+%.2g / %.2g")%LastTickDuration%MsToNextTick%MaxTickDuration));
-			Module::Get()->DebugString(str(format("FPS [%s]")%Module::Get()->GetName()),
-									   str(format("%.1g")%TickCounter));
+			Module::Get()->DebugString(
+				str(format("Tick [%s]")
+		        	% Module::Get()->GetName()),
+				str(format(" %.2g+%.2g / %.2g")
+					% LastTickDuration
+					% MsToNextTick
+                    % MaxTickDuration));
+			Module::Get()->DebugString(
+				str(format("FPS [%s]")
+			     	% Module::Get()->GetName()),
+				str(format("%.1g")
+					% TickCounter));
 
-			Module::Get()->DebugString("Events [%s] " + Module::Get()->GetName(),
-									   str(format("%d")%(Module::Get()->EventQueueEnabled() ? Module::Get()->GetEventQueue()->GetEventCount()
-																					  : Core::EvtCore->GetEventCount())));
-
+			Module::Get()->DebugString(
+				"Events [%s] " + Module::Get()->GetName(),
+				str(format("%d")
+				    %(Module::Get()->EventQueueEnabled()
+				    	? Module::Get()->GetEventQueue()->GetEventCount()
+						: EventCore::getInstance()->GetEventCount())));
 
 			Lag = (LastStatsLog.getElapsedTime() - sf::seconds(1)).asMilliseconds();
 			TickCounter = 0;
