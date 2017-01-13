@@ -19,15 +19,7 @@ namespace sbe
 	}
 
 	EntityManager::~EntityManager() {
-		Entities.clear();
-
-		ComponentFactories.clear();
-		ComponentMappings.clear();
-		ComponentNames.clear();
-
-		SystemFactories.clear();
-		SystemMappings.clear();
-		Systems.clear();
+		shutdown();
 	}
 
 	void EntityManager::update(const sf::Time& delta) {
@@ -127,6 +119,18 @@ namespace sbe
 	boost::optional<boost::any> EntityManager::createComponent(sbeID cID) {
 		if (!ComponentFactories.count(cID)) return boost::optional<boost::any>();
 		return boost::make_optional(ComponentFactories[cID]->createCopy());
+	}
+
+	void EntityManager::shutdown() {
+		Entities.clear();
+
+		ComponentFactories.clear();
+		ComponentMappings.clear();
+		ComponentNames.clear();
+
+		SystemFactories.clear();
+		SystemMappings.clear();
+		Systems.clear();
 	}
 
 } // namespace sbe

@@ -39,6 +39,9 @@ namespace sbe
 
 		bool removeEntity(const sbeID eID);
 
+		/// deletes all Entities, should be called by the User to prevent segfaults if the EntityManager is uninitialized after the eventCore...
+		void shutdown();
+
 		template<class T>
 		void registerComponent(const std::string& Name) {
 			registerComponent(Name, std::make_shared(new FactoryWithBase<T, boost::any>()));
@@ -66,6 +69,8 @@ namespace sbe
 		std::shared_ptr<System> createSystem(sbeID sID);
 
 		boost::optional<boost::any> createComponent(sbeID cID);
+
+
 
 	private:
 

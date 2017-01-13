@@ -24,10 +24,7 @@ namespace sbe
 		 * A String literal for easy lookup of system ids.
 		 * Allows to pass a string to any function taking a system id
 		 */
-		sbeID operator
-		""
-
-		_sId(const char* str, size_t);
+		sbeID operator ""_sId (const char* str, size_t);
 	}
 	/**
 		A System ( other common Words are behaviour /Controller ) operates on an Entities Components( Data/attributes ).

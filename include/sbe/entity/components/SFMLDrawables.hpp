@@ -11,7 +11,7 @@ namespace sbe
 			std::vector<ComponentInfo> getSFMLComponents() {
 				return {
 						{"Sprite",      makeComponentFactory<sf::Sprite>()},
-						{"RenderLayer", makeComponentFactory<int>()}
+						{"RenderLayer", makeComponentFactory<unsigned int>()}
 				};
 			}
 		}
