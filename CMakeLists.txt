@@ -98,7 +98,7 @@ else()
 	add_definitions( -fPIC )
 endif()
 
-add_definitions( -std=c++14 -DBOOST_THREAD_USE_LIB -pipe )
+add_definitions( -std=c++17 -DBOOST_THREAD_USE_LIB -pipe )
 
 if (CMAKE_BUILD_TYPE MATCHES Debug)
 	add_definitions(-DCOUNT_EVENTS)

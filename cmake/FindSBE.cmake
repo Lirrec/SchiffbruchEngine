@@ -63,8 +63,8 @@ set( FIND_SBE_PATH_SUFFIXES
 		lib64
 		build
 		build.win
-		build.clion/Debug
-		build.clion/Release)
+		cmake-build-debug
+		cmake-build-release)
 
 if(CMAKE_SYSTEM_NAME MATCHES Windows)
 	#only search for libsbe... as there is a sbe.dll in System32..
