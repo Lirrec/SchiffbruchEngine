@@ -34,33 +34,33 @@ namespace sbe
 	void Engine::CreateSubSystems() {
 		// Logging
 		std::cout << "[Engine] Logger." << std::endl;
-		SpamLogger.reset(new Logger(std::cout));
-		InfoLogger.reset(new Logger(std::cout));
-		WarningLogger.reset(new Logger(std::cout));
-		ErrorLogger.reset(new Logger(std::cerr));
+		SpamLogger = std::make_shared<Logger>(std::cout);
+		InfoLogger = std::make_shared<Logger>(std::cout);
+		WarningLogger = std::make_shared<Logger>(std::cout);
+		ErrorLogger = std::make_shared<Logger>(std::cout);
 
 		Engine::out(Engine::INFO) << "[Engine] ResourceManager..." << std::endl;
-		ResMgr.reset(new ::sbe::ResourceManager);
+		ResMgr = std::make_shared<ResourceManager>();
 
 		Engine::out(Engine::INFO) << "[Engine] IO..." << std::endl;
-		Io.reset(new IO);
+		Io = std::make_shared<IO>();
 
 		ResMgr->init();
 
 		Engine::out(Engine::INFO) << "[Engine] CommandParser..." << std::endl;
-		CmdPrs.reset(new sbe::CommandParser);
+		CmdPrs = std::make_shared<CommandParser>();
 
 		Engine::out(Engine::INFO) << "[Engine] Config..." << std::endl;
-		_config.reset(new Config);
+		_config = std::make_shared<Config>();
 
 		Engine::out(Engine::INFO) << "[Engine] SoundSys..." << std::endl;
-		SndSys.reset(new SoundSystem);
+		SndSys = std::make_shared<SoundSystem>();
 
 		Engine::out(Engine::INFO) << "[Engine] EntityManager..." << std::endl;
-		EntityMgr.reset(new EntityManager);
+		EntityMgr = std::make_shared<EntityManager>();
 
 		Engine::out(Engine::INFO) << "[Engine] Window..." << std::endl;
-		App.reset(new sf::RenderWindow);
+		App = std::make_shared<sf::RenderWindow>();
 	}
 
 	void Engine::UnloadSubSystems() {

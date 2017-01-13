@@ -38,7 +38,7 @@ namespace sbe
 
 
 	ThreadPool::ThreadPool() {
-		threads.reset(new boost::thread_group);
+		threads = std::make_unique<boost::thread_group>();
 	}
 
 	ThreadPool::~ThreadPool() {
@@ -54,8 +54,8 @@ namespace sbe
 
 		numThreads = num;
 
-		startBarrier.reset(new boost::barrier(numThreads + 1));
-		endBarrier.reset(new boost::barrier(numThreads + 1));
+		startBarrier = std::make_unique<boost::barrier>(numThreads + 1);
+		endBarrier = std::make_unique<boost::barrier>(numThreads + 1);
 
 		for (unsigned int thread = 0; thread < numThreads; ++thread)
 			threads->add_thread(new boost::thread(std::bind(&ThreadPool::threadentry, this, thread)));

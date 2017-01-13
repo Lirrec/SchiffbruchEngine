@@ -124,7 +124,7 @@ namespace sbe
 				return false;
 			}
 
-			if (!Tex) Tex.reset(new sf::Texture());
+			if (!Tex) Tex = std::make_shared<sf::Texture>();
 
 			if (Tex->loadFromImage(*img))
 			{

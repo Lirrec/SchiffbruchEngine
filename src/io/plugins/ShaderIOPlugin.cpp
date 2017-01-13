@@ -23,7 +23,7 @@ namespace sbe
 
 			std::string base = Engine::GetIO()->topPath() + "/shader/";
 
-			re.reset(new sf::Shader());
+			re = std::make_shared<sf::Shader>();
 
 			re->loadFromFile(base + pt.get<std::string>("vert"),
 							 base + pt.get<std::string>("frag"));

@@ -24,7 +24,7 @@ namespace sbe
 			  clear(true) {
 		Instance = this;
 
-		EvtConv.reset(new SFMLEventConverter());
+		EvtConv = std::make_shared<SFMLEventConverter>();
 		RegisterForEvent("EVT_FRAME", [this](Event&) { Render(); });
 		RegisterForEvent("EVT_QUIT", [this](Event&) { Module::Get()->RequestQuit(); });
 
@@ -78,14 +78,14 @@ namespace sbe
 
 
 		// must be created before using SFGUI
-		SFG.reset(new sfg::SFGUI);
+		SFG = std::make_shared<sfg::SFGUI>();
 
 		// top-level container for all SFGUI widgets
-		Desktop.reset(new sfg::Desktop);
-		Cam.reset(new Camera);
+		Desktop = std::make_shared<sfg::Desktop>();
+		Cam = std::make_shared<Camera>();
 		Cam->setup();
 
-		Picasso.reset(new Renderer);
+		Picasso = std::make_shared<Renderer>();
 
 		// We're not using SFML to render anything in this program, so reset OpenGL
 		// states. Otherwise we wouldn't see anything.

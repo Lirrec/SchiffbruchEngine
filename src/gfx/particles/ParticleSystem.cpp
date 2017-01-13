@@ -8,8 +8,8 @@ namespace sbe
 {
 
 	ParticleSystem::ParticleSystem() {
-		Vertices[0].reset(new sf::VertexArray);
-		Vertices[1].reset(new sf::VertexArray);
+		Vertices[0] = std::make_shared<sf::VertexArray>();
+		Vertices[1] = std::make_shared<sf::VertexArray>();
 
 		Pool.InitThreads(cores);
 

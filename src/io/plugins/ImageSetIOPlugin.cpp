@@ -20,7 +20,7 @@ namespace sbe
 		{
 			const ptree& pt = node.second;
 
-			re.reset(new ImageSet());
+			re = std::make_shared<ImageSet>();
 
 			re->Name = pt.get<std::string>("Name");
 			re->ImageName = pt.get<std::string>("ImageName");

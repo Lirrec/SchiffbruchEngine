@@ -10,7 +10,7 @@
 namespace sbe
 {
 	CommandParser::CommandParser() {
-		ct.reset(new Node("/"));
+		ct = std::make_unique<Node>("/");
 		/******/ct->AddSub(std::shared_ptr<Node>(new Node("conf")));
 		/******/ct->Get("conf")->AddSub(std::shared_ptr<Node>(new Node("set")));
 		/******/ct->AddSub(std::shared_ptr<Node>(new Node("debug")));

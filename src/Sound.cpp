@@ -23,7 +23,7 @@ namespace sbe
 
 			if (!sb) return s;
 
-			s.reset(new sf::Sound());
+			s = std::make_shared<sf::Sound>();
 			s->setBuffer(*sb);
 
 			return s;
