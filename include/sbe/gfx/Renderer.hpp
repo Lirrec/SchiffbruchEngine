@@ -56,7 +56,7 @@ namespace sbe
 		/// enable or disable rendering of this layer
 		bool isActive;
 		/// enable or disable culling
-		bool cull;
+		bool cull = false;
 
 		/// the renderstates to use ( for setting a custom texture for vertexarrays or shaders
 		sf::RenderStates States;
@@ -67,7 +67,7 @@ namespace sbe
 	private:
 
 		/// did the RenderList change since last frame ( used to determine a recull
-		bool changed;
+		bool changed = true;
 
 		std::vector<std::shared_ptr<Actor> > RenderList;
 	};
@@ -141,7 +141,9 @@ namespace sbe
 			@param A the actor
 			@param Layer which layer should the actor be rendered on
 		*/
-		void addActor(const std::shared_ptr<Actor>& A, unsigned int Layer);
+		void addActor(std::shared_ptr<Actor> A, unsigned int Layer);
+
+		void addActors(std::shared_ptr<std::vector<std::shared_ptr<Actor>>> Actors, unsigned int Layer);
 
 		template <class T>
 		auto addActorCast(const std::shared_ptr<T>& A, unsigned int Layer) -> std::enable_if<std::is_base_of<Actor, T>::value> {
@@ -150,6 +152,10 @@ namespace sbe
 
 		static constexpr auto addActorEvent() {
 			return sbe::makeEventDef<hash_name("ADD_ACTOR")>(&Renderer::addActor);
+		}
+
+		static constexpr auto addActorsEvent() {
+			return sbe::makeEventDef<hash_name("ADD_ACTORS")>(&Renderer::addActors);
 		}
 
 		/**
@@ -192,7 +198,7 @@ namespace sbe
 		/**
 			Cull the layer.
 		*/
-		void cullLayer(RenderLayer& L);
+		void cullLayer(RenderLayer& L, const unsigned int index);
 
 		void drawLayer(const RenderLayer& L, sf::RenderTarget& t);
 

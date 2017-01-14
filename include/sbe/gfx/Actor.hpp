@@ -34,6 +34,13 @@ namespace sbe
 
 		virtual sf::Drawable& getDrawable() = 0;
 
+		/**
+		 * Should return a bounding for for the Actor.
+		 * If the Actor is unable to provide a boundingbox an empty rect ( 0,0,0,0 ) should be returned
+		 * @return
+		 */
+		virtual geom::rect getBounds() =0;
+
 		ActorID getID() const { return ID; }
 
 		bool enabled = true;
@@ -48,7 +55,8 @@ namespace sbe
 	class SpriteActor : public Actor
 	{
 	public:
-		sf::Drawable& getDrawable();
+		sf::Drawable& getDrawable()  override;
+		geom::rect getBounds() override;
 
 		sf::Sprite sprite;
 
@@ -60,7 +68,8 @@ namespace sbe
 	class VertexActor : public Actor
 	{
 	public:
-		sf::Drawable& getDrawable();
+		sf::Drawable& getDrawable()  override;
+		geom::rect getBounds() override;
 
 		sf::VertexArray arr;
 	};
@@ -71,7 +80,8 @@ namespace sbe
 	class DrawableActor : public Actor
 	{
 	public:
-		sf::Drawable& getDrawable();
+		sf::Drawable& getDrawable()  override;
+		geom::rect getBounds() override;
 
 		std::shared_ptr<sf::Drawable> d;
 	};
@@ -84,9 +94,10 @@ namespace sbe
 	public:
 		AnimationActor(ImageSet& ImgSet);
 
-		void update(const sf::Time& RenderTime);
+		void update(const sf::Time& RenderTime) override;
 
-		sf::Drawable& getDrawable();
+		sf::Drawable& getDrawable()  override;
+		geom::rect getBounds() override;
 
 		AnimatedSprite Anim;
 	};
@@ -97,7 +108,8 @@ namespace sbe
 	class ShapeActor : public Actor
 	{
 	public:
-		sf::Drawable& getDrawable();
+		sf::Drawable& getDrawable()  override;
+		geom::rect getBounds() override;
 
 		std::shared_ptr<sf::Shape> Shape;
 	};

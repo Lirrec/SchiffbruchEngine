@@ -29,6 +29,21 @@ namespace sbe
 
 			return re;
 		}
+	///Converts a rectangle to a human readable string suitable for debugging purposes
+		inline std::string RectToString(const geom::rect& r) {
+			std::string re("");
+			re += "[";
+			re += boost::lexical_cast<std::string>(r.x.x);
+			re += "/";
+			re += boost::lexical_cast<std::string>(r.x.y);
+			re += "|";
+			re += boost::lexical_cast<std::string>(r.y.x);
+			re += "/";
+			re += boost::lexical_cast<std::string>(r.y.y);
+			re += "]";
+
+			return re;
+		}
 
 		/// Checks wether p is inside rc
 		inline bool PointInRect(const geom::irect& rc, const glm::ipoint2& p) {
@@ -96,6 +111,23 @@ namespace sbe
 
 		/// Checks if two rectangles overlap
 		inline bool rcOverlap(const geom::irect& lhs, const geom::irect& rhs) {
+			// check if they _don't_ overlap
+			if (
+				// lhs right of rhs
+					lhs.x.x > rhs.y.x
+					// lhs left of rhs
+					|| lhs.y.x < rhs.x.x
+					// lhs below rhs
+					|| lhs.x.y > rhs.y.y
+					// lhs above rhs
+					|| lhs.y.y < rhs.x.y
+					)
+				return false;
+			return true;
+		}
+
+		/// Checks if two rectangles overlap
+		inline bool rcOverlap(const geom::rect& lhs, const geom::rect& rhs) {
 			// check if they _don't_ overlap
 			if (
 				// lhs right of rhs

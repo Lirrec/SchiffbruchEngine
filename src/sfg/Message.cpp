@@ -30,18 +30,13 @@ namespace sbe
 		Win = Window::Create(Window::Style::TITLEBAR | Window::Style::BACKGROUND | Window::Style::SHADOW);
 		Win->SetRequisition(sf::Vector2f(200, 100));
 		Win->SetTitle(Title_);
-		if (Type_ == Type::OK)
-		{
-			MakeOkMessage();
+
+		switch (Type_) {
+			case Type::OK:      MakeOkMessage();    break;
+			case Type::MODAL: 	MakeModalMessage();	break;
+			case Type::CHOICE:  MakeChoiceMessage(); break;
 		}
-		else if (Type_ == Type::MODAL)
-		{
-			MakeModalMessage();
-		}
-		else if (Type_ == Type::CHOICE)
-		{
-			MakeChoiceMessage();
-		}
+
 		updatePosition();
 	}
 

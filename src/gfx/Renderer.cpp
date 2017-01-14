@@ -2,6 +2,8 @@
 #include "sbe/gfx/Camera.hpp"
 
 #include <boost/uuid/uuid_io.hpp>
+#include <sbe/geom/RectHelpers.hpp>
+#include <sbe/geom/SfmlHelpers.hpp>
 
 namespace sbe
 {
@@ -11,6 +13,7 @@ namespace sbe
 		RegisterForEvent("REMOVE_ACTOR");
 		using namespace operators;
 		RegisterMemberAsEventCallback(this, addActorEvent(), "ADD_ACTOR");
+		RegisterMemberAsEventCallback(this, addActorsEvent(), "ADD_ACTORS");
 	}
 
 
@@ -33,17 +36,20 @@ namespace sbe
 	}
 
 	void Renderer::render(sf::RenderTarget& t) {
-		//int i = 0;
+		int i = 0;
 		for (RenderLayer& L : Layers)
 		{
 			//Engine::out() << "Updating Layer " << ++i << std::endl;
 			if (L.isActive) updateLayer(L);
 
 			//Engine::out() << "Culling Layer " << i << std::endl;
-			if (L.cull && L.changed) cullLayer(L);
+			//if (L.cull && L.changed) cullLayer(L);
+			if (L.cull) cullLayer(L, i);
 
 			//Engine::out() << "Drawing Layer " << i << std::endl;
 			if (L.isActive) drawLayer(L, t);
+
+			i++;
 		}
 		//Engine::out() << "Done drawing" << std::endl;
 	}
@@ -65,19 +71,32 @@ namespace sbe
 		}
 	}
 
-	void Renderer::cullLayer(RenderLayer& L) {
+	void Renderer::cullLayer(RenderLayer& L, const unsigned int index) {
+
 		// do culling, not yet implemented
+		auto& CameraBounds = L.Cam->getDrawnArea();
+		int count = 0;
+		//Engine::out() << "CameraBounds: " << geom::RectToString(CameraBounds) << std::endl;
+		for (std::shared_ptr<Actor>& actor : L.RenderList) {
+			auto ActorBounds = actor->getBounds();
+			actor->enabled = geom::rcOverlap( CameraBounds, ActorBounds);
+
+			if (actor->enabled) {
+				count++;
+			}
+			//Engine::out() << "ActorBounds: " << geom::RectToString(ActorBounds)  << "CameraBounds: " << geom::RectToString(CameraBounds) << " -> " << actor->enabled << std::endl;
+		}
+
+
+		Module::Get()->DebugString("Actors rendered [L" + std::to_string(index) + "]", std::to_string(count));
 
 		L.changed = false;
 	}
 
 	void Renderer::drawLayer(const RenderLayer& L, sf::RenderTarget& t) {
-		if (L.Cam)
-		{
+		if (L.Cam) {
 			t.setView(L.Cam->getView());
-		}
-		else
-		{
+		} else {
 			t.setView(t.getDefaultView());
 		}
 
@@ -123,7 +142,9 @@ namespace sbe
 	}
 
 
-	void Renderer::addActor(const std::shared_ptr<Actor>& A, unsigned int Layer) {
+	void Renderer::addActor(std::shared_ptr<Actor> A, unsigned int Layer) {
+		if (!A) return;
+
 		if (Layer < Layers.size())
 		{
 			Layers[Layer].RenderList.push_back(A);
@@ -165,6 +186,10 @@ namespace sbe
 		ActorMap.erase(ID);
 
 		Layers[AI.second].changed = true;
+	}
+
+	void Renderer::addActors(std::shared_ptr<std::vector<std::shared_ptr<Actor>>> Actors, unsigned int Layer) {
+		for (auto& actor : *Actors) addActor(actor, Layer);
 	}
 
 } // namespace sbe
