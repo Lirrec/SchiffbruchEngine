@@ -64,14 +64,94 @@ namespace sbe {
 		void RegisterForEvent(const Event::EventType &EvtType, const EventHandler &Handler, int priority = 0);
 
 
+
+		template <class Arg>
+		void RegisterForEvent(const std::string &EvtName, std::function<void(Arg)> Handler, int priority = 0) {
+			using ArgData = std::remove_reference_t<Arg>;
+			auto wrapHandler = [=](Event& e){
+				if (e.Is(EvtName, typeid(ArgData))) {
+					Handler(boost::any_cast<ArgData>(e.Data()));
+				}
+			};
+
+			RegisterForEvent( EvtName, wrapHandler, priority);
+		}
+
+		template <class Arg, class Arg2>
+		void RegisterForEvent(const std::string &EvtName, std::function<void(Arg, Arg2)> Handler, int priority = 0) {
+
+			using ParamTuple = std::tuple<std::remove_reference_t<Arg>,std::remove_reference_t<Arg2>>;
+			auto wrapHandler = [=](Event& e) {
+				if (e.Is(EvtName, typeid(ParamTuple))) {
+					ParamTuple t = boost::any_cast<ParamTuple>(e.Data());
+					sbe::invoke(Handler, t);
+				}
+			};
+
+			RegisterForEvent(EvtName, wrapHandler, priority);
+		}
+
+		template <class Arg, class Arg2, class Arg3>
+		void RegisterForEvent(const std::string &EvtName, std::function<void(Arg, Arg2, Arg3)> Handler, int priority = 0) {
+
+			using ParamTuple = std::tuple<std::remove_reference_t<Arg>,std::remove_reference_t<Arg2>,std::remove_reference_t<Arg3>>;
+			auto wrapHandler = [=](Event& e) {
+				if (e.Is(EvtName, typeid(ParamTuple))) {
+					ParamTuple t = boost::any_cast<ParamTuple>(e.Data());
+					sbe::invoke(Handler, t);
+				}
+			};
+
+			RegisterForEvent(EvtName, wrapHandler, priority);
+		}
+
+		template <class Arg, class Arg2, class Arg3, class Arg4>
+		void RegisterForEvent(const std::string &EvtName, std::function<void(Arg, Arg2, Arg3, Arg4)> Handler, int priority = 0) {
+
+			using ParamTuple = std::tuple<std::remove_reference_t<Arg>,std::remove_reference_t<Arg2>,std::remove_reference_t<Arg3>,std::remove_reference_t<Arg4>>;
+			auto wrapHandler = [=](Event& e) {
+				if (e.Is(EvtName, typeid(ParamTuple))) {
+					ParamTuple t = boost::any_cast<ParamTuple>(e.Data());
+					sbe::invoke(Handler, t);
+				}
+			};
+
+			RegisterForEvent(EvtName, wrapHandler, priority);
+		}
+
+		/*template <class... Args>
+		void RegisterForEvent(const std::string &EvtName, std::function<void(Args...)> Handler, int priority = 0) {
+
+			using ParamTuple = std::tuple<std::remove_reference_t<Args>...>;
+			auto& wrapHandler = [=](Event& e) {
+				if (e.Is(EvtName, typeid(ParamTuple))) {
+					ParamTuple t = boost::any_cast<ParamTuple>(e.Data());
+					sbe::invoke(Handler, t);
+				}
+			};
+
+			RegisterForEvent(EvtName, wrapHandler, priority);
+		}*/
+
+		/**
+		 * Register a member function for an Event. When the Event occurs the member function will be called with the appropriate Parameters.
+		 * This requires the Event to contain a tuple consisting of exactly the parameters of the function ( although the tuple may not contain references ).
+		 *
+		 * @see sbe::makeEventDef and sbe::Renderer::addActorEvent() for an example of how to provide an Interface to allow creation of an appropriate Event.
+		 *
+		 * @tparam Hash
+		 * @tparam Base
+		 * @tparam Params
+		 * @param _this
+		 * @param D
+		 * @param name
+		 * @param prio
+		 */
 		template<HashType Hash, class Base, typename... Params>
-		void RegisterMemberAsEventCallback(Base *_this, sbe::EventDef<Hash, void (Base::*)(Params...)> D,
-		                                   const std::string &name, int prio = 0) {
+		void RegisterMemberAsEventCallback(Base *_this, sbe::EventDef<Hash, void (Base::*)(Params...)> D, int prio = 0) {
 			using ParamTuple = tuple_with_removed_refs<Params...>;
 
-			std::cout << "register" << std::endl;
-
-			_this->RegisterForEvent(name, [_this, D](const Event &E) {
+			_this->RegisterForEvent(Hash, [_this, D](const Event &E) {
 				try {
 					ParamTuple Arguments = boost::any_cast<ParamTuple>(E.cData());
 					//std::cout << "Invoke" << std::endl;

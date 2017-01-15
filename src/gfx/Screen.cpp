@@ -173,8 +173,7 @@ namespace sbe
 				Fullscreen = false;
 			}
 
-			Event ev("WINDOW_RESIZE");
-			Module::Get()->QueueEvent(ev, true);
+			Module::Get()->QueueEvent("WINDOW_RESIZE", true);
 		}
 		else if (e.Is("SCREEN_ADD_WINDOW", typeid(sfg::Window::Ptr)))
 		{

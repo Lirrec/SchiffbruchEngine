@@ -41,17 +41,26 @@ namespace sbe
 			QueueEvent will send the event the next time the eventqueue is checked, the second parameter will also send the event to other modules' eventqueues.
 			PostEvent will immediatly send the event to all registered listeners in the local module, thus bypassing the normal eventqueue.
 
+	 		@see Module::QueueEvent()
+
 			Example:
 			@code
-			// event without data
-			Event e("EVT_MY_EVT");
-			// event with data ( templated, pass anything you want )
-			float mydata = 5;
-			Event d("EVT_MY_DATA", mydata);
-			// another way to set the data:
-			d.SetData( mydata );
 
-			Module::Get()->QueueEvent(e, true); // set to false to only send to own module
+			// simple Event without data
+			Module::Get()->QueueEvent("MY_EVT", true); // set 'global' parameter to false to only send to own module
+
+	 		// simple Event with data
+			float mydata = 5;
+			Module::Get()->QueueEvent("MY_EVT", mydata, true); // set 'global' parameter to false to only send to own module
+
+	 		// simple Event with multiple data ( note that the 'global' parameter is now second and all other parameters are data
+			float myfloat = 5;
+			int myint = 2;
+			myClass mC;
+			// this will send an Event with Name "MY_EVT".
+			// the data will be of type std::tuple<float, int, myClass>
+			Module::Get()->QueueEvent("MY_EVT", true, myfloat, myint, mC); // set 'global' parameter to false to only send to own module
+
 			@endcode
 
 			The use of Modules (@see Module) makes it possible to use events in multiple Threads.
@@ -65,14 +74,25 @@ namespace sbe
 
 			// the simple version with lambda callback
 			RegisterForEvent("EVT_MY_EVT1", [](Event& e) {
-								// your handling code here
+
 			});
 
-			// member function callback,
-			// you have to use two lines so the  compiler will be able to
-			// deduct the correct types ( at least on gcc 4.8 a single line won't work )
-			Eventhandler e = std::bind( &MyClass::member1, this );
-			RegisterForEvent("EVT_MY_EVT2", e );
+	 		// if the event has data use the following version
+	 		// this also works with multiple ( currently up to 4 ) parameters
+	 		RegisterForEvent<int>("MY_EVT", [](int i) {
+	 			// your handling code here
+	 		});
+
+			// member function callback, this requires an "Event Definiton" which defines the required parameters
+			// this example is taken from sbe::Renderer::addActor / sbe::Renderer::addActorEvent
+
+			// addActorEvent is implemented like this, and creates an EventDef:
+			// return sbe::makeEventDef<hash_name("ADD_ACTOR")>(&Renderer::addActor);
+			// then call with 'this' and the EventDef
+			RegisterMemberAsEventCallback(this, addActorEvent());
+
+
+
 
 			// the verbose way, implement the HandleEvent method.
 			// somewhere in your class' code (constructor/ init)

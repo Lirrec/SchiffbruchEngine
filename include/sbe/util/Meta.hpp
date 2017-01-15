@@ -23,7 +23,7 @@ namespace sbe {
 	template<typename Func, typename Tup>
 	decltype(auto) invoke(Func&& func, Tup&& tup)
 	{
-		constexpr auto Size = std::tuple_size<typename std::decay<Tup>::type>::value;
+		constexpr auto Size = std::tuple_size<typename std::decay_t<Tup>>::value;
 		return invoke_helper(std::forward<Func>(func),
 		                     std::forward<Tup>(tup),
 		                     std::make_index_sequence<Size>{});

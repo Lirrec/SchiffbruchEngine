@@ -15,6 +15,13 @@ namespace sbe
 		              "Member Function Pointer as template argument required.");
 	};
 
+	/**
+	 * This class provides a single member function Queue() which creates an Event in the correct way to work with
+	 * sbe::EventUser::RegisterMemberAsEventCallback().
+	 * @tparam HashValue
+	 * @tparam Base
+	 * @tparam Params
+	 */
 	template<HashType HashValue, typename Base, typename... Params>
 	class EventDef<HashValue, void (Base::*)(Params...)> {
 	public:
@@ -26,10 +33,17 @@ namespace sbe
 
 		template<typename... Args>
 		static void Queue(bool global, Args &&... args) {
-			return Module::Get()->QueueEvent<tuple_with_removed_refs<Params...> >(HashValue, global, std::forward<Args>(args)...);
+			Module::Get()->QueueEvent(HashValue, global, std::forward<Args>(args)...);
 		}
 	};
 
+	/**
+	 * Create an EventDef for a given member function pointer
+	 * @tparam H
+	 * @tparam T
+	 * @param t the member function pointer which the EventDef should use
+	 * @return
+	 */
 	template<HashType H, class T>
 	static constexpr auto makeEventDef(T&& t) {
 		return EventDef<H, T>(std::forward<T>(t));

@@ -9,30 +9,19 @@ namespace sbe
 {
 	Renderer::Renderer() {
 		//RegisterForEvent("ADD_ACTOR");
-		RegisterForEvent("UPDATE_ACTOR");
-		RegisterForEvent("REMOVE_ACTOR");
-		using namespace operators;
-		RegisterMemberAsEventCallback(this, addActorEvent(), "ADD_ACTOR");
-		RegisterMemberAsEventCallback(this, addActorsEvent(), "ADD_ACTORS");
-	}
 
 
-	void Renderer::HandleEvent(Event& e) {
-		/*if (e.Is("ADD_ACTOR", typeid(ActorInfo)))
-		{
-			ActorInfo AI = boost::any_cast<ActorInfo>(e.Data());
-			addActor(AI.first, AI.second);
-		}
-		else*/ if (e.Is("UPDATE_ACTOR", typeid(std::shared_ptr<Actor>)))
-		{
-			std::shared_ptr<Actor> A = boost::any_cast<std::shared_ptr<Actor>>(e.Data());
-			updateActor(A->getID(), A);
-		}
-		else if (e.Is("REMOVE_ACTOR", typeid(ActorID)))
-		{
-			ActorID ID = boost::any_cast<ActorID>(e.Data());
+		RegisterForEvent<std::shared_ptr<Actor>>("UPDATE_ACTOR", [this](std::shared_ptr<Actor> actor){
+			updateActor(actor->getID(), actor);
+		});
+
+		RegisterForEvent<ActorID>("REMOVE_ACTOR", [this](ActorID ID){
 			removeActor(ID);
-		}
+		});
+
+		using namespace operators;
+		RegisterMemberAsEventCallback(this, addActorEvent());
+		RegisterMemberAsEventCallback(this, addActorsEvent());
 	}
 
 	void Renderer::render(sf::RenderTarget& t) {

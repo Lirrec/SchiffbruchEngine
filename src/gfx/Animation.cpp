@@ -134,8 +134,7 @@ namespace sbe
 	void Animation::finish() {
 		if (sendEndEvent)
 		{
-			Event e = Event("EVT_ANIM_END");
-			Module::Get()->QueueEvent(e);
+			Module::Get()->QueueEvent("EVT_ANIM_END");
 		}
 	}
 

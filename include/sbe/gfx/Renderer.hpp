@@ -87,6 +87,15 @@ namespace sbe
 		A few tips for efficient rendering in General:
 			- avoid using a large amount of sprites ( e.g. for Tilemaps ), use a Vertexarray instead
 			- avoid many textureswitches ( draw everything that uses one texture together ( e.g. on one layer )
+
+		Events handled:
+		Event			| 	Data
+		----------------+---------------------------------------------
+		@see addActorEvent()
+	 	@see addActorsEvent()
+	 	UPDATE_ACTOR	|	std::shared_ptr<Actor>
+		REMOVE_ACTOR	|	ActorID
+
 	*/
 	class Renderer : public EventUser
 	{
@@ -180,16 +189,6 @@ namespace sbe
 
 
 		typedef std::pair<std::shared_ptr<Actor>, unsigned int> ActorInfo;
-
-	protected:
-		/**	Events handled:
-			Event			| 	Data
-			----------------+---------------------------------------------
-			ADD_ACTOR		|	std::pair<std::shared_ptr<Actor>, unsigned int>
-			UPDATE_ACTOR	|	std::shared_ptr<Actor>
-			REMOVE_ACTOR	|	ActorID
-		*/
-		void HandleEvent(Event& e) override;
 
 	private:
 

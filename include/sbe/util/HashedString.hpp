@@ -54,12 +54,6 @@ namespace sbe
 		std::string m_identStr;
 	};
 
-	namespace operators {
-		constexpr sbe::HashType operator "" _Hash(const char* str, size_t) {
-			return sbe::hash_name(str);
-		}
-	}
-
 } // namespace sbe
 
 #endif // STRINGHASH_H

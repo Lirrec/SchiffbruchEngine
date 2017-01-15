@@ -111,33 +111,41 @@ namespace sbe {
 		/// return the ID of the Eventqueue
 		size_t GetQueueID();
 
-		/**
-			Immediatly send an Event to all (local) listeners.
-		*/
-		void PostEvent(Event &e);
 
 		/**
 			Add an Event to the Eventqueue to be fired on the next frame.
 			@param e the Event to send
 			@param global if set to true the event will also be sent to all other modules
 		*/
-		void QueueEvent(const Event &e, bool global = false);
+		void QueueEvent(const Event& e, bool global = false);
 
 		/**
 			Add an Event to the Eventqueue to be fired on the next frame.
 			@param EvtName the name of the Event to send
 			@param global if set to true the event will also be sent to all other modules
 		*/
-		void QueueEvent(const std::string &EvtName, bool global = false);
+		void QueueEvent(const std::string& EvtName, bool global = false);
 
-		template<typename EventDataType, typename... Args>
-		void QueueEvent(const std::string &Name, bool global, Args &&... args) {
-			QueueEvent(Event(Name, EventDataType(args...)), global);
+		template<class T>
+		void QueueEvent(const std::string& Name,  T&& t, bool global = false) {
+			QueueEvent(Event(Name, t), global);
 		};
 
-		template<typename EventDataType, typename... Args>
-		void QueueEvent(const HashType Hash, bool global, Args &&... args) {
-			QueueEvent(Event(Hash, EventDataType(std::forward<Args>(args)...)), global);
+		template<class T>
+		void QueueEvent(const HashType& hash,  T&& t, bool global = false) {
+			QueueEvent(Event(hash, t), global);
+		};
+
+		template<class T, class... Args>
+		void QueueEvent(const std::string& Name, bool global, T&& t, Args&&... args) {
+			using ParamTuple = std::tuple<std::remove_reference_t<T>,std::remove_reference_t<Args>...>;
+			QueueEvent(Name, ParamTuple{t,args...}, global);
+		};
+
+		template<class T, class... Args>
+		void QueueEvent(const HashType& Hash, bool global, T&& t, Args&&... args) {
+			using ParamTuple = std::tuple<std::remove_reference_t<T>,std::remove_reference_t<Args>...>;
+			QueueEvent(Hash, ParamTuple{t,args...}, global);
 		};
 
 
@@ -219,6 +227,14 @@ namespace sbe {
 		void ThreadLocalInit();
 
 	private:
+
+
+
+		/**
+			Immediatly send an Event to all (local) listeners.
+		*/
+		void PostEvent(Event &e);
+
 		friend class GameBase;
 
 		static std::shared_ptr<boost::barrier> &GetBarrier();

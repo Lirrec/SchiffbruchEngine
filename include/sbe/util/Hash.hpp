@@ -84,6 +84,12 @@ namespace sbe {
 #undef DO16
 		return reinterpret_cast<HashType>((s2 << 16) | s1 );
 	}
+
+	namespace operators {
+		constexpr sbe::HashType operator "" _Hash(const char* str, size_t) {
+			return sbe::hash_name(str);
+		}
+	}
 }
 
 
