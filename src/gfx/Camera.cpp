@@ -20,10 +20,10 @@ namespace sbe
 	Camera::Camera()
 			: Scrolling(false),
 			  ScrollEnabled(true) {
-		ZoomFactor = Engine::getCfg()->get<float>("system.camera.zoomFactor");
-		ScrollFactor = Engine::getCfg()->get<float>("system.camera.scrollFactor");
-		delta = Engine::getCfg()->get<float>("system.camera.delta");
-		WheelZoomFactor = Engine::getCfg()->get<float>("system.camera.wheelZoomFactor");
+		ZoomFactor = Engine::getCfg()->get<float>("system.camera.zoomFactor", 0.2);
+		ScrollFactor = Engine::getCfg()->get<float>("system.camera.scrollFactor", 1.0);
+		delta = Engine::getCfg()->get<float>("system.camera.delta", 10);
+		WheelZoomFactor = Engine::getCfg()->get<float>("system.camera.wheelZoomFactor", 0.2);
 
 		CamLimits = sf::FloatRect(0, 0, 10000, 10000);
 		ZoomLimits = sf::FloatRect(0, 0, 10000, 10000);
@@ -44,17 +44,19 @@ namespace sbe
 	}
 
 	void Camera::setup() {
-		view.setSize(Engine::getCfg()->get<int>("system.renderer.windowsize.x"),
-					 Engine::getCfg()->get<int>("system.renderer.windowsize.y"));
 
-		view.setCenter(Engine::getCfg()->get<int>("system.renderer.windowsize.x")/2,
-					   Engine::getCfg()->get<int>("system.renderer.windowsize.y")/2);
+		sf::Vector2f WindowSize {
+			Engine::getCfg()->get<int>("system.renderer.windowsize.x", 1024),
+	        Engine::getCfg()->get<int>("system.renderer.windowsize.y", 768)
+		};
 
-		TargetSize = sf::Vector2f(Engine::getCfg()->get<int>("system.renderer.windowsize.x"),
-								  Engine::getCfg()->get<int>("system.renderer.windowsize.y"));
+		view.setSize(WindowSize);
 
-		TargetCenter = sf::Vector2f(Engine::getCfg()->get<int>("system.renderer.windowsize.x")/2,
-									Engine::getCfg()->get<int>("system.renderer.windowsize.y")/2);
+		view.setCenter(WindowSize.x/2, WindowSize.y/2);
+
+		TargetSize = WindowSize;
+
+		TargetCenter = {WindowSize.x/2, WindowSize.y/2};
 	}
 
 	void Camera::setTargetSize(sf::Vector2f size, bool dontsmooth) {

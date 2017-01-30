@@ -55,8 +55,10 @@ namespace sbe
 		std::string Title = Engine::getCfg()->get<std::string>("system.renderer.title", "SchiffbruchEngine powered.");
 
 		// create the renderwindow
-		Engine::GetApp().create(sf::VideoMode(Engine::getCfg()->get < unsigned int > ("system.renderer.windowsize.x"),
-				Engine::getCfg()->get < unsigned int > ("system.renderer.windowsize.y")), Title );
+		Engine::GetApp().create(
+			sf::VideoMode(	Engine::getCfg()->get<unsigned int>("system.renderer.windowsize.x", 1024),
+							Engine::getCfg()->get<unsigned int>("system.renderer.windowsize.y", 768)),
+			Title);
 
 		if (Icon != "")
 		{
@@ -165,11 +167,10 @@ namespace sbe
 			}
 			else
 			{
-				Engine::GetApp().create(sf::VideoMode(Engine::getCfg()->get < unsigned
-				int > ("system.renderer.windowsize.x"),
-						Engine::getCfg()->get < unsigned
-				int > ("system.renderer.windowsize.y")),
-				Engine::getCfg()->get<std::string>("system.renderer.title", "SchiffbruchEngine powered."));
+				Engine::GetApp().create(
+					sf::VideoMode(	Engine::getCfg()->get <unsigned int> ("system.renderer.windowsize.x", 1024),
+									Engine::getCfg()->get <unsigned int> ("system.renderer.windowsize.y", 768)),
+					Engine::getCfg()->get<std::string>("system.renderer.title", "SchiffbruchEngine powered."));
 				Fullscreen = false;
 			}
 
