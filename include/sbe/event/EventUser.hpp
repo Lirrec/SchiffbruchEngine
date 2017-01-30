@@ -139,17 +139,14 @@ namespace sbe {
 		 *
 		 * @see sbe::makeEventDef and sbe::Renderer::addActorEvent() for an example of how to provide an Interface to allow creation of an appropriate Event.
 		 *
-		 * @tparam Hash
-		 * @tparam Base
-		 * @tparam Params
-		 * @param _this
-		 * @param D
-		 * @param name
-		 * @param prio
 		 */
 		template<HashType Hash, class Base, typename... Params>
-		void RegisterMemberAsEventCallback(Base *_this, sbe::EventDef<Hash, void (Base::*)(Params...)> D, int prio = 0) {
+		void RegisterMemberAsEventCallback(Base *_this, sbe::EventDef<Hash, void (Base::*)(Params...)> D, const std::string& EventName, int prio = 0) {
 			using ParamTuple = tuple_with_removed_refs<Params...>;
+
+			// side-effect: this registers the EventName and its hash as a valid Event so later usage of the EventDef ( which only retains the hash )
+			// will not throw errors because the string corresponding to the hash is not known
+			Event e(EventName);
 
 			_this->RegisterForEvent(Hash, [_this, D](const Event &E) {
 				try {
@@ -157,10 +154,21 @@ namespace sbe {
 					//std::cout << "Invoke" << std::endl;
 					sbe::invoke_member(_this, D.member, Arguments);
 				} catch (boost::bad_any_cast& e) {
-					std::cout << "Event callback for member. Any cast failed: " << e.what() << std::endl;
-					std::cout << "Event has type: " << E.cData().type().name() << std::endl;
-					std::cout << "Member function has type: " << typeid(ParamTuple).name() << std::endl;
+					Engine::out(Engine::ERROR) << "Event callback for member. Any cast failed: " << e.what() << std::endl;
+					Engine::out(Engine::ERROR) << "Event has type: " << E.cData().type().name() << std::endl;
+					Engine::out(Engine::ERROR) << "Member function has type: " << typeid(ParamTuple).name() << std::endl;
 				}
+			}, prio);
+		}
+
+		/**
+		 * Calls a member function with no parameters if the given Event occurs
+		 * @tparam Base
+		 */
+		template<class Base>
+		void RegisterMemberAsEventCallback(Base *_this, void(Base::*member)(), const std::string& EventName, int prio = 0) {
+			_this->RegisterForEvent(EventName, [_this, member](const Event &E) {
+				(_this->*member)();
 			}, prio);
 		}
 
