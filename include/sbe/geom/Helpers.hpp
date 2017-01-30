@@ -54,7 +54,7 @@ namespace sbe
 			Return the middle point of a line defined by p1 and p2
 		*/
 		inline glm::ipoint2 middle(const glm::ipoint2& p1, const glm::ipoint2& p2) {
-			return glm::ipoint2(static_cast<int>(std::abs(p1.x + p2.x)/2), static_cast<int>(std::abs(p1.y + p2.y)/2));
+			return (p1+p2)/2;
 		}
 
 		// TRIANGLE

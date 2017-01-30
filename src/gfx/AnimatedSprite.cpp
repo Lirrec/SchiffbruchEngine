@@ -3,6 +3,7 @@
 #include <sbe/ResourceManager.hpp>
 
 #include <sbe/geom/SfmlHelpers.hpp>
+#include <sbe/geom/PointHelpers.hpp>
 
 namespace sbe
 {
@@ -37,7 +38,8 @@ namespace sbe
 
 	void AnimatedSprite::updateDrawable() {
 		s.setTextureRect(geom::toSFRect(AnimData->CalcTexCoords(CurFramePos)));
-		s.setPosition((float) Screen_Position.x, (float) Screen_Position.y);
+		auto pos = ScreenPosition + geom::PIToF(AnimData->DestPos);
+		s.setPosition( {pos.x, pos.y} );
 	}
 
 	sf::Sprite& AnimatedSprite::getSprite() {
@@ -46,5 +48,10 @@ namespace sbe
 
 	AnimatedSprite::~AnimatedSprite() {
 
+	}
+
+	void AnimatedSprite::setScreenPosition(glm::point2 p) {
+		Animation::setScreenPosition(p);
+		updateDrawable();
 	}
 } // namespace sbe

@@ -10,9 +10,14 @@
 
 #include <sbe/Module.hpp>
 
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+
 #include <SFGUI/SFGUI.hpp>
 #include <SFGUI/Desktop.hpp>
 #include <SFGUI/Window.hpp>
+
+
 
 namespace sbe
 {

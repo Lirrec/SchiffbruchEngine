@@ -1,7 +1,3 @@
-//
-// Created by gfwl on 07.12.2015.
-//
-
 #ifndef SCHIFFBRUCHENGINE_META_H
 #define SCHIFFBRUCHENGINE_META_H
 

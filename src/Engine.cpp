@@ -14,6 +14,8 @@
 
 #include <sbe/entity/EntityManager.hpp>
 
+#include <SFML/Graphics/RenderWindow.hpp>
+
 #include <chrono>
 
 namespace sbe

@@ -16,6 +16,8 @@
 #include <memory>
 #include <sbe/event/EventHelper.hpp>
 
+namespace sf { class RenderTarget; }
+
 namespace sbe
 {
 	class Camera;

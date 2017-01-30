@@ -21,6 +21,8 @@ namespace sbe
 		/// update the associated sprite/vertexarray to show the correct sub-rect/frame of the image
 		void updateDrawable() override;
 
+		void setScreenPosition(glm::point2 p) override;
+
 		void setImageSet(const std::shared_ptr<ImageSet>& _A) override;
 
 		/// return the managed Sprite

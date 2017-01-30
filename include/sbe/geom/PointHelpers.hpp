@@ -27,6 +27,7 @@ namespace sbe
 		inline glm::ipoint2 PFToI(const glm::point2& p) {
 			return glm::ipoint2((int) p.x, (int) p.y);
 		}
+
 	} // namespace geom
 } // namespace sbe
 

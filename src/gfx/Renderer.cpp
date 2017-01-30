@@ -5,6 +5,8 @@
 #include <sbe/geom/RectHelpers.hpp>
 #include <sbe/geom/SfmlHelpers.hpp>
 
+#include <SFML/Graphics/RenderTarget.hpp>
+
 namespace sbe
 {
 	Renderer::Renderer() {

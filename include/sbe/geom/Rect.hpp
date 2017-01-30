@@ -3,6 +3,7 @@
 
 #include <glm/vec2.hpp>
 #include <sfml/Graphics/Rect.hpp>
+#include <cmath>
 
 namespace sbe
 {
@@ -22,7 +23,7 @@ namespace sbe
 			                         y({fr.left+fr.width, fr.top+fr.height})
 			{}
 
-			operator sf::FloatRect() { return { x.x, x.y, std::abs(x.x - y.x), std::abs(x.y -y.y) }; }
+			operator sf::FloatRect() { return { x.x, x.y, std::fabs(x.x - y.x), std::fabs(x.y -y.y) }; }
 			rect operator/ (int i) const { return {{x.x/i, x.y/i},{y.x/i, y.y/i}};}
 			rect operator* (int i) const { return {{x.x*i, x.y*i},{y.x*i, y.y*i}};}
 			rect operator+ (int i) const { return {{x.x+i, x.y+i},{y.x+i, y.y+i}};}

@@ -32,7 +32,10 @@ namespace sbe
 		/// set the underlying ImageSet ( lazy construction )
 		virtual void setImageSet(const std::shared_ptr<ImageSet>& A);
 
-		void setScreenPosition(glm::ipoint2 p);
+		virtual /// set where on the screen/renderTarget the animation should be displayed
+		void setScreenPosition(glm::point2 p);
+		/// get the screenposition
+		glm::point2& getScreenPosition() { return ScreenPosition; }
 
 		/// Set the animation to a specific Frame
 		void setFrame(unsigned int index);
@@ -85,13 +88,15 @@ namespace sbe
 		 * @return the internal imageset
 		 */
 		std::shared_ptr<ImageSet>& getImageSet() { return AnimData; }
+
+
 	protected:
 
 		/// called once the animation is finished, send an EVT_ANIM_FINISCH event if requested
 		void finish();
 
 		std::shared_ptr<ImageSet> AnimData;
-		glm::ipoint2 Screen_Position;
+		glm::point2 ScreenPosition;
 
 		bool playing;
 		bool reverse;
@@ -105,6 +110,7 @@ namespace sbe
 
 		sf::Time LastUpdate;
 
+		void printState();
 	};
 } // namespace sbe
 

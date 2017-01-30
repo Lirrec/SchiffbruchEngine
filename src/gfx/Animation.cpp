@@ -13,6 +13,11 @@ namespace sbe
 		//	Engine::out() << "Animation(" << this << ")" << std::endl;
 	}
 
+	void Animation::printState() {
+		Engine::out() << "current frame - playing/looping/reverse: " << CurFrame << " - " << isPlaying() << "/" << isLooping()  << "/" << isReverse() << std::endl;
+		Engine::out() << "ImageSet (Image): " << AnimData->Name << "(" << AnimData->ImageName << ")" << std::endl;
+	}
+
 	void Animation::setImageSet(const std::shared_ptr<ImageSet>& A) {
 		AnimData = A;
 
@@ -28,15 +33,15 @@ namespace sbe
 		playing = false;
 		reverse = false;
 		looping = false;
-		Screen_Position = glm::ipoint2(0, 0);
+		ScreenPosition = {};
 		sendEndEvent = false;
 		setFrame(0);
 		RangeToPlay = AnimData->FrameCount;
 		LastUpdate = GameTime;
 	}
 
-	void Animation::setScreenPosition(glm::ipoint2 p) {
-		Screen_Position = p;
+	void Animation::setScreenPosition(glm::point2 p) {
+		ScreenPosition = p;
 	}
 
 	void Animation::setFrame(unsigned int index) {
