@@ -20,8 +20,8 @@ namespace sbe
 		});
 
 		using namespace operators;
-		RegisterMemberAsEventCallback(this, addActorEvent());
-		RegisterMemberAsEventCallback(this, addActorsEvent());
+		RegisterMemberAsEventCallback(this, addActorEvent(), "ADD_ACTOR");
+		RegisterMemberAsEventCallback(this, addActorsEvent(), "ADD_ACTORS");
 	}
 
 	void Renderer::render(sf::RenderTarget& t) {
