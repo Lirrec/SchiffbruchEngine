@@ -2,13 +2,12 @@
 #define GRAPHIC_H
 
 #include <boost/uuid/uuid.hpp>
+#include <sbe/geom/Rect.hpp>
 
-#include <string>
-#include <memory>
-
-#include <boost/uuid/uuid.hpp>
-
-#include <SFML/System/Time.hpp>
+namespace sf {
+	class Drawable;
+	class Time;
+}
 
 namespace sbe
 {
