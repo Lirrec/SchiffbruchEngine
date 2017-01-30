@@ -3,6 +3,7 @@
 
 #include <string>
 #include <memory>
+#include <vector>
 
 #include <typeinfo>
 #include <typeindex>
@@ -91,6 +92,14 @@ namespace sbe
 		*/
 		template<typename T>
 		std::shared_ptr<T> get(const std::string& name);
+
+/**
+			Access multiple stored objects with a given string in their name
+			@param name the string to search for
+			@return a vector of pointers to the found objects, may be empty
+		*/
+		template<typename T>
+		std::vector<std::shared_ptr<T>> getMatching(const std::string& name);
 
 		/**
 			@see add(std::shared_ptr<T> res, const std::string& name)

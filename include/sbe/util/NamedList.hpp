@@ -7,6 +7,7 @@
 #include <string>
 #include <map>
 #include <iostream>
+#include <vector>
 
 namespace sbe
 {
@@ -48,6 +49,16 @@ namespace sbe
 
 			// elem not found, return an invalid smart-pointer
 			return ptr_type();
+		}
+
+		/// return all items containing the name
+		std::vector<ptr_type> GetItems(std::string name) const {
+			std::vector<ptr_type> re;
+			for ( auto& elem : Items) {
+				if (elem.first.find(name) != std::string::npos)
+					re.push_back(elem.second);
+			}
+			return re;
 		}
 
 		/// add an item by pointer

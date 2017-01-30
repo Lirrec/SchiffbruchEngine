@@ -13,6 +13,13 @@ namespace sbe
 	}
 
 	template<typename T>
+	std::vector<std::shared_ptr<T>> ResourceManager::getMatching(const std::string& name) {
+		auto ti = std::type_index(typeid(T));
+		auto r = std::dynamic_pointer_cast<NamedList<T>>(Resources[ti]);
+		return r->GetItems(name);
+	}
+
+	template<typename T>
 	bool ResourceManager::add(T& res, const std::string& name) {
 		return add(std::shared_ptr<T>(res), name);
 	}
