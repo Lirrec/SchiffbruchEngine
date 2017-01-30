@@ -34,7 +34,7 @@ namespace sbe
 		return {{0,0},{0,0}};
 	}
 
-	AnimationActor::AnimationActor(ImageSet& ImgSet)
+	AnimationActor::AnimationActor(const std::shared_ptr<ImageSet>& ImgSet)
 			: Anim(ImgSet) {
 	}
 

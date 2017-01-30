@@ -22,7 +22,7 @@ namespace sbe
 	{
 	public:
 
-		Animation(ImageSet& _A);
+		Animation( const std::shared_ptr<ImageSet>& Anim);
 
 		virtual ~Animation() { }
 
@@ -30,7 +30,7 @@ namespace sbe
 		void reset(const sf::Time& GameTime);
 
 		/// set the underlying ImageSet ( lazy construction )
-		virtual void setImageSet(ImageSet& A);
+		virtual void setImageSet(const std::shared_ptr<ImageSet>& A);
 
 		void setScreenPosition(glm::ipoint2 p);
 
@@ -81,13 +81,16 @@ namespace sbe
 		*/
 		virtual void updateDrawable() = 0;
 
-
+		/**
+		 * @return the internal imageset
+		 */
+		std::shared_ptr<ImageSet> getImageSet() { return AnimData; }
 	protected:
 
 		/// called once the animation is finished, send an EVT_ANIM_FINISCH event if requested
 		void finish();
 
-		ImageSet& AnimData;
+		std::shared_ptr<ImageSet> AnimData;
 		glm::ipoint2 Screen_Position;
 
 		bool playing;

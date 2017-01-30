@@ -14,12 +14,14 @@ namespace sbe
 	{
 	public:
 
-		AnimatedSprite(ImageSet& _A);
+		AnimatedSprite(const std::shared_ptr<ImageSet>& Anim);
+
+		~AnimatedSprite() override;
 
 		/// update the associated sprite/vertexarray to show the correct sub-rect/frame of the image
 		void updateDrawable() override;
 
-		void setImageSet(ImageSet& _A) override;
+		void setImageSet(const std::shared_ptr<ImageSet>& _A) override;
 
 		/// return the managed Sprite
 		sf::Sprite& getSprite();

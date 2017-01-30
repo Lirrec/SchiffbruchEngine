@@ -92,7 +92,7 @@ namespace sbe
 	class AnimationActor : public Actor
 	{
 	public:
-		AnimationActor(ImageSet& ImgSet);
+		AnimationActor(const std::shared_ptr<ImageSet>& ImgSet);
 
 		void update(const sf::Time& RenderTime) override;
 
