@@ -23,6 +23,10 @@ namespace sbe
 			{}
 
 			operator sf::FloatRect() { return { x.x, x.y, std::abs(x.x - y.x), std::abs(x.y -y.y) }; }
+			rect operator/ (int i) const { return {{x.x/i, x.y/i},{y.x/i, y.y/i}};}
+			rect operator* (int i) const { return {{x.x*i, x.y*i},{y.x*i, y.y*i}};}
+			rect operator+ (int i) const { return {{x.x+i, x.y+i},{y.x+i, y.y+i}};}
+			rect operator- (int i) const { return {{x.x-i, x.y-i},{y.x-i, y.y-i}};}
 
 			rect(const glm::vec2& _x, const glm::vec2& _y) : x(_x), y(_y) { }
 
@@ -41,6 +45,12 @@ namespace sbe
 			{}
 
 			operator sf::IntRect() { return { x.x, x.y, std::abs(x.x - y.x), std::abs(x.y -y.y) }; }
+
+			irect operator/ (int i) const { return {{x.x/i, x.y/i},{y.x/i, y.y/i}};}
+			irect operator* (int i) const { return {{x.x*i, x.y*i},{y.x*i, y.y*i}};}
+			irect operator+ (int i) const { return {{x.x+i, x.y+i},{y.x+i, y.y+i}};}
+			irect operator- (int i) const { return {{x.x-i, x.y-i},{y.x-i, y.y-i}};}
+
 
 			irect(const glm::ivec2& _x, const glm::ivec2& _y) : x(_x), y(_y) { }
 
