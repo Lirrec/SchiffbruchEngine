@@ -1,7 +1,7 @@
 #ifndef MESSAGEHANDLER_H
 #define MESSAGEHANDLER_H
 
-#include "sbe/event/EventUser.hpp"
+#include <sbe/event/EventUser.hpp>
 #include "Message.hpp"
 
 namespace sbe

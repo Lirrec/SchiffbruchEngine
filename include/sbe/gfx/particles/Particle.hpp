@@ -1,7 +1,7 @@
 #ifndef PARTICLE_HPP
 #define PARTICLE_HPP
 
-#include "sbe/geom/Point.hpp"
+#include <sbe/geom/Point.hpp>
 
 #include <SFML/Graphics/Color.hpp>
 

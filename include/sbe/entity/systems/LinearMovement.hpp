@@ -1,8 +1,8 @@
 #ifndef LINEARMOVEMENT_HPP
 #define LINEARMOVEMENT_HPP
 
-#include "sbe/entity/System.hpp"
-#include "sbe/geom/Point.hpp"
+#include <sbe/entity/System.hpp>
+#include <sbe/geom/Point.hpp>
 
 namespace sbe
 {

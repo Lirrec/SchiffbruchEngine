@@ -1,4 +1,4 @@
-#include "sbe/scripting/RubyEngine.hpp"
+#include <sbe/scripting/RubyEngine.hpp>
 
 #include <ruby.h>
 

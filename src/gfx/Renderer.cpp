@@ -1,5 +1,5 @@
-#include "sbe/gfx/Renderer.hpp"
-#include "sbe/gfx/Camera.hpp"
+#include <sbe/gfx/Renderer.hpp>
+#include <sbe/gfx/Camera.hpp>
 
 #include <boost/uuid/uuid_io.hpp>
 #include <sbe/geom/RectHelpers.hpp>

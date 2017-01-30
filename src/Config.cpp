@@ -1,6 +1,6 @@
-#include "sbe/Config.hpp"
+#include <sbe/Config.hpp>
 
-#include "sbe/io/IO.hpp"
+#include <sbe/io/IO.hpp>
 
 namespace fs = boost::filesystem;
 namespace pt = boost::property_tree;

@@ -1,4 +1,4 @@
-#include "sbe/scripting/PythonEngine.hpp"
+#include <sbe/scripting/PythonEngine.hpp>
 
 #include <Python.h>
 

@@ -6,7 +6,7 @@
 #include <istream>
 #include <ostream>
 
-#include "sbe/io/IOPlugin.hpp"
+#include <sbe/io/IOPlugin.hpp>
 
 namespace sbe
 {

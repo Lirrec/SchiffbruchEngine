@@ -4,10 +4,10 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "sbe/geom/Point.hpp"
-#include "sbe/geom/Rect.hpp"
+#include <sbe/geom/Point.hpp>
+#include <sbe/geom/Rect.hpp>
 
-#include "sbe/Engine.hpp"
+#include <sbe/Engine.hpp>
 
 #include <memory>
 

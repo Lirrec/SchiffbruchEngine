@@ -2,7 +2,7 @@
 #define ACTION_H
 
 #include <string>
-#include "sbe/event/EventUser.hpp"
+#include <sbe/event/EventUser.hpp>
 
 namespace sbe
 {

@@ -1,6 +1,6 @@
-#include "sbe/entity/Component.hpp"
+#include <sbe/entity/Component.hpp>
 
-#include "sbe/entity/EntityManager.hpp"
+#include <sbe/entity/EntityManager.hpp>
 
 namespace sbe
 {

@@ -5,8 +5,8 @@
 	@file "SfmlHelpers.hpp" Helper Functions regarding conversion and sfml Rectangles/points/vectors
 */
 
-#include "sbe/geom/Point.hpp"
-#include "sbe/geom/Rect.hpp"
+#include <sbe/geom/Point.hpp>
+#include <sbe/geom/Rect.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Rect.hpp>
 

@@ -1,10 +1,10 @@
-#include "sbe/gfx/ImageSet.hpp"
+#include <sbe/gfx/ImageSet.hpp>
 
-#include "sbe/geom/SfmlHelpers.hpp"
+#include <sbe/geom/SfmlHelpers.hpp>
 
 
-#include "sbe/ResourceManager.hpp"
-#include "sbe/gfx/VertexUtils.hpp"
+#include <sbe/ResourceManager.hpp>
+#include <sbe/gfx/VertexUtils.hpp>
 
 namespace sbe
 {

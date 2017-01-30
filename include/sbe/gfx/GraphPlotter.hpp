@@ -1,7 +1,7 @@
 #ifndef GRAPHPLOT_HPP
 #define GRAPHPLOT_HPP
 
-#include "sbe/geom/Point.hpp"
+#include <sbe/geom/Point.hpp>
 
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/VertexArray.hpp>

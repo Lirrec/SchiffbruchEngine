@@ -5,7 +5,7 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/Vector2.hpp>
 
-#include "sbe/geom/Rect.hpp"
+#include <sbe/geom/Rect.hpp>
 
 namespace sbe
 {

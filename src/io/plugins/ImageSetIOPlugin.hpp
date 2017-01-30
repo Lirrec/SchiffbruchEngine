@@ -1,9 +1,9 @@
 #ifndef IMAGESETIOPLUGIN_HPP
 #define IMAGESETIOPLUGIN_HPP
 
-#include "sbe/gfx/ImageSet.hpp"
+#include <sbe/gfx/ImageSet.hpp>
 
-#include "sbe/io/IOPlugin.hpp"
+#include <sbe/io/IOPlugin.hpp>
 
 #include <boost/property_tree/ptree.hpp>
 

@@ -1,8 +1,8 @@
 #ifndef FILE_BROWSE_HPP
 #define FILE_BROWSE_HPP
 
-#include "sbe/event/EventUser.hpp"
-#include "sbe/geom/Point.hpp"
+#include <sbe/event/EventUser.hpp>
+#include <sbe/geom/Point.hpp>
 
 #include <functional>
 

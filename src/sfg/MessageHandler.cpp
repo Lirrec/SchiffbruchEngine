@@ -1,5 +1,5 @@
-#include "sbe/sfg/MessageHandler.hpp"
-#include "sbe/Module.hpp"
+#include <sbe/sfg/MessageHandler.hpp>
+#include <sbe/Module.hpp>
 
 namespace sbe
 {

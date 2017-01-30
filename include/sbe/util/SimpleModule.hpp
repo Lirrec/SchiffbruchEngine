@@ -1,7 +1,7 @@
 #ifndef SCHIFFBRUCHENGINE_SIMPLEMODULE_HPP_H
 #define SCHIFFBRUCHENGINE_SIMPLEMODULE_HPP_H
 
-#include "sbe/Module.hpp"
+#include <sbe/Module.hpp>
 #include <tuple>
 #include <memory>
 

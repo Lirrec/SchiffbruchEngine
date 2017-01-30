@@ -3,8 +3,8 @@
 
 #include <SFML/System/NonCopyable.hpp>
 
-#include "sbe/util/ConcurrentQueue.hpp"
-#include "sbe/event/Event.hpp"
+#include <sbe/util/ConcurrentQueue.hpp>
+#include <sbe/event/Event.hpp>
 
 
 namespace sbe

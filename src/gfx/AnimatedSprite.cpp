@@ -1,8 +1,8 @@
-#include "sbe/gfx/AnimatedSprite.hpp"
+#include <sbe/gfx/AnimatedSprite.hpp>
 
-#include "sbe/ResourceManager.hpp"
+#include <sbe/ResourceManager.hpp>
 
-#include "sbe/geom/SfmlHelpers.hpp"
+#include <sbe/geom/SfmlHelpers.hpp>
 
 namespace sbe
 {

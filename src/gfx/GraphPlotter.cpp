@@ -1,8 +1,8 @@
-#include "sbe/gfx/GraphPlotter.hpp"
+#include <sbe/gfx/GraphPlotter.hpp>
 
-#include "sbe/gfx/VertexUtils.hpp"
-#include "sbe/Engine.hpp"
-#include "sbe/ResourceManager.hpp"
+#include <sbe/gfx/VertexUtils.hpp>
+#include <sbe/Engine.hpp>
+#include <sbe/ResourceManager.hpp>
 
 #include <boost/thread.hpp>
 #include <boost/lexical_cast.hpp>

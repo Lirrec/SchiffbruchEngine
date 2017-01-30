@@ -1,7 +1,7 @@
 #ifndef MAPPLOT_H
 #define MAPPLOT_H
 
-#include "sbe/geom/Point.hpp"
+#include <sbe/geom/Point.hpp>
 
 #include <vector>
 #include <SFML/Graphics/Image.hpp>

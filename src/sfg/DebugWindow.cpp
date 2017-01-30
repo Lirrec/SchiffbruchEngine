@@ -1,4 +1,4 @@
-#include "sbe/sfg/DebugWindow.hpp"
+#include <sbe/sfg/DebugWindow.hpp>
 
 #include <sbe/util/console/CommandParser.hpp>
 #include <SFGUI/Label.hpp>
@@ -8,7 +8,7 @@
 #include <SFGUI/ScrolledWindow.hpp>
 #include <SFGUI/Adjustment.hpp>
 
-#include "sbe/Module.hpp"
+#include <sbe/Module.hpp>
 
 using namespace sfg;
 

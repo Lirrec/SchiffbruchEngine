@@ -1,8 +1,8 @@
 #ifndef RECTHELPERS_HPP
 #define RECTHELPERS_HPP
 
-#include "sbe/geom/Point.hpp"
-#include "sbe/geom/Rect.hpp"
+#include <sbe/geom/Point.hpp>
+#include <sbe/geom/Rect.hpp>
 
 #include <boost/lexical_cast.hpp>
 

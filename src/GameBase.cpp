@@ -1,4 +1,4 @@
-#include "sbe/GameBase.hpp"
+#include <sbe/GameBase.hpp>
 
 #include <SFML/Graphics.hpp>
 
@@ -6,8 +6,8 @@
 #include <sbe/util/SimpleModule.hpp>
 #include <event/EventCore.hpp>
 
-#include "sbe/Module.hpp"
-#include "sbe/Engine.hpp"
+#include <sbe/Module.hpp>
+#include <sbe/Engine.hpp>
 
 
 namespace sbe

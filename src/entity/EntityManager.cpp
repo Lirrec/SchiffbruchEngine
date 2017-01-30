@@ -1,12 +1,12 @@
-#include "sbe/entity/EntityManager.hpp"
+#include <sbe/entity/EntityManager.hpp>
 
 #include <boost/uuid/nil_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
-#include "sbe/entity/components/Position.hpp"
-#include "sbe/entity/components/SFMLDrawables.hpp"
+#include <sbe/entity/components/Position.hpp>
+#include <sbe/entity/components/SFMLDrawables.hpp>
 
-#include "sbe/entity/systems/SpriteRenderer.hpp"
-#include "sbe/entity/systems/LinearMovement.hpp"
+#include <sbe/entity/systems/SpriteRenderer.hpp>
+#include <sbe/entity/systems/LinearMovement.hpp>
 
 namespace sbe
 {

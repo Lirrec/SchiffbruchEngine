@@ -2,7 +2,7 @@
 
 #include <boost/lexical_cast.hpp>
 
-#include "sbe/Module.hpp"
+#include <sbe/Module.hpp>
 
 
 #include <boost/format.hpp>

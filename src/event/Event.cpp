@@ -1,9 +1,9 @@
-#include "sbe/event/Event.hpp"
+#include <sbe/event/Event.hpp>
 
 #include <boost/lexical_cast.hpp>
 #include <sbe/util/SimpleModule.hpp>
 
-#include "sbe/event/EventHelper.hpp"
+#include <sbe/event/EventHelper.hpp>
 
 // local includes
 #include "EventCore.hpp"

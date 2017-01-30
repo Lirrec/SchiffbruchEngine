@@ -1,14 +1,14 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
-#include "sbe/event/EventUser.hpp"
+#include <sbe/event/EventUser.hpp>
 
 namespace sfg
 {
 	class Window;
 }
 
-#include "sbe/geom/Point.hpp"
+#include <sbe/geom/Point.hpp>
 
 namespace sbe
 {

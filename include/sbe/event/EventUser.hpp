@@ -1,8 +1,8 @@
 #ifndef EVTLISTENER_H
 #define EVTLISTENER_H
 
-#include "sbe/event/Event.hpp"
-#include "sbe/Module.hpp"
+#include <sbe/event/Event.hpp>
+#include <sbe/Module.hpp>
 #include "EventHelper.hpp"
 
 #include <map>

@@ -1,7 +1,7 @@
-#include "sbe/sfg/FileBrowse.hpp"
+#include <sbe/sfg/FileBrowse.hpp>
 
-#include "sbe/Config.hpp"
-#include "sbe/sfg/List.hpp"
+#include <sbe/Config.hpp>
+#include <sbe/sfg/List.hpp>
 
 #include <SFGUI/Window.hpp>
 #include <SFGUI/Button.hpp>
@@ -13,7 +13,7 @@
 
 #include <boost/filesystem.hpp>
 
-#include "sbe/Module.hpp"
+#include <sbe/Module.hpp>
 
 namespace sbe
 {

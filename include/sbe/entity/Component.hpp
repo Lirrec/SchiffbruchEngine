@@ -1,8 +1,8 @@
 #ifndef COMPONENT_HPP
 #define COMPONENT_HPP
 
-#include "sbe/util/ClassFactory.hpp"
-#include "sbe/entity/EntityID.hpp"
+#include <sbe/util/ClassFactory.hpp>
+#include <sbe/entity/EntityID.hpp>
 #include <boost/any.hpp>
 #include <memory>
 #include <string>

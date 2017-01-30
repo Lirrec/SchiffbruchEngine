@@ -3,7 +3,7 @@
 #include <boost/lexical_cast.hpp>
 
 #include "EventCore.hpp"
-#include "sbe/event/EventUser.hpp"
+#include <sbe/event/EventUser.hpp>
 
 namespace sbe
 {

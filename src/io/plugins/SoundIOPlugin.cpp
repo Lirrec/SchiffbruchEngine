@@ -1,6 +1,6 @@
 #include "SoundIOPlugin.hpp"
 
-#include "sbe/io/SFistream.hpp"
+#include <sbe/io/SFistream.hpp>
 
 namespace sbe
 {

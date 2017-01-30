@@ -1,14 +1,14 @@
-#include "sbe/entity/systems/SpriteRenderer.hpp"
+#include <sbe/entity/systems/SpriteRenderer.hpp>
 
 #include <boost/uuid/uuid_io.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <sbe/gfx/Renderer.hpp>
-#include "sbe/util/Transformable.hpp"
+#include <sbe/util/Transformable.hpp>
 
-#include "sbe/entity/Entity.hpp"
-#include "sbe/gfx/Actor.hpp"
-#include "sbe/event/Event.hpp"
-#include "sbe/Module.hpp"
+#include <sbe/entity/Entity.hpp>
+#include <sbe/gfx/Actor.hpp>
+#include <sbe/event/Event.hpp>
+#include <sbe/Module.hpp>
 
 
 namespace sbe

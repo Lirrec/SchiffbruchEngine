@@ -1,6 +1,6 @@
-#include "sbe/Sound.hpp"
+#include <sbe/Sound.hpp>
 
-#include "sbe/ResourceManager.hpp"
+#include <sbe/ResourceManager.hpp>
 
 #include <SFML/Audio/SoundBuffer.hpp>
 

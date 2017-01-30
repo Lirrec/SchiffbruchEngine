@@ -1,6 +1,6 @@
-#include "sbe/entity/Entity.hpp"
+#include <sbe/entity/Entity.hpp>
 
-#include "sbe/entity/EntityManager.hpp"
+#include <sbe/entity/EntityManager.hpp>
 
 #include <boost/uuid/random_generator.hpp>
 

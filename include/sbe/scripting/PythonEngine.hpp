@@ -1,7 +1,7 @@
 #ifndef PYSCRIPTING_HPP
 #define PYSCRIPTING_HPP
 
-#include "sbe/ScriptingEngine.hpp"
+#include <sbe/ScriptingEngine.hpp>
 
 namespace sbe
 {

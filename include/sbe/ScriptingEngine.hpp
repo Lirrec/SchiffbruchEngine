@@ -1,7 +1,7 @@
 #ifndef SCRIPTING_HPP
 #define SCRIPTING_HPP
 
-#include "sbe/event/EventUser.hpp"
+#include <sbe/event/EventUser.hpp>
 #include <string>
 
 namespace sbe

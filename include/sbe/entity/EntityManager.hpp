@@ -1,13 +1,13 @@
 #ifndef ENTITYMANAGER_HPP
 #define ENTITYMANAGER_HPP
 
-#include "sbe/entity/EntityID.hpp"
+#include <sbe/entity/EntityID.hpp>
 
-#include "sbe/entity/Component.hpp"
-#include "sbe/entity/Entity.hpp"
-#include "sbe/entity/System.hpp"
+#include <sbe/entity/Component.hpp>
+#include <sbe/entity/Entity.hpp>
+#include <sbe/entity/System.hpp>
 
-#include "sbe/util/ClassFactory.hpp"
+#include <sbe/util/ClassFactory.hpp>
 
 #include <string>
 #include <unordered_map>

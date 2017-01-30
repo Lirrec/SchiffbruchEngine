@@ -6,7 +6,7 @@
 
 #include <SFML/System/NonCopyable.hpp>
 
-#include "sbe/Engine.hpp"
+#include <sbe/Engine.hpp>
 
 namespace sbe
 {

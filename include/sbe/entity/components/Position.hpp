@@ -1,8 +1,8 @@
 #ifndef C_POSITION_HPP
 #define C_POSITION_HPP
 
-#include "sbe/geom/Point.hpp"
-#include "sbe/entity/Component.hpp"
+#include <sbe/geom/Point.hpp>
+#include <sbe/entity/Component.hpp>
 
 #include <SFML/Graphics/Transformable.hpp>
 

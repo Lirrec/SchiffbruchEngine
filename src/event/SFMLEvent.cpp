@@ -1,9 +1,9 @@
-#include "sbe/event/SFMLEvent.hpp"
-#include "sbe/event/SFMLKeys.hpp"
+#include <sbe/event/SFMLEvent.hpp>
+#include <sbe/event/SFMLKeys.hpp>
 
-#include "sbe/Config.hpp"
+#include <sbe/Config.hpp>
 #include "EventQueue.hpp"
-#include "sbe/Module.hpp"
+#include <sbe/Module.hpp>
 
 namespace sbe
 {

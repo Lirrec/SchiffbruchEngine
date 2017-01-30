@@ -1,15 +1,15 @@
 #ifndef RENDERER_HPP
 #define RENDERER_HPP
 
-#include "sbe/gfx/Actor.hpp"
-#include "sbe/event/EventUser.hpp"
+#include <sbe/gfx/Actor.hpp>
+#include <sbe/event/EventUser.hpp>
 
-#include "sbe/util/BoostUUIDHash.hpp"
+#include <sbe/util/BoostUUIDHash.hpp>
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/System/Clock.hpp>
 
-#include "sbe/Module.hpp"
+#include <sbe/Module.hpp>
 
 #include <vector>
 #include <unordered_map>

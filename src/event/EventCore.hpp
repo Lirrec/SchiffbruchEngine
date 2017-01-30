@@ -1,11 +1,11 @@
 #ifndef EVTMGR_H
 #define EVTMGR_H
 
-#include "sbe/Module.hpp"
-#include "sbe/event/Event.hpp"
-#include "sbe/util/ConcurrentQueue.hpp"
-#include "sbe/util/HashedString.hpp"
-#include "sbe/util/HashManager.hpp"
+#include <sbe/Module.hpp>
+#include <sbe/event/Event.hpp>
+#include <sbe/util/ConcurrentQueue.hpp>
+#include <sbe/util/HashedString.hpp>
+#include <sbe/util/HashManager.hpp>
 
 //internal headers
 #include "EventQueue.hpp"

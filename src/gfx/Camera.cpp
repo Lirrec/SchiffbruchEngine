@@ -1,9 +1,9 @@
-#include "sbe/gfx/Camera.hpp"
+#include <sbe/gfx/Camera.hpp>
 
-#include "sbe/Config.hpp"
-#include "sbe/Module.hpp"
-#include "sbe/geom/Point.hpp"
-#include "sbe/geom/SfmlHelpers.hpp"
+#include <sbe/Config.hpp>
+#include <sbe/Module.hpp>
+#include <sbe/geom/Point.hpp>
+#include <sbe/geom/SfmlHelpers.hpp>
 
 #include <SFML/Graphics/RenderWindow.hpp>
 

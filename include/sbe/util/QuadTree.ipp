@@ -1,4 +1,4 @@
-#include "sbe/util/QuadTree.hpp"
+#include <sbe/util/QuadTree.hpp>
 
 namespace sbe
 {

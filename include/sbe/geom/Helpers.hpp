@@ -7,7 +7,7 @@
 
 #include <cmath>
 
-#include "sbe/geom/Point.hpp"
+#include <sbe/geom/Point.hpp>
 
 /**
 	@file "Helpers.hpp" General Helper functions

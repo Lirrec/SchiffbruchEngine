@@ -2,8 +2,8 @@
 #define SYSTEM_HPP
 
 
-#include "sbe/entity/EntityID.hpp"
-#include "sbe/util/ClassFactory.hpp"
+#include <sbe/entity/EntityID.hpp>
+#include <sbe/util/ClassFactory.hpp>
 
 #include <boost/uuid/name_generator.hpp>
 

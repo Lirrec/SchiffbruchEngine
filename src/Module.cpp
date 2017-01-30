@@ -1,4 +1,4 @@
-#include "sbe/Module.hpp"
+#include <sbe/Module.hpp>
 
 #include <boost/thread.hpp>
 

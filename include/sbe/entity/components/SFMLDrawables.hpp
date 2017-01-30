@@ -1,6 +1,6 @@
 #include <SFML/Graphics/Sprite.hpp>
 
-#include "sbe/entity/Component.hpp"
+#include <sbe/entity/Component.hpp>
 
 namespace sbe
 {

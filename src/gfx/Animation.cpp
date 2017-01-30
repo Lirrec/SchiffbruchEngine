@@ -1,7 +1,7 @@
-#include "sbe/gfx/Animation.hpp"
+#include <sbe/gfx/Animation.hpp>
 
-#include "sbe/event/Event.hpp"
-#include "sbe/Module.hpp"
+#include <sbe/event/Event.hpp>
+#include <sbe/Module.hpp>
 
 
 namespace sbe

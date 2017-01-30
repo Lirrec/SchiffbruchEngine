@@ -1,4 +1,4 @@
-#include "sbe/event/SFMLKeys.hpp"
+#include <sbe/event/SFMLKeys.hpp>
 
 namespace sbe
 {

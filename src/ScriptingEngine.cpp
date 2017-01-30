@@ -1,4 +1,4 @@
-#include "sbe/ScriptingEngine.hpp"
+#include <sbe/ScriptingEngine.hpp>
 
 #include <boost/filesystem.hpp>
 

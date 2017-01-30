@@ -1,7 +1,7 @@
 #ifndef RUBYSCRIPTING_HPP
 #define RUBYSCRIPTING_HPP
 
-#include "sbe/ScriptingEngine.hpp"
+#include <sbe/ScriptingEngine.hpp>
 
 namespace sbe
 {

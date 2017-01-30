@@ -1,9 +1,9 @@
-#include "sbe/event/EventUser.hpp"
+#include <sbe/event/EventUser.hpp>
 
 #include "EventCore.hpp"
 
 
-#include "sbe/Module.hpp"
+#include <sbe/Module.hpp>
 
 namespace sbe
 {

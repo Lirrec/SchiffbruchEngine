@@ -1,7 +1,7 @@
-#include "sbe/sfg/List.hpp"
+#include <sbe/sfg/List.hpp>
 
-#include "sbe/event/Event.hpp"
-#include "sbe/Module.hpp"
+#include <sbe/event/Event.hpp>
+#include <sbe/Module.hpp>
 
 #include <SFGUI/Widget.hpp>
 #include <SFGUI/Label.hpp>

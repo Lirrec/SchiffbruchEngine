@@ -1,8 +1,8 @@
-#include "sbe/gfx/particles/ParticleSystem.hpp"
+#include <sbe/gfx/particles/ParticleSystem.hpp>
 
 #include <sbe/gfx/particles/Manipulators.hpp>
 
-#include "sbe/Module.hpp"
+#include <sbe/Module.hpp>
 
 namespace sbe
 {

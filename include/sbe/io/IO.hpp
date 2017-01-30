@@ -19,7 +19,7 @@
 #include <fstream>
 #include <iterator>
 
-#include "sbe/io/IOPlugin.hpp"
+#include <sbe/io/IOPlugin.hpp>
 
 namespace fs = boost::filesystem;
 namespace pt = boost::property_tree;

@@ -1,6 +1,6 @@
-#include "sbe/sfg/Message.hpp"
+#include <sbe/sfg/Message.hpp>
 
-#include "sbe/sfg/MessageHandler.hpp"
+#include <sbe/sfg/MessageHandler.hpp>
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -9,7 +9,7 @@
 #include <SFGUI/Label.hpp>
 #include <SFGUI/Button.hpp>
 
-#include "sbe/Module.hpp"
+#include <sbe/Module.hpp>
 
 using namespace sfg;
 

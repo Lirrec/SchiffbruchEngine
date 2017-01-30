@@ -1,7 +1,7 @@
 #ifndef ANIMATEDSPRITE_HPP
 #define ANIMATEDSPRITE_HPP
 
-#include "sbe/gfx/Animation.hpp"
+#include <sbe/gfx/Animation.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
 namespace sbe

@@ -1,7 +1,7 @@
 #ifndef NAMEDLIST_H
 #define NAMEDLIST_H
 
-#include "sbe/Engine.hpp"
+#include <sbe/Engine.hpp>
 
 #include <memory>
 #include <string>

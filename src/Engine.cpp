@@ -1,18 +1,18 @@
-#include "sbe/Engine.hpp"
+#include <sbe/Engine.hpp>
 
 
-#include "sbe/Config.hpp"
-#include "sbe/Sound.hpp"
-#include "sbe/gfx/Actor.hpp"
+#include <sbe/Config.hpp>
+#include <sbe/Sound.hpp>
+#include <sbe/gfx/Actor.hpp>
 
-#include "sbe/event/Event.hpp"
-#include "sbe/event/SFMLEvent.hpp"
+#include <sbe/event/Event.hpp>
+#include <sbe/event/SFMLEvent.hpp>
 
-#include "sbe/io/IO.hpp"
-#include "sbe/ResourceManager.hpp"
-#include "sbe/util/console/CommandParser.hpp"
+#include <sbe/io/IO.hpp>
+#include <sbe/ResourceManager.hpp>
+#include <sbe/util/console/CommandParser.hpp>
 
-#include "sbe/entity/EntityManager.hpp"
+#include <sbe/entity/EntityManager.hpp>
 
 #include <chrono>
 

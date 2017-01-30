@@ -1,10 +1,10 @@
-#include "sbe/ResourceManager.hpp"
+#include <sbe/ResourceManager.hpp>
 
 
-#include "sbe/util/NamedList.hpp"
-#include "sbe/io/IO.hpp"
+#include <sbe/util/NamedList.hpp>
+#include <sbe/io/IO.hpp>
 
-#include "sbe/io/IOPlugin.hpp"
+#include <sbe/io/IOPlugin.hpp>
 #include "io/plugins/ImageSetIOPlugin.hpp"
 #include "io/plugins/SoundIOPlugin.hpp"
 #include "io/plugins/ImageIOPlugin.hpp"

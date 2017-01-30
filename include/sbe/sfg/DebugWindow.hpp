@@ -1,7 +1,7 @@
 #ifndef DGB_WINDOW_H
 #define DGB_WINDOW_H
 
-#include "sbe/event/EventUser.hpp"
+#include <sbe/event/EventUser.hpp>
 #include <memory>
 
 namespace sfg
@@ -17,7 +17,7 @@ namespace sfg
 	class Entry;
 }
 
-#include "sbe/geom/Point.hpp"
+#include <sbe/geom/Point.hpp>
 
 namespace sbe
 {

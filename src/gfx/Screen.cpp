@@ -1,14 +1,14 @@
-#include "sbe/gfx/Screen.hpp"
+#include <sbe/gfx/Screen.hpp>
 
-#include "sbe/Config.hpp"
+#include <sbe/Config.hpp>
 
-#include "sbe/event/SFMLEventUser.hpp"
-#include "sbe/event/SFMLEvent.hpp"
+#include <sbe/event/SFMLEventUser.hpp>
+#include <sbe/event/SFMLEvent.hpp>
 
-#include "sbe/gfx/Renderer.hpp"
-#include "sbe/gfx/Camera.hpp"
+#include <sbe/gfx/Renderer.hpp>
+#include <sbe/gfx/Camera.hpp>
 
-#include "sbe/Module.hpp"
+#include <sbe/Module.hpp>
 
 #include <SFGUI/SFGUI.hpp>
 #include <SFGUI/Desktop.hpp>

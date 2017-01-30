@@ -1,9 +1,9 @@
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
 
-#include "sbe/entity/Component.hpp"
+#include <sbe/entity/Component.hpp>
 
-#include "sbe/entity/EntityID.hpp"
+#include <sbe/entity/EntityID.hpp>
 #include <boost/optional.hpp>
 #include <boost/any.hpp>
 

@@ -6,7 +6,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
 
-#include "sbe/geom/Point.hpp"
+#include <sbe/geom/Point.hpp>
 
 namespace sbe
 {

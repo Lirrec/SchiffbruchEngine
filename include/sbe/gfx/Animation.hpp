@@ -1,8 +1,8 @@
 #ifndef ANIM_H
 #define ANIM_H
 
-#include "sbe/geom/Point.hpp"
-#include "sbe/gfx/ImageSet.hpp"
+#include <sbe/geom/Point.hpp>
+#include <sbe/gfx/ImageSet.hpp>
 
 #include <SFML/System/Time.hpp>
 
@@ -84,7 +84,7 @@ namespace sbe
 		/**
 		 * @return the internal imageset
 		 */
-		std::shared_ptr<ImageSet> getImageSet() { return AnimData; }
+		std::shared_ptr<ImageSet>& getImageSet() { return AnimData; }
 	protected:
 
 		/// called once the animation is finished, send an EVT_ANIM_FINISCH event if requested

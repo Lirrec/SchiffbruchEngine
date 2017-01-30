@@ -1,6 +1,6 @@
-#include "sbe/util/console/CommandNode.hpp"
+#include <sbe/util/console/CommandNode.hpp>
 
-#include "sbe/Module.hpp"
+#include <sbe/Module.hpp>
 
 namespace sbe
 {

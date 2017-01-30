@@ -20,8 +20,6 @@ namespace sbe
 
 		class HashedString				- Chapter 10, page 274
 	*/
-
-
 	class HashedString
 	{
 	public:

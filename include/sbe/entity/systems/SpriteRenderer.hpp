@@ -1,7 +1,7 @@
 #ifndef SPRITERENDERER_HPP
 #define SPRITERENDERER_HPP
 
-#include "sbe/entity/System.hpp"
+#include <sbe/entity/System.hpp>
 
 
 namespace sbe
