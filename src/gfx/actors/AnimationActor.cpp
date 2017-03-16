@@ -32,7 +32,7 @@ namespace sbe
 		Anim.setImageSet(ImgSet);
 		Anim.playRandomized( Module::Get()->GetModuleTime() );
 		// set origin to bottom center
-		Anim.getSprite().setOrigin( { ImgSet->FrameSize.x/2, ImgSet->FrameSize.y } );
+		Anim.getSprite().setOrigin( { ImgSet->FrameSize.x/2.0f, (float) ImgSet->FrameSize.y } );
 		Anim.updateDrawable();
 	}
 

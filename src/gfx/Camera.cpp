@@ -46,8 +46,8 @@ namespace sbe
 	void Camera::setup() {
 
 		sf::Vector2f WindowSize {
-			Engine::getCfg()->get<int>("system.renderer.windowsize.x", 1024),
-	        Engine::getCfg()->get<int>("system.renderer.windowsize.y", 768)
+			(float) Engine::getCfg()->get<int>("system.renderer.windowsize.x", 1024),
+			(float) Engine::getCfg()->get<int>("system.renderer.windowsize.y", 768)
 		};
 
 		view.setSize(WindowSize);
