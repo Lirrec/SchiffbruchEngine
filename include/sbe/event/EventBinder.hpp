@@ -4,7 +4,7 @@
 #include <functional>
 #include <string>
 
-#include <sbe/Event/EventUser.hpp>
+#include <sbe/event/EventUser.hpp>
 
 namespace sbe {
 

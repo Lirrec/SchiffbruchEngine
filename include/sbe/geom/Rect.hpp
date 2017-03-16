@@ -2,7 +2,7 @@
 #define RECT_HPP
 
 #include <glm/vec2.hpp>
-#include <sfml/Graphics/Rect.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <cmath>
 
 namespace sbe
