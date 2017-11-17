@@ -162,11 +162,13 @@ namespace sbe
 		 }
 
 		static constexpr auto addActorEvent() {
-			return sbe::makeEventDef<hash_name("ADD_ACTOR")>(&Renderer::addActor);
+			constexpr auto hash = hash_name("ADD_ACTOR");
+			return sbe::makeEventDef<hash>(&Renderer::addActor);
 		}
 
 		static constexpr auto addActorsEvent() {
-			return sbe::makeEventDef<hash_name("ADD_ACTORS")>(&Renderer::addActors);
+			constexpr auto hash = hash_name("ADD_ACTORS");
+			return sbe::makeEventDef<hash>(&Renderer::addActors);
 		}
 
 		/**

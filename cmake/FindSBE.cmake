@@ -63,6 +63,8 @@ set( FIND_SBE_PATH_SUFFIXES
 		lib64
 		build
 		build.win
+		build.vcpkg
+		build.mingw
 		cmake-build-debug
 		cmake-build-release)
 
@@ -82,8 +84,8 @@ find_library( SBE_LIBRARY_RELEASE sbe${SBE_SUFFIX} PATH_SUFFIXES ${FIND_SBE_PATH
 find_library( SBE_LIBRARY_DEBUG sbe${SBE_SUFFIX}-d PATH_SUFFIXES ${FIND_SBE_PATH_SUFFIXES} PATHS ${FIND_SBE_PATHS} NO_DEFAULT_PATH )
 find_library( SBE_LIBRARY_DEBUG sbe${SBE_SUFFIX}-d PATH_SUFFIXES ${FIND_SBE_PATH_SUFFIXES} )
 
-message("rel: ${SBE_LIBRARY_RELEASE}")
-message("dbg: ${SBE_LIBRARY_DEBUG}")
+message("SBE_LIBRARY_RELEASE: ${SBE_LIBRARY_RELEASE}")
+message("SBE_LIBRARY_DEBUG: ${SBE_LIBRARY_DEBUG}")
 
 if( SBE_LIBRARY_RELEASE AND SBE_LIBRARY_DEBUG )
 	set( SBE_LIBRARY debug ${SBE_LIBRARY_DEBUG} optimized ${SBE_LIBRARY_RELEASE} )

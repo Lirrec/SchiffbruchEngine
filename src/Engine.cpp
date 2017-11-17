@@ -21,9 +21,7 @@
 namespace sbe
 {
 
-	typedef std::chrono::high_resolution_clock Clock;
-
-	Engine* Engine::Instance;
+		Engine* Engine::Instance;
 
 	Engine::Engine() {
 		Instance = this;
@@ -81,16 +79,21 @@ namespace sbe
 	std::string Engine::getTimeStamp() {
 		std::stringstream ts;
 
+		using Clock = std::chrono::system_clock;
+		using namespace std::chrono;
+
 		char timestamp[128];
 		auto time = Clock::now();
-		auto seconds = std::chrono::duration_cast<std::chrono::seconds>(time.time_since_epoch());
-		auto fraction = time - seconds;
-		auto fr_milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(fraction.time_since_epoch());
-		auto time_t = std::chrono::system_clock::to_time_t(time);
+		auto seconds_since_epoch = duration_cast<seconds>(time.time_since_epoch());
+		auto fraction = time - seconds_since_epoch;
+		auto fr_milliseconds = duration_cast<milliseconds>(fraction.time_since_epoch());
+		auto time_t = system_clock::to_time_t(time);
+
 		if (std::strftime(timestamp, sizeof(timestamp), "%d.%m.%Y %H:%M:%S", std::localtime(&time_t)) == 0)
 		{
 			*(Instance->ErrorLogger) << "Unable to create Timestamp!" << std::endl;
 		}
+
 		ts << timestamp << "." << fr_milliseconds.count();
 		return ts.str();
 	}

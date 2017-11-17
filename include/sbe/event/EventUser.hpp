@@ -6,6 +6,7 @@
 #include "EventHelper.hpp"
 
 #include <map>
+#include <functional>
 
 #include <sbe/util/Meta.hpp>
 

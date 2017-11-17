@@ -2,6 +2,7 @@
 #define PARAMETERNODE_HPP
 
 #include "Node.hpp"
+#include <functional>
 
 namespace sbe
 {

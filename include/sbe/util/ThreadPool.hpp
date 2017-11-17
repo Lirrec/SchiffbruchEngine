@@ -8,6 +8,7 @@
 #include <iterator>
 #include <algorithm>
 #include <memory>
+#include <functional>
 
 #include <boost/any.hpp>
 

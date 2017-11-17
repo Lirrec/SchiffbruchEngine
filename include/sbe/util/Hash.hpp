@@ -13,6 +13,16 @@ namespace sbe {
 		return (c>'A' && c<'Z') ? c + (0x61/* 'a' */ - 0x41/* 'A' */) : c;
 	}
 
+	constexpr size_t cstrlen(const char* str) {
+		size_t result = 0;
+		if (str) {
+			while (*str++)
+				++result;
+		}
+		return result;
+	}
+
+
 	/**
 		// Relatively simple hash of arbitrary text string into a
 		// 32-bit identifier Output value is
@@ -30,8 +40,7 @@ namespace sbe {
 		// Adler and published as part of the zlib compression
 		// library sources.
 	 */
-	constexpr
-	HashType hash_name(char const* pIdentStr) {
+	constexpr HashType hash_name(char const* pIdentStr) {
 
 
 		// largest prime smaller than 65536
@@ -53,7 +62,9 @@ namespace sbe {
 		unsigned long s1 = 0;
 		unsigned long s2 = 0;
 
-		for (size_t len = std::strlen(pIdentStr); len > 0;)
+		size_t len = cstrlen(pIdentStr);
+		
+		while (len > 0)
 		{
 			unsigned long k = len < NMAX ? len : NMAX;
 
@@ -82,7 +93,7 @@ namespace sbe {
 #undef DO4
 #undef DO8
 #undef DO16
-		return reinterpret_cast<HashType>((s2 << 16) | s1 );
+		return static_cast<HashType>((s2 << 16) | s1 );
 	}
 
 	namespace operators {
