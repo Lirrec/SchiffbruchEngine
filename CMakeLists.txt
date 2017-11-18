@@ -110,6 +110,9 @@ if(CMAKE_SYSTEM_NAME MATCHES Windows)
 	#disable boosts auto-linking feature. The required libs are already included by find_package
 	add_definitions(-DBOOST_ALL_NO_LIB)
 
+	# enable dllexport define in config.h
+	set(DLLEXPORT "__declspec(dllexport)")
+
 else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 endif()
@@ -123,9 +126,6 @@ IF(NOT MSVC)
 else()
 	# FIXME: remove std-flag here if CMAKE_CXX_STANDARD works with msvc!
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14 /MP /Gm- /EHsc /GR /W3")
-
-	# enable dllexport define in config.h
-	set(DLLEXPORT "__declspec(dllexport)")
 endif()
 
 #
