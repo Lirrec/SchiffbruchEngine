@@ -1,6 +1,8 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
+#include "config.h"
+
 #include <sbe/event/EventUser.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/NonCopyable.hpp>
@@ -146,7 +148,7 @@ namespace sbe
 		std::shared_ptr<Renderer> Picasso;
 		std::shared_ptr<Camera> Cam;
 
-		__declspec(dllexport) static Screen* Instance;
+		DLLEXPORT static Screen* Instance;
 	};
 } // namespace sbe
 #endif // SCREEN_H

@@ -1,6 +1,8 @@
 #ifndef EVTMGR_H
 #define EVTMGR_H
 
+#include "config.h"
+
 #include <sbe/Module.hpp>
 #include <sbe/event/Event.hpp>
 #include <sbe/util/ConcurrentQueue.hpp>
@@ -101,7 +103,7 @@ namespace sbe
 		boost::shared_mutex HashMutex;
 		boost::shared_mutex QueueMutex;
 
-		__declspec(dllexport) static EventCore* Instance;
+		DLLEXPORT static EventCore* Instance;
 
 		int RemoteEventsThisSecond;
 

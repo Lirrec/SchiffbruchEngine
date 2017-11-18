@@ -5,7 +5,7 @@ option( SBE_ENABLE_COTIRE "" OFF)
 if(SBE_ENABLE_COTIRE)
 	include(cotire)
 endif()
-cmake_minimum_required( VERSION 2.8 )
+cmake_minimum_required( VERSION 3.8 )
 
 # set sbe version
 set(VER_MAJOR 0)
@@ -86,7 +86,9 @@ if (true)
 	message(STATUS "sfgui includes: ${SFGUI_INCLUDE_DIR}" )
 	message(STATUS "boost includes: ${Boost_INCLUDE_DIR}\n\n" )
 
-	
+	message(STATUS "-- CXX FEATURES SUPPORTED BY COMPILER --")
+	message(STATUS "compile features: ${CMAKE_CXX_COMPILE_FEATURES}\n\n" )
+
 #	message( "-- FILES --" )
 #	message( "-- Found the following SRCS:\n ${sbe_SRCS}" )
 #	message( "-- Found the following SRCS:\n ${sbe_SRCS}" )
@@ -98,26 +100,32 @@ endif()
 #################### Compiler Options #######################
 #############################################################
 
+set(CMAKE_CXX_STANDARD 17)
+
 if(CMAKE_SYSTEM_NAME MATCHES Windows)
 	# nogdi prevents a "#define ERROR 0" from wingdi.h which fucks up our code
 	# wingdi.h is sometimes included in gl.h ( some mingw versions of glew don't include it, most do )
 	add_definitions( -DNOGDI -DWIN32_LEAN_AND_MEAN )
-	
-	#disable boosts auto-linking feature. The required libs are already included by find_package	
+
+	#disable boosts auto-linking feature. The required libs are already included by find_package
 	add_definitions(-DBOOST_ALL_NO_LIB)
-	
+
 else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 endif()
-
 
 #
 #	General Compiler Options
 #
 IF(NOT MSVC)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -DBOOST_THREAD_USE_LIB -D_stdcall -D_cdecl -D_thiscall -D_fastcall -pipe")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DBOOST_THREAD_USE_LIB -D_stdcall -D_cdecl -D_thiscall -D_fastcall -pipe")
+
 else()
+	# FIXME: remove std-flag here if CMAKE_CXX_STANDARD works with msvc!
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14 /MP /Gm- /EHsc /GR /W3")
+
+	# enable dllexport define in config.h
+	set(DLLEXPORT "__declspec(dllexport)")
 endif()
 
 #
@@ -169,34 +177,39 @@ add_subdirectory( scripting )
 # set by the scripting CMakelists
 include_directories( ${SBE_SCRIPT_INCLUDES} )
 
+#################### Generate config.h ######################
+
+configure_file(config.h.in config.h)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
 #################### Final lib ##############################
 # Add the library.
 if( SBE_BUILD_SHARED_LIBS )
 
 	#set_target_properties( sbe PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE )
 	set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-	
+
 	add_library( sbe SHARED ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS} )
 
 	set_target_properties( sbe PROPERTIES DEBUG_POSTFIX -d )
-	
-	
-	
-	
-    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=default")
-    elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU") #gcc
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -shared -Wl,-rdynamic, -Wl,-export-all-symbols")
+
+
+
+
+	if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND CMAKE_SYSTEM_NAME MATCHES Windows) # mingw-gcc!
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -shared -Wl,-rdynamic, -Wl,-export-all-symbols")
+	elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=default")
 	else() # msvc
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /LD")
-		
-    endif()
+
+	endif()
 else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DSBE_STATIC")
 	add_library( sbe ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS} include/sbe/util/Meta.hpp)
 
 	set_target_properties( sbe PROPERTIES DEBUG_POSTFIX -s-d )
-	
+
 	set_target_properties( sbe PROPERTIES DEBUG_POSTFIX -s-d )
 	set_target_properties( sbe PROPERTIES RELEASE_POSTFIX -s )
 	set_target_properties( sbe PROPERTIES MINSIZEREL_POSTFIX -s )
