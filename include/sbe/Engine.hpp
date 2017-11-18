@@ -118,7 +118,7 @@ namespace sbe
 	private:
 		std::shared_ptr<sf::RenderWindow> App;
 
-		static Engine* Instance;
+		__declspec(dllexport) static Engine* Instance;
 		std::shared_ptr<Logger> SpamLogger;
 		std::shared_ptr<Logger> InfoLogger;
 		std::shared_ptr<Logger> WarningLogger;

@@ -63,9 +63,7 @@ namespace sbe
 		void OnHandledEvent() { desktopHandledEvent = true; }
 
 		/// static getter to access the singleton screen instance
-		static Screen* get() {
-			return Instance;
-		}
+		static Screen* get();
 
 		/**
 			Add an object which should receive all sfml events in addition to the converter and sfg desktop.
@@ -94,16 +92,16 @@ namespace sbe
 		sf::Color getClearColor() { return bgColor; }
 
 		/// static access to the Camera
-		static std::shared_ptr<Camera> sCam() { assert(Instance->Cam); return Instance->Cam; }
+		static std::shared_ptr<Camera> sCam();
 
 		/// static access to the Renderer
-		static std::shared_ptr<Renderer> sRndr() { assert(Instance->Picasso); return Instance->Picasso; }
+		static std::shared_ptr<Renderer> sRndr();
 
 		/// static access to the sfgui Desktop
-		static std::shared_ptr<sfg::Desktop> sDesk() { assert(Instance->Desktop); return Instance->Desktop; }
+		static std::shared_ptr<sfg::Desktop> sDesk();
 
 		/// static Access to the SFMLEventConverter
-		static std::shared_ptr<SFMLEventConverter> sEvtConv() { assert(Instance->EvtConv); return Instance->EvtConv; }
+		static std::shared_ptr<SFMLEventConverter> sEvtConv();
 
 		/// access to the Camera
 		std::shared_ptr<Camera> getCam() { assert(Cam); return Cam; }
@@ -148,7 +146,7 @@ namespace sbe
 		std::shared_ptr<Renderer> Picasso;
 		std::shared_ptr<Camera> Cam;
 
-		static Screen* Instance;
+		__declspec(dllexport) static Screen* Instance;
 	};
 } // namespace sbe
 #endif // SCREEN_H

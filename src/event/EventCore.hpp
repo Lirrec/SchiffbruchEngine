@@ -101,7 +101,7 @@ namespace sbe
 		boost::shared_mutex HashMutex;
 		boost::shared_mutex QueueMutex;
 
-		static EventCore* Instance;
+		__declspec(dllexport) static EventCore* Instance;
 
 		int RemoteEventsThisSecond;
 

@@ -23,6 +23,21 @@ namespace sbe
 {
 	Screen* Screen::Instance = nullptr;
 
+	Screen* Screen::get() {
+		return Instance;
+	}
+
+	/// static access to the Camera
+	std::shared_ptr<Camera> Screen::sCam() { assert(Instance->Cam); return Instance->Cam; }
+
+	/// static access to the Renderer
+	std::shared_ptr<Renderer> Screen::sRndr() { assert(Instance->Picasso); return Instance->Picasso; }
+
+	/// static access to the sfgui Desktop
+	std::shared_ptr<sfg::Desktop> Screen::sDesk() { assert(Instance->Desktop); return Instance->Desktop; }
+
+	/// static Access to the SFMLEventConverter
+	std::shared_ptr<SFMLEventConverter> Screen::sEvtConv() { assert(Instance->EvtConv); return Instance->EvtConv; }
 
 	Screen::Screen()
 			: Fullscreen(false),
