@@ -1,3 +1,4 @@
+#include "config.h"
 #include <sbe/gfx/Screen.hpp>
 
 #include <sbe/Config.hpp>
@@ -21,7 +22,7 @@
 
 namespace sbe
 {
-	Screen* Screen::Instance = nullptr;
+	DLLEXPORT Screen* Screen::Instance = nullptr;
 
 	Screen* Screen::get() {
 		return Instance;

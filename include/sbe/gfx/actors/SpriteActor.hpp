@@ -12,6 +12,7 @@ namespace sbe
 	class SpriteActor : public Actor
 	{
 	public:
+		SpriteActor() = default;
 		SpriteActor(const sf::Sprite& sprite);
 
 		virtual ~SpriteActor();

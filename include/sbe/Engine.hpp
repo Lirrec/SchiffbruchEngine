@@ -1,7 +1,6 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#include "config.h"
 
 #include "Logger.hpp"
 #include <memory>
@@ -120,7 +119,7 @@ namespace sbe
 	private:
 		std::shared_ptr<sf::RenderWindow> App;
 
-		DLLEXPORT static Engine* Instance;
+		static Engine* Instance;
 		std::shared_ptr<Logger> SpamLogger;
 		std::shared_ptr<Logger> InfoLogger;
 		std::shared_ptr<Logger> WarningLogger;

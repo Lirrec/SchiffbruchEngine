@@ -54,11 +54,11 @@ endif()
 set( SFML_FIND_REQUIRED true )
 find_package(Boost 1.60 COMPONENTS thread system filesystem)
 #find_package(SFML 2 COMPONENTS audio graphics window system main ${ADD_SFML_MAIN})
-find_package(SFML 2 COMPONENTS audio window graphics system ${ADD_SFML_MAIN})
+find_package(SFML 2 COMPONENTS audio window graphics system ${ADD_SFML_MAIN} REQUIRED)
 find_package(SFGUI REQUIRED )
 find_package(glm REQUIRED )
 
-add_definitions( -DGLM_FORCE_RADIANS -DGLM_FORCE_CXX11 )
+add_definitions( -DGLM_FORCE_RADIANS -DGLM_FORCE_CXX11 -DGLM_ENABLE_EXPERIMENTAL )
 
 include_directories(${Boost_INCLUDE_DIR})
 include_directories(${SFML_INCLUDE_DIR})

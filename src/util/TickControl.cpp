@@ -50,7 +50,7 @@ namespace sbe
 			MsToNextTick = MaxTickDuration - LastTickDuration;
 			if (Lag <= MsToNextTick)
 			{
-				boost::this_thread::sleep(boost::posix_time::milliseconds(MsToNextTick - Lag));
+				boost::this_thread::sleep(boost::posix_time::milliseconds( (int) (MsToNextTick - Lag)));
 				Lag = 0;
 			}
 			else

@@ -1,3 +1,4 @@
+#include "config.h"
 #include <sbe/Engine.hpp>
 
 
@@ -21,7 +22,7 @@
 namespace sbe
 {
 
-		Engine* Engine::Instance;
+	DLLEXPORT	Engine* Engine::Instance;
 
 	Engine::Engine() {
 		Instance = this;
