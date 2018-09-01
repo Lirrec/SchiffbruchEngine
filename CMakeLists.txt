@@ -10,6 +10,7 @@ cmake_minimum_required( VERSION 3.8 )
 # set sbe version
 set(VER_MAJOR 0)
 set(VER_MINOR 1)
+set(VER_PATCH 0)
 
 #############################################################
 ################### Cmake Options ###########################
@@ -51,17 +52,24 @@ endif()
 #################### External Libraries #####################
 #############################################################
 
+set(REQUIRED_Boost_VERSION 1.60)
+set(REQUIRED_SFML_VERSION 2)
+
+
 set( SFML_FIND_REQUIRED true )
-find_package(Boost 1.60 COMPONENTS thread system filesystem)
+find_package(Boost ${REQUIRED_Boost_VERSION} COMPONENTS thread system filesystem)
 #find_package(SFML 2 COMPONENTS audio graphics window system main ${ADD_SFML_MAIN})
-find_package(SFML 2 COMPONENTS audio window graphics system ${ADD_SFML_MAIN} REQUIRED)
+find_package(SFML ${REQUIRED_SFML_VERSION} COMPONENTS audio window graphics system ${ADD_SFML_MAIN} REQUIRED)
 find_package(SFGUI REQUIRED )
 find_package(glm REQUIRED )
 
 add_definitions( -DGLM_FORCE_RADIANS -DGLM_FORCE_CXX11 -DGLM_ENABLE_EXPERIMENTAL )
 
+# set the list ourselves
+# see: https://en.sfml-dev.org/forums/index.php?topic=24070.0
+set(SFML_LIBRARIES sfml-audio sfml-window sfml-graphics sfml-system)
+
 include_directories(${Boost_INCLUDE_DIR})
-include_directories(${SFML_INCLUDE_DIR})
 include_directories(${SFGUI_INCLUDE_DIR})
 include_directories(${GLM_INCLUDE_DIRS})
 
@@ -81,9 +89,9 @@ if (true)
 	message(STATUS "-- INCLUDES --")
 	message(STATUS "sfml libs:      ${SFML_LIBRARIES}" )
 	message(STATUS "sfml includes:  ${SFML_INCLUDE_DIR}" )
-	message(STATUS "sfml deps:      ${SFML_DEPENDENCIES}" )
 	message(STATUS "sfgui lib:      ${SFGUI_LIBRARY}" )
 	message(STATUS "sfgui includes: ${SFGUI_INCLUDE_DIR}" )
+  message(STATUS "glm includes:   ${GLM_INCLUDE_DIRS}" )
 	message(STATUS "boost includes: ${Boost_INCLUDE_DIR}\n\n" )
 
 	message(STATUS "-- CXX FEATURES SUPPORTED BY COMPILER --")
@@ -166,9 +174,6 @@ if(SBE_ENABLE_LTO AND NOT MSVC)
 	endif()
 endif()
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(${PROJECT_SOURCE_DIR}/src)
-
 #############################################################
 #################### Scripting / Swig #######################
 #############################################################
@@ -220,24 +225,26 @@ endif()
 # setup of the library
 #
 
-target_link_libraries(sbe ${SFGUI_LIBRARY} ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${SBE_SCRIPT_LIBS} ${SFML_DEPENDENCIES})
+target_link_libraries(sbe ${SFGUI_LIBRARY} ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${SBE_SCRIPT_LIBS} ${SFML_DEPENDENCIES} ${Boost_DEPENDENCIES})
 
 set_target_properties(sbe PROPERTIES SOVERSION ${VER_MAJOR})
 set_target_properties(sbe PROPERTIES VERSION ${VER_MAJOR}.${VER_MINOR})
 
+target_include_directories( sbe
+  PUBLIC  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+          $<INSTALL_INTERFACE:include>  # <prefix>/include/
+  PRIVATE ${PROJECT_SOURCE_DIR}/src
+)
 
 #set_target_properties(sbe PROPERTIES PUBLIC_HEADER "${sbe_HDRS}")
 
 install(DIRECTORY include DESTINATION ${CMAKE_INSTALL_PREFIX})
 
-install(TARGETS sbe
+install(TARGETS sbe EXPORT SBEConfigExport
 	RUNTIME DESTINATION bin
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib
 	PUBLIC_HEADER DESTINATION include)
-
-set(CM_VER ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
-install(FILES cmake/FindSBE.cmake DESTINATION share/cmake-${CM_VER}/Modules)
 
 
 
@@ -245,3 +252,47 @@ if(SBE_ENABLE_COTIRE)
 	set_target_properties(sbe PROPERTIES COTIRE_ENABLE_PRECOMPILED_HEADER FALSE)
 	cotire(sbe)
 endif()
+
+
+######################################################
+# Generate and install SBEConfig.cmake               #
+# (that's the new and hot FindX.cmake replacement)   #
+######################################################
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/SBEConfigVersion.cmake"
+  VERSION ${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}
+  COMPATIBILITY SameMajorVersion
+)
+
+set(targets_config_filename "SBETargets.cmake")
+
+export(EXPORT SBEConfigExport
+       FILE   "${CMAKE_CURRENT_BINARY_DIR}/${targets_config_filename}")
+
+set(config_package_location lib/cmake/SBE)
+
+configure_package_config_file(
+  "${PROJECT_SOURCE_DIR}/cmake/SBEConfig.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/SBEConfig.cmake"
+  INSTALL_DESTINATION "${config_package_location}"
+)
+#configure_package_config_file(
+#  "${PROJECT_SOURCE_DIR}/cmake/SBEConfigDependencies.cmake.in"
+#  "${CMAKE_CURRENT_BINARY_DIR}/SBEConfigDependencies.cmake"
+#  INSTALL_DESTINATION "${config_package_location}"
+#)
+
+install(EXPORT      SBEConfigExport
+        FILE        ${targets_config_filename}
+        DESTINATION ${config_package_location}
+)
+
+install(FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/SBEConfig.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/SBEConfigVersion.cmake"
+  DESTINATION ${config_package_location}
+  COMPONENT   devel
+)
+

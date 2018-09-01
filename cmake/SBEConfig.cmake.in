@@ -1,0 +1,9 @@
+@PACKAGE_INIT@
+
+# check dependencies
+include(CMakeFindDependencyMacro)
+find_dependency(SFGUI)
+find_dependency(Boost "@REQUIRED_Boost_VERSION@")
+find_dependency(glm)
+
+include("${CMAKE_CURRENT_LIST_DIR}/SBETargets.cmake")
