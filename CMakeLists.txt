@@ -165,9 +165,9 @@ if (SBE_BUILD_SHARED_LIBS)
     #set_target_properties( sbe PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE )
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
-    add_library(sbe SHARED ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS})
+    add_library(SBE SHARED ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS})
 
-    set_target_properties(sbe PROPERTIES DEBUG_POSTFIX -d)
+    set_target_properties(SBE PROPERTIES DEBUG_POSTFIX -d)
 
 
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND CMAKE_SYSTEM_NAME MATCHES Windows) # mingw-gcc!
@@ -180,13 +180,13 @@ if (SBE_BUILD_SHARED_LIBS)
     endif ()
 else ()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DSBE_STATIC")
-    add_library(sbe ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS} include/sbe/util/Meta.hpp)
+    add_library(SBE ${sbe_HDRS} ${sbe_SRCHDRS} ${sbe_SRCS} include/sbe/util/Meta.hpp)
 
-    set_target_properties(sbe PROPERTIES DEBUG_POSTFIX -s-d)
+    set_target_properties(SBE PROPERTIES DEBUG_POSTFIX -s-d)
 
-    set_target_properties(sbe PROPERTIES DEBUG_POSTFIX -s-d)
-    set_target_properties(sbe PROPERTIES RELEASE_POSTFIX -s)
-    set_target_properties(sbe PROPERTIES MINSIZEREL_POSTFIX -s)
+    set_target_properties(SBE PROPERTIES DEBUG_POSTFIX -s-d)
+    set_target_properties(SBE PROPERTIES RELEASE_POSTFIX -s)
+    set_target_properties(SBE PROPERTIES MINSIZEREL_POSTFIX -s)
 endif ()
 
 
@@ -195,15 +195,15 @@ endif ()
 #
 
 set(SFML_LIBRARIES SFML::Audio SFML::Window SFML::Graphics SFML::System)
-target_link_libraries(sbe SFGUI::SFGUI ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${SBE_SCRIPT_LIBS} ${SFML_DEPENDENCIES} ${Boost_DEPENDENCIES})
+target_link_libraries(SBE SFGUI::SFGUI ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${SBE_SCRIPT_LIBS} ${SFML_DEPENDENCIES} ${Boost_DEPENDENCIES})
 
-set_target_properties(sbe PROPERTIES SOVERSION ${VER_MAJOR})
-set_target_properties(sbe PROPERTIES VERSION ${VER_MAJOR}.${VER_MINOR})
+set_target_properties(SBE PROPERTIES SOVERSION ${VER_MAJOR})
+set_target_properties(SBE PROPERTIES VERSION ${VER_MAJOR}.${VER_MINOR})
 
-# Namespaced alias so downstream can use sbe::sbe whether via find_package or FetchContent
-add_library(sbe::sbe ALIAS sbe)
+# Namespaced alias so downstream can use SBE::SBE whether via find_package or FetchContent
+add_library(SBE::SBE ALIAS SBE)
 
-target_include_directories(sbe
+target_include_directories(SBE
         PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>  # <prefix>/include/
         PRIVATE ${PROJECT_SOURCE_DIR}/src
@@ -214,7 +214,7 @@ target_include_directories(sbe
 if (PROJECT_IS_TOP_LEVEL)
     install(DIRECTORY include DESTINATION ${CMAKE_INSTALL_PREFIX})
 
-    install(TARGETS sbe EXPORT SBEConfigExport
+    install(TARGETS SBE EXPORT SBEConfigExport
             RUNTIME DESTINATION bin
             LIBRARY DESTINATION lib
             ARCHIVE DESTINATION lib

@@ -1,4 +1,3 @@
-
 if ( USE_RUBY OR USE_PYTHON )
 
 	FIND_PACKAGE(SWIG REQUIRED)
@@ -30,7 +29,7 @@ if ( USE_RUBY )
 		../src/event/EventQueue.hpp  
 		../include/sbe/event/EventUser.hpp
 		../include/sbe/Module.hpp)
-	swig_link_libraries(SBE sbe ${RUBY_LIBRARY})
+	swig_link_libraries(SBE SBE ${RUBY_LIBRARY})
 	set(SBE_SCRIPT_LIBS "${RUBY_LIBRARY}")
 
 	set(SBE_SCRIPT_SOURCES "src/scripting/RubyEngine.cpp")
@@ -55,7 +54,7 @@ if( USE_PYTHON )
 		../src/event/EventQueue.hpp  
 		../include/sbe/event/EventUser.hpp
 		../include/sbe/Module.hpp)
-	swig_link_libraries(SBE sbe ${PYTHON_LIBRARIES})
+	swig_link_libraries(SBE SBE ${PYTHON_LIBRARIES})
 	set(SBE_SCRIPT_LIBS "${SBE_SCRIPT_LIBS};${PYTHON_LIBRARIES}")
 
 	set(SBE_SCRIPT_SOURCES "${SBE_SCRIPT_SOURCES};src/scripting/PythonEngine.cpp")
