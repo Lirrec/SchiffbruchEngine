@@ -1,0 +1,13 @@
+{
+  "name": "schiffbruchengine",
+  "version": "0.1.0",
+  "dependencies": [
+    "glm",
+    "sfgui",
+    "sfml",
+    "boost-filesystem",
+    "boost-system",
+    "boost-thread",
+    "boost-uuid"
+  ]
+}
