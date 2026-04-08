@@ -108,7 +108,7 @@ namespace sbe
 	void FileBrowse::updatePosition() {
 		sf::FloatRect Allocation = Win->GetAllocation();
 		sf::Vector2u winSize = Engine::GetApp().getSize();
-		Win->SetPosition(sf::Vector2f((winSize.x - Allocation.width)/2, (winSize.y - Allocation.height)/2));
+		Win->SetPosition(sf::Vector2f((winSize.x - Allocation.size.x)/2, (winSize.y - Allocation.size.y)/2));
 	}
 
 	void FileBrowse::onOkClicked() {

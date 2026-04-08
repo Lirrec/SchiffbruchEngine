@@ -12,7 +12,7 @@ namespace sbe
 		std::shared_ptr<sf::Texture> txt = AnimData->getTexture();
 		if (txt)
 		{
-			s.setTexture(*txt);
+			s.emplace(*txt);
 		}
 		else
 		{
@@ -26,7 +26,7 @@ namespace sbe
 		std::shared_ptr<sf::Texture> txt = AnimData->getTexture();
 		if (txt)
 		{
-			s.setTexture(*txt);
+			s.emplace(*txt);
 			updateDrawable();
 		}
 		else
@@ -37,13 +37,14 @@ namespace sbe
 	}
 
 	void AnimatedSprite::updateDrawable() {
-		s.setTextureRect(geom::toSFRect(AnimData->CalcTexCoords(CurFramePos)));
+		if (!s) return;
+		s->setTextureRect(geom::toSFRect(AnimData->CalcTexCoords(CurFramePos)));
 		auto pos = ScreenPosition + geom::PIToF(AnimData->DestPos);
-		s.setPosition( {pos.x, pos.y} );
+		s->setPosition( {pos.x, pos.y} );
 	}
 
 	sf::Sprite& AnimatedSprite::getSprite() {
-		return s;
+		return *s;
 	}
 
 	AnimatedSprite::~AnimatedSprite() {

@@ -13,6 +13,7 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Image.hpp>
 
 #include <SFGUI/SFGUI.hpp>
 #include <SFGUI/Desktop.hpp>
@@ -58,8 +59,8 @@ namespace sbe
 		int i = EvtConv->LoadKeyBindingsFromConfig();
 		Engine::out(Engine::INFO) << "[Screen] Loaded " << i << " key bindings." << std::endl;
 
-		EvtConv->AddEventConversion(sf::Event::Closed, "EVT_QUIT", true);
-		EvtConv->AddEventConversion(sf::Event::Resized, "WINDOW_RESIZE");
+		EvtConv->AddEventConversion<sf::Event::Closed>("EVT_QUIT", true);
+		EvtConv->AddEventConversion<sf::Event::Resized>("WINDOW_RESIZE");
 
 		Init();
 
@@ -77,8 +78,8 @@ namespace sbe
 
 		// create the renderwindow
 		Engine::GetApp().create(
-			sf::VideoMode(	Engine::getCfg()->get<unsigned int>("system.renderer.windowsize.x", 1024),
-							Engine::getCfg()->get<unsigned int>("system.renderer.windowsize.y", 768)),
+			sf::VideoMode({	Engine::getCfg()->get<unsigned int>("system.renderer.windowsize.x", 1024),
+							Engine::getCfg()->get<unsigned int>("system.renderer.windowsize.y", 768)}),
 			Title);
 
 		if (Icon != "")
@@ -92,7 +93,7 @@ namespace sbe
 			else
 			{
 				if (IconImage.getSize().x <= 256 && IconImage.getSize().y <= 256)
-					Engine::GetApp().setIcon(IconImage.getSize().x, IconImage.getSize().y, IconImage.getPixelsPtr());
+					Engine::GetApp().setIcon(IconImage.getSize(), IconImage.getPixelsPtr());
 				else
 					Engine::out(Engine::ERROR) << "[Screen] Icon '" << Icon << "' is larger than 256x256!" << std::endl;
 			}
@@ -122,24 +123,20 @@ namespace sbe
 
 	void Screen::Render() {
 		// Process Hardware/SFML Events
-		sf::Event sfEvent;
-
-
-		while (Engine::GetApp().pollEvent(sfEvent))
+		while (const auto sfEvent = Engine::GetApp().pollEvent())
 		{
-
 			desktopHandledEvent = false;
 			// Try to consume the event, if that fails try to convert it
-			Desktop->HandleEvent(sfEvent);
+			Desktop->HandleEvent(*sfEvent);
 
 			if (!desktopHandledEvent)
 			{
-				Cam->HandleEvent(sfEvent);
-				for (SFMLEventUser* U : sfEvtHandlers) U->HandleSfmlEvent(sfEvent);
+				Cam->HandleEvent(*sfEvent);
+				for (SFMLEventUser* U : sfEvtHandlers) U->HandleSfmlEvent(*sfEvent);
 			}
 
 			// give it to the converter
-			EvtConv->HandleSfmlEvent(sfEvent);
+			EvtConv->HandleSfmlEvent(*sfEvent);
 		}
 
 		// don't draw if the window is closed
@@ -178,7 +175,7 @@ namespace sbe
 
 				if (modes.size() > 0)
 				{
-					Engine::GetApp().create(modes[0], "SchiffbruchEngine powered (fullscreen)", sf::Style::Fullscreen);
+					Engine::GetApp().create(modes[0], "SchiffbruchEngine powered (fullscreen)", sf::State::Fullscreen);
 					Fullscreen = true;
 				}
 				else
@@ -189,8 +186,8 @@ namespace sbe
 			else
 			{
 				Engine::GetApp().create(
-					sf::VideoMode(	Engine::getCfg()->get <unsigned int> ("system.renderer.windowsize.x", 1024),
-									Engine::getCfg()->get <unsigned int> ("system.renderer.windowsize.y", 768)),
+					sf::VideoMode({	Engine::getCfg()->get<unsigned int>("system.renderer.windowsize.x", 1024),
+									Engine::getCfg()->get<unsigned int>("system.renderer.windowsize.y", 768)}),
 					Engine::getCfg()->get<std::string>("system.renderer.title", "SchiffbruchEngine powered."));
 				Fullscreen = false;
 			}

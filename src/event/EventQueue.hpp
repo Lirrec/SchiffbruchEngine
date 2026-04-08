@@ -1,8 +1,6 @@
 #ifndef EVENT_QUEUE_H
 #define EVENT_QUEUE_H
 
-#include <SFML/System/NonCopyable.hpp>
-
 #include <sbe/util/ConcurrentQueue.hpp>
 #include <sbe/event/Event.hpp>
 
@@ -14,9 +12,11 @@ namespace sbe
 
 	/** A lokal EventQueue, one of those exists per thread
 	*/
-	class EventQueue : sf::NonCopyable
+	class EventQueue
 	{
 	public:
+		EventQueue(const EventQueue&) = delete;
+		EventQueue& operator=(const EventQueue&) = delete;
 
 		/// this allows the Eventlisteners only to register to the eventmanger as the required methods are private
 		friend class EventUser;

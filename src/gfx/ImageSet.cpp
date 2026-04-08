@@ -81,36 +81,38 @@ namespace sbe
 
 	sf::Sprite ImageSet::CreateSprite(const glm::ivec2 FramePos) {
 		//Engine::out() << "CreateSprite: " << FramePos << std::endl;
-		sf::Sprite re;
-
 		if (updateTexture())
 		{
-			re.setTexture(*Tex);
+			sf::Sprite re(*Tex);
 			re.setTextureRect(geom::toSFRect(CalcTexCoords(FramePos)));
+			return re;
 		}
 		else
 		{
 			Engine::out(Engine::ERROR) << "ImageSet::CreateSprite: Unable to create Sprite, image not found: " << ImageName << "!" << std::endl;
+			static sf::Texture fallback;
+			static bool init = false;
+			if (!init) { fallback.resize({1, 1}); init = true; }
+			return sf::Sprite(fallback);
 		}
-
-		return re;
 	}
 
 	std::shared_ptr<sf::Sprite> ImageSet::CreateSpritePtr(const glm::ivec2 FramePos) {
 		//Engine::out() << "CreateSprite: " << FramePos << std::endl;
-		std::shared_ptr<sf::Sprite> re(new sf::Sprite);
-
 		if (updateTexture())
 		{
-			re->setTexture(*Tex);
+			auto re = std::make_shared<sf::Sprite>(*Tex);
 			re->setTextureRect(geom::toSFRect(CalcTexCoords(FramePos)));
+			return re;
 		}
 		else
 		{
 			Engine::out(Engine::ERROR) << "ImageSet::CreateSprite: Unable to create Sprite, image not found: " << ImageName << "!" << std::endl;
+			static sf::Texture fallback;
+			static bool init = false;
+			if (!init) { fallback.resize({1, 1}); init = true; }
+			return std::make_shared<sf::Sprite>(fallback);
 		}
-
-		return re;
 	}
 
 	bool ImageSet::updateTexture(bool force) {

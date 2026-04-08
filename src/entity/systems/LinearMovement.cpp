@@ -28,7 +28,7 @@ namespace sbe
 			glm::point2 Dist = geom::PIToF(TargetPosition) - Pos;
 			if (glm::length(Dist) < (unitspersecond*delta.asSeconds()))
 			{
-				T.setPosition(TargetPosition.x, TargetPosition.y);
+				T.setPosition({static_cast<float>(TargetPosition.x), static_cast<float>(TargetPosition.y)});
 				E.removeSystem(getID());
 				return;
 			}
@@ -38,7 +38,7 @@ namespace sbe
 
 			//Engine::out() << "oldpos : " << Pos << " - new: " << newpos << std::endl;
 
-			T.setPosition(newpos.x, newpos.y);
+			T.setPosition({newpos.x, newpos.y});
 
 
 		}

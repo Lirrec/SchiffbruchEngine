@@ -9,6 +9,7 @@
     "boost-system",
     "boost-thread",
     "boost-uuid",
-    "boost-property-tree"
+    "boost-property-tree",
+    "boost-format"
   ]
 }

@@ -5,61 +5,38 @@
 namespace sbe
 {
 
-	Int64 sfIStream::read(void* data, Int64 size) {
-		//Engine::out() << "read[]: pos: " << stream.tellg() <<  " - data " << data << " - (std::streamsize)size: " << size << std::endl;
+	std::optional<std::size_t> sfIStream::read(void* data, std::size_t size) {
 		getSize();
 		stream.read((char*) data, (std::streamsize) size);
-		//Engine::out() << "read[]: gcount: " << stream.gcount() << std::endl;
-		//Engine::out() << "read[]: new pos: " << stream.tellg() << std::endl;
 
 		if (stream.fail() && !stream.eof())
-		{
-			//Engine::out() << "read[]: stream fail!" << std::endl;
-			return -1;
-		}
-		return stream.gcount();
+			return std::nullopt;
+		return static_cast<std::size_t>(stream.gcount());
 	}
 
-	Int64 sfIStream::seek(Int64 position) {
-//		Engine::out() << "seek[]: pos " << position << std::endl;
-		stream.seekg(position);
+	std::optional<std::size_t> sfIStream::seek(std::size_t position) {
+		stream.seekg(static_cast<std::streamoff>(position));
 		if (stream.fail())
-		{
-//			Engine::out() << "seek[]: stream fail!" << std::endl;
-			return -1;
-		}
-		return stream.tellg();
+			return std::nullopt;
+		return static_cast<std::size_t>(stream.tellg());
 	}
 
-	Int64 sfIStream::tell() {
+	std::optional<std::size_t> sfIStream::tell() {
 		auto re = stream.tellg();
-//		Engine::out() << "tell[]: re " << re << std::endl;
 		if (stream.fail())
-		{
-//			Engine::out() << "tell[]: stream fail!" << std::endl;
-			return -1;
-		}
-		return re;
+			return std::nullopt;
+		return static_cast<std::size_t>(re);
 	}
 
-	Int64 sfIStream::getSize() {
-		// get old pos
+	std::optional<std::size_t> sfIStream::getSize() {
 		auto pos = stream.tellg();
-		// seek to the end and remember pos
 		stream.seekg(0, std::ios::end);
 		auto uiLength = stream.tellg();
-		// set old pos
 		stream.seekg(pos);
 
-
-//		Engine::out() << "getSize[]: size " << uiLength << std::endl;
-
 		if (stream.fail())
-		{
-//			Engine::out() << "getSize[]: stream fail!" << std::endl;
-			return -1;
-		}
-		return uiLength;
+			return std::nullopt;
+		return static_cast<std::size_t>(uiLength);
 	}
 
 } // namespace sbe

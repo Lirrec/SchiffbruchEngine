@@ -15,10 +15,6 @@ namespace sbe
 		return std::make_tuple(EvtName, sendglobal, Data);
 	}
 
-	void SFMLEventConverter::AddEventConversion(sf::Event::EventType SFMLEvtType, const std::string& EvtName, bool sendglobal, boost::any Data) {
-		EvtConversions.insert(std::make_pair(SFMLEvtType, CreateConversion(EvtName, sendglobal, Data)));
-	}
-
 	void SFMLEventConverter::AddKeyConversion(sf::Keyboard::Key Key, const std::string& EvtName, bool sendglobal, boost::any Data) {
 		KeyConversions.insert(std::make_pair(Key, CreateConversion(EvtName, sendglobal, Data)));
 	}
@@ -48,7 +44,12 @@ namespace sbe
 	}
 
 	void SFMLEventConverter::HandleSfmlEvent(const sf::Event& e) {
-		for (auto it = EvtConversions.lower_bound(e.type); it != EvtConversions.upper_bound(e.type); ++it)
+		// Get the type_index of the current event variant
+		std::type_index eventTypeIdx = e.visit([](const auto& subEvent) {
+			return std::type_index(typeid(subEvent));
+		});
+
+		for (auto it = EvtConversions.lower_bound(eventTypeIdx); it != EvtConversions.upper_bound(eventTypeIdx); ++it)
 		{
 			Engine::out(Engine::SPAM) << "[EvtConv] SFML: " << std::get<0>(it->second) << std::endl;
 
@@ -57,11 +58,11 @@ namespace sbe
 			Module::Get()->GetEventQueue()->QueueEvent(TmpEvt, std::get<1>(it->second));
 		}
 
-		if (e.type == sf::Event::KeyReleased)
+		if (const auto* keyReleased = e.getIf<sf::Event::KeyReleased>())
 		{
-			if (KeyConversions.find(e.key.code) != KeyConversions.end())
+			if (KeyConversions.find(keyReleased->code) != KeyConversions.end())
 			{
-				for (auto it = KeyConversions.lower_bound(e.key.code); it != KeyConversions.upper_bound(e.key.code); ++it)
+				for (auto it = KeyConversions.lower_bound(keyReleased->code); it != KeyConversions.upper_bound(keyReleased->code); ++it)
 				{
 					Engine::out(Engine::SPAM) << "[EvtConv] KEY: " << std::get<0>(it->second) << std::endl;
 
@@ -70,7 +71,6 @@ namespace sbe
 					Module::Get()->GetEventQueue()->QueueEvent(TmpEvt, std::get<1>(it->second));
 				}
 			}
-
 		}
 	}
 

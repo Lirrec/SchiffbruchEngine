@@ -10,6 +10,7 @@
 
 #include <tuple>
 #include <map>
+#include <typeindex>
 
 namespace sbe
 {
@@ -40,8 +41,8 @@ namespace sbe
 
 		/// Data required for setting a key-conversion by event
 		typedef std::pair<sf::Keyboard::Key, SFMLEventConverter::ConvEvt> KeyConvData;
-		/// Data required for setting a event-conversion by event
-		typedef std::pair<sf::Event::EventType, SFMLEventConverter::ConvEvt> EvtConvData;
+		/// Data required for setting a event-conversion by event (uses type_index for SFML3 compatibility)
+		typedef std::pair<std::type_index, SFMLEventConverter::ConvEvt> EvtConvData;
 
 		/**
 			Convert a given Key into a named Event.
@@ -62,13 +63,16 @@ namespace sbe
 		void AddKeyConversion(const std::string& Key, const std::string& EvtName, bool sendglobal = false, boost::any Data = boost::any());
 
 		/**
-			Convert a given sfml event into a named event.
-			@param SFMLEvtType the type of sfml event to listen to
-			@param EvtName the name of the Event to emit on occurence of SFMLEvtType
+			Convert a given sfml event type into a named event.
+			@tparam T the SFML3 event subtype struct (e.g. sf::Event::Closed, sf::Event::Resized)
+			@param EvtName the name of the Event to emit on occurence of T
 			@param sendglobal wether the event is sent to all or only the local module
 			@param Data an optional Data to set for all sent events
 		*/
-		void AddEventConversion(sf::Event::EventType SFMLEvtType, const std::string& EvtName, bool sendglobal = false, boost::any Data = boost::any());
+		template<typename T>
+		void AddEventConversion(const std::string& EvtName, bool sendglobal = false, boost::any Data = boost::any()) {
+			EvtConversions.insert(std::make_pair(std::type_index(typeid(T)), CreateConversion(EvtName, sendglobal, Data)));
+		}
 
 		/**
 			Loads key bindings from a node in the config file ( default: "keys.KeyEventBindings"). Right now this only works for key bindings, no eventconversions (sfml->sbe)
@@ -97,7 +101,7 @@ namespace sbe
 		ConvEvt CreateConversion(const std::string& EvtName, bool sendglobal, boost::any Data);
 
 		std::multimap<sf::Keyboard::Key, ConvEvt> KeyConversions;
-		std::multimap<sf::Event::EventType, ConvEvt> EvtConversions;
+		std::multimap<std::type_index, ConvEvt> EvtConversions;
 	};
 } // namespace sbe
 #endif // SFML_EVT_H

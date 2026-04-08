@@ -9,6 +9,7 @@
 
 #include <glm/gtx/string_cast.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Font.hpp>
 
 namespace sbe
 {
@@ -41,9 +42,9 @@ namespace sbe
 		Legend.clear();
 		AxisLabels.clear();
 		Axes.clear();
-		Axes.setPrimitiveType(sf::Lines);
+		Axes.setPrimitiveType(sf::PrimitiveType::Lines);
 		RenderArrays.insert(RenderArrays.end(), 2 + g.Curves.size(), sf::VertexArray());
-		for (sf::VertexArray& vA : RenderArrays) vA.setPrimitiveType(sf::Lines);
+		for (sf::VertexArray& vA : RenderArrays) vA.setPrimitiveType(sf::PrimitiveType::Lines);
 
 		return true;
 	}
@@ -163,12 +164,12 @@ namespace sbe
 		AxisLabels.clear();
 		Legend.clear();
 		Axes.clear();
-		Axes.setPrimitiveType(sf::Lines);
+		Axes.setPrimitiveType(sf::PrimitiveType::Lines);
 		RenderArrays.insert(RenderArrays.end(), 2 + g.Curves.size(), sf::VertexArray());
 		for (sf::VertexArray& vA : RenderArrays)
 		{
 			vA.clear();
-			vA.setPrimitiveType(sf::Lines);
+			vA.setPrimitiveType(sf::PrimitiveType::Lines);
 		}
 
 		boost::mutex::scoped_lock data_mutex_lock(data_mutex);
@@ -286,36 +287,39 @@ namespace sbe
 		int maxwidth = 0;
 
 
+		auto fontPtr = Engine::GetResMgr()->get<sf::Font>("default");
+		if (!fontPtr) return;
+
 		for (Curve& c : g.Curves)
 		{
-			sf::Text t;
+			sf::Text t(*fontPtr);
 			t.setFillColor(c.color);
 			t.setString(c.name);
-			t.setFont(*(Engine::GetResMgr()->get<sf::Font>("default")));
 			t.setCharacterSize(g.textSize);
 			sf::FloatRect bounds = t.getLocalBounds();
-			t.setOrigin(0, 0);
-			y += spacing + bounds.height;
-			if (bounds.width > maxwidth) maxwidth = bounds.width;
-			t.setPosition(0, y);
+			t.setOrigin({0.f, 0.f});
+			y += spacing + bounds.size.y;
+			if (bounds.size.x > maxwidth) maxwidth = bounds.size.x;
+			t.setPosition({0.f, (float)y});
 			Legend.push_back(t);
 		}
 
 		for (sf::Text& t : Legend)
-			t.setPosition(g.Size.x - maxwidth - 5, t.getPosition().y);
+			t.setPosition({(float)(g.Size.x - maxwidth - 5), t.getPosition().y});
 	}
 
 	void GraphPlotter::drawText(const sf::Vector2f& pos, const std::string& text, bool xAxis) {
-		sf::Text t;
+		auto fontPtr = Engine::GetResMgr()->get<sf::Font>("default");
+		if (!fontPtr) return;
+		sf::Text t(*fontPtr);
 		t.setFillColor(sf::Color::Black);
 		t.setString(text);
-		t.setFont(*(Engine::GetResMgr()->get<sf::Font>("default")));
 		t.setCharacterSize(g.textSize);
 		sf::FloatRect bounds = t.getLocalBounds();
 		// center the origin accordingly so we can move it by its centerpoint
 		// x axis labels, bottom-mid; y axis labels left-mid
-		if (xAxis) t.setOrigin(bounds.width/2, bounds.height);
-		else t.setOrigin(0, bounds.height/2);
+		if (xAxis) t.setOrigin({bounds.size.x/2, bounds.size.y});
+		else t.setOrigin({0.f, bounds.size.y/2});
 		t.setPosition(pos);
 		AxisLabels.push_back(t);
 	}

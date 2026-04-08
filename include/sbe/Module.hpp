@@ -1,7 +1,6 @@
 #ifndef MODULE_H
 #define MODULE_H
 
-#include <SFML/System/NonCopyable.hpp>
 #include <SFML/System/Time.hpp>
 
 #include <memory>
@@ -81,8 +80,10 @@ namespace sbe {
 
 		Modules have their own local eventqueue and register on start with the global EventCore.
 	*/
-	class Module : sf::NonCopyable {
+	class Module {
 	public:
+		Module(const Module&) = delete;
+		Module& operator=(const Module&) = delete;
 		Module();
 
 		virtual ~Module();

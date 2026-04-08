@@ -2,7 +2,6 @@
 #define SOUND_H
 
 #include <SFML/Audio/Sound.hpp>
-#include <SFML/System/NonCopyable.hpp>
 
 #include "util/NamedList.hpp"
 
@@ -16,9 +15,11 @@ namespace sbe
 	A Soundsystem for managing currently active Sounds and volume.
 	@note this is not completely implemented
 */
-	class SoundSystem : sf::NonCopyable
+	class SoundSystem
 	{
 	public:
+		SoundSystem(const SoundSystem&) = delete;
+		SoundSystem& operator=(const SoundSystem&) = delete;
 
 		SoundSystem();
 

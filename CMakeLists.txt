@@ -53,7 +53,7 @@ find_package(SFML 3 COMPONENTS Audio Window Graphics System ${ADD_SFML_MAIN} REQ
 find_package(SFGUI REQUIRED)
 find_package(glm REQUIRED)
 
-add_definitions(-DGLM_FORCE_RADIANS)
+add_definitions(-DGLM_FORCE_RADIANS -DGLM_ENABLE_EXPERIMENTAL)
 
 #############################################################
 #################### File inclusion #########################

@@ -3,6 +3,7 @@
 
 #include <sbe/gfx/Animation.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <optional>
 
 namespace sbe
 {
@@ -29,7 +30,7 @@ namespace sbe
 		sf::Sprite& getSprite();
 
 	private:
-		sf::Sprite s;
+		std::optional<sf::Sprite> s;
 
 	};
 } // namespace sbe

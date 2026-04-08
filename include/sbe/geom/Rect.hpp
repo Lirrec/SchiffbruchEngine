@@ -18,12 +18,12 @@ namespace sbe
 		public:
 			rect() = default;
 
-			rect(sf::FloatRect fr) : x({fr.left, fr.top}),
+			rect(sf::FloatRect fr) : x({fr.position.x, fr.position.y}),
 			                                            // plus v here because our origin is top left, "bottom" is a higher y value
-			                         y({fr.left+fr.width, fr.top+fr.height})
+			                         y({fr.position.x+fr.size.x, fr.position.y+fr.size.y})
 			{}
 
-			operator sf::FloatRect() { return { x.x, x.y, std::fabs(x.x - y.x), std::fabs(x.y -y.y) }; }
+			operator sf::FloatRect() { return sf::FloatRect({x.x, x.y}, {std::fabs(x.x - y.x), std::fabs(x.y - y.y)}); }
 			rect operator/ (int i) const { return {{x.x/i, x.y/i},{y.x/i, y.y/i}};}
 			rect operator* (int i) const { return {{x.x*i, x.y*i},{y.x*i, y.y*i}};}
 			rect operator+ (int i) const { return {{x.x+i, x.y+i},{y.x+i, y.y+i}};}
@@ -40,12 +40,12 @@ namespace sbe
 		{
 		public:
 			irect() = default;
-			irect(sf::IntRect ir) : x({ir.left, ir.top}),
+			irect(sf::IntRect ir) : x({ir.position.x, ir.position.y}),
 														// plus v here because our origin is top left, "bottom" is a higher y value
-									y({ir.left+ir.width, ir.top+ir.height})
+									y({ir.position.x+ir.size.x, ir.position.y+ir.size.y})
 			{}
 
-			operator sf::IntRect() { return { x.x, x.y, std::abs(x.x - y.x), std::abs(x.y -y.y) }; }
+			operator sf::IntRect() { return sf::IntRect({x.x, x.y}, {std::abs(x.x - y.x), std::abs(x.y - y.y)}); }
 
 			irect operator/ (int i) const { return {{x.x/i, x.y/i},{y.x/i, y.y/i}};}
 			irect operator* (int i) const { return {{x.x*i, x.y*i},{y.x*i, y.y*i}};}

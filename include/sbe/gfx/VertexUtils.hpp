@@ -21,10 +21,10 @@ namespace sbe
 		*/
 		inline void SetQuadPos(sf::Vertex* vs, const sf::FloatRect& Pos) {
 			// Order is important here ( vertices are added counterclockwise in opengl )
-			vs[0].position = sf::Vector2f(Pos.left, Pos.top);                        // top-left
-			vs[1].position = sf::Vector2f(Pos.left, Pos.top + Pos.height);                // bottom-left
-			vs[2].position = sf::Vector2f(Pos.left + Pos.width, Pos.top + Pos.height);    // bottom-right
-			vs[3].position = sf::Vector2f(Pos.left + Pos.width, Pos.top);                // top-right
+			vs[0].position = sf::Vector2f(Pos.position.x, Pos.position.y);                        // top-left
+			vs[1].position = sf::Vector2f(Pos.position.x, Pos.position.y + Pos.size.y);                // bottom-left
+			vs[2].position = sf::Vector2f(Pos.position.x + Pos.size.x, Pos.position.y + Pos.size.y);    // bottom-right
+			vs[3].position = sf::Vector2f(Pos.position.x + Pos.size.x, Pos.position.y);                // top-right
 
 			//	Engine::out() << "vs[0] " << Pos.left << " - " << Pos.top << std::endl;
 			//	Engine::out() << "vs[1] " << Pos.left+Pos.width << " - " << Pos.top << std::endl;
@@ -53,10 +53,10 @@ namespace sbe
 			@param coords a sf::FloatRect containing the new texture coordinates
 		*/
 		inline void SetQuadTex(sf::Vertex* vs, const sf::FloatRect& coords) {
-			vs[0].texCoords = sf::Vector2f(coords.left, coords.top);    // top-left
-			vs[1].texCoords = sf::Vector2f(coords.left, coords.top + coords.height); // bottom-left
-			vs[2].texCoords = sf::Vector2f(coords.left + coords.width, coords.top + coords.height); // bottom-right
-			vs[3].texCoords = sf::Vector2f(coords.left + coords.width, coords.top); // top-right
+			vs[0].texCoords = sf::Vector2f(coords.position.x, coords.position.y);    // top-left
+			vs[1].texCoords = sf::Vector2f(coords.position.x, coords.position.y + coords.size.y); // bottom-left
+			vs[2].texCoords = sf::Vector2f(coords.position.x + coords.size.x, coords.position.y + coords.size.y); // bottom-right
+			vs[3].texCoords = sf::Vector2f(coords.position.x + coords.size.x, coords.position.y); // top-right
 
 			//	Engine::out() << "vs[0]tex " << coords.x.x << " - " << coords.x.y << std::endl;
 			//	Engine::out() << "vs[1]tex " << coords.y.x << " - " << coords.x.y << std::endl;
@@ -171,16 +171,16 @@ namespace sbe
 			Update a line in a vertexarray ( 2 vertices).
 		*/
 		inline void UpdateLine(sf::VertexArray& vA, const sf::Vector2f& start, const sf::Vector2f& end, const sf::Color& c, const int ArrayIndex) {
-			vA[ArrayIndex] = sf::Vertex(start, c);
-			vA[ArrayIndex + 1] = sf::Vertex(end, c);
+			vA[ArrayIndex] = sf::Vertex{start, c};
+			vA[ArrayIndex + 1] = sf::Vertex{end, c};
 		}
 
 		/**
 			Append a line to a vertexarray ( 2 vertices).
 		*/
 		inline void AppendLine(sf::VertexArray& vA, const sf::Vector2f& start, const sf::Vector2f& end, const sf::Color& c) {
-			vA.append(sf::Vertex(start, c));
-			vA.append(sf::Vertex(end, c));
+			vA.append(sf::Vertex{start, c});
+			vA.append(sf::Vertex{end, c});
 		}
 
 	}

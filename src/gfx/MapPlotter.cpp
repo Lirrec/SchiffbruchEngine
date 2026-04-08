@@ -1,6 +1,7 @@
 #include <sbe/gfx/MapPlotter.hpp>
 
 #include <sbe/Engine.hpp>
+#include <algorithm>
 
 #include <sbe/geom/Helpers.hpp>
 
@@ -29,7 +30,7 @@ namespace sbe
 			for (float& f : Data) f = geom::normalize(f, min, max);
 		}
 
-		Img.create(Size.x, Size.y);
+		Img.resize({Size.x, Size.y});
 	}
 
 	void MapPlotter::plot() {
@@ -41,7 +42,7 @@ namespace sbe
 
 		for (unsigned int y = 0; y < Size.y; ++y)
 			for (unsigned int x = 0; x < Size.x; ++x)
-				Img.setPixel(x, y, getColor(Data[geom::linear(x, y, Size.x)]));
+				Img.setPixel({x, y}, getColor(Data[geom::linear(x, y, Size.x)]));
 	}
 
 	sf::Color MapPlotter::getColor(float f) {

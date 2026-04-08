@@ -1,16 +1,14 @@
 #ifndef SFISTREAM_H
 #define SFISTREAM_H
 
-#include <SFML/Config.hpp> // Int64
 #include <SFML/System/InputStream.hpp>
 
+#include <cstddef>
 #include <istream>
+#include <optional>
 
 namespace sbe
 {
-	using sf::Int64; // or better use int64_t?
-
-
 	/**
 		This class is an implementation of sf::Inputstream on std::istreams.
 		@warning the getSize() method requires seeking to the end of the stream, which can be very inefficient or time consuming in some cases
@@ -26,16 +24,16 @@ namespace sbe
 		virtual ~sfIStream() { }
 
 		/// @see sf::InputStream Documentation
-		virtual Int64 read(void* data, Int64 size);
+		[[nodiscard]] std::optional<std::size_t> read(void* data, std::size_t size) override;
 
 		/// @see sf::InputStream Documentation
-		virtual Int64 seek(Int64 position);
+		[[nodiscard]] std::optional<std::size_t> seek(std::size_t position) override;
 
 		/// @see sf::InputStream Documentation
-		virtual Int64 tell();
+		[[nodiscard]] std::optional<std::size_t> tell() override;
 
 		/// @see sf::InputStream Documentation
-		virtual Int64 getSize();
+		std::optional<std::size_t> getSize() override;
 
 	private :
 		std::istream& stream;

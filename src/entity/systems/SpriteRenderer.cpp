@@ -28,12 +28,12 @@ namespace sbe
 		using namespace sbe::operators;
 
 		void SpriteRenderer::onEntityUpdate(Entity& E) {
-			A->sprite = E.C<sf::Sprite>("Sprite"_cId);
+			A->sprite = *E.C<std::shared_ptr<sf::Sprite>>("Sprite"_cId);
 			copyTransformable(E.C<sf::Transformable&>("Transformable"_cId), A->sprite);
 		}
 
 		void SpriteRenderer::onAttach(Entity& E) {
-			A = std::make_shared<SpriteActor>( E.C<sf::Sprite>("Sprite"_cId) );
+			A = std::make_shared<SpriteActor>( *E.C<std::shared_ptr<sf::Sprite>>("Sprite"_cId) );
 			copyTransformable(E.C<sf::Transformable&>("Transformable"_cId), A->sprite);
 
 			sbe::Renderer::addActorEvent().Queue(true, std::dynamic_pointer_cast<Actor>(A), E.C<unsigned int>("RenderLayer"_cId));

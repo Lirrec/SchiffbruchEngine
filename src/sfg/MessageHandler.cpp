@@ -1,5 +1,6 @@
 #include <sbe/sfg/MessageHandler.hpp>
 #include <sbe/Module.hpp>
+#include <algorithm>
 
 namespace sbe
 {

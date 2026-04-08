@@ -86,7 +86,7 @@ namespace sbe
 					{
 #include "Arial.hpp"
 					};
-			font.loadFromMemory(data, sizeof(data));
+			font.openFromMemory(data, sizeof(data));
 			loaded = true;
 		}
 		return font;

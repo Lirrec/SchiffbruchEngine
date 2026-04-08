@@ -4,8 +4,6 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/optional.hpp>
 
-#include <SFML/System/NonCopyable.hpp>
-
 #include <sbe/Engine.hpp>
 
 namespace sbe
@@ -22,10 +20,12 @@ namespace sbe
 
 		@warning not threadsafe!
 	*/
-	class Config : sf::NonCopyable
+	class Config
 	{
 
 	private:
+		Config(const Config&) = delete;
+		Config& operator=(const Config&) = delete;
 		/// stores settings
 		boost::property_tree::ptree _settings;
 

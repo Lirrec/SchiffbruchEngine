@@ -10,7 +10,7 @@ namespace sbe
 		{
 			std::vector<ComponentInfo> getSFMLComponents() {
 				return {
-						{"Sprite",      makeComponentFactory<sf::Sprite>()},
+						{"Sprite",      makeComponentFactory<std::shared_ptr<sf::Sprite>>()},
 						{"RenderLayer", makeComponentFactory<unsigned int>()}
 				};
 			}

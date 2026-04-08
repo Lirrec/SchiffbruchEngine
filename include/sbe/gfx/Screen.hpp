@@ -4,7 +4,6 @@
 
 #include <sbe/event/EventUser.hpp>
 #include <SFML/System/Clock.hpp>
-#include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <cassert>
 
@@ -44,9 +43,11 @@ namespace sbe
 			system.renderer.windowsize
 
 	*/
-	class Screen : public EventUser, public sf::NonCopyable
+	class Screen : public EventUser
 	{
 	public:
+		Screen(const Screen&) = delete;
+		Screen& operator=(const Screen&) = delete;
 		Screen();
 
 		virtual ~Screen() { };

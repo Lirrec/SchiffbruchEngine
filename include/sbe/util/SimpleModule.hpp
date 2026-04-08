@@ -4,6 +4,7 @@
 #include <sbe/Module.hpp>
 #include <tuple>
 #include <memory>
+#include <functional>
 
 namespace sbe
 {

@@ -24,9 +24,11 @@ namespace sbe
 
 	/** Handles Input
 	*/
-	class EventCore : sf::NonCopyable
+	class EventCore
 	{
 	public:
+		EventCore(const EventCore&) = delete;
+		EventCore& operator=(const EventCore&) = delete;
 
 		/// this allows the EventQueues only to register to the eventcore as the required methods are private
 		friend class EventQueue;
