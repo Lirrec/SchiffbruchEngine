@@ -18,10 +18,12 @@ option(SBE_BUILD_SHARED_LIBS "" ON)
 option(SBE_USE_SHARED_LIBS "" ON)
 option(SBE_ENABLE_LTO "enable ltoclion " OFF)
 
-SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+if (PROJECT_IS_TOP_LEVEL)
+    SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
-if (NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Release")
+    if (NOT CMAKE_BUILD_TYPE)
+        set(CMAKE_BUILD_TYPE "Release")
+    endif ()
 endif ()
 
 message(STATUS "-- INFO --")
@@ -198,6 +200,9 @@ target_link_libraries(sbe SFGUI::SFGUI ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${SB
 set_target_properties(sbe PROPERTIES SOVERSION ${VER_MAJOR})
 set_target_properties(sbe PROPERTIES VERSION ${VER_MAJOR}.${VER_MINOR})
 
+# Namespaced alias so downstream can use sbe::sbe whether via find_package or FetchContent
+add_library(sbe::sbe ALIAS sbe)
+
 target_include_directories(sbe
         PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>  # <prefix>/include/
@@ -206,55 +211,50 @@ target_include_directories(sbe
 
 #set_target_properties(sbe PROPERTIES PUBLIC_HEADER "${sbe_HDRS}")
 
-install(DIRECTORY include DESTINATION ${CMAKE_INSTALL_PREFIX})
+if (PROJECT_IS_TOP_LEVEL)
+    install(DIRECTORY include DESTINATION ${CMAKE_INSTALL_PREFIX})
 
-install(TARGETS sbe EXPORT SBEConfigExport
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        PUBLIC_HEADER DESTINATION include)
+    install(TARGETS sbe EXPORT SBEConfigExport
+            RUNTIME DESTINATION bin
+            LIBRARY DESTINATION lib
+            ARCHIVE DESTINATION lib
+            PUBLIC_HEADER DESTINATION include)
 
+    ######################################################
+    # Generate and install SBEConfig.cmake               #
+    # (that's the new and hot FindX.cmake replacement)   #
+    ######################################################
 
+    include(CMakePackageConfigHelpers)
+    write_basic_package_version_file(
+            "${CMAKE_CURRENT_BINARY_DIR}/SBEConfigVersion.cmake"
+            VERSION ${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}
+            COMPATIBILITY SameMajorVersion
+    )
 
-######################################################
-# Generate and install SBEConfig.cmake               #
-# (that's the new and hot FindX.cmake replacement)   #
-######################################################
+    set(targets_config_filename "SBETargets.cmake")
 
-include(CMakePackageConfigHelpers)
-write_basic_package_version_file(
-        "${CMAKE_CURRENT_BINARY_DIR}/SBEConfigVersion.cmake"
-        VERSION ${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}
-        COMPATIBILITY SameMajorVersion
-)
+    export(EXPORT SBEConfigExport
+            FILE "${CMAKE_CURRENT_BINARY_DIR}/${targets_config_filename}")
 
-set(targets_config_filename "SBETargets.cmake")
+    set(config_package_location lib/cmake/SBE)
 
-export(EXPORT SBEConfigExport
-        FILE "${CMAKE_CURRENT_BINARY_DIR}/${targets_config_filename}")
+    configure_package_config_file(
+            "${PROJECT_SOURCE_DIR}/cmake/SBEConfig.cmake.in"
+            "${CMAKE_CURRENT_BINARY_DIR}/SBEConfig.cmake"
+            INSTALL_DESTINATION "${config_package_location}"
+    )
 
-set(config_package_location lib/cmake/SBE)
+    install(EXPORT SBEConfigExport
+            FILE ${targets_config_filename}
+            DESTINATION ${config_package_location}
+    )
 
-configure_package_config_file(
-        "${PROJECT_SOURCE_DIR}/cmake/SBEConfig.cmake.in"
-        "${CMAKE_CURRENT_BINARY_DIR}/SBEConfig.cmake"
-        INSTALL_DESTINATION "${config_package_location}"
-)
-#configure_package_config_file(
-#  "${PROJECT_SOURCE_DIR}/cmake/SBEConfigDependencies.cmake.in"
-#  "${CMAKE_CURRENT_BINARY_DIR}/SBEConfigDependencies.cmake"
-#  INSTALL_DESTINATION "${config_package_location}"
-#)
-
-install(EXPORT SBEConfigExport
-        FILE ${targets_config_filename}
-        DESTINATION ${config_package_location}
-)
-
-install(FILES
-        "${CMAKE_CURRENT_BINARY_DIR}/SBEConfig.cmake"
-        "${CMAKE_CURRENT_BINARY_DIR}/SBEConfigVersion.cmake"
-        DESTINATION ${config_package_location}
-        COMPONENT devel
-)
+    install(FILES
+            "${CMAKE_CURRENT_BINARY_DIR}/SBEConfig.cmake"
+            "${CMAKE_CURRENT_BINARY_DIR}/SBEConfigVersion.cmake"
+            DESTINATION ${config_package_location}
+            COMPONENT devel
+    )
+endif ()
 
