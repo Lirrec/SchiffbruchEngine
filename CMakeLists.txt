@@ -46,12 +46,10 @@ endif ()
 #################### External Libraries #####################
 #############################################################
 
-set(REQUIRED_Boost_VERSION 1.60)
-set(REQUIRED_SFML_VERSION 3)
 
 set(SFML_FIND_REQUIRED true)
-find_package(Boost ${REQUIRED_Boost_VERSION} COMPONENTS thread system filesystem uuid REQUIRED)
-find_package(SFML ${REQUIRED_SFML_VERSION} COMPONENTS Audio Window Graphics System ${ADD_SFML_MAIN} REQUIRED)
+find_package(Boost 1.60 COMPONENTS thread system filesystem uuid property_tree REQUIRED)
+find_package(SFML 3 COMPONENTS Audio Window Graphics System ${ADD_SFML_MAIN} REQUIRED)
 find_package(SFGUI REQUIRED)
 find_package(glm REQUIRED)
 

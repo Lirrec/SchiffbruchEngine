@@ -8,6 +8,7 @@
     "boost-filesystem",
     "boost-system",
     "boost-thread",
-    "boost-uuid"
+    "boost-uuid",
+    "boost-property-tree"
   ]
 }
