@@ -195,7 +195,15 @@ endif ()
 #
 
 set(SFML_LIBRARIES SFML::Audio SFML::Window SFML::Graphics SFML::System)
-target_link_libraries(SBE SFGUI::SFGUI ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${SBE_SCRIPT_LIBS} ${SFML_DEPENDENCIES} ${Boost_DEPENDENCIES})
+target_link_libraries(SBE
+        PUBLIC
+            SFGUI::SFGUI
+            ${SFML_LIBRARIES}
+            ${Boost_LIBRARIES}
+            ${SBE_SCRIPT_LIBS}
+            ${SFML_DEPENDENCIES}
+            ${Boost_DEPENDENCIES}
+)
 
 set_target_properties(SBE PROPERTIES SOVERSION ${VER_MAJOR})
 set_target_properties(SBE PROPERTIES VERSION ${VER_MAJOR}.${VER_MINOR})

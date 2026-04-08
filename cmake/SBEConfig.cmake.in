@@ -2,8 +2,9 @@
 
 # check dependencies
 include(CMakeFindDependencyMacro)
+find_dependency(SFML 3 COMPONENTS Audio Window Graphics System)
 find_dependency(SFGUI)
-find_dependency(Boost "@REQUIRED_Boost_VERSION@")
+find_dependency(Boost 1.60 COMPONENTS thread system filesystem uuid property_tree)
 find_dependency(glm)
 
 include("${CMAKE_CURRENT_LIST_DIR}/SBETargets.cmake")
