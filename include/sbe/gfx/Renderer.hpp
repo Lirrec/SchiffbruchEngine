@@ -152,9 +152,9 @@ namespace sbe
 			@param A the actor
 			@param Layer which layer should the actor be rendered on
 		*/
-		void addActor(std::shared_ptr<Actor> A, unsigned int Layer);
+		void addActor(const std::shared_ptr<Actor>& A, unsigned int Layer);
 
-		void addActors(std::shared_ptr<std::vector<std::shared_ptr<Actor>>> Actors, unsigned int Layer);
+		void addActors(const std::vector<std::shared_ptr<Actor>>& Actors, unsigned int Layer);
 
 		template <class T>
 		auto addActorCast(const std::shared_ptr<T>& A, unsigned int Layer) -> std::enable_if<std::is_base_of<Actor, T>::value> {

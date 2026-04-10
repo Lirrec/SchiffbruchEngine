@@ -33,7 +33,7 @@ namespace sbe
 	public:
 
 		GameBase();
-
+		virtual ~GameBase() = default;
 
 		/// Starts the mainloop
 		void Run();

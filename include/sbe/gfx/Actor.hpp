@@ -23,7 +23,6 @@ namespace sbe
 	public:
 
 		Actor();
-
 		virtual ~Actor() { }
 
 		virtual void update(const sf::Time& RenderTime) { };

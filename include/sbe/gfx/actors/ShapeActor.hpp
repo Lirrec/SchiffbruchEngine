@@ -7,14 +7,14 @@
 
 namespace sbe
 {
-
-
 	/**
 		An Actor holding a simple sf::Shape
 	*/
 	class ShapeActor : public Actor
 	{
 	public:
+		~ShapeActor() override = default;
+
 		sf::Drawable& getDrawable()  override;
 		geom::rect getBounds() override;
 

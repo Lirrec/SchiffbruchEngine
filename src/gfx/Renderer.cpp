@@ -10,8 +10,6 @@
 namespace sbe
 {
 	Renderer::Renderer() {
-		//RegisterForEvent("ADD_ACTOR");
-
 
 		RegisterForEvent<std::shared_ptr<Actor>>("UPDATE_ACTOR", [this](std::shared_ptr<Actor> actor){
 			updateActor(actor->getID(), actor);
@@ -133,7 +131,7 @@ namespace sbe
 	}
 
 
-	void Renderer::addActor(std::shared_ptr<Actor> A, unsigned int Layer) {
+	void Renderer::addActor(const std::shared_ptr<Actor>& A, unsigned int Layer) {
 		if (!A) return;
 
 		if (Layer < Layers.size())
@@ -179,8 +177,8 @@ namespace sbe
 		Layers[AI.second].changed = true;
 	}
 
-	void Renderer::addActors(std::shared_ptr<std::vector<std::shared_ptr<Actor>>> Actors, unsigned int Layer) {
-		for (auto& actor : *Actors) addActor(actor, Layer);
+	void Renderer::addActors(const std::vector<std::shared_ptr<Actor>>& Actors, unsigned int Layer) {
+		for (auto& actor : Actors) addActor(actor, Layer);
 	}
 
 } // namespace sbe
