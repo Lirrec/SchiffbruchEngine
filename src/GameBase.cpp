@@ -2,7 +2,6 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <boost/thread.hpp>
 #include <sbe/util/SimpleModule.hpp>
 #include <event/EventCore.hpp>
 
@@ -84,7 +83,7 @@ namespace sbe
 		Engine::out(Engine::INFO) << "[Engine] Starting Modules: " << std::endl;
 
 		// the count on the barrier is Modules.size() + 1 for this thread
-		Module::GetBarrier() = std::make_shared<boost::barrier>(Modules.size() + 1);
+		Module::GetBarrier() = std::make_shared<std::barrier<>>(Modules.size() + 1);
 
 		for (auto& M : Modules)
 		{
@@ -92,7 +91,7 @@ namespace sbe
 			M.first->StartModule(M.second);
 		}
 
-		Module::GetBarrier()->wait();
+		Module::GetBarrier()->arrive_and_wait();
 	}
 
 	void GameBase::JoinModules() {

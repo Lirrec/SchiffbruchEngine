@@ -50,7 +50,7 @@ endif ()
 
 
 set(SFML_FIND_REQUIRED true)
-find_package(Boost 1.60 COMPONENTS thread system filesystem uuid property_tree REQUIRED)
+find_package(Boost 1.60 COMPONENTS system filesystem uuid property_tree REQUIRED)
 find_package(SFML 3 COMPONENTS Audio Window Graphics System ${ADD_SFML_MAIN} REQUIRED)
 find_package(SFGUI REQUIRED)
 find_package(glm REQUIRED)
@@ -79,7 +79,7 @@ endif ()
 #################### Compiler Options #######################
 #############################################################
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 23)
 
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
     # nogdi prevents a "#define ERROR 0" from wingdi.h which fucks up our code
@@ -100,11 +100,11 @@ endif ()
 #	General Compiler Options
 #
 IF (NOT MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DBOOST_THREAD_USE_LIB -D_stdcall -D_cdecl -D_thiscall -D_fastcall -pipe")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_stdcall -D_cdecl -D_thiscall -D_fastcall -pipe")
 
 else ()
     # FIXME: remove std-flag here if CMAKE_CXX_STANDARD works with msvc!
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14 /MP /Gm- /EHsc /GR /W3")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest /MP /Gm- /EHsc /GR /W3")
 endif ()
 
 #

@@ -6,15 +6,11 @@
 #include <memory>
 #include <string>
 #include <list>
+#include <barrier>
+#include <thread>
 #include <sbe/util/Hash.hpp>
 #include <sbe/util/Meta.hpp>
 #include <iostream>
-
-namespace boost {
-	class thread;
-
-	class barrier;
-}
 
 namespace sbe {
 	class TickControl;
@@ -139,8 +135,8 @@ namespace sbe {
 		*/
 		void DebugString(const std::string &name, const std::string &value);
 
-		/// access this modules boost::thread instance
-		boost::thread *getThread();
+		/// access this module's thread instance
+		std::thread *getThread();
 
 		/// request this module to quit
 		void RequestQuit();
@@ -238,7 +234,7 @@ namespace sbe {
 
 		friend class GameBase;
 
-		static std::shared_ptr<boost::barrier> &GetBarrier();
+		static std::shared_ptr<std::barrier<>> &GetBarrier();
 
 		class Private;
 

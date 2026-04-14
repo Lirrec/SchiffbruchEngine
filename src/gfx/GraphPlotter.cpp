@@ -4,7 +4,6 @@
 #include <sbe/Engine.hpp>
 #include <sbe/ResourceManager.hpp>
 
-#include <boost/thread.hpp>
 #include <boost/lexical_cast.hpp>
 
 #include <glm/gtx/string_cast.hpp>
@@ -34,7 +33,7 @@ namespace sbe
 			return false;
 		}
 
-		boost::mutex::scoped_lock data_mutex_lock(data_mutex);
+		std::unique_lock<std::mutex> data_mutex_lock(data_mutex);
 
 		valid = true;
 		g = _g;
@@ -55,7 +54,7 @@ namespace sbe
 			Engine::out(Engine::ERROR) << "[GraphPlotter] no valid graph set!" << std::endl;
 			return;
 		}
-		boost::mutex::scoped_lock data_mutex_lock(data_mutex);
+		std::unique_lock<std::mutex> data_mutex_lock(data_mutex);
 
 		for (unsigned int i = 0; i < g.Curves.size(); ++i)
 		{
@@ -76,7 +75,7 @@ namespace sbe
 			Engine::out(Engine::ERROR) << "[GraphPlotter] no valid graph set!" << std::endl;
 			return;
 		}
-		boost::mutex::scoped_lock data_mutex_lock(data_mutex);
+		std::unique_lock<std::mutex> data_mutex_lock(data_mutex);
 
 		for (unsigned int i = 0; i < g.Curves.size(); ++i)
 		{
@@ -96,7 +95,7 @@ namespace sbe
 			Engine::out(Engine::ERROR) << "[GraphPlotter] no valid graph set!" << std::endl;
 			return;
 		}
-		boost::mutex::scoped_lock data_mutex_lock(data_mutex);
+		std::unique_lock<std::mutex> data_mutex_lock(data_mutex);
 
 		for (unsigned int i = 0; i < g.Curves.size(); ++i)
 		{
@@ -115,7 +114,7 @@ namespace sbe
 			Engine::out(Engine::ERROR) << "[GraphPlotter] no valid graph set!" << std::endl;
 			return;
 		}
-		boost::mutex::scoped_lock data_mutex_lock(data_mutex);
+		std::unique_lock<std::mutex> data_mutex_lock(data_mutex);
 
 		for (unsigned int i = 0; i < g.Curves.size(); ++i)
 		{
@@ -172,7 +171,7 @@ namespace sbe
 			vA.setPrimitiveType(sf::PrimitiveType::Lines);
 		}
 
-		boost::mutex::scoped_lock data_mutex_lock(data_mutex);
+		std::unique_lock<std::mutex> data_mutex_lock(data_mutex);
 
 		glm::ipoint2 maximas = g.getMaximas();
 

@@ -7,7 +7,8 @@
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/Graphics/Text.hpp>
 
-#include <boost/thread/mutex.hpp>
+#include <algorithm>
+#include <mutex>
 
 #include <string>
 #include <vector>
@@ -207,7 +208,7 @@ namespace sbe
 		std::list<sf::Text> AxisLabels;
 		std::list<sf::Text> Legend;
 
-		boost::mutex data_mutex;
+		std::mutex data_mutex;
 	};
 } // namespace sbe
 #endif // GRAPHPLOT_HPP

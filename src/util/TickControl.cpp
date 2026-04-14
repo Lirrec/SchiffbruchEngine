@@ -4,7 +4,8 @@
 
 #include <sbe/Module.hpp>
 
-
+#include <chrono>
+#include <thread>
 #include <boost/format.hpp>
 #include "../event/EventCore.hpp"
 
@@ -50,7 +51,7 @@ namespace sbe
 			MsToNextTick = MaxTickDuration - LastTickDuration;
 			if (Lag <= MsToNextTick)
 			{
-				boost::this_thread::sleep(boost::posix_time::milliseconds( (int) (MsToNextTick - Lag)));
+				std::this_thread::sleep_for(std::chrono::milliseconds((int)(MsToNextTick - Lag)));
 				Lag = 0;
 			}
 			else

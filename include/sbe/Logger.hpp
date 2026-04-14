@@ -9,11 +9,7 @@
 
 #include <iostream>
 #include <sstream>
-
-namespace boost
-{
-	class mutex;
-}
+#include <mutex>
 
 namespace sbe
 {
@@ -77,7 +73,7 @@ namespace sbe
 
 		void unlock();
 
-		static boost::mutex* io_mutex;
+		static std::mutex* io_mutex;
 		std::stringstream oss;
 		std::ostream& out;
 

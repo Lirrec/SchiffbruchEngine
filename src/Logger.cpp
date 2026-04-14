@@ -1,12 +1,12 @@
-#include <boost/thread/mutex.hpp>
+#include <mutex>
 #include <sbe/Logger.hpp>
 
 namespace sbe
 {
-	boost::mutex* Logger::io_mutex = nullptr;
+	std::mutex* Logger::io_mutex = nullptr;
 
 	Logger::Logger(std::ostream& _out) : out(_out) {
-		if (io_mutex == nullptr) io_mutex = new boost::mutex;
+		if (io_mutex == nullptr) io_mutex = new std::mutex;
 	}
 
 	void Logger::lock() {

@@ -14,6 +14,7 @@
 
 #include <forward_list>
 #include <map>
+#include <shared_mutex>
 #include <string>
 #include <vector>
 #include <tuple>
@@ -89,8 +90,8 @@ namespace sbe
 		size_t idcount = 1;
 		bool justStarted = true;
 
-		boost::shared_mutex HashMutex;
-		boost::shared_mutex QueueMutex;
+		std::shared_mutex HashMutex;
+		std::shared_mutex QueueMutex;
 
 		DLLEXPORT static EventCore* Instance;
 

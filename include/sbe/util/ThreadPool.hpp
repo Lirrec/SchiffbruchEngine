@@ -2,22 +2,18 @@
 #define THREADPOOL_HPP
 
 #include <sbe/Engine.hpp>
+#include <barrier>
 
 #include <vector>
 #include <utility>
 #include <iterator>
 #include <algorithm>
+#include <atomic>
 #include <memory>
 #include <functional>
+#include <thread>
 
 #include <boost/any.hpp>
-
-namespace boost
-{
-	class thread_group;
-
-	class barrier;
-}
 
 namespace sbe
 {
@@ -118,11 +114,12 @@ namespace sbe
 		unsigned int numThreads = 0;
 
 		std::function<void(int)> Job;
-		std::unique_ptr<boost::thread_group> threads;
+		std::vector<std::thread> threads;
+		std::atomic<bool> stop{false};
 		/// contains the param for all threads
 		boost::any ranges;
-		std::unique_ptr<boost::barrier> startBarrier;
-		std::unique_ptr<boost::barrier> endBarrier;
+		std::unique_ptr<std::barrier<>> startBarrier;
+		std::unique_ptr<std::barrier<>> endBarrier;
 	};
 
 

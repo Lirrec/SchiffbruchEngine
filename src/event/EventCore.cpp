@@ -1,6 +1,7 @@
 #include "EventCore.hpp"
 
 #include <boost/lexical_cast.hpp>
+#include <shared_mutex>
 
 namespace sbe
 {
@@ -22,27 +23,27 @@ namespace sbe
 	// -----------------------------------------------------------------
 
 	bool EventCore::HasEvent(const HashType& Hash) {
-		boost::shared_lock<boost::shared_mutex> lock(HashMutex);
+		std::shared_lock<std::shared_mutex> lock(HashMutex);
 		return EventTypes.ElementExists(Hash);
 	}
 
 	bool EventCore::HasEvent(const std::string& Name) {
-		boost::shared_lock<boost::shared_mutex> lock(HashMutex);
+		std::shared_lock<std::shared_mutex> lock(HashMutex);
 		return EventTypes.ElementExists(Name);
 	}
 
 	HashType EventCore::GetEventHash(const std::string& Name) {
-		boost::shared_lock<boost::shared_mutex> lock(HashMutex);
+		std::shared_lock<std::shared_mutex> lock(HashMutex);
 		return EventTypes.GetHash(Name);
 	}
 
 	const std::string& EventCore::GetEventName(const HashType& Hash) {
-		boost::shared_lock<boost::shared_mutex> lock(HashMutex);
+		std::shared_lock<std::shared_mutex> lock(HashMutex);
 		return EventTypes.GetString(Hash);
 	}
 
 	bool EventCore::RegisterEventName(const std::string& EventName) {
-		boost::lock_guard<boost::shared_mutex> lock(HashMutex);
+		std::lock_guard<std::shared_mutex> lock(HashMutex);
 		//	Engine::out() << "[" << __PRETTY_FUNCTION__ << "]: " << "Registered new Event: " << EventName << " - ";
 
 		if (EventTypes.RegisterElement(EventName))
@@ -117,7 +118,7 @@ namespace sbe
 	// -----------------------------------------------------------------
 
 	size_t EventCore::RegisterModule(Module& M) {
-		boost::lock_guard<boost::shared_mutex> lock(QueueMutex);
+		std::lock_guard<std::shared_mutex> lock(QueueMutex);
 
 		size_t newID = idcount++;
 
@@ -135,7 +136,7 @@ namespace sbe
 	}
 
 	void EventCore::RemoveModule(size_t ModuleID) {
-		boost::lock_guard<boost::shared_mutex> lock(QueueMutex);
+		std::lock_guard<std::shared_mutex> lock(QueueMutex);
 
 		auto it = ModulesById.find(ModuleID);
 		if (it != ModulesById.end())
@@ -152,7 +153,7 @@ namespace sbe
 
 	/// Post an event to a specific queue, used by modules to post their Events
 	void EventCore::PostEventToQueue(size_t ModuleID, const Event& e) {
-		boost::shared_lock<boost::shared_mutex> lock(QueueMutex);
+		std::shared_lock<std::shared_mutex> lock(QueueMutex);
 
 		auto it = ModulesById.find(ModuleID);
 		if (it != ModulesById.end())
@@ -173,7 +174,7 @@ namespace sbe
 	}
 
 	size_t EventCore::GetQueueID(const std::string& Name) {
-		boost::shared_lock<boost::shared_mutex> lock(QueueMutex);
+		std::shared_lock<std::shared_mutex> lock(QueueMutex);
 
 		auto it = ModulesByName.find(Name);
 		if (it == ModulesByName.end())

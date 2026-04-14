@@ -1,6 +1,7 @@
 #include <sbe/Module.hpp>
 
-#include <boost/thread.hpp>
+#include <mutex>
+#include <thread>
 
 // local includes
 #include "event/EventCore.hpp"
@@ -26,16 +27,16 @@ namespace sbe
 			/// Event sent with key/value debbuging information
 			std::shared_ptr<Event> DbgStringEvent;
 
-			/// ptr to module instance
-			static boost::thread_specific_ptr<Module> Instance;
+			/// ptr to module instance (thread-local, one per thread)
+			static thread_local Module* Instance;
 			/// mutex for module access
-			static boost::mutex ModulesMutex;
+			static std::mutex ModulesMutex;
 
 			/// Lokal thread pointer
-			boost::thread* MyThread = nullptr;
+			std::thread* MyThread = nullptr;
 
 			/// barrier for synchronisation ( initialisation )
-			static std::shared_ptr<boost::barrier> ModulesBarrier;
+			static std::shared_ptr<std::barrier<>> ModulesBarrier;
 
 
 			/// List of existing Modules
@@ -65,10 +66,10 @@ namespace sbe
 
 
 
-	boost::thread_specific_ptr<Module>  Module::Private::Instance;
-	std::list<Module*>                  Module::Private::RunningModules;
-	boost::mutex                        Module::Private::ModulesMutex;
-	std::shared_ptr<boost::barrier>     Module::Private::ModulesBarrier;
+	thread_local Module*             Module::Private::Instance = nullptr;
+	std::list<Module*>               Module::Private::RunningModules;
+	std::mutex                       Module::Private::ModulesMutex;
+	std::shared_ptr<std::barrier<>>  Module::Private::ModulesBarrier;
 
 
 
@@ -83,7 +84,7 @@ namespace sbe
 	}
 
 
-	std::shared_ptr<boost::barrier>& Module::GetBarrier() {
+	std::shared_ptr<std::barrier<>>& Module::GetBarrier() {
 		return Private::ModulesBarrier;
 	}
 
@@ -91,10 +92,10 @@ namespace sbe
 		return pimpl->useEventQueue;
 	}
 
-	Module* Module::Get() { return Private::Instance.get(); }
+	Module* Module::Get() { return Private::Instance; }
 
 	EventQueue *Module::Evt() {
-		return Private::Instance.get()->GetEventQueue();
+		return Private::Instance->GetEventQueue();
 	}
 
 	const std::string& Module::GetName() const { return pimpl->Name; }
@@ -102,7 +103,7 @@ namespace sbe
 	size_t Module::GetQueueID() { return pimpl->QueueID; }
 
 
-	boost::thread* Module::getThread() { return pimpl->MyThread; }
+	std::thread* Module::getThread() { return pimpl->MyThread; }
 
 	void Module::RequestQuit() { pimpl->quit = true; }
 
@@ -150,7 +151,7 @@ namespace sbe
 			pimpl->QueueID = EventCore::getInstance()->RegisterModule(*this);
 		}
 
-		pimpl->MyThread = new boost::thread(boost::bind(&Module::ThreadLocalInit, this));
+		pimpl->MyThread = new std::thread([this] { ThreadLocalInit(); });
 		//MyThread->detach();
 	}
 
@@ -178,7 +179,7 @@ namespace sbe
 	}
 
 	void Module::ThreadLocalInit() {
-		pimpl->Instance.reset(this);
+		Private::Instance = this;
 		pimpl->ModuleTime.restart();
 
 		assert(pimpl->ModulesBarrier);
@@ -188,7 +189,7 @@ namespace sbe
 		LocalInit();
 
 		// wait for other modules to complete their LocalInit()
-		pimpl->ModulesBarrier->wait();
+		pimpl->ModulesBarrier->arrive_and_wait();
 
 		Init();
 		Execute();
@@ -197,8 +198,7 @@ namespace sbe
 		if (pimpl->useEventQueue) EventCore::getInstance()->RemoveModule(pimpl->QueueID);
 
 		Engine::out(Engine::INFO) << "[" << Module::Get()->GetName() << "] Thread/Module has exited" << std::endl;
-		// without this the thread_specific_ptr would call delete on this module
-		pimpl->Instance.release();
+		Private::Instance = nullptr;
 	}
 
 	void Module::Execute() {
@@ -228,13 +228,13 @@ namespace sbe
 		pimpl->DbgStringEvent = std::make_shared<Event>("VIEW_DBG_STRING");
 		pimpl->EvtQ = std::make_shared<EventQueue>();
 		pimpl->QueueID = EventCore::getInstance()->RegisterModule(*this);
-		pimpl->Instance.reset(this);
+		Private::Instance = this;
 	}
 
 	void Module::TeardownCurrentThread() {
 		if (pimpl->useEventQueue)
 			EventCore::getInstance()->RemoveModule(pimpl->QueueID);
-		pimpl->Instance.release();
+		Private::Instance = nullptr;
 	}
 
 	void Module::ProcessEvents() {

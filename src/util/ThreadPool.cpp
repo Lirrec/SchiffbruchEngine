@@ -1,7 +1,5 @@
 #include <sbe/util/ThreadPool.hpp>
 
-#include <boost/thread.hpp>
-
 namespace sbe
 {
 	std::vector<std::pair<std::ptrdiff_t, std::ptrdiff_t>> chunkInts(const unsigned int total, const std::ptrdiff_t threads) {
@@ -37,9 +35,7 @@ namespace sbe
 	}
 
 
-	ThreadPool::ThreadPool() {
-		threads = std::make_unique<boost::thread_group>();
-	}
+	ThreadPool::ThreadPool() = default;
 
 	ThreadPool::~ThreadPool() {
 		StopThreads();
@@ -54,48 +50,35 @@ namespace sbe
 
 		numThreads = num;
 
-		startBarrier = std::make_unique<boost::barrier>(numThreads + 1);
-		endBarrier = std::make_unique<boost::barrier>(numThreads + 1);
+		startBarrier = std::make_unique<std::barrier<>>(numThreads + 1);
+		endBarrier = std::make_unique<std::barrier<>>(numThreads + 1);
 
 		for (unsigned int thread = 0; thread < numThreads; ++thread)
-			threads->add_thread(new boost::thread(std::bind(&ThreadPool::threadentry, this, thread)));
+			threads.emplace_back([this, thread] { threadentry(thread); });
 	}
 
 	void ThreadPool::StopThreads() {
-		try
-		{
-			threads->interrupt_all();
-			threads->join_all();
-			numThreads = 0;
-		}
-		catch (...)
-		{
-			//Engine::out() << "exception: " << e.what()  <<std::endl;
-			Engine::out() << "exception: " << std::endl;
-		}
+		stop = true;
+		startBarrier->arrive_and_wait();  // unblock all threads so they can observe stop and exit
+		for (auto& t : threads) t.join();
+		threads.clear();
+		numThreads = 0;
+		stop = false;
 	}
 
 	/// thread entry point
 	void ThreadPool::threadentry(int tid) {
-		try
-		{
-			while (!boost::this_thread::interruption_requested())
-			{
-				startBarrier->wait();
-				Job(tid);
-				endBarrier->wait();
-			}
-		}
-		catch (...)
-		{
-			Engine::out() << "Thread " << tid << " interrupted." << std::endl;
-			return;
+		while (true) {
+			startBarrier->arrive_and_wait();
+			if (stop) break;
+			Job(tid);
+			endBarrier->arrive_and_wait();
 		}
 	}
 
 	void ThreadPool::runJob() {
-		startBarrier->wait();
-		endBarrier->wait();
+		startBarrier->arrive_and_wait();
+		endBarrier->arrive_and_wait();
 	}
 
 	void ThreadPool::runCustomJob(const boost::any& data) {
