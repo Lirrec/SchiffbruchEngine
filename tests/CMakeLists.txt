@@ -1,3 +1,5 @@
+set(CMAKE_BUILD_WITH_INSTALL_RPATH false)
+
 add_executable(sbe_tests
     ThreadPoolTest.cpp
 )
