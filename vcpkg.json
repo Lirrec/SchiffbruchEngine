@@ -10,6 +10,7 @@
     "boost-thread",
     "boost-uuid",
     "boost-property-tree",
-    "boost-format"
+    "boost-format",
+    "catch2"
   ]
 }
