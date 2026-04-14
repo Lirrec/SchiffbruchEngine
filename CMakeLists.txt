@@ -149,6 +149,8 @@ endif ()
 #################### Scripting / Swig #######################
 #############################################################
 
+find_package(Catch2 3 REQUIRED)
+
 add_subdirectory(scripting)
 # set by the scripting CMakelists
 include_directories(${SBE_SCRIPT_INCLUDES})
@@ -218,6 +220,8 @@ target_include_directories(SBE
 )
 
 #set_target_properties(sbe PROPERTIES PUBLIC_HEADER "${sbe_HDRS}")
+
+add_subdirectory(tests)
 
 if (PROJECT_IS_TOP_LEVEL)
     install(DIRECTORY include DESTINATION ${CMAKE_INSTALL_PREFIX})
