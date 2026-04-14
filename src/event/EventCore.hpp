@@ -54,8 +54,6 @@ namespace sbe
 
 		HashType GetEventHash(const std::string& Name);
 
-
-
 		// -------------- Module/EventQueue Managment --------------------
 
 		/// register another Module.
@@ -75,20 +73,8 @@ namespace sbe
 		int GetEventCount();
 
 	private:
-
-		class ModuleInfo
+		struct ModuleInfo
 		{
-		public:
-			ModuleInfo(const ModuleInfo& rhs)
-					: Name(rhs.Name), ID(rhs.ID), EvtQ(rhs.EvtQ), InputQueue() {
-				//Engine::out() << "MInfo copy-constructed" << std::endl;
-			}
-
-			ModuleInfo& operator=(const ModuleInfo& rhs) = default;
-
-			ModuleInfo(const std::string& name, size_t _ID, EventQueue* _EvtQ)
-					: Name(name), ID(_ID), EvtQ(_EvtQ), InputQueue() { }
-
 			std::string Name;
 			size_t ID;
 			EventQueue* EvtQ;
@@ -99,23 +85,21 @@ namespace sbe
 
 		void RouteEvent(size_t QueueID, const Event& e);
 
-		size_t idcount;
-		bool justStarted;
+		// start at 1, 0 means invalid/uninitialized id
+		size_t idcount = 1;
+		bool justStarted = true;
 
 		boost::shared_mutex HashMutex;
 		boost::shared_mutex QueueMutex;
 
 		DLLEXPORT static EventCore* Instance;
 
-		int RemoteEventsThisSecond;
+		int RemoteEventsThisSecond = 0;
 
 		/// stores the modules by name
 		std::map<std::string, std::shared_ptr<ModuleInfo> > ModulesByName;
 		/// stores the modules by id
 		std::map<size_t, std::shared_ptr<ModuleInfo> > ModulesById;
-
-		/// a list of eventhashes and the route
-		//std::map< Event::EventType, std::forward_list<size_t> > Routes;
 
 		HashManager EventTypes;
 	};

@@ -31,40 +31,19 @@ namespace sbe {
 		It provides a clear way to set all required parameters to run a module.
 		@see GameBase::RegisterModule()
 	*/
-	struct ModuleStartInfo {
-		/**
-			Default Constructor.
-			The configuration will be as following:
-			Name: "_NameNotSet"
-			TicksPerSecond: 100
-			TickEvent: none
-			useEventQueue: false
-		*/
-		ModuleStartInfo()
-				: Name("_NameNotSet"), desiredTicksPerSecond(100), useEventQueue(true) {
-			TickEvt = std::shared_ptr<Event>();
-		}
-
-		/** Verbose Constructor.
-			provides all parameters in the constructor with default-values
-		*/
-		ModuleStartInfo(std::string name, int tps = 100,
-		                std::shared_ptr<Event> Evt = std::shared_ptr<Event>(),
-		                bool useQueue = true)
-				: Name(name), desiredTicksPerSecond(tps), TickEvt(Evt), useEventQueue(useQueue) {
-		}
-
+	struct ModuleStartInfo
+	{
 		/// The name of the module to create
-		std::string Name;
+		std::string Name = "_NameNotSet";
+
 		/** @see Module::SetTPS()  */
-		int desiredTicksPerSecond;
+		int desiredTicksPerSecond = 100;
+
 		/// @see Module::SetTickEvent()
 		std::shared_ptr<Event> TickEvt;
 
-		/** Does the Modules require an event queue.
-			All user created modules need to use an eventqueue to be able to process events.
-		*/
-		bool useEventQueue;
+		/// Does the Modules require an event queue. Necessary to be able to process events.
+		bool useEventQueue = true;
 	};
 
 	/**

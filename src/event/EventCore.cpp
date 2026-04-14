@@ -7,11 +7,8 @@ namespace sbe
 	EventCore* EventCore::Instance = nullptr;
 
 	EventCore::EventCore() {
-		RemoteEventsThisSecond = 0;
 		assert(Instance == nullptr);
 		Instance = this;
-		justStarted = true;
-		idcount = 0;
 	}
 
 	int EventCore::GetEventCount() {
@@ -110,18 +107,9 @@ namespace sbe
 	}
 
 	void EventCore::RouteEvent(size_t QueueID, const Event& e) {
-
-		ModulesById[QueueID]->EvtQ->ThreadSafeQueueEvent(e);
-
-		// TODO: implement routing, for now just send everything
-		//	for ( size_t QueueID : Routes[ e.getEventType() ] )
-		//	{
-		//
-		//	}
+		assert(QueueID);
+		ModulesById[QueueID-1]->EvtQ->ThreadSafeQueueEvent(e);
 	}
-
-
-
 
 
 	// -----------------------------------------------------------------
@@ -133,7 +121,10 @@ namespace sbe
 
 		size_t newID = idcount++;
 
-		std::shared_ptr<ModuleInfo> m_p(new ModuleInfo(M.GetName(), newID, M.GetEventQueue()));
+		std::shared_ptr<ModuleInfo> m_p = std::make_shared<ModuleInfo>();
+		m_p->Name = M.GetName();
+		m_p->ID = newID;
+		m_p->EvtQ = M.GetEventQueue();
 
 		ModulesById[newID] = m_p;
 		ModulesByName[M.GetName()] = m_p;

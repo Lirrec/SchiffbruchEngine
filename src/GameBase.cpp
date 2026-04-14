@@ -42,7 +42,7 @@ namespace sbe
 
 	void GameBase::EventsInit() {
 		// Singleton for the EventCore (leaked, destroyed on program shutdown )
-		auto myEventCore = new EventCore();
+		static auto myEventCore = new EventCore();
 
 		// Start a Module without EventQueue
 		// this module will be the host-module which executes EventCore Ticks
@@ -50,7 +50,7 @@ namespace sbe
 		ModuleStartInfo CoreInfo;
 		CoreInfo.Name = "EventCore";
 		CoreInfo.useEventQueue = false;
-		RegisterModule(new SimpleModule<>, CoreInfo);
+		RegisterModule(new SimpleModule, CoreInfo);
 	}
 
 
