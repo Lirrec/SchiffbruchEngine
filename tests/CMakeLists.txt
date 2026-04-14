@@ -1,5 +1,7 @@
 set(CMAKE_BUILD_WITH_INSTALL_RPATH false)
 
+find_package(Catch2 3 REQUIRED)
+
 add_executable(sbe_tests
     TestMain.cpp
     ThreadPoolTest.cpp

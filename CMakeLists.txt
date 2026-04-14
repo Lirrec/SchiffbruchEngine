@@ -15,6 +15,7 @@ option(SBE_PROFILE "" OFF)
 option(SBE_USE_PYTHON "" OFF)
 option(SBE_USE_RUBY "" OFF)
 option(SBE_BUILD_SHARED_LIBS "" ON)
+option(SBE_BUILD_TESTS "" OFF)
 option(SBE_USE_SHARED_LIBS "" ON)
 option(SBE_ENABLE_LTO "enable ltoclion " OFF)
 
@@ -149,8 +150,6 @@ endif ()
 #################### Scripting / Swig #######################
 #############################################################
 
-find_package(Catch2 3 REQUIRED)
-
 add_subdirectory(scripting)
 # set by the scripting CMakelists
 include_directories(${SBE_SCRIPT_INCLUDES})
@@ -220,8 +219,9 @@ target_include_directories(SBE
 )
 
 #set_target_properties(sbe PROPERTIES PUBLIC_HEADER "${sbe_HDRS}")
-
-add_subdirectory(tests)
+if(SBE_BUILD_TESTS)
+    add_subdirectory(tests)
+endif()
 
 if (PROJECT_IS_TOP_LEVEL)
     install(DIRECTORY include DESTINATION ${CMAKE_INSTALL_PREFIX})
