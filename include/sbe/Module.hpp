@@ -175,6 +175,27 @@ namespace sbe {
 		*/
 		void SetTPS(int TPS);
 
+		/**
+			Set up this module as the active module on the calling thread without
+			starting a dedicated thread.  Creates an EventQueue and registers with
+			EventCore.  Intended for unit-test use.
+			@requires EventCore must already be initialised before calling this.
+		*/
+		void SetupForCurrentThread(const std::string& name);
+
+		/**
+			Remove this module from EventCore and release the thread-local module
+			pointer.  Call after tests are done; all EventUser objects should be
+			destroyed before this call.
+		*/
+		void TeardownCurrentThread();
+
+		/**
+			Process all events currently queued in this module's EventQueue (one
+			tick).  Only valid after SetupForCurrentThread().
+		*/
+		void ProcessEvents();
+
 	protected:
 		/**
 			Set the Event used to send debug messages.

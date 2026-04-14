@@ -1,13 +1,21 @@
 set(CMAKE_BUILD_WITH_INSTALL_RPATH false)
 
 add_executable(sbe_tests
+    TestMain.cpp
     ThreadPoolTest.cpp
+    EventSystemTest.cpp
 )
 
 target_link_libraries(sbe_tests
     PRIVATE
         SBE
         Catch2::Catch2WithMain
+)
+
+# Expose private SBE headers (e.g. event/EventCore.hpp) needed by tests.
+target_include_directories(sbe_tests PRIVATE
+    "${CMAKE_SOURCE_DIR}/src"
+    "${CMAKE_BINARY_DIR}"   # config.h lives here
 )
 
 include(CTest)

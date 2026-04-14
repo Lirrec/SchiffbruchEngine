@@ -221,4 +221,24 @@ namespace sbe
 		}
 	}
 
+	void Module::SetupForCurrentThread(const std::string& name) {
+		pimpl->Name = name;
+		pimpl->useEventQueue = true;
+		pimpl->quit = false;
+		pimpl->DbgStringEvent = std::make_shared<Event>("VIEW_DBG_STRING");
+		pimpl->EvtQ = std::make_shared<EventQueue>();
+		pimpl->QueueID = EventCore::getInstance()->RegisterModule(*this);
+		pimpl->Instance.reset(this);
+	}
+
+	void Module::TeardownCurrentThread() {
+		if (pimpl->useEventQueue)
+			EventCore::getInstance()->RemoveModule(pimpl->QueueID);
+		pimpl->Instance.release();
+	}
+
+	void Module::ProcessEvents() {
+		pimpl->EvtQ->Tick();
+	}
+
 } // namespace sbe

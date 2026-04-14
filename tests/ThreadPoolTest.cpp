@@ -1,36 +1,12 @@
-#include <catch2/catch_all.hpp>
+#include <catch2/catch_test_macros.hpp>
 
-#include <sbe/Engine.hpp>
 #include <sbe/util/ThreadPool.hpp>
 
 #include <atomic>
 #include <functional>
 #include <vector>
 
-// ---------------------------------------------------------------------------
-// Engine setup — ThreadPool calls Engine::out() when threads are interrupted
-// during destruction, so we need loggers initialised for the whole test run.
-// ---------------------------------------------------------------------------
-
-struct EngineListener : Catch::EventListenerBase {
-    using Catch::EventListenerBase::EventListenerBase;
-
-    void testRunStarting(Catch::TestRunInfo const&) override {
-        engine = new sbe::Engine();
-        engine->CreateSubSystems();
-    }
-
-    void testRunEnded(Catch::TestRunStats const&) override {
-        engine->UnloadSubSystems();
-        delete engine;
-        engine = nullptr;
-    }
-
-    static sbe::Engine* engine;
-};
-
-sbe::Engine* EngineListener::engine = nullptr;
-CATCH_REGISTER_LISTENER(EngineListener)
+// Global Engine + EventCore are initialised by SBETestSetupListener in TestMain.cpp.
 
 // ---------------------------------------------------------------------------
 // chunkInts tests
