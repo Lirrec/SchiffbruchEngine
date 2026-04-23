@@ -29,6 +29,9 @@ namespace sbe
 		/// return the managed Sprite
 		sf::Sprite& getSprite();
 
+		/// When false, DestPos from the ImageSet is not added to ScreenPosition in updateDrawable().
+		bool useImageSetDestinationPosition = true;
+
 	private:
 		std::optional<sf::Sprite> s;
 

@@ -39,7 +39,9 @@ namespace sbe
 	void AnimatedSprite::updateDrawable() {
 		if (!s) return;
 		s->setTextureRect(geom::toSFRect(AnimData->CalcTexCoords(CurFramePos)));
-		auto pos = ScreenPosition + geom::PIToF(AnimData->DestPos);
+		auto pos = useImageSetDestinationPosition
+			? ScreenPosition + geom::PIToF(AnimData->DestPos)
+			: ScreenPosition;
 		s->setPosition( {pos.x, pos.y} );
 	}
 
