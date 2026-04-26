@@ -25,10 +25,7 @@ namespace sbe
 		/**
 		 * A String literal for easy lookup of component ids
 		 */
-		sbeID operator
-		""
-
-		_cId(const char* str, size_t);
+		sbeID operator ""_cId(const char* str, size_t);
 	}
 } // namespace sbe
 #endif // COMPONENT_HPP

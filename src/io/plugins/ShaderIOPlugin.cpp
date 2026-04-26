@@ -17,20 +17,19 @@ namespace sbe
 		ObjPtr re;
 		if (node.first != "Shader") return re;
 
-		try
-		{
-			const ptree& pt = node.second;
+		try {
+		    const ptree& pt = node.second;
 
-			std::string base = Engine::GetIO()->topPath() + "/shader/";
+		    std::string base = Engine::GetIO()->topPath() + "/shader/";
 
-			re = std::make_shared<sf::Shader>();
+		    re = std::make_shared<sf::Shader>();
 
-			re->loadFromFile(base + pt.get<std::string>("vert"),
-							 base + pt.get<std::string>("frag"));
+		    bool loaded = re->loadFromFile(base + pt.get<std::string>("vert"),
+                             base + pt.get<std::string>("frag"));
 
-
+		    if (!loaded) throw boost::property_tree::ptree_error("SFML failed to load shader file " + base);
 		}
-		catch (boost::property_tree::ptree_error)
+		catch (boost::property_tree::ptree_error& e)
 		{
 			Engine::out() << "[ShaderIOPlugin] Error loading Shader from ptree!";
 			re.reset();

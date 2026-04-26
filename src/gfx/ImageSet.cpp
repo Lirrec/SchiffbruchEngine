@@ -92,7 +92,7 @@ namespace sbe
 			Engine::out(Engine::ERROR) << "ImageSet::CreateSprite: Unable to create Sprite, image not found: " << ImageName << "!" << std::endl;
 			static sf::Texture fallback;
 			static bool init = false;
-			if (!init) { fallback.resize({1, 1}); init = true; }
+			if (!init) { assert(fallback.resize({1, 1})); init = true; }
 			return sf::Sprite(fallback);
 		}
 	}
@@ -110,7 +110,7 @@ namespace sbe
 			Engine::out(Engine::ERROR) << "ImageSet::CreateSprite: Unable to create Sprite, image not found: " << ImageName << "!" << std::endl;
 			static sf::Texture fallback;
 			static bool init = false;
-			if (!init) { fallback.resize({1, 1}); init = true; }
+			if (!init) { assert(fallback.resize({1, 1})); init = true; }
 			return std::make_shared<sf::Sprite>(fallback);
 		}
 	}

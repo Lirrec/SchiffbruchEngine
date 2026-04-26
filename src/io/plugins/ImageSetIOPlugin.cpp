@@ -42,7 +42,7 @@ namespace sbe
 			re->calcNumFrames();
 
 		}
-		catch (boost::property_tree::ptree_error)
+		catch (boost::property_tree::ptree_error& e)
 		{
 			Engine::out(Engine::ERROR) << "[ImageSetIOPlugin] Error loading ImageSet from ptree!" << std::endl;
 			re.reset();
@@ -78,7 +78,7 @@ namespace sbe
 			root.add_child("ImageSet", pt);
 			return true;
 		}
-		catch (boost::property_tree::ptree_error)
+		catch (boost::property_tree::ptree_error& e)
 		{
 			Engine::out(Engine::ERROR) << "[ImageSetIOPlugin] Error saving ImageSet to ptree!" << std::endl;
 			return false;

@@ -8,10 +8,7 @@ namespace sbe
 
 	namespace operators
 	{
-		sbeID operator
-		""
-
-		_id(const char* str, size_t) {
+		sbeID operator ""_id(const char* str, size_t) {
 			boost::uuids::name_generator gen(sbeID_namespace);
 			return gen(str);
 		}

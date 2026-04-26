@@ -41,7 +41,7 @@ namespace sbe
 
 	void GameBase::EventsInit() {
 		// Singleton for the EventCore (leaked, destroyed on program shutdown )
-		static auto myEventCore = new EventCore();
+		static EventCore globalEventCore;
 
 		// Start a Module without EventQueue
 		// this module will be the host-module which executes EventCore Ticks
