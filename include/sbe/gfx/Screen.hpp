@@ -6,13 +6,9 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <cassert>
+#include <functional>
+#include <vector>
 
-namespace sfg
-{
-	class Desktop;
-
-	class SFGUI;
-}
 namespace sf
 {
 	class Clock;
@@ -26,11 +22,13 @@ namespace sbe
 
 	class Camera;
 
+	class ImGuiWidget;
+
 
 	/**
-		Main class to manage the Renderwindow, Renderer and SFGUI Desktop.
+		Main class to manage the Renderwindow, Renderer and ImGui context.
 		It creates and provides access to:
-			- the SFGUI Desktop for all UI elements
+			- the ImGui widget registry for all UI elements
 			- the Renderer for drawing your gameview
 			- the SFMLEventConverter to easily convert keypresses to Event s
 
@@ -50,25 +48,19 @@ namespace sbe
 		Screen& operator=(const Screen&) = delete;
 		Screen();
 
-		virtual ~Screen() { };
+		virtual ~Screen();
 
 		/**
-			Render the Desktop and Renderer.
+			Render all ImGui widgets and the Renderer.
 			No need to call this manually, called from the EVT_FRAME handler
 		*/
 		void Render();
-
-		/// used to determine wether an event should be sent to the renderer/
-		bool desktopHandledEvent;
-
-		/// add this as a handler on all your custom SFGUI Bindings, otherwise the clicks on items will also be sent to the renderer
-		void OnHandledEvent() { desktopHandledEvent = true; }
 
 		/// static getter to access the singleton screen instance
 		static Screen* get();
 
 		/**
-			Add an object which should receive all sfml events in addition to the converter and sfg desktop.
+			Add an object which should receive all sfml events in addition to the converter.
 			This allows Users to handle sfml events in their own classes.
 			@param U the new SFMLEventUser
 		*/
@@ -99,9 +91,6 @@ namespace sbe
 		/// static access to the Renderer
 		static std::shared_ptr<Renderer> sRndr();
 
-		/// static access to the sfgui Desktop
-		static std::shared_ptr<sfg::Desktop> sDesk();
-
 		/// static Access to the SFMLEventConverter
 		static std::shared_ptr<SFMLEventConverter> sEvtConv();
 
@@ -111,19 +100,27 @@ namespace sbe
 		/// access to the Renderer
 		std::shared_ptr<Renderer> getRenderer() { assert(Picasso); return Picasso; }
 
-		/// access to the Desktop
-		std::shared_ptr<sfg::Desktop> getDesktop() { assert(Desktop); return Desktop; }
-
 		/// access to the SFMLEventConverter
 		std::shared_ptr<SFMLEventConverter> getEvtConv() { assert(EvtConv); return EvtConv; }
+
+		/**
+			Register an ImGuiWidget to be rendered each frame.
+			The widget's renderImGui() is called between ImGui::SFML::Update and ImGui::SFML::Render.
+			Widgets should call this in their constructor.
+		*/
+		void registerImGuiWidget(ImGuiWidget* w);
+
+		/**
+			Unregister a previously registered ImGuiWidget.
+			Widgets should call this in their destructor.
+		*/
+		void unregisterImGuiWidget(ImGuiWidget* w);
 
 	protected:
 		/**
 			Handles the following Events:
-			 - EVT_FRAME: draws and updates the desktop
-			 - EVT_QUIT: stopps the renderthread
-			 - SCREEN_ADD_WINDOW (Data: sfg::Window::Ptr): Adds a new Window to the Desktop, use this to add your own Widgets
-			 - SCREEN_REMOVE_WINDOW (Data: sfg::Window::Ptr): Removes a Window from the Desktop
+			 - EVT_FRAME: draws and updates ImGui + game view
+			 - EVT_QUIT: stops the renderthread
 			 - TOGGLE_FULLSCREEN: recreate the RenderWindow in fullscreen Mode
 			 - WINDOW_RESIZE: adapts the Camera to the new window size
 		*/
@@ -141,9 +138,8 @@ namespace sbe
 		std::shared_ptr<SFMLEventConverter> EvtConv;
 		std::vector<SFMLEventUser*> sfEvtHandlers;
 
-		std::shared_ptr<sfg::SFGUI> SFG;
-		std::shared_ptr<sfg::Desktop> Desktop;
-		sf::Clock guiclock;
+		std::vector<ImGuiWidget*> imguiWidgets;
+		sf::Clock imguiClock;
 
 		std::shared_ptr<Renderer> Picasso;
 		std::shared_ptr<Camera> Cam;
@@ -152,4 +148,3 @@ namespace sbe
 	};
 } // namespace sbe
 #endif // SCREEN_H
-

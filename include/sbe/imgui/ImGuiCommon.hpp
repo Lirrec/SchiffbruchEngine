@@ -1,0 +1,7 @@
+#ifndef SCHIFFBRUCHENGINE_IMGUI_COMMON_HPP
+#define SCHIFFBRUCHENGINE_IMGUI_COMMON_HPP
+
+#include <imgui.h>
+#include <imgui_stdlib.h>
+
+#endif //SCHIFFBRUCHENGINE_IMGUI_COMMON_HPP

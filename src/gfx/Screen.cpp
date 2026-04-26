@@ -8,6 +8,7 @@
 
 #include <sbe/gfx/Renderer.hpp>
 #include <sbe/gfx/Camera.hpp>
+#include <sbe/imgui/ImGuiWidget.hpp>
 
 #include <sbe/Module.hpp>
 
@@ -15,10 +16,10 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Image.hpp>
 
-#include <SFGUI/SFGUI.hpp>
-#include <SFGUI/Desktop.hpp>
-#include <SFGUI/Window.hpp>
+#include <imgui-SFML.h>
+#include <imgui.h>
 
+#include <algorithm>
 
 
 namespace sbe
@@ -35,9 +36,6 @@ namespace sbe
 	/// static access to the Renderer
 	std::shared_ptr<Renderer> Screen::sRndr() { assert(Instance->Picasso); return Instance->Picasso; }
 
-	/// static access to the sfgui Desktop
-	std::shared_ptr<sfg::Desktop> Screen::sDesk() { assert(Instance->Desktop); return Instance->Desktop; }
-
 	/// static Access to the SFMLEventConverter
 	std::shared_ptr<SFMLEventConverter> Screen::sEvtConv() { assert(Instance->EvtConv); return Instance->EvtConv; }
 
@@ -51,8 +49,6 @@ namespace sbe
 		RegisterForEvent("EVT_QUIT", [this](Event&) { Module::Get()->RequestQuit(); });
 
 		RegisterForEvent("WINDOW_RESIZE");
-		RegisterForEvent("SCREEN_ADD_WINDOW");
-		RegisterForEvent("SCREEN_REMOVE_WINDOW");
 		RegisterForEvent("TOGGLE_FULLSCREEN");
 
 		// load keybindings from default config
@@ -66,6 +62,10 @@ namespace sbe
 
 
 		Engine::out() << "[Screen] Initialized." << std::endl;
+	}
+
+	Screen::~Screen() {
+		ImGui::SFML::Shutdown();
 	}
 
 	void Screen::Init() {
@@ -100,12 +100,8 @@ namespace sbe
 
 		}
 
+		assert(ImGui::SFML::Init(Engine::GetApp()));
 
-		// must be created before using SFGUI
-		SFG = std::make_shared<sfg::SFGUI>();
-
-		// top-level container for all SFGUI widgets
-		Desktop = std::make_shared<sfg::Desktop>();
 		Cam = std::make_shared<Camera>();
 		Cam->setup();
 
@@ -115,7 +111,7 @@ namespace sbe
 		// states. Otherwise we wouldn't see anything.
 		Engine::GetApp().resetGLStates();
 
-		guiclock.restart();
+		imguiClock.restart();
 
 		Module::Get()->QueueEvent("SCREEN_CREATED", true);
 	}
@@ -125,25 +121,24 @@ namespace sbe
 		// Process Hardware/SFML Events
 		while (const auto sfEvent = Engine::GetApp().pollEvent())
 		{
-			desktopHandledEvent = false;
-			// Try to consume the event, if that fails try to convert it
-			Desktop->HandleEvent(*sfEvent);
+			ImGui::SFML::ProcessEvent(Engine::GetApp(), *sfEvent);
 
-			if (!desktopHandledEvent)
+			const auto& io = ImGui::GetIO();
+			if (!io.WantCaptureMouse && !io.WantCaptureKeyboard)
 			{
 				Cam->HandleEvent(*sfEvent);
 				for (SFMLEventUser* U : sfEvtHandlers) U->HandleSfmlEvent(*sfEvent);
 			}
 
-			// give it to the converter
+			// always give it to the converter (key bindings fire regardless of ImGui focus)
 			EvtConv->HandleSfmlEvent(*sfEvent);
 		}
 
 		// don't draw if the window is closed
 		if (!Engine::GetApp().isOpen()) return;
 
-		// update desktop
-		Desktop->Update(guiclock.restart().asSeconds());
+		// update ImGui
+		ImGui::SFML::Update(Engine::GetApp(), imguiClock.restart());
 
 		// Clear screen
 		if (clear) Engine::GetApp().clear(bgColor);
@@ -151,8 +146,11 @@ namespace sbe
 		Cam->update();
 		Picasso->render(Engine::GetApp());
 
-		// draw SFGUI
-		SFG->Display(Engine::GetApp());
+		// draw all registered ImGui widgets
+		for (ImGuiWidget* w : imguiWidgets) w->renderImGui();
+
+		// render ImGui draw lists to window
+		ImGui::SFML::Render(Engine::GetApp());
 
 		// Blit
 		Engine::GetApp().display();
@@ -194,21 +192,15 @@ namespace sbe
 
 			Module::Get()->QueueEvent("WINDOW_RESIZE", true);
 		}
-		else if (e.Is("SCREEN_ADD_WINDOW", typeid(sfg::Window::Ptr)))
-		{
-			sfg::Window::Ptr P = boost::any_cast<sfg::Window::Ptr>(e.Data());
-			P->GetSignal(sfg::Window::OnMouseEnter).Connect(std::bind(&Screen::OnHandledEvent, this));
+	}
 
-			Engine::out() << "[Screen] Adding Window '" << P->GetTitle().toAnsiString() << "'" << std::endl;
-			Desktop->Add(P);
-		}
-		else if (e.Is("SCREEN_REMOVE_WINDOW", typeid(sfg::Window::Ptr)))
-		{
-			sfg::Window::Ptr P = boost::any_cast<sfg::Window::Ptr>(e.Data());
+	void Screen::registerImGuiWidget(ImGuiWidget* w) {
+		imguiWidgets.push_back(w);
+	}
 
-			Engine::out() << "[Screen] Removing Window '" << P->GetTitle().toAnsiString() << "'" << std::endl;
-			Desktop->Remove(P);
-		}
+	void Screen::unregisterImGuiWidget(ImGuiWidget* w) {
+		auto it = std::find(imguiWidgets.begin(), imguiWidgets.end(), w);
+		if (it != imguiWidgets.end()) imguiWidgets.erase(it);
 	}
 
 	void Screen::removeSFMLEventHandler(SFMLEventUser* U) {

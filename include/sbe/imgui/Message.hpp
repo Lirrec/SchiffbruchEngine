@@ -1,14 +1,10 @@
-#ifndef MESSAGE_H
-#define MESSAGE_H
+#ifndef IMGUI_MESSAGE_H
+#define IMGUI_MESSAGE_H
 
 #include <sbe/event/EventUser.hpp>
+#include <sbe/imgui/ImGuiWidget.hpp>
 
-namespace sfg
-{
-	class Window;
-}
-
-#include <sbe/geom/Point.hpp>
+#include <string>
 
 namespace sbe
 {
@@ -24,16 +20,13 @@ namespace sbe
 	/// and send an Event named "NEW_MESSAGE" with an std::shared_ptr<Message> of the Message object as Data.
 	/// Dont forget to listen for the same string as @p answerEventName_, which will give you some kind of Data depending on the Type of Message:
 	///
-	///
-	///
-	///  Type   | Data          | Description ( @see Message::Type )
+	///  Type   | Data
 	/// ========+===========
 	///  OK     | no Data
 	///  MODAL  | no Data
 	///  CHOICE | bool ( false if abort, true if confirm )
-	/// ========+===========
 
-	class Message : public EventUser
+	class Message : public EventUser, public ImGuiWidget
 	{
 	public:
 
@@ -44,8 +37,8 @@ namespace sbe
 			CHOICE  /// Allows the User to make a Yes/No, Ok/Abort choice, the Answer event will contain a bool
 		};
 
-		Message(const Message::Type type_, const std::string& title_, const std::string& message_, const std::string& answerEventName_ = "",
-				bool pause_ = false);
+		Message(const Message::Type type_, const std::string& title_, const std::string& message_,
+				const std::string& answerEventName_ = "", bool pause_ = false);
 
 		~Message() { }
 
@@ -59,20 +52,14 @@ namespace sbe
 
 		void Close();
 
+		void renderImGui() override;
+
 	private:
-		void MakeOkMessage();
-
-		void MakeModalMessage();
-
-		void MakeChoiceMessage();
-
 		void Ok();
 
 		void Abort();
 
 		void Confirm();
-
-		void updatePosition();
 
 		Message::Type Type_;
 		std::string Title_;
@@ -80,12 +67,12 @@ namespace sbe
 		std::string AnswerEventName_;
 		bool pause;
 
-		std::shared_ptr<sfg::Window> Win;
+		bool visible;
+		bool needsOpenPopup;
 
 		MessageHandler* Handler;
 	};
 
 } // namespace sbe
 
-#endif // MESSAGE_H
-
+#endif // IMGUI_MESSAGE_H

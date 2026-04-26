@@ -10,7 +10,7 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       },
-      "toolchainFile": "/mnt/dev/vcpkg/scripts/buildsystems/vcpkg.cmake"
+      "toolchainFile": "~/vcpkg/scripts/buildsystems/vcpkg.cmake"
     },
     {
       "name": "release",
@@ -21,7 +21,7 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       },
-      "toolchainFile": "/mnt/dev/vcpkg/scripts/buildsystems/vcpkg.cmake"
+      "toolchainFile": "~/vcpkg/scripts/buildsystems/vcpkg.cmake"
     }
   ],
   "buildPresets": [

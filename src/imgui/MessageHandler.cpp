@@ -1,4 +1,4 @@
-#include <sbe/sfg/MessageHandler.hpp>
+#include <sbe/imgui/MessageHandler.hpp>
 #include <sbe/Module.hpp>
 #include <algorithm>
 
@@ -38,7 +38,8 @@ namespace sbe
 	}
 
 	void MessageHandler::RemoveAndDestroyMessage(const Message* m) {
-		auto it = std::find_if(MessageList.begin(), MessageList.end(), [m](const std::shared_ptr<Message>& p) { return p.get() == m; });
+		auto it = std::find_if(MessageList.begin(), MessageList.end(),
+			[m](const std::shared_ptr<Message>& p) { return p.get() == m; });
 		if (it != MessageList.end())
 		{
 			(*it)->Close();
@@ -47,7 +48,8 @@ namespace sbe
 	}
 
 	void MessageHandler::RemoveAndDestroyMessage(const std::string& title) {
-		auto it = std::find_if(MessageList.begin(), MessageList.end(), [title](const std::shared_ptr<Message>& p) { return p->getTitle() == title; });
+		auto it = std::find_if(MessageList.begin(), MessageList.end(),
+			[title](const std::shared_ptr<Message>& p) { return p->getTitle() == title; });
 		if (it != MessageList.end())
 		{
 			(*it)->Close();

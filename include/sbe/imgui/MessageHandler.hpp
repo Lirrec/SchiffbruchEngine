@@ -1,17 +1,20 @@
-#ifndef MESSAGEHANDLER_H
-#define MESSAGEHANDLER_H
+#ifndef IMGUI_MESSAGEHANDLER_H
+#define IMGUI_MESSAGEHANDLER_H
 
 #include <sbe/event/EventUser.hpp>
 #include "Message.hpp"
 
+#include <list>
+#include <memory>
+#include <string>
+
 namespace sbe
 {
 	/**
-		TODO: document this
 		This class handles new message events and adds/removes them from the screen.
 		An instantiation of this class is required to show messages.
 
-		Messages are sent via Events ADD_MESSAGE(
+		Messages are sent via Events NEW_MESSAGE( std::shared_ptr<Message> )
 	*/
 	class MessageHandler : public EventUser
 	{
@@ -45,4 +48,4 @@ namespace sbe
 	};
 
 } // namespace sbe
-#endif // MESSAGEHANDLER_H
+#endif // IMGUI_MESSAGEHANDLER_H

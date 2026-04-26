@@ -4,7 +4,7 @@ project(SchiffbruchEngine)
 
 # set sbe version
 set(VER_MAJOR 0)
-set(VER_MINOR 1)
+set(VER_MINOR 2)
 set(VER_PATCH 0)
 
 #############################################################
@@ -38,10 +38,8 @@ message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}\n")
 
 if (SBE_USE_SHARED_LIBS)
     set(SFML_STATIC_LIBRARIES false)
-    set(SFGUI_STATIC_LIBRARIES false)
 else ()
     set(SFML_STATIC_LIBRARIES true)
-    set(SFGUI_STATIC_LIBRARIES true)
     set(ADD_SFML_MAIN "main")
 endif ()
 
@@ -53,7 +51,8 @@ endif ()
 set(SFML_FIND_REQUIRED true)
 find_package(Boost 1.60 COMPONENTS system filesystem uuid property_tree REQUIRED)
 find_package(SFML 3 COMPONENTS Audio Window Graphics System ${ADD_SFML_MAIN} REQUIRED)
-find_package(SFGUI REQUIRED)
+find_package(ImGui-SFML CONFIG REQUIRED)
+find_package(imgui CONFIG REQUIRED)
 find_package(glm REQUIRED)
 
 add_definitions(-DGLM_FORCE_RADIANS -DGLM_ENABLE_EXPERIMENTAL)
@@ -198,7 +197,8 @@ endif ()
 set(SFML_LIBRARIES SFML::Audio SFML::Window SFML::Graphics SFML::System)
 target_link_libraries(SBE
         PUBLIC
-            SFGUI::SFGUI
+            imgui::imgui
+            ImGui-SFML::ImGui-SFML
             ${SFML_LIBRARIES}
             ${Boost_LIBRARIES}
             ${SBE_SCRIPT_LIBS}
